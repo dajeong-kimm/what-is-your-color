@@ -32,3 +32,20 @@
 ## 🔗 참고 자료
 - [링크 1](https://example.com)
 - [링크 2](https://example.com)
+
+## 1월 20일
+docs: Update README with today's work
+- 피그마 목업 만들기
+![alt text](image.png)
+
+## 1월 21일
+docs: Update README with today's work
+- 피그마 목업 최종본
+![alt text](image-1.png)
+
+## 1월 22일
+docs: Update README with today's work
+- 피그마 프로토타입 완성하기
+- 로딩스피너 만들기
+![alt text](image-2.png)
+![alt text](image-3.png)
