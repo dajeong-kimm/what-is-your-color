@@ -147,6 +147,7 @@ export default {
         console.log('submit')
         await store.dispatch('accountStore/loginAction', { id: state.form.id, password: state.form.password })
         console.log('accessToken ' + store.getters['accountStore/getToken'])
+        console.log('token' + store.getters['accountStore/islogin'])
         handleClose()
       } else {
         alert('Validate error!')
