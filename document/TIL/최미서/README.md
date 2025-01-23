@@ -49,3 +49,8 @@ docs: Update README with today's work
 - 로딩스피너 만들기
 ![alt text](image-2.png)
 ![alt text](image-3.png)
+
+## 1월 23일
+docs: Update README with today's work
+- 유스케이스 다이어그램
+![alt text](<유스케이스 다이어그램.png>)
