@@ -1,3 +1,11 @@
+## 아키텍처 구조도
+![아키텍처 구조도](document/시스템아키텍처구조도.png)
+
+## 유스케이스 다이어그램
+![유스케이스 다이어그램](document/유스케이스 다이어그램.png)
+
+---
+
 # Git Flow & Commit Convention
 
 ## Git Flow Workflow
