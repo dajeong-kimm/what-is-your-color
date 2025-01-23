@@ -54,3 +54,17 @@ feat: 사용자 로그인 API 구현
 
 fix: 로그인 시 발생하던 NullPointerException 해결
 ```
+
+---
+
+# Project Development Environment
+
+## Repository Structure
+```
+.
+├── frontend/     # Frontend (React.js)
+├── backend/      # Backend (Spring Boot, MySQL)
+├── AI/           # AI-related models and services
+├── document/     # Documentation and design files
+
+```
