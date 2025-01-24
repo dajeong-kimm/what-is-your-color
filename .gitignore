@@ -1,0 +1,95 @@
+# Node.js 관련 (React 프로젝트)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.env.local
+.build/
+
+# IntelliJ IDEA 관련
+.idea/
+*.iml
+out/
+*.ipr
+*.iws
+
+# VSCode 관련
+.vscode/
+*.code-workspace
+
+# Java 관련 (Spring Boot 프로젝트)
+target/
+*.jar
+*.war
+*.class
+*.log
+*.pid
+hs_err_pid*
+*.project
+*.classpath
+/.settings/
+!src/main/resources/
+!src/main/resources/**/
+!src/test/resources/
+!src/test/resources/**/
+
+# MySQL 관련
+*.sql
+
+# Maven 관련
+.mvn/
+!**/mvn/wrapper/maven-wrapper.jar
+
+# Gradle 관련
+.gradle/
+build/
+*.gradle
+gradle-wrapper.jar
+gradle-app.setting
+*.kts
+
+# Python 관련
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+.eggs/
+*.pyo
+*.pyd
+*.whl
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+htmlcov/
+coverage/
+.tox/
+.pytest_cache/
+nosetests.xml
+tests.xml
+*.cover
+*.coverage
+*.hypothesis/
+.cache/
+*.mo
+*.pot
+*.po
+*.db
+
+# 로그 파일
+*.log
+logs/
+*.tlog
+
+# 시스템 파일
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 환경 설정 파일
+*.env
+*.env.local
+.env.development.local
+.env.test.local
+.env.production.local
