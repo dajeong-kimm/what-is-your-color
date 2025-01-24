@@ -36,5 +36,12 @@ out/
 ### VS Code ###
 .vscode/
 
-### 환경 및 설정 파일
-application.properties
+# Log files
+*.log
+*.log.*
+
+# Lombok config
+lombok.config
+
+# application.properties (환경에 따라 다를 수 있으므로 gitignore에 추가)
+src/main/resources/application.properties
