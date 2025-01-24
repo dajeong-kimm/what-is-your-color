@@ -32,3 +32,15 @@
 ## 🔗 참고 자료
 - [링크 1](https://example.com)
 - [링크 2](https://example.com)
+
+## 1월 20일 프론트 피그마 작업
+![alt text](image.png)
+
+## 1월 21일 프론트 피그마 2차
+![alt text](image-1.png)
+
+## 1월 22일 프론트 피그마 완성
+![alt text](image-1.png)
+
+## 1월 23일
+PPT 와 발표준비중
