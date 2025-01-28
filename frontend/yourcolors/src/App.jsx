@@ -1,17 +1,22 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import BackgroundPage from "./common/components/BackgroudPage"; // 방금 생성한 파일 경로
+import Background from "./common/components/Background";
+import Topbar from './common/components/Topbar';
 
-function App() {
+
+const App = () => {
   return (
     <Router>
+      <Background />
+      <Topbar />
       <Routes>
-        {/* 다른 페이지를 위한 라우트 */}
-        <Route path="/" element={<h1>Home Page</h1>} />
-        <Route path="/test" element={<BackgroundPage />} />
+        {/* 각 페이지 컴포넌트 정의 */}
+        <Route path="/personalcolor" element={<div>퍼스널컬러란?</div>} />
+        <Route path="/diagnosis" element={<div>퍼스널컬러 진단</div>} />
+        <Route path="/makeup" element={<div>AI 메이크업 합성</div>} />
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;

@@ -1,0 +1,21 @@
+/* css/Button.css */
+.button {
+    text-decoration: none;
+    color: white;
+    background-color: #4CAF50;  /* 비활성화된 버튼 색 */
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-left: 20px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #45a049;  /* hover 시 색상 변경 */
+  }
+  
+  /* 활성화된 버튼 */
+  .button.active {
+    background-color: #45a049;  /* 활성화된 버튼 색상 */
+  }
+  
