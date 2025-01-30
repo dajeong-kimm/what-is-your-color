@@ -1,18 +1,18 @@
-// components/Topbar.js
+// components/Bottombar.js
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../../css/Topbar.css';
-import Topbutton from './Topbutton'; 
+import '../../css/Bottombar.css';
+import Bottombutton from './Bottombutton'; 
 
-const Topbar = () => {
+const Bottombar = () => {
 
 const [activeButton, setActiveButton] = useState(null)
 
 
 // 버튼 정보 배열
 const buttons = [
-  { to: '/personalcolor', label: '퍼스널컬러란?', name: 'personalcolor' },
-  { to: '/diagnosis', label: '퍼스널컬러 진단', name: 'diagnosis' },
+  { to: '/recommend', label: '화장품 추천 받기', name: 'recommend' },
   { to: '/makeup', label: 'AI 메이크업 합성', name: 'makeup' },
 ];
 
@@ -21,12 +21,11 @@ const handleButtonClick = (buttonName) => {
   };
 
   return (
-    <div className="Topbar">
-      <div className="Topbar-container">
-        <h1 className="Topbar-logo">너의 색깔은?</h1>
-        <div className="Topbar-buttons">
+    <div className="Bottombar">
+      <div className="Bottombar-container">
+        <div className="Bottombar-buttons">
         {buttons.map((button) => (
-            <Topbutton
+            <Bottombutton
               key={button.name}
               to={button.to}
               label={button.label}
@@ -40,4 +39,4 @@ const handleButtonClick = (buttonName) => {
   );
 };
 
-export default Topbar;
+export default Bottombar;

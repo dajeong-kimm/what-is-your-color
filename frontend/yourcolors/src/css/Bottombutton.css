@@ -1,7 +1,7 @@
-.top-button {
+.bottom-button {
     text-decoration: none;
-    color: white;
-    background-color: rgba(130, 220, 40, 0.40);  /* 비활성화된 버튼 색 */
+    color: black;
+    background-color: #E5F6FF;  /* 비활성화된 버튼 색 */
     padding: 10px 20px;
     border-radius: 5px;
     margin-left: 20px;
@@ -11,13 +11,13 @@
     box-shadow: 0px 2.221px 2.221px 0px rgba(0, 0, 0, 0.25);
   }
   
-  .top-button:hover {
-    background-color: #82DC28;  /* hover 시 색상 변경 */
+  .bottom-button:hover {
+    background-color: #a0c9df;  /* hover 시 색상 변경 */
     color: white;
   }
   
   /* 활성화된 버튼 */
-  .top-button.active {
-    background: #82DC28;  /* 활성화된 버튼 색상 */
+  .bottom-button.active {
+    background: #FFE5E5;  /* 활성화된 버튼 색상 */
   }
   
