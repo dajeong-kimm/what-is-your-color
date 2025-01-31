@@ -3,10 +3,10 @@
 import React from 'react';
 import './Background.css';
 
-const Smallmain = ({ children }) => {
+const Smallmain = ({children}) => {
     return (
       <div className="Small-main">
-        { children }
+        {children}
       </div>
     );
 };
