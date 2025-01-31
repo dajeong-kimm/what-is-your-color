@@ -1,19 +1,23 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import BackgroundPage from "./common/components/BackgroudPage"; // 방금 생성한 파일 경로
+import Home from "./features/start/Home";
+import Mainpage from "./features/start/Mainpage";
+import Mainpage2 from "./features/start/Mainpage2";
 
-function App() {
-  
+const App = () => {
   return (
     <Router>
       <Routes>
-        
-        {/* 다른 페이지를 위한 라우트 */}
-        <Route path="/" element={<h1>Home Page</h1>} />
-        <Route path="/test" element={<BackgroundPage />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/mainpage" element={<Mainpage />} />
+        <Route path="/mainpage2" element={<Mainpage2 />} />
+        {/* <Route path="/recommend" element={<Recommend />} />
+        <Route path="/makeup" element={<Makeup />} />
+        <Route path="/personalcolors" element={<Personalcolors />} />
+        <Route path="/diagnosis" element={<Diagnosis />} /> */}
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;
