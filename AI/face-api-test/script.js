@@ -45,7 +45,7 @@ video.addEventListener('play', () => {
       console.log('Mouth landmarks:', mouth);
 
       if (mouth.length > 0) {
-        ctx.fillStyle = 'rgba(180,122,131, 0.3)'; // 반투명 빨간색으로 채우기
+        ctx.fillStyle = 'rgba(216, 96,119, 0.3)'; // 반투명 빨간색으로 채우기
         ctx.beginPath();
         mouth.forEach((point, index) => {
           if (index === 0) {
@@ -57,6 +57,48 @@ video.addEventListener('play', () => {
         ctx.closePath();
         ctx.fill();
       }
+
+      const shadowOffset = 5;  // 눈 위쪽 위치 조정
+      const shadowThickness = 5;  // 섀도우 두께
+
+      const drawShadow = (eyePoints) => {
+        if (eyePoints.length > 0) {
+          const start = eyePoints[0];
+          const end = eyePoints[eyePoints.length - 1];
+
+          // 눈 위쪽 경로 조정 (눈머리~눈꼬리 일정한 모양)
+          const gradient = ctx.createLinearGradient(start.x-10, start.y, end.x-10, end.y);
+          gradient.addColorStop(0, 'rgba(249, 217, 206, 0.2)');
+          gradient.addColorStop(1, 'rgba(249, 217, 206, 0.2)');
+
+          ctx.fillStyle = gradient;  // 그라데이션 적용
+          ctx.shadowBlur = 100;  // 부드러운 효과
+          ctx.shadowColor = 'rgba(249, 217, 206, 0.5)';
+
+          ctx.beginPath();
+          ctx.moveTo(start.x - 5, start.y - shadowOffset);
+          ctx.quadraticCurveTo(
+            eyePoints[Math.floor(eyePoints.length / 2)].x, 
+            eyePoints[Math.floor(eyePoints.length / 2)].y - shadowOffset - 5, 
+            end.x + 10, end.y - shadowOffset
+          );
+          ctx.lineTo(end.x + 10, end.y - shadowOffset + shadowThickness);
+          ctx.quadraticCurveTo(
+            eyePoints[Math.floor(eyePoints.length / 2)].x, 
+            eyePoints[Math.floor(eyePoints.length / 2)].y - shadowOffset + 5, 
+            start.x - 10, start.y - shadowOffset + shadowThickness
+          );
+          ctx.closePath();
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      };
+
+      // 왼쪽 눈 섀도우 적용
+      drawShadow(landmarks.getLeftEye());
+
+      // 오른쪽 눈 섀도우 적용
+      drawShadow(landmarks.getRightEye());
     });
 
     // 기본 얼굴 랜드마크 드로잉
