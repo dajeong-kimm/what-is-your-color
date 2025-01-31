@@ -1,0 +1,16 @@
+.product-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    background-color: #82dc28;
+    color: white;
+    border: none;
+    opacity: 0.4; /* 기본 상태 (클릭 X) */
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  .product-button.active {
+    opacity: 0.7; /* 클릭 시 투명도 70% */
+  }
+  
