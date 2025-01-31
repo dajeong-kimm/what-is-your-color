@@ -1,0 +1,28 @@
+.main-button {
+  width: 70%;
+  height: 105px;
+  background-color: #82DC28;
+  color: white;
+  font-size: 50px;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px; /* 버튼을 더 둥글게 */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 버튼 입체감 추가 */
+  margin-top: 30px; /* 버튼 위 간격 */
+  margin-bottom: 30px; /* 버튼 아래 간격 */
+}
+
+
+/* 반응형: 작은 화면에서 크기 조정 */
+@media (max-width: 800px) {
+  .main-button {
+      width: 90%;
+      height: 80px;
+      font-size: 24px;
+  }
+}
