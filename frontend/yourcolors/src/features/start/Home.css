@@ -1,0 +1,17 @@
+/* home.css */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.start-image {
+  margin-bottom: 20px; /* 버튼과 간격 추가 */
+
+  position: absolute;
+  width: 801.735px;
+  height: 443.936px;
+  left: 314.18px;
+  top: 124.24px;
+}
