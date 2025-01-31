@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./common/components/Home";
-import Mainpage from "./common/components/Mainpage";
-import Mainpage2 from "./common/components/Mainpage2";
+import Home from "./features/start/Home";
+import Mainpage from "./features/start/Mainpage";
+import Mainpage2 from "./features/start/Mainpage2";
 
 const App = () => {
   return (

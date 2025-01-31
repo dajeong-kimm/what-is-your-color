@@ -1,8 +1,8 @@
 // components/Topbar.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../../css/Topbar.css';
-import Topbutton from './Topbutton'; 
+import './Topbar.css';
+import Topbutton from './TopButton'; 
 
 const Topbar = () => {
 
