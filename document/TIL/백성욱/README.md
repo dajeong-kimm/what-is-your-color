@@ -32,3 +32,17 @@
 ## 🔗 참고 자료
 - [링크 1](https://example.com)
 - [링크 2](https://example.com)
+
+
+2025.01.22
+올리브영 제출할 ppt 완성
+figma 작성 완료, 시연 영상 촬영
+올리브영에 메일 발송 완료
+![alt text](image.png)
+![alt text](image-1.png)
+
+
+2025.01.23
+발표용 ppt 작업
+프로젝트 명세서, 기능 명세서 작성 및 확인
+연휴 및 앞으로의 계획 수립

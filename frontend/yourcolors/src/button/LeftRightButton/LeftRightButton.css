@@ -1,0 +1,39 @@
+.navigation-buttons {
+    position: fixed;
+    top: 50%;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    z-index: 1000;
+    max-width: calc(100% - 40px);
+  }
+  
+  .nav-button {
+    background-color: #0b7c3e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    padding: 0;
+    position: relative;
+  }
+  
+  .nav-arrow {
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1;
+    user-select: none;
+  }

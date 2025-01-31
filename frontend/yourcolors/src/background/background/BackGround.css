@@ -1,0 +1,35 @@
+/* Background.css */
+.Sub-back {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;  /* 화면 전체 너비 */
+  height: 100vh;  /* 화면 전체 높이 */
+  background-color: #D2F096;  /* 배경 색 */
+  position: relative;  /* 자식 요소인 Topbar가 이 영역에 배치되도록 */
+}
+
+/* Main-back: 기본 화면 */
+.Large-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 85%;  /* Main 화면의 너비 */
+  height: 80%;  /* 기존 70%에서 75%로 조금만 확장 */
+  background-color: rgba(255, 255, 255, 0.70);  /* Main 화면의 배경 색 */
+  border-radius: 27px;  /* 둥근 모서리 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* 그림자 */
+  margin-top: 8vh;
+}
+
+.Small-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 85%;  /* Main 화면의 너비 */
+  height: 65%;  /* 기존 70%에서 75%로 조금만 확장 */
+  background-color: rgba(255, 255, 255, 0.70);  /* Main 화면의 배경 색 */
+  border-radius: 27px;  /* 둥근 모서리 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* 그림자 */
+  
+}
