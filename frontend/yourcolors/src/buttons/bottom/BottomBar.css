@@ -1,0 +1,32 @@
+/* Bottombar.css */
+
+.Bottombar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  width: 100%;
+  height: 80px;
+  padding: 35.699px 30.679px 36.257px 30.121px;
+  justify-content: flex-start; /* 전체적으로 왼쪽 정렬 */
+  align-items: center;
+  background-color: #D2F096;
+}
+
+/* 컨테이너 정렬 */
+.Bottombar-container {
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  align-items: center;
+  width: 100%;
+}
+
+/* 버튼 컨테이너 스타일 */
+.Bottombar-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  margin-left: 20px; /* 왼쪽 여백 추가 */
+}

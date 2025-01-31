@@ -44,7 +44,6 @@ hs_err_pid*
 # Gradle 관련
 .gradle/
 build/
-*.gradle
 gradle-wrapper.jar
 gradle-app.setting
 *.kts
@@ -93,3 +92,18 @@ desktop.ini
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Python 기본 ignore
+__pycache__/
+*.py[cod]
+*.pyo
+
+# 환경 설정 파일
+.env
+
+# 가상환경 폴더
+venv/
+
+# 로그 파일
+logs/
+*.log
