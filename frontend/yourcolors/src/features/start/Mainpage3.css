@@ -1,0 +1,13 @@
+
+.camera-container {
+    position: absolute; /* 부모 요소에 대한 위치 지정 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10; /* smallmain 위에 배치 */
+    padding : 0;
+    margin : 0;
+    display : block;
+    
+}
