@@ -3,9 +3,9 @@
 import React from 'react';
 import './Background.css';
 
-const largemain = () => {
+const largemain = ({ children }) => {
     return (
-      <div className="Large-main">
+      <div className="Large-main">{children}
       </div>
     );
 };

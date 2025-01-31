@@ -3,9 +3,9 @@
 import React from 'react';
 import './Background.css';
 
-const Smallmain = () => {
+const Smallmain = ({ children }) => {
     return (
-      <div className="Small-main">
+      <div className="Small-main">{children}
       </div>
     );
 };
