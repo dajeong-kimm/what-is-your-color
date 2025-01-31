@@ -1,13 +1,14 @@
-// 큰 연두색 배경 안에 main box (큰 버전)
-
 import React from 'react';
 import './Background.css';
 
-const largemain = ({ children }) => {
-    return (
-      <div className="Large-main">{children}
-      </div>
-    );
+
+const Largemain = ({ children }) => {
+  return (
+    <div className="Large-main">
+      {children} {/* 자식 컴포넌트가 이곳에 렌더링됩니다 */}
+    </div>
+  );
+
 };
 
-export default largemain;
+export default Largemain;
