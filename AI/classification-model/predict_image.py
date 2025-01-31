@@ -22,7 +22,7 @@ def predict_image(model_path, img_path, categories):
 
 if __name__ == "__main__":
     model_path = "C:/Users/SSAFY/Desktop/personal_color_classifier.h5"
-    img_path = "C:/Users/SSAFY/Desktop/퍼스널컬러/test_image.jpg"
+    img_path = "C:/Users/SSAFY/Desktop/test_image.png"
     categories = [
         "가을_다크", "가을_뮤트", "가을_스트롱",
         "겨울_다크", "겨울_비비드", "겨울_스트롱",
