@@ -1,4 +1,4 @@
-package com.ssafy.yourcolors.domain.analysis;
+package com.ssafy.yourcolors.domain.test.controller;
 
 import com.ssafy.yourcolors.global.exception.CustomException;
 import com.ssafy.yourcolors.global.exception.ErrorCode;
