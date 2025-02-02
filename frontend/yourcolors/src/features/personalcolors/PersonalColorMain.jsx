@@ -18,7 +18,7 @@ const PersonalColorMain = () => {
     colors.slice(9, 12), // 겨울: 비비드, 스트롱, 다크
   ];
 
-  const colorTitles = ["봄", "여름", "가을", "겨울"];
+  const colorTitles = ["Spring", "Summer", "Autumn", "Winter"];
 
   return (
     <Background>
