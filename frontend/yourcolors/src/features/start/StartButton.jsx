@@ -1,9 +1,8 @@
-// components/Topbutton.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Topbutton.css';
 
-const StartButton ({ to, label, onClick }) => {
+const StartButton = ({ to, label, onClick }) => {
   return (
     <Link
       to={to}
