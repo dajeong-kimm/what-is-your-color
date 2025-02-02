@@ -54,3 +54,7 @@ docs: Update README with today's work
 docs: Update README with today's work
 - 유스케이스 다이어그램
 ![alt text](<유스케이스 다이어그램.png>)
+
+## 2월 2일
+feat: diagnosticbox make
+- 진단박스 구현

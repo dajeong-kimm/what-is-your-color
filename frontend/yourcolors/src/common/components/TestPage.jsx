@@ -1,6 +1,7 @@
 
 import React from "react";
 import ProductButton from "../../button/productbutton/ProductButton";
+import DiagnosticBox from "../../button/diagnosticbox/DiagnosticBox";
 const TestPage = () => {
   return (
       <div style={styles.componentWrapper}>
@@ -8,7 +9,7 @@ const TestPage = () => {
         <ProductButton text="립" onClick={() => alert("Button clicked!")} />
         <ProductButton text="아이섀도우" onClick={() => alert("Button clicked!")} />
         <ProductButton text="치크" onClick={() => alert("Button clicked!")} />
-
+        <DiagnosticBox />
       </div>
     
   );
