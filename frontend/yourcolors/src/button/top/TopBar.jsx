@@ -23,7 +23,7 @@ const handleButtonClick = (buttonName) => {
   return (
     <div className="Topbar">
       <div className="Topbar-container">
-        <h1 className="Topbar-logo">Color U</h1>
+        <h1 className="Topbar-logo">너의 색깔은?</h1>
         <div className="Topbar-buttons">
         {buttons.map((button) => (
             <Topbutton
