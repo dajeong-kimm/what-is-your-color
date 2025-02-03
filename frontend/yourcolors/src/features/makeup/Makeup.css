@@ -10,13 +10,3 @@
     display: block;
 }
 
-.camera-wrapper {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 50%; /* Smallmain의 오른쪽 50%만 차지 */
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}

@@ -2,21 +2,17 @@
   display: flex; /*  Flexbox 사용 */
   justify-content: center; /* 가로 중앙 정렬 */
   align-items: center; /*  세로 중앙 정렬 */
-  margin-left: 100px;
+  margin-left: 20px;
   text-decoration: none;
   color: black;
-  background-color: #E5F6FF;  /* 기본 버튼 색 */
-  padding: 10px 10px;
+  padding: 10px 20px;
   border-radius: 10px;
-  font-size:30px;
+  font-size:20px;
   font-weight: 600; 
   font-family: NanumGothic;
-  
   transition: background-color 0.3s;
   box-shadow: 0px 2.221px 2.221px 0px rgba(0, 0, 0, 0.25);
-  
-  width: 277.597px;
-  height: 73.433px;
+ 
 }
 
 
