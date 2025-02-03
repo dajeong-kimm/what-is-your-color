@@ -6,7 +6,7 @@ import Topbar from '../../button/top/Topbar';
 import Bottombar from '../../button/bottom/Bottombar';
 import DiagnosticBox from '../../button/diagnosticbox/DiagnosticBox';
 
-const Diagpage2 = () => {
+const DiagImage = () => {
   const location = useLocation();
   const capturedImage = location.state?.capturedImage;
 
@@ -45,4 +45,4 @@ const Diagpage2 = () => {
   );
 };
 
-export default Diagpage2;
+export default DiagImage;

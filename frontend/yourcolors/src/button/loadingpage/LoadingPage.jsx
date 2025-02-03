@@ -17,7 +17,7 @@ const LoadingPage = () => {
     }, 500);
 
     const timeout = setTimeout(() => {
-      navigate('/diagpage2', { state: { capturedImage } }); // ✅ 2초 후 diagpage2로 이동
+      navigate('/diagimage', { state: { capturedImage } }); // ✅ 2초 후 diagpage2로 이동
     }, 2000);
 
     return () => {
