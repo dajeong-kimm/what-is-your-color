@@ -1,7 +1,7 @@
 package com.ssafy.yourcolors.domain.test.controller;
 
 import com.ssafy.yourcolors.global.exception.CustomException;
-import com.ssafy.yourcolors.global.exception.ErrorCode;
+//import com.ssafy.yourcolors.global.exception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,11 +19,11 @@ public class TestController {
         return "Success!";
     }
 
-    @GetMapping("/error/{id}")
-    public String testError(@PathVariable Long id) {
-        if (id == 0) {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
-        }
-        return "User found with id: " + id;
-    }
+//    @GetMapping("/error/{id}")
+//    public String testError(@PathVariable Long id) {
+//        if (id == 0) {
+//            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+//        }
+//        return "User found with id: " + id;
+//    }
 }

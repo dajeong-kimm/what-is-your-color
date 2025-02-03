@@ -4,7 +4,7 @@ import { PersonalColorState } from "../../recoil/PersonalcolorsAtom";
 import PersonalButton from "./PersonalButton";
 import Background from "../../background/background/Background";
 import LargeMain from "../../background/background/LargeMain";
-import Topbar from "../../button/top/Topbar";
+import Topbar from "../../button/top/TopBar";
 import "./personalbutton.css"; // ✅ 버튼 스타일 적용
 
 const PersonalColorMain = () => {
@@ -18,7 +18,7 @@ const PersonalColorMain = () => {
     colors.slice(9, 12), // 겨울: 비비드, 스트롱, 다크
   ];
 
-  const colorTitles = ["봄", "여름", "가을", "겨울"];
+  const colorTitles = ["Spring", "Summer", "Autumn", "Winter"];
 
   return (
     <Background>
