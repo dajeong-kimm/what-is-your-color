@@ -1,8 +1,15 @@
 .camera {
     position: absolute;
-    z-index: 10;
+    right: 0; /* 오른쪽에 정렬 */
+    width: 50%; /* 화면의 반만 차지 */
+    height: 100%;
+    background-color: black; /* 웹캠이 없을 때 대비 */
+    overflow: hidden;
+}
+
+.camera video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    background-color: black; /* 웹캠이 없을 때 검은 화면 표시 */
+    transform: scaleX(-1); /* 거울 효과 */
 }

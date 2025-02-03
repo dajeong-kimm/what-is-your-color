@@ -32,16 +32,6 @@ const MakeupCamera = () => {
         ref={videoRef}
         autoPlay
         playsInline
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          transform: 'scaleX(-1)', // 거울 효과
-          backgroundColor: 'black' // 웹캠이 없을 때 대비
-        }}
       />
     </div>
   );
