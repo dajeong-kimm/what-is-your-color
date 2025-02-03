@@ -30,11 +30,11 @@ const PersonalColorMain = () => {
             groupedColors.map((group, index) => (
               <div key={index} className="personal-color-group">
                 {/* 각 그룹에 제목 추가 */}
-                <h2 className="color-group-title">{colorTitles[index]}</h2>
+                <p className="color-group-title">{colorTitles[index]}</p>
                 {group.map((color) => (
                   <PersonalButton
                     key={color.id}
-                    to={color.path}
+                    id={color.id}
                     label={color.name}
                     colorClass={color.colorClass}
                   />
