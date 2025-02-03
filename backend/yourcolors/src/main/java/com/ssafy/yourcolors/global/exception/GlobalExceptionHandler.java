@@ -1,33 +1,31 @@
 package com.ssafy.yourcolors.global.exception;
 
-import lombok.extern.slf4j.Slf4j;
+import com.ssafy.yourcolors.global.common.BaseResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     // CustomException 처리
     @ExceptionHandler(CustomException.class)
-    protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
-        log.error("HandleCustomException: {}", e.getMessage());
-        return ErrorResponse.toResponseEntity(e.getErrorCode());
+    public ResponseEntity<BaseResponse<String>> handleCustomException(CustomException ex) {
+        logger.error("CustomException 발생: {}", ex.getMessage(), ex); // 로그 추가
+        BaseResponse<String> response = new BaseResponse<>(ex.getStatus().value(), ex.getMessage());
+        return new ResponseEntity<>(response, ex.getStatus());
     }
 
-    // NoResourceFoundException 처리 추가
-    @ExceptionHandler(NoResourceFoundException.class)
-    protected ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException e) {
-        log.warn("Resource not found: {}", e.getMessage());
-        return ErrorResponse.toResponseEntity(ErrorCode.RESOURCE_NOT_FOUND);
-    }
-
-    // 기타 예외 처리
+    // 예상하지 못한 일반 Exception 처리
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponse> handleException(Exception e) {
-        log.error("HandleException: {}", e.getMessage());
-        return ErrorResponse.toResponseEntity(ErrorCode.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<BaseResponse<String>> handleGenericException(Exception ex) {
+        logger.error("예상치 못한 오류 발생: {}", ex.getMessage(), ex); // 로그 추가
+        BaseResponse<String> response = new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버 내부 오류가 발생했습니다.");
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
