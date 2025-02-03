@@ -4,7 +4,7 @@ import { PersonalColorState } from "../../recoil/PersonalcolorsAtom";
 import PersonalButton from "./PersonalButton";
 import Background from "../../background/background/Background";
 import LargeMain from "../../background/background/LargeMain";
-import Topbar from "../../button/top/Topbar";
+import Topbar from "../../button/top/TopBar";
 import "./personalbutton.css"; // ✅ 버튼 스타일 적용
 
 const PersonalColorMain = () => {
