@@ -10,6 +10,7 @@ const getWebcam = (callback) => {
   }
 };
 
+
 const Camera = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -78,27 +79,28 @@ const Camera = () => {
 
   // 사진 촬영 함수// ✅ 사진 촬영 (좌우 반전 적용)
   const capturePhoto = () => {
-  const canvas = canvasRef.current;
-  const video = videoRef.current;
-
-  if (canvas && video) {
-    const context = canvas.getContext('2d');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    context.save(); // 현재 상태 저장
-    context.scale(-1, 1); // 좌우 반전 적용
-    context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
-    context.restore(); // 원래 상태로 복구
-
-    const capturedImage = canvas.toDataURL('image/png');
-    setTransition(true); // 페이드 아웃 시작
-
-    setTimeout(() => {
-      navigate('/diagpage2', { state: { capturedImage } });
-    }, 1000);
-  }
-};
+    const canvas = canvasRef.current;
+    const video = videoRef.current;
+  
+    if (canvas && video) {
+      const context = canvas.getContext('2d');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+  
+      context.save();
+      context.scale(-1, 1);
+      context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+      context.restore();
+  
+      const capturedImage = canvas.toDataURL('image/png');
+      setTransition(true);
+  
+      setTimeout(() => {
+        // ✅ `LoadingPage`로 먼저 이동 후, `capturedImage` 데이터를 전달
+        navigate('/loadingpage', { state: { capturedImage } });
+      }, 1000);
+    }
+  };
 
   return (
     <div
