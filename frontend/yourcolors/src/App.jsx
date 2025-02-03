@@ -6,8 +6,7 @@ import Mainpage2 from "./features/start/Mainpage2";
 import TestPage from "./common/components/TestPage";
 import PersonalColorMain from './features/personalcolors/PersonalColorMain';
 import Makeup from "./features/makeup/Makeup";
-// import PersonalDetail from './features/personalcolors/PersonalDetail';
-// import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
+import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
 import { RecoilRoot } from 'recoil';
 
 const App = () => {
@@ -25,8 +24,7 @@ const App = () => {
         <Route path="/test" element={<TestPage />} />
         <Route path="/personalcolors" element={<PersonalColorMain />} />
         <Route path="/makeup" element={<Makeup />} />
-        {/* <Route path="/:id" element={<PersonalDetail />} /> */}
-        {/* <Route path="/personalcolors/:id" element={<PersonalColorDetail />} /> */}
+        <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
         {/* <Route path="/recommend" element={<Recommend />} />
         
         {/* <Route path="/recommend" element={<Recommend />} />
