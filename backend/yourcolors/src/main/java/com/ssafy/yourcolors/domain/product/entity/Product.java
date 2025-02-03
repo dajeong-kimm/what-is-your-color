@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @Builder  // Lombok: 빌더 패턴 적용
 @NoArgsConstructor  // Lombok: 기본 생성자 생성
 @AllArgsConstructor  // Lombok: 모든 필드를 포함하는 생성자 생성
-public class Products {
+public class Product {
 
     @Id  // Primary Key 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto Increment 설정
-    private int id;  // 제품 ID (Primary Key)
+    private int productId;  // 제품 ID (Primary Key)
 
     @Column(name = "product_name", nullable = false)  // DB 컬럼 매핑
     private String productName;  // 제품 이름
@@ -32,5 +32,7 @@ public class Products {
 
     @Column(name = "product_detail_name")
     private String colorName;      // 제품 상세 설명
+
+//    private String image;  // 이미지 필드 추가
 
 }

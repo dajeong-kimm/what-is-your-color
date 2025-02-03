@@ -14,14 +14,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ProductPersonal {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Products products;
+    @EmbeddedId  // 복합 키를 사용
+    private ProductPersonalId id;
 
-    @Column(name = "personal_id")
-    private Long personalId;
+    @ManyToOne(fetch = FetchType.LAZY)  // Product와의 다대일 관계
+    @MapsId("productId")  // 복합 키의 productId와 매핑
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
+    private Product product;
+
+//    @Column(name = "personal_id", insertable = false, updatable = false)
+//    private int personalId;
 }
