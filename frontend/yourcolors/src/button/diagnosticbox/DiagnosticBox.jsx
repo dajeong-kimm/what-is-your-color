@@ -21,7 +21,11 @@ const DiagnosticBox = () => {
   return (
     <div className="container">
       <div className="box">
-        <h3>컬러 추출을 위해 체크하세요</h3>
+        <h2>컬러 추출을 시작합니다</h2>
+        
+        {/* 구분선 추가 */}
+        <div className="divider"></div>
+
         <div className="checkbox-container">
           <label className="checkbox-label">
             <input
