@@ -1,4 +1,7 @@
 package com.ssafy.yourcolors.domain.personal.service;
 
-public class PersonalService {
+import com.ssafy.yourcolors.domain.personal.Entity.PersonalColor;
+
+public interface PersonalService {
+    PersonalColor getPersonalById(Long personalId);
 }
