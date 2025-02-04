@@ -1,6 +1,5 @@
 package com.ssafy.yourcolors.domain.info.entity;
 
-import com.ssafy.yourcolors.domain.products.entity.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
