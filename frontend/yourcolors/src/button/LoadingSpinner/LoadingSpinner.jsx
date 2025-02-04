@@ -8,7 +8,7 @@ const LoadingSpinner = ({ loading = true }) => {
       <PuffLoader
         color="#0b7c3e"
         loading={loading}
-        size={60}
+        size={300}
         speedMultiplier={2}
       />
     </div>

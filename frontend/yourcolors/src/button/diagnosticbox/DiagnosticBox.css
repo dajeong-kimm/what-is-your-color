@@ -1,51 +1,60 @@
 /* 전체 컨테이너 스타일 */
 .container {
-    background-color: #D2F096;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px; /* 내부 박스보다 10px 크게 유지 */
-    border-radius: 10px; /* 둥근 모서리 추가 */
-    width: 220px; /* 내부 박스보다 10px 더 크게 */
-    height: 290px; /* 내부 박스보다 10px 더 크게 */
-  }
-  
-  /* 내부 박스 스타일 */
-  .box {
-    background-color: #FFFFFF;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 200px; /* 가로 좁게 */
-    height: 250px; /* 세로 길게 */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  /* 체크박스 컨테이너 */
-  .checkbox-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-  }
-  
-  /* 체크박스 라벨 */
-  .checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 16px;
-    color: #333;
-  }
-  
-  /* 체크박스 스타일 */
-  .checkbox {
-    width: 20px;
-    height: 20px;
-    accent-color: #D2F096;
-    cursor: pointer;
-  }
-  
+  background-color: #D2F096;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px; /* 비례 확대 */
+  border-radius: 14px; /* 둥근 모서리 비례 확대 */
+  width: 317px; /* 1.44배 확대 */
+  height: 418px; /* 1.44배 확대 */
+}
+
+/* 내부 박스 스타일 */
+.box {
+  background-color: #FFFFFF;
+  padding: 29px; /* 비례 확대 */
+  border-radius: 14px;
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.1); /* 살짝 키움 */
+  width: 288px; /* 1.44배 확대 */
+  height: 360px; /* 1.44배 확대 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 체크박스 컨테이너 */
+.checkbox-container {
+  display: flex;
+  flex-direction: column;
+  gap: 22px; /* 비례 확대 */
+  width: 100%;
+}
+
+/* 체크박스 라벨 */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 14px; /* 비례 확대 */
+  font-size: 23px; /* 비례 확대 */
+  color: #333;
+}
+
+/* 체크박스 스타일 */
+.checkbox {
+  width: 29px; /* 비례 확대 */
+  height: 29px; /* 비례 확대 */
+  accent-color: #D2F096;
+  cursor: pointer;
+}
+
+/* 기존 스타일 유지 + 구분선 추가 */
+/* 구분선 스타일 */
+.divider {
+  width: 100%;
+  height: 2px; /* 선 두께 */
+  background-color: #ccc; /* 연한 회색 */
+  margin: 10px 0 45px 0; /* 위쪽 10px, 아래쪽 15px */
+}
+
