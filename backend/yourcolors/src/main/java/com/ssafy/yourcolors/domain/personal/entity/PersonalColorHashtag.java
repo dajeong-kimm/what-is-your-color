@@ -1,12 +1,12 @@
-package com.ssafy.yourcolors.domain.personal.Entity;
+package com.ssafy.yourcolors.domain.personal.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
-@Table(name = "worst_color")
+@Table(name = "personal_color_hashtags")
 @Getter
-public class WorstColor {
+public class PersonalColorHashtag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -15,9 +15,6 @@ public class WorstColor {
     @JoinColumn(name = "personal_id")
     private PersonalColor personalColor;
 
-    @Column(name = "color")
-    private String color;
-
-    @Column(name = "name")
-    private String name;
+    @Column(name = "hashtag")
+    private String hashtag;
 }

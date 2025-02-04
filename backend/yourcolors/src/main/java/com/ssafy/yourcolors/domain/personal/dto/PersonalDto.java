@@ -1,13 +1,14 @@
 package com.ssafy.yourcolors.domain.personal.dto;
 
-import com.ssafy.yourcolors.domain.personal.Entity.PersonalColor;
-import com.ssafy.yourcolors.domain.personal.Entity.PersonalColorHashtag;
+import com.ssafy.yourcolors.domain.personal.entity.PersonalColor;
+import com.ssafy.yourcolors.domain.personal.entity.PersonalColorHashtag;
 import lombok.Data;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+//퍼스널 컬러 상세 정보 조회 API 실행을 위한 Dto
 public class PersonalDto {
     private Integer personalId;
     private String name;

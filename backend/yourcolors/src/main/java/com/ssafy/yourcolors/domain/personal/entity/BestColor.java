@@ -1,4 +1,4 @@
-package com.ssafy.yourcolors.domain.personal.Entity;
+package com.ssafy.yourcolors.domain.personal.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,21 +1,27 @@
 package com.ssafy.yourcolors.domain.personal.controller;
 
-import com.ssafy.yourcolors.domain.personal.Entity.PersonalColor;
+import com.ssafy.yourcolors.domain.personal.dto.ImageRequestDto;
+import com.ssafy.yourcolors.domain.personal.dto.PersonalColorResponseDto;
+import com.ssafy.yourcolors.domain.personal.entity.PersonalColor;
 import com.ssafy.yourcolors.domain.personal.dto.PersonalDto;
 import com.ssafy.yourcolors.domain.personal.service.PersonalService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/analysis/personal-color")
+@RequestMapping("/api/analysis")
 public class PersonalController {
     @Autowired
     private PersonalService personalService;
 
-    @GetMapping("/{personalId}")
+    @PostMapping("/personal-color")
+    public ResponseEntity<PersonalColorResponseDto> analyzePersonalColor(@RequestBody ImageRequestDto requestDto) {
+        PersonalColorResponseDto response = personalService.analyzePersonalColor(requestDto.getImageUrl());
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/personal-color/{personalId}")
     public PersonalDto getPersonalDetails(@PathVariable Long personalId) {
         PersonalColor personal = personalService.getPersonalById(personalId);
         return new PersonalDto(personal);
