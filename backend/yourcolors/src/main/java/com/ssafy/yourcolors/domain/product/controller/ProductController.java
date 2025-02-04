@@ -1,7 +1,7 @@
 package com.ssafy.yourcolors.domain.product.controller;
 
 import com.ssafy.yourcolors.domain.product.dto.ProductDto;
-import com.ssafy.yourcolors.domain.product.service.ProductService;
+import com.ssafy.yourcolors.domain.product.service.ProductServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.List;
 @RequestMapping("/api")
 public class ProductController {
 
-    private final ProductService productService;
+    private final ProductServiceImpl productService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductServiceImpl productService) {
         this.productService = productService;
     }
 
