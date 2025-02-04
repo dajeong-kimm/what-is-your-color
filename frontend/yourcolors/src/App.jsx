@@ -3,51 +3,34 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./features/start/Home";
 import MainPage from "./features/start/Mainpage";
 import Mainpage2 from "./features/start/Mainpage2";
-<<<<<<< HEAD
 import DiagCapture from "./features/diagnosis/DiagCapture";
 import DiagImage from "./features/diagnosis/DiagImage";
 import LoadingPage from "./button/LoadingPage/LoadingPage";
-=======
->>>>>>> origin
 import TestPage from "./common/components/TestPage";
-import PersonalColorMain from './features/personalcolors/PersonalColorMain';
+import PersonalColorMain from "./features/personalcolors/PersonalColorMain";
 import Makeup from "./features/makeup/Makeup";
-import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
-import { RecoilRoot } from 'recoil';
+import PersonalColorDetail from "./features/personalcolors/PersonalColorDetail";
+import { RecoilRoot } from "recoil";
 
 const App = () => {
   return (
     <RecoilRoot>
       <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/mainpage" element={<MainPage />} />
-        <Route path="/mainpage2" element={<Mainpage2 />} />
-<<<<<<< HEAD
-        <Route path="/diagcapture" element={<DiagCapture />} />
-        <Route path="/diagimage" element={<DiagImage />} />
-        <Route path="/loadingpage" element={<LoadingPage />} />
-=======
-        {/* <Route path="/diagcapture" element={<DiagCapture />} /> */}
-        {/* <Route path="/diagimage" element={<DiagImage />} /> */}
-        {/* <Route path="/loadingpage" element={<LoadingPage />} /> */}
->>>>>>> origin
-
-        <Route path="/test" element={<TestPage />} />
-        <Route path="/personalcolors" element={<PersonalColorMain />} />
-        <Route path="/makeup" element={<Makeup />} />
-        <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
-        {/* <Route path="/recommend" element={<Recommend />} />
-        
-        {/* <Route path="/recommend" element={<Recommend />} />
-        <Route path="/makeup" element={<Makeup />} />
-        <Route path="/diagnosis" element={<Diagnosis />} /> */}
-      </Routes>
-    </Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/mainpage" element={<MainPage />} />
+          <Route path="/mainpage2" element={<Mainpage2 />} />
+          <Route path="/diagcapture" element={<DiagCapture />} />
+          <Route path="/diagimage" element={<DiagImage />} />
+          <Route path="/loadingpage" element={<LoadingPage />} />
+          <Route path="/test" element={<TestPage />} />
+          <Route path="/personalcolors" element={<PersonalColorMain />} />
+          <Route path="/makeup" element={<Makeup />} />
+          <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
+        </Routes>
+      </Router>
     </RecoilRoot>
-    
   );
 };
 
 export default App;
-
