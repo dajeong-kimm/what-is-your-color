@@ -23,7 +23,8 @@ public class CosmeticController {
     }
 
     @GetMapping("/product/{product-id}")
-    public ResponseEntity<List<ColorDto>> getColorsByProductId(@PathVariable("product-id") int productId) {
-        return ResponseEntity.ok(cosmeticService.getColorsByProductId(productId).getColors());
+    public ResponseEntity<ColorResponse> getColorsByProductId(@PathVariable("product-id") int productId) {
+        ColorResponse colorResponse = cosmeticService.getColorsByProductId(productId);
+        return ResponseEntity.ok(colorResponse);
     }
 }

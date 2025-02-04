@@ -58,7 +58,7 @@ public class CosmeticServiceImpl implements CosmeticService {
         List<ColorDto> colorDtos = colors.stream()
                 .map(color -> {
                     int[] rgb = hexToRgb(color.getColor());
-                    return new ColorDto(0, color.getColor(), rgb[0], rgb[1], rgb[2]); // size는 나중에 설정
+                    return new ColorDto(color.getColor(), rgb[0], rgb[1], rgb[2]); // size는 나중에 설정
                 })
                 .collect(Collectors.toList());
 

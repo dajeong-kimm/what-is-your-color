@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ColorDto {
-    private int size;
     private String hex;  // HEX 값
     private int r;       // Red
     private int g;       // Green
