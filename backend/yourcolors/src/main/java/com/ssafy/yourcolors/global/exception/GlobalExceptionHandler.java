@@ -1,14 +1,12 @@
 package com.ssafy.yourcolors.global.exception;
 
 import com.ssafy.yourcolors.global.common.BaseResponse;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -30,14 +28,4 @@ public class GlobalExceptionHandler {
         BaseResponse<String> response = new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버 내부 오류가 발생했습니다.");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<String> handleNoResourceFoundException(NoResourceFoundException ex, HttpServletRequest request) {
-        if (request.getRequestURI().equals("/favicon.ico")) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content 반환
-        }
-        return new ResponseEntity<>("리소스를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
-    }
-
-
 }
