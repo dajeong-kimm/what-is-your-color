@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./DiagnosticBox.css"; // 스타일 파일 임포트
 
 const DiagnosticBox = () => {
@@ -9,60 +9,44 @@ const DiagnosticBox = () => {
     darkSkin: false,
   });
 
-  // 체크박스 변경 핸들러
-  const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    setCheckedItems((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
-  };
+  const [currentIndex, setCurrentIndex] = useState(0); // 현재 체크할 항목 인덱스
+  const checkOrder = ["eyeColor", "hairColor", "brightSkin", "darkSkin"];
+
+  useEffect(() => {
+    if (currentIndex >= checkOrder.length) return; // 모든 체크 완료 시 중단
+
+    const interval = setInterval(() => {
+      setCheckedItems((prev) => ({
+        ...prev,
+        [checkOrder[currentIndex]]: true,
+      }));
+      setCurrentIndex((prevIndex) => prevIndex + 1);
+    }, 1000);
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 해제
+  }, [currentIndex]); // currentIndex가 변경될 때마다 실행
 
   return (
     <div className="container">
       <div className="box">
-        <h3>컬러 추출을 위해 체크하세요</h3>
+        <h2>컬러 추출을 시작합니다</h2>
+        <div className="divider"></div>
+
         <div className="checkbox-container">
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              name="eyeColor"
-              checked={checkedItems.eyeColor}
-              onChange={handleCheckboxChange}
-              className="checkbox"
-            />
-            눈동자
-          </label>
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              name="hairColor"
-              checked={checkedItems.hairColor}
-              onChange={handleCheckboxChange}
-              className="checkbox"
-            />
-            머리카락
-          </label>
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              name="brightSkin"
-              checked={checkedItems.brightSkin}
-              onChange={handleCheckboxChange}
-              className="checkbox"
-            />
-            밝은 피부
-          </label>
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              name="darkSkin"
-              checked={checkedItems.darkSkin}
-              onChange={handleCheckboxChange}
-              className="checkbox"
-            />
-            어두운 피부
-          </label>
+          {checkOrder.map((key) => (
+            <label className="checkbox-label" key={key}>
+              <input
+                type="checkbox"
+                name={key}
+                checked={checkedItems[key]}
+                readOnly
+                className="checkbox"
+              />
+              {key === "eyeColor" ? "눈동자" : 
+               key === "hairColor" ? "머리카락" : 
+               key === "brightSkin" ? "밝은 피부" : "어두운 피부"}
+            </label>
+          ))}
         </div>
       </div>
     </div>
