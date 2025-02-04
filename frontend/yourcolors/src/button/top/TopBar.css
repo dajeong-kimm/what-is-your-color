@@ -1,0 +1,46 @@
+/* Topbar.css */
+.Topbar {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 70px;
+  padding: 28px 20.679px 30px 30px;
+  justify-content: flex-start;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.Topbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 70px;
+  top:10;
+}
+
+.Topbar-logo {
+  flex: 1;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: NanumGothic;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  margin-left: 75px;
+  
+} 
+
+/* 버튼 컨테이너 스타일 */
+.Topbar-buttons {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  right: 20px;
+  margin-right: 150px;
+}

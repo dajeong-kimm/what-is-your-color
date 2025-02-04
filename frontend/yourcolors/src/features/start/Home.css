@@ -1,0 +1,21 @@
+/* Home.css */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* 화면 중앙 정렬을 위해 전체 높이 설정 */
+}
+
+.start-image {
+  width: 800px;
+  height: auto; /* 비율 유지 */
+  margin-bottom: 40px; /* 버튼과 간격 추가 */
+}
+
+.home-button {
+  display: flex;
+  justify-content: center;
+
+}
+

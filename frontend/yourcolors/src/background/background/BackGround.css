@@ -1,0 +1,41 @@
+/* Background.css */
+.Sub-back {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #D2F096;
+  position: relative;
+  z-index: 0; /* 배경이 다른 요소들 아래로 가도록 설정 */
+}
+
+/* Main 화면의 중앙에 배치된 큰 박스 */
+/* Large-main 설정 */
+.Large-main {
+  display: flex;
+  flex-direction: column;  /* 세로로 정렬 */
+  align-items: center;  /* 중앙 정렬 */
+  justify-content: center;
+  width: 85%;
+  height: 78%;
+  background-color: rgba(255, 255, 255, 0.70); /* 배경 색 */
+  border-radius: 27px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 8vh;
+  position: relative; /* 내부 콘텐츠 배치가 제대로 되도록 설정 */
+}
+
+
+/* Small-main: 작은 버전의 Main 화면 */
+.Small-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 85%;
+  height: 65%;
+  background-color: rgba(255, 255, 255, 0.70);
+  border-radius: 27px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative; /* 자식 요소가 절대 위치로 배치되도록 */
+}

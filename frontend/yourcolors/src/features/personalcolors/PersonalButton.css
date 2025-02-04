@@ -1,0 +1,68 @@
+.personal-button {
+    text-decoration: none;
+    color: black;
+    padding: 15px 20px;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 25px;
+    font-weight: bold;
+    font-family: NanumGothic;
+    transition: background-color 0.3s;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    width: 170px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* 🔹 퍼스널컬러별 버튼 색상 */
+  .spring-light { background-color: #FFD1DC; }  /* 봄 라이트 */
+  .spring-bright { background-color: #FFA07A; }  /* 봄 브라이트 */
+  .spring-vivid { background-color: #FFD700; } /* 봄 비비드 */
+  
+  .summer-light { background-color: #AEE8E6; }  /* 여름 라이트 */
+  .summer-bright { background-color: #87CEEB; }  /* 여름 브라이트 */
+  .summer-mute { background-color: #D6CADD; }  /* 여름 뮤트 */
+  
+  .autumn-mute { background-color: #FFCBA4; }  /* 가을 뮤트 */
+  .autumn-strong { background-color: #E07A5F; }  /* 가을 스트롱 */
+  .autumn-dark { background-color: #D9A067; }  /* 가을 다크 */
+  
+  .winter-vivid { background-color: #A093FF; }  /* 겨울 비비드 */
+  .winter-strong { background-color: #785EF0; } /* 겨울 스트롱 */
+  .winter-dark { background-color: #4682B4; }  /* 겨울 다크 */
+
+  
+  .personal-color-container {
+    display: flex;
+    flex-direction: row; /* ✅ 가로 방향 정렬 */
+    justify-content: center; /* ✅ 중앙 정렬 */
+    flex-wrap: wrap; /* ✅ 줄 바꿈 허용 */
+    gap: 40px; /* ✅ 그룹 간 간격 */
+    margin-top: 10px; /* ✅ LargeMain과의 간격 */
+    margin-bottom: 30px; /* ✅ 하단 여백 */
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+  }
+  
+  .personal-color-group {
+    display: flex;
+    flex-direction: column; /* ✅ 그룹 내 세로 정렬 */
+    align-items: center; /* ✅ 그룹 내 중앙 정렬 */
+    gap: 20px; /* ✅ 버튼 간 간격 */
+
+  }
+  
+  .color-group-title {
+    
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: NanumGothic;
+    margin-bottom: 10px;
+    font-size: 50px;
+ 
+  }
+  
