@@ -5,7 +5,7 @@ import PersonalButton from "./PersonalButton";
 import Background from "../../background/background/BackGround";
 import LargeMain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
-import "./personalbutton.css"; // ✅ 버튼 스타일 적용
+import "./PersonalButton.css"; // ✅ 버튼 스타일 적용
 
 const PersonalColorMain = () => {
   const colors = useRecoilValue(PersonalColorState); // Recoil에서 퍼스널컬러 데이터 가져오기
