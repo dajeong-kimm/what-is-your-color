@@ -124,48 +124,57 @@ def predict():
 def predict_color_distribution():
     try:
         # 파일 검증
-        if 'a4_image' not in request.files or 'face_image' not in request.files:
-            return jsonify({"error": "Both 'a4_image' and 'face_image' are required"}), 400
+        if 'face_image' not in request.files:
+            return jsonify({"error": "The 'face_image' file is required"}), 400
 
-        a4_image = request.files['a4_image']
         face_image = request.files['face_image']
+        a4_image = request.files.get('a4_image', None)  # A4 이미지가 선택적임
 
         # 이미지 읽기 및 검증
-        a4_image = cv2.imdecode(np.frombuffer(a4_image.read(), np.uint8), cv2.IMREAD_COLOR)
         face_image = cv2.imdecode(np.frombuffer(face_image.read(), np.uint8), cv2.IMREAD_COLOR)
-
-        if a4_image is None:
-            return jsonify({"error": "Invalid 'a4_image' file"}), 400
         if face_image is None:
             return jsonify({"error": "Invalid 'face_image' file"}), 400
 
         # BGR -> RGB 변환
-        a4_rgb = cv2.cvtColor(a4_image, cv2.COLOR_BGR2RGB)
         face_rgb = cv2.cvtColor(face_image, cv2.COLOR_BGR2RGB)
 
-        # 화이트 레퍼런스 추출 및 색 보정
-        a4_x, a4_y = a4_rgb.shape[1] // 2, a4_rgb.shape[0] // 2
-        white_ref = a4_rgb[a4_y, a4_x]
-        corrected_face = color_correction_lab(face_rgb, white_ref)
+        if a4_image:  # A4 이미지가 있으면 색상 보정 진행
+            a4_image = cv2.imdecode(np.frombuffer(a4_image.read(), np.uint8), cv2.IMREAD_COLOR)
+            if a4_image is None:
+                return jsonify({"error": "Invalid 'a4_image' file"}), 400
 
-        # Mediapipe 색상 추출
+            a4_rgb = cv2.cvtColor(a4_image, cv2.COLOR_BGR2RGB)
+            # A4 이미지 중앙의 화이트 레퍼런스 추출
+            a4_x, a4_y = a4_rgb.shape[1] // 2, a4_rgb.shape[0] // 2
+            white_ref = a4_rgb[a4_y, a4_x]
+            # 화이트 레퍼런스를 기반으로 색 보정
+            corrected_face = color_correction_lab(face_rgb, white_ref)
+
+            # Mediapipe 색상 추출 (보정된 이미지 포함)
+            extracted_corr = extract_face_colors(corrected_face)
+            if extracted_corr is None:
+                return jsonify({"error": "Failed to extract landmarks from corrected image"}), 400
+
+            skin_avg_corr, _, eye_color_corr, hair_color_corr = extracted_corr
+
+            # 보정된 이미지 결과 분석
+            ranking_corr = find_personal_color_using_skin_avg(
+                skin_avg_corr, eye_color_corr, hair_color_corr, lip_colors_db, cheek_colors_db, eye_palette_db
+            )
+        else:
+            corrected_face = None  # 색상 보정 생략
+            ranking_corr = None
+
+        # Mediapipe 색상 추출 (원본 이미지)
         extracted_orig = extract_face_colors(face_rgb)
-        extracted_corr = extract_face_colors(corrected_face)
-
         if extracted_orig is None:
             return jsonify({"error": "Failed to extract landmarks from original image"}), 400
-        if extracted_corr is None:
-            return jsonify({"error": "Failed to extract landmarks from corrected image"}), 400
 
-        # 색상 분석 및 결과 반환
         skin_avg_orig, _, eye_color_orig, hair_color_orig = extracted_orig
-        skin_avg_corr, _, eye_color_corr, hair_color_corr = extracted_corr
 
+        # 원본 이미지 결과 분석
         ranking_orig = find_personal_color_using_skin_avg(
             skin_avg_orig, eye_color_orig, hair_color_orig, lip_colors_db, cheek_colors_db, eye_palette_db
-        )
-        ranking_corr = find_personal_color_using_skin_avg(
-            skin_avg_corr, eye_color_corr, hair_color_corr, lip_colors_db, cheek_colors_db, eye_palette_db
         )
 
         # 결과 생성
@@ -178,8 +187,11 @@ def predict_color_distribution():
                     {"rank": rank, "personal_color": personal_color_names[p_id], "total_delta_e": f"{score:.2f}"}
                     for rank, (p_id, score) in enumerate(ranking_orig, start=1)
                 ]
-            },
-            "corrected_image": {
+            }
+        }
+
+        if ranking_corr:  # A4 이미지가 있을 경우 보정된 결과 포함
+            response["corrected_image"] = {
                 "skin_avg": to_hex(skin_avg_corr),
                 "eye_color": to_hex(eye_color_corr),
                 "hair_color": to_hex(hair_color_corr),
@@ -188,7 +200,6 @@ def predict_color_distribution():
                     for rank, (p_id, score) in enumerate(ranking_corr, start=1)
                 ]
             }
-        }
 
         return jsonify(response), 200
 
