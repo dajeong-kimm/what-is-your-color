@@ -1,8 +1,8 @@
 import React from "react";
-import Background from "../../background/background/Background";
+import Background from "../../background/background/BackGround";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
-import Bottombar from "../../button/bottom/Bottombar";
+import Bottombar from "../../button/bottom/BottomBar";
 import "./personalbutton.css";
 import "./PersonalColorDetail.css";
 import { useParams } from "react-router-dom";
