@@ -5,13 +5,19 @@ import MainPage from "./features/start/Mainpage";
 import Mainpage2 from "./features/start/Mainpage2";
 import DiagCapture from "./features/diagnosis/DiagCapture";
 import DiagImage from "./features/diagnosis/DiagImage";
+<<<<<<< HEAD
 import MediapipeCamera from "./features/camera/mediapipecamera";
+=======
+import DiagResult from "./features/diagnosis/DiagResult";
+import BestWorst from "./features/diagnosis/BestWorst";
+>>>>>>> feature/frontend-develop
 import LoadingPage from "./button/LoadingPage/LoadingPage";
 import TestPage from "./common/components/TestPage";
-import PersonalColorMain from "./features/personalcolors/PersonalColorMain";
+import PersonalColorMain from './features/personalcolors/PersonalColorMain';
+import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
+import MakeupByColor from "./features/makeup/MakeupByColor";
 import Makeup from "./features/makeup/Makeup";
-import PersonalColorDetail from "./features/personalcolors/PersonalColorDetail";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot } from 'recoil';
 
 const App = () => {
   return (
@@ -25,17 +31,26 @@ const App = () => {
         <Route path="/diagimage" element={<DiagImage />} />
         <Route path="/mediapipecamera" element={<MediapipeCamera />} />
         <Route path="/loadingpage" element={<LoadingPage />} />
+        <Route path="/diagresult" element={<DiagResult />} />
+        <Route path="/bestworst" element={<BestWorst />} />
 
 
         <Route path="/test" element={<TestPage />} />
         <Route path="/personalcolors" element={<PersonalColorMain />} />
         <Route path="/makeup" element={<Makeup />} />
         <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
+        <Route path="/makeupbycolor" element={<MakeupByColor />} />
+
         {/* <Route path="/recommend" element={<Recommend />} />
         
         {/* <Route path="/recommend" element={<Recommend />} />
         <Route path="/makeup" element={<Makeup />} />
         <Route path="/diagnosis" element={<Diagnosis />} /> */}
+
+       
+        
+
+       
       </Routes>
     </Router>
     </RecoilRoot>
