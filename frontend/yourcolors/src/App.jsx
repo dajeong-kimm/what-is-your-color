@@ -6,6 +6,7 @@ import Mainpage2 from "./features/start/Mainpage2";
 import DiagCapture from "./features/diagnosis/DiagCapture";
 import DiagImage from "./features/diagnosis/DiagImage";
 import DiagResult from "./features/diagnosis/DiagResult";
+import BestWorst from "./features/diagnosis/BestWorst";
 import LoadingPage from "./button/LoadingPage/LoadingPage";
 import TestPage from "./common/components/TestPage";
 import PersonalColorMain from './features/personalcolors/PersonalColorMain';
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/diagimage" element={<DiagImage />} />
         <Route path="/loadingpage" element={<LoadingPage />} />
         <Route path="/diagresult" element={<DiagResult />} />
+        <Route path="/bestworst" element={<BestWorst />} />
 
         <Route path="/test" element={<TestPage />} />
 

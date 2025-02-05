@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Topbar.css';
-import Topbutton from './TopButton'; 
+import Topbutton from './TopButton';
+import Logo from "../../assets/Logo.png"; // 이미지 import
 
 const Topbar = () => {
 
@@ -23,7 +24,10 @@ const handleButtonClick = (buttonName) => {
   return (
     <div className="Topbar">
       <div className="Topbar-container">
-        <h1 className="Topbar-logo">너의 색깔은?</h1>
+        <Link to="/">
+          <img src={Logo} alt="로고" className="logo-img" />
+        </Link>
+        {/* <h1 className="Topbar-logo">너의 색깔은?</h1> */}
         <div className="Topbar-buttons">
         {buttons.map((button) => (
             <Topbutton
