@@ -39,9 +39,7 @@ const App = () => {
       </Routes>
     </Router>
     </RecoilRoot>
-    
   );
 };
 
 export default App;
-
