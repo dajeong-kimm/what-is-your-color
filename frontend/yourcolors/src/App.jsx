@@ -11,6 +11,7 @@ import LoadingPage from "./button/LoadingPage/LoadingPage";
 import TestPage from "./common/components/TestPage";
 import PersonalColorMain from './features/personalcolors/PersonalColorMain';
 import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
+import MakeupByColor from "./features/makeup/MakeupByColor";
 import Makeup from "./features/makeup/Makeup";
 import { RecoilRoot } from 'recoil';
 
@@ -32,10 +33,15 @@ const App = () => {
         <Route path="/test" element={<TestPage />} />
 
         <Route path="/personalcolors" element={<PersonalColorMain />} />
-        <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
         <Route path="/makeup" element={<Makeup />} />
+        <Route path="/makeupbycolor" element={<MakeupByColor />} />
+        <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
         {/* <Route path="/recommend" element={<Recommend />} />
-        <Route path="/diagnosis" element={<Diagnosis />} /> */}
+        <Route path="/diagnosis" element={<Diagnosis />} /> 
+        
+        {/* <Route path="/recommend" element={<Recommend />} />
+        <Route path="/makeup" element={<Makeup />} />
+        */}
       </Routes>
     </Router>
     </RecoilRoot>
