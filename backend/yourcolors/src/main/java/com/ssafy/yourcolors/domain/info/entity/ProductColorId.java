@@ -10,6 +10,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class ProductColorId implements Serializable {
-    private Long product;
+    private int product;
     private String color;
 }
