@@ -8,10 +8,10 @@ import DiagImage from "./features/diagnosis/DiagImage";
 import MediapipeCamera from "./features/camera/mediapipecamera";
 import LoadingPage from "./button/LoadingPage/LoadingPage";
 import TestPage from "./common/components/TestPage";
-import PersonalColorMain from './features/personalcolors/PersonalColorMain';
+import PersonalColorMain from "./features/personalcolors/PersonalColorMain";
 import Makeup from "./features/makeup/Makeup";
-import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
-import { RecoilRoot } from 'recoil';
+import PersonalColorDetail from "./features/personalcolors/PersonalColorDetail";
+import { RecoilRoot } from "recoil";
 
 const App = () => {
   return (
@@ -39,9 +39,7 @@ const App = () => {
       </Routes>
     </Router>
     </RecoilRoot>
-    
   );
 };
 
 export default App;
-
