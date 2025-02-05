@@ -14,7 +14,11 @@ RUN pip install --upgrade pip
 
 # 종속성 설치
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir protobuf==3.20.3 && \
+    pip install --no-cache-dir opencv-python-headless && \
+    pip install --no-cache-dir mediapipe && \
+    pip install --no-cache-dir -r requirements.txt
+
 
 # 포트 설정
 EXPOSE 5000
