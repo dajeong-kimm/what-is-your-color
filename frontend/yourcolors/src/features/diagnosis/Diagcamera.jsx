@@ -209,7 +209,8 @@ const Camera = () => {
             position: 'absolute',
             top: '40%',
             left: '48%',
-            transform: 'translate(-50%, -50%)',
+            // transform: 'translate(-50%, -50%)',
+            transform: `translate(-50%, -50%) scale(${countdown > 0 ? 1 : 0.8})`, // 통합
             color: 'white',
             fontSize: '64px',
             fontWeight: 'bold',
@@ -217,9 +218,10 @@ const Camera = () => {
             padding: '15px 30px',
             borderRadius: '15px',
             pointerEvents: 'none',
-            transition: 'opacity 0.5s ease-in-out, transform 0.5s ease-in-out',
+            // transition: 'opacity 0.5s ease-in-out, transform 0.5s ease-in-out',
+            transition: 'opacity 0.5s ease-in-out',
             opacity: countdown > 0 ? 1 : 0,
-            transform: countdown > 0 ? 'scale(1)' : 'scale(0.8)',
+            // transform: countdown > 0 ? 'scale(1)' : 'scale(0.8)',
           }}
         >
           {countdown}
