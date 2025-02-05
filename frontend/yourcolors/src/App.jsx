@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./features/start/Home";
 import MainPage from "./features/start/Mainpage";
@@ -14,6 +13,8 @@ import PersonalColorMain from './features/personalcolors/PersonalColorMain';
 import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
 import MakeupByColor from "./features/makeup/MakeupByColor";
 import Makeup from "./features/makeup/Makeup";
+import PersonalRecommend from "./features/recommend/PersonalRecommend";
+
 import { RecoilRoot } from 'recoil';
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/makeup" element={<Makeup />} />
         <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
         <Route path="/makeupbycolor" element={<MakeupByColor />} />
+        <Route path="/:personalColor/recommend" element={<PersonalRecommend />} />
 
         {/* <Route path="/recommend" element={<Recommend />} />
         
@@ -48,6 +50,7 @@ const App = () => {
         
 
        
+
       </Routes>
     </Router>
     </RecoilRoot>

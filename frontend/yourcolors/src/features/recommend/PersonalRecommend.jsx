@@ -1,27 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom"; // URL에서 퍼스널컬러 가져오기
 import Background from "../../background/background/Background";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/Bottombar";
 import ProductButton from "../../button/productbutton/ProductButton";
+import "./PersonalcolorRecommend.css";
+
+// 더미 데이터 (카테고리별 화장품 목록)
+const dummyData = {
+  립: [
+    { id: 1, name: "레드 립스틱", image: "/images/lip1.jpg" },
+    { id: 2, name: "핑크 틴트", image: "/images/lip2.jpg" },
+    { id: 3, name: "코랄 립밤", image: "/images/lip3.jpg" },
+    { id: 4, name: "버건디 립스틱", image: "/images/lip4.jpg" },
+    { id: 5, name: "누드 립스틱", image: "/images/lip5.jpg" },
+  ],
+  아이섀도우: [
+    { id: 1, name: "브라운 섀도우", image: "/images/shadow1.jpg" },
+    { id: 2, name: "골드 섀도우", image: "/images/shadow2.jpg" },
+  ],
+  치크: [
+    { id: 1, name: "핑크 블러셔", image: "/images/blush1.jpg" },
+    { id: 2, name: "피치 블러셔", image: "/images/blush2.jpg" },
+  ],
+};
 
 const PersonalRecommend = () => {
+  const { personalColor } = useParams(); // URL에서 퍼스널컬러 가져오기
+  const [selectedCategory, setSelectedCategory] = useState("립"); // 기본값 립
+  const products = dummyData[selectedCategory] || []; // 선택한 카테고리의 화장품 리스트
+
   return (
     <Background>
       <Topbar />
       <SmallMain>
         <div className="full-container">
           <div className="top">
-            <div className="color-pick"></div>
+            {/* 퍼스널컬러 이름 + "Pick!" 형태로 출력 */}
+            <div className="color-pick">{personalColor} Pick!</div>
             <div className="button-container">
-              <ProductButton text="립" />
-              <ProductButton text="아이섀도우" />
-              <ProductButton text="치크" />
+              {["립", "아이섀도우", "치크"].map((category) => (
+                <ProductButton
+                  key={category}
+                  text={category}
+                  onClick={() => setSelectedCategory(category)}
+                />
+              ))}
             </div>
           </div>
-					<div className="product-container">
-
-					</div>
+          <div className="product-container">
+            {products.length > 0 ? (
+              <div className="product-grid">
+                {products.map((product) => (
+                  <div key={product.id} className="product-card">
+                    <img src={product.image} alt={product.name} />
+                    <p>{product.name}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="no-products">상품이 없습니다.</p>
+            )}
+          </div>
         </div>
       </SmallMain>
       <Bottombar />
