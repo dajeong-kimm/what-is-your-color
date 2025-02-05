@@ -5,12 +5,9 @@ import MainPage from "./features/start/Mainpage";
 import Mainpage2 from "./features/start/Mainpage2";
 import DiagCapture from "./features/diagnosis/DiagCapture";
 import DiagImage from "./features/diagnosis/DiagImage";
-<<<<<<< HEAD
 import MediapipeCamera from "./features/camera/mediapipecamera";
-=======
 import DiagResult from "./features/diagnosis/DiagResult";
 import BestWorst from "./features/diagnosis/BestWorst";
->>>>>>> feature/frontend-develop
 import LoadingPage from "./button/LoadingPage/LoadingPage";
 import TestPage from "./common/components/TestPage";
 import PersonalColorMain from './features/personalcolors/PersonalColorMain';
