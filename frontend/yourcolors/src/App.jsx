@@ -5,30 +5,39 @@ import MainPage from "./features/start/Mainpage";
 import Mainpage2 from "./features/start/Mainpage2";
 import DiagCapture from "./features/diagnosis/DiagCapture";
 import DiagImage from "./features/diagnosis/DiagImage";
+import DiagResult from "./features/diagnosis/DiagResult";
+import BestWorst from "./features/diagnosis/BestWorst";
 import LoadingPage from "./button/LoadingPage/LoadingPage";
 import TestPage from "./common/components/TestPage";
-import PersonalColorMain from "./features/personalcolors/PersonalColorMain";
+import PersonalColorMain from './features/personalcolors/PersonalColorMain';
+import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
 import Makeup from "./features/makeup/Makeup";
-import PersonalColorDetail from "./features/personalcolors/PersonalColorDetail";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot } from 'recoil';
 
 const App = () => {
   return (
     <RecoilRoot>
       <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/mainpage" element={<MainPage />} />
-          <Route path="/mainpage2" element={<Mainpage2 />} />
-          <Route path="/diagcapture" element={<DiagCapture />} />
-          <Route path="/diagimage" element={<DiagImage />} />
-          <Route path="/loadingpage" element={<LoadingPage />} />
-          <Route path="/test" element={<TestPage />} />
-          <Route path="/personalcolors" element={<PersonalColorMain />} />
-          <Route path="/makeup" element={<Makeup />} />
-          <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
-        </Routes>
-      </Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/mainpage" element={<MainPage />} />
+        <Route path="/mainpage2" element={<Mainpage2 />} />
+
+        <Route path="/diagcapture" element={<DiagCapture />} />
+        <Route path="/diagimage" element={<DiagImage />} />
+        <Route path="/loadingpage" element={<LoadingPage />} />
+        <Route path="/diagresult" element={<DiagResult />} />
+        <Route path="/bestworst" element={<BestWorst />} />
+
+        <Route path="/test" element={<TestPage />} />
+
+        <Route path="/personalcolors" element={<PersonalColorMain />} />
+        <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
+        <Route path="/makeup" element={<Makeup />} />
+        {/* <Route path="/recommend" element={<Recommend />} />
+        <Route path="/diagnosis" element={<Diagnosis />} /> */}
+      </Routes>
+    </Router>
     </RecoilRoot>
   );
 };
