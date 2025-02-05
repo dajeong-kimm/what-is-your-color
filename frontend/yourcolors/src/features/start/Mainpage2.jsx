@@ -1,8 +1,8 @@
 import React from "react";
 import Background from "../../background/background/BackGround";
 import Smallmain from "../../background/background/SmallMain";
-import Topbar from "../../button/top/Topbar";
-import Bottombar from "../../button/bottom/Bottombar";
+import Topbar from "../../button/top/TopBar";
+import Bottombar from "../../button/bottom/BottomBar";
 
 const Mainpage2 = () => {
   return (
