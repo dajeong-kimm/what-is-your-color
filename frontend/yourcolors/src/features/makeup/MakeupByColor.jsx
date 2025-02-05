@@ -3,11 +3,11 @@ import Background from "../../background/background/Background";
 import Smallmain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/Topbar";
 import Bottombar from "../../button/bottom/Bottombar";
-import MakeupCamera from '../makeup/MakeupCamera';
+import MakeupCamera from './MakeupCamera';
 import ProductButton from '../../button/productbutton/ProductButton';
 import "./Makeup.css";
 
-const Makeup = () => {
+const MakeupByColor = () => {
   return (
     <div className="camera-container">
       <Background>
@@ -35,4 +35,4 @@ const Makeup = () => {
   );
 };
 
-export default Makeup;
+export default MakeupByColor;
