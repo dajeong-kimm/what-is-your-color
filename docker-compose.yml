@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    environment:
+      - APP_NAME=yourcolors
+      - APP_VERSION=1.0.0
+    networks:
+      - yourcolors-network
+    depends_on:
+      - flask-api
+
+  frontend:
+    build:
+      context: ./frontend/yourcolors
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - yourcolors-network
+    depends_on:
+      - backend
+
+  flask-api:
+    build:
+      context: ./flask
+      dockerfile: model-api/Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - yourcolors-network
+
+networks:
+  yourcolors-network:
+    driver: bridge
