@@ -5,7 +5,7 @@ import MainPage from "./features/start/Mainpage";
 import Mainpage2 from "./features/start/Mainpage2";
 import DiagCapture from "./features/diagnosis/DiagCapture";
 import DiagImage from "./features/diagnosis/DiagImage";
-import LoadingPage from "./button/LoadingPage/LoadingPage";
+import LoadingPage from "./button/LoadingPage/LoadingPage.jsx";
 import TestPage from "./common/components/TestPage";
 import PersonalColorMain from "./features/personalcolors/PersonalColorMain";
 import Makeup from "./features/makeup/Makeup";
