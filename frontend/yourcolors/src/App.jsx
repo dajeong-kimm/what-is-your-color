@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./features/start/Home";
+import EndPage from "./features/start/EndPage";
 import MainPage from "./features/start/Mainpage";
 import Mainpage2 from "./features/start/Mainpage2";
 import DiagCapture from "./features/diagnosis/DiagCapture";
@@ -23,6 +24,7 @@ const App = () => {
       <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/endpage" element={<EndPage />} />
         <Route path="/mainpage" element={<MainPage />} />
         <Route path="/mainpage2" element={<Mainpage2 />} />
         <Route path="/diagcapture" element={<DiagCapture />} />
@@ -38,8 +40,6 @@ const App = () => {
         <Route path="/makeup" element={<Makeup />} />
         <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
         <Route path="/makeupbycolor" element={<MakeupByColor />} />
-        <Route path="/:personalColor/recommend" element={<PersonalRecommend />} />
-
         {/* <Route path="/recommend" element={<Recommend />} />
         
         {/* <Route path="/recommend" element={<Recommend />} />
@@ -50,6 +50,7 @@ const App = () => {
         
 
        
+        <Route path="/:personalColor/recommend" element={<PersonalRecommend />} />
 
       </Routes>
     </Router>
