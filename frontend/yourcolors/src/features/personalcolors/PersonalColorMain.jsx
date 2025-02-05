@@ -1,6 +1,6 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { PersonalColorState } from "../../recoil/PersonalcolorsAtom";
+import { PersonalColorState } from "../../recoil/PersonalColorsAtom";
 import PersonalButton from "./PersonalButton";
 import Background from "../../background/background/BackGround";
 import LargeMain from "../../background/background/LargeMain";
