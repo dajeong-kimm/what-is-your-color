@@ -44,7 +44,6 @@ const App = () => {
         <Route path="/makeup" element={<Makeup />} />
         <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
         <Route path="/makeupbycolor" element={<MakeupByColor />} />
-
         {/* <Route path="/recommend" element={<Recommend />} />
         
         {/* <Route path="/recommend" element={<Recommend />} />
