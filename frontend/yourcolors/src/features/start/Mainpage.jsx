@@ -1,5 +1,5 @@
 import React from "react";
-import Background from "../../background/background/Background";
+import Background from "../../background/background/BackBround";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/Topbar";
 import MainButton from "../../button/MainButton/MainButton";
