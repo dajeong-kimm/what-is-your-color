@@ -26,6 +26,7 @@ const App = () => {
         <Route path="/mediapipecamera" element={<MediapipeCamera />} />
         <Route path="/loadingpage" element={<LoadingPage />} />
 
+
         <Route path="/test" element={<TestPage />} />
         <Route path="/personalcolors" element={<PersonalColorMain />} />
         <Route path="/makeup" element={<Makeup />} />
