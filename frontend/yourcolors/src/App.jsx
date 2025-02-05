@@ -5,6 +5,7 @@ import CheckPage from "./features/start/CheckPage";
 import MainPage from "./features/start/Mainpage";
 import Mainpage2 from "./features/start/Mainpage2";
 import DiagCapture from "./features/diagnosis/DiagCapture";
+import DiagCaptureX from "./features/diagnosis/DiagCaptureX";
 import DiagImage from "./features/diagnosis/DiagImage";
 import MediapipeCamera from "./features/camera/mediapipecamera";
 import DiagResult from "./features/diagnosis/DiagResult";
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/mainpage" element={<MainPage />} />
         <Route path="/mainpage2" element={<Mainpage2 />} />
         <Route path="/diagcapture" element={<DiagCapture />} />
+        <Route path="/diagcapturex" element={<DiagCaptureX />} />
         <Route path="/diagimage" element={<DiagImage />} />
         <Route path="/mediapipecamera" element={<MediapipeCamera />} />
         <Route path="/loadingpage" element={<LoadingPage />} />
