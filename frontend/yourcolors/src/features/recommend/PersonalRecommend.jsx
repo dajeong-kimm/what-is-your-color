@@ -10,11 +10,11 @@ import "./PersonalcolorRecommend.css";
 // 더미 데이터 (카테고리별 화장품 목록)
 const dummyData = {
   립: [
-    { id: 1, name: "레드 립스틱", image: "/images/lip1.jpg" },
-    { id: 2, name: "핑크 틴트", image: "/images/lip2.jpg" },
-    { id: 3, name: "코랄 립밤", image: "/images/lip3.jpg" },
-    { id: 4, name: "버건디 립스틱", image: "/images/lip4.jpg" },
-    { id: 5, name: "누드 립스틱", image: "/images/lip5.jpg" },
+    { id: 1, name: "레드 립스틱", image: "./dummy-images/image 20.jpg" },
+    { id: 2, name: "핑크 틴트", image: "./dummy-images/image 20.jpg" },
+    { id: 3, name: "코랄 립밤", image: "./dummy-images/image 20.jpg" },
+    { id: 4, name: "버건디 립스틱", image: "./dummy-images/image 20.jpg" },
+    { id: 5, name: "누드 립스틱", image: "./dummy-images/image 20.jpg" },
   ],
   아이섀도우: [
     { id: 1, name: "브라운 섀도우", image: "/images/shadow1.jpg" },
