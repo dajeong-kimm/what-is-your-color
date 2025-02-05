@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './BottomBar.css';
-import Bottombutton from './Bottombutton'; 
+import Bottombutton from './BottomButton'; 
 
 const Bottombar = () => {
   const [activeButton, setActiveButton] = useState(null);
