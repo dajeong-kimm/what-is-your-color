@@ -11,8 +11,12 @@
   },
   "dependencies": {
     "@mediapipe/camera_utils": "^0.3.1675466862",
+<<<<<<< HEAD
     "@mediapipe/drawing_utils": "^0.3.1675466124",
     "@mediapipe/holistic": "^0.5.1675471629",
+=======
+    "@mediapipe/face_mesh": "^0.4.1633559619",
+>>>>>>> feature/frontend-develop
     "@tailwindcss/postcss": "^4.0.0",
     "@tailwindcss/vite": "^4.0.0",
     "@techstark/opencv-js": "^4.10.0-release.1",
