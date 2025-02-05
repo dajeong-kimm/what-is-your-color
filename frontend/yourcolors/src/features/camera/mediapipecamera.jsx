@@ -10,6 +10,7 @@ const MediapipeCamera = () => {
   const [faceDetected, setFaceDetected] = useState(false);
   const [paperDetected, setPaperDetected] = useState(false);
   const [captured, setCaptured] = useState(false);
+  const [uploadResponse, setUploadResponse] = useState(null);
 
   useEffect(() => {
     const holistic = new Holistic({
@@ -92,9 +93,8 @@ const MediapipeCamera = () => {
     );
   };
 
-  // 수정된 종이 인식 함수:
-  // 손 랜드마크의 평균 좌표(반전된 x 값 기준)가 히트박스 영역 내에 있는지를 확인합니다.
-  // 히트박스 영역을 left: 0.60, top: 0.50, width: 0.30, height: 0.40로 설정합니다.
+  // 종이 인식 함수 (손 랜드마크 기반)
+  // 히트박스 영역: left: 0.62, top: 0.05, width: 0.30, height: 0.70
   const detectPaper = (results) => {
     const hitboxX = 0.62;
     const hitboxY = 0.05;
@@ -149,6 +149,7 @@ const MediapipeCamera = () => {
     }, 300);
   };
 
+  // 캡쳐된 사진에서 얼굴 영역과 종이 영역만 잘라내어 백엔드로 전송
   const capturePhoto = () => {
     const canvas = canvasRef.current;
     const video = videoRef.current;
@@ -162,8 +163,81 @@ const MediapipeCamera = () => {
       context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
       context.restore();
 
+      // 전체 캡쳐된 이미지 (데이터 URL)
       const capturedImage = canvas.toDataURL("image/png");
       console.log("Captured Image:", capturedImage);
+
+      // 얼굴 영역 좌표 (노란 동그라미 가이드 영역)
+      const faceLeft = video.videoWidth * 0.35;
+      const faceTop = video.videoHeight * 0.15;
+      const faceWidth = video.videoWidth * 0.30;
+      const faceHeight = video.videoHeight * 0.70;
+
+      // 종이 영역 좌표 (노란 네모 가이드 영역)
+      const paperLeft = video.videoWidth * 0.70;
+      const paperTop = video.videoHeight * 0.20;
+      const paperWidth = video.videoWidth * 0.15;
+      const paperHeight = video.videoHeight * 0.50;
+
+      // 얼굴 영역 오프스크린 캔버스 생성
+      const faceCanvas = document.createElement("canvas");
+      faceCanvas.width = faceWidth;
+      faceCanvas.height = faceHeight;
+      const faceCtx = faceCanvas.getContext("2d");
+      faceCtx.drawImage(
+        canvas,
+        faceLeft,
+        faceTop,
+        faceWidth,
+        faceHeight,
+        0,
+        0,
+        faceWidth,
+        faceHeight
+      );
+      const faceImage = faceCanvas.toDataURL("image/png");
+
+      // 종이 영역 오프스크린 캔버스 생성
+      const paperCanvas = document.createElement("canvas");
+      paperCanvas.width = paperWidth;
+      paperCanvas.height = paperHeight;
+      const paperCtx = paperCanvas.getContext("2d");
+      paperCtx.drawImage(
+        canvas,
+        paperLeft,
+        paperTop,
+        paperWidth,
+        paperHeight,
+        0,
+        0,
+        paperWidth,
+        paperHeight
+      );
+      const paperImage = paperCanvas.toDataURL("image/png");
+
+      // 백엔드로 POST 요청 전송 (URL 수정됨)
+      fetch("http://localhost:8080/api/colorlab/ai-model", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          face_image: faceImage,
+          a4_image: paperImage,
+        }),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`서버 응답 상태: ${res.status}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log("서버 응답:", data);
+          setUploadResponse(data);
+        })
+        .catch((err) => {
+          console.error("에러 발생:", err);
+          setUploadResponse({ error: err.toString() });
+        });
     }
   };
 
@@ -186,6 +260,7 @@ const MediapipeCamera = () => {
       <video
         ref={videoRef}
         autoPlay
+        muted
         style={{
           position: "absolute",
           top: 0,
@@ -216,23 +291,27 @@ const MediapipeCamera = () => {
           border: "6px dashed yellow",
           width: "15%",
           height: "50%",
-          top: "15%",
+          top: "20%",
           left: "70%",
           pointerEvents: "none",
         }}
       />
-      {/* 확대한 히트박스 영역 (cyan 점선): left 60%, top 50%, width 30%, height 40% */}
+      {/* 안내 텍스트 */}
       <div
         style={{
           position: "absolute",
-          border: "4px dashed cyan",
-          width: "30%",
-          height: "70%",
-          top: "5%",
-          left: "62%",
+          top: "7%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          color: "white",
+          fontWeight: "bold",
+          fontSize: "24px",
+          textAlign: "center",
           pointerEvents: "none",
         }}
-      />
+      >
+        얼굴을 가이드라인에 맞게 위치시켜 주세요
+      </div>
       <div
         style={{
           position: "absolute",
@@ -251,8 +330,14 @@ const MediapipeCamera = () => {
           <input type="checkbox" checked={paperDetected} readOnly /> 종이 인식
         </p>
         <p>Captured: {captured ? "Yes" : "No"}</p>
+        {uploadResponse && (
+          <p>
+            Upload Response:{" "}
+            {uploadResponse.error ? uploadResponse.error : JSON.stringify(uploadResponse)}
+          </p>
+        )}
       </div>
-      <canvas ref={canvasRef} style={{ display: "none" }} willReadFrequently={true} />
+      <canvas ref={canvasRef} style={{ display: "none" }} willreadfrequently="true" />
     </div>
   );
 };
