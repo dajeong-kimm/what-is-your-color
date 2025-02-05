@@ -1,22 +1,21 @@
-import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./features/start/Home";
+import EndPage from "./features/start/EndPage";
 import MainPage from "./features/start/Mainpage";
 import Mainpage2 from "./features/start/Mainpage2";
 import DiagCapture from "./features/diagnosis/DiagCapture";
 import DiagImage from "./features/diagnosis/DiagImage";
-<<<<<<< HEAD
 import MediapipeCamera from "./features/camera/mediapipecamera";
-=======
 import DiagResult from "./features/diagnosis/DiagResult";
 import BestWorst from "./features/diagnosis/BestWorst";
->>>>>>> feature/frontend-develop
 import LoadingPage from "./button/LoadingPage/LoadingPage";
 import TestPage from "./common/components/TestPage";
 import PersonalColorMain from './features/personalcolors/PersonalColorMain';
 import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
 import MakeupByColor from "./features/makeup/MakeupByColor";
 import Makeup from "./features/makeup/Makeup";
+import PersonalRecommend from "./features/recommend/PersonalRecommend";
+
 import { RecoilRoot } from 'recoil';
 
 const App = () => {
@@ -25,6 +24,7 @@ const App = () => {
       <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/endpage" element={<EndPage />} />
         <Route path="/mainpage" element={<MainPage />} />
         <Route path="/mainpage2" element={<Mainpage2 />} />
         <Route path="/diagcapture" element={<DiagCapture />} />
@@ -51,6 +51,8 @@ const App = () => {
         
 
        
+        <Route path="/:personalColor/recommend" element={<PersonalRecommend />} />
+
       </Routes>
     </Router>
     </RecoilRoot>

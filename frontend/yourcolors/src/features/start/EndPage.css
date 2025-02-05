@@ -1,0 +1,21 @@
+.endpage-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .endpage-message h1 {
+    font-size: 2.5rem; /* 문구 크기를 크게 조정 */
+    color: #fff;
+    margin-bottom: 40px;
+  }
+  
+  .endpage-buttons {
+    display: flex;
+    gap: 20px;
+  }
+  
