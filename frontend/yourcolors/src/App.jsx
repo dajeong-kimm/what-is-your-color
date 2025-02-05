@@ -9,10 +9,12 @@ import DiagResult from "./features/diagnosis/DiagResult";
 import BestWorst from "./features/diagnosis/BestWorst";
 import LoadingPage from "./button/LoadingPage/LoadingPage";
 import TestPage from "./common/components/TestPage";
+
 import PersonalColorMain from './features/personalcolors/PersonalColorMain';
 import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
 import Makeup from "./features/makeup/Makeup";
 import { RecoilRoot } from 'recoil';
+
 
 const App = () => {
   return (
@@ -39,9 +41,7 @@ const App = () => {
       </Routes>
     </Router>
     </RecoilRoot>
-    
   );
 };
 
 export default App;
-
