@@ -10,8 +10,9 @@
     display: block;
 }
 
-/* LargeMain 내부를 좌우로 나누기 */
-.largemain { /* 수정됨 */
+/* Smallmain 내부를 좌우로 나누기 */
+/* Smallmain 내부를 좌우로 나누기 */
+.smallmain {
     display: flex;
     width: 100%;
     height: 100%;
@@ -23,7 +24,7 @@
 .left-panel {
     width: 50%;
     height: 100%;
-    display: flex;
+    display: flex; /* 내부 정렬을 위한 flex 사용 */
     align-items: flex-start; /* 상단 정렬 */
     justify-content: flex-start; /* 왼쪽 정렬 */
     position: relative;
@@ -33,8 +34,8 @@
 /* 버튼 컨테이너 - 가로 정렬 */
 .button-container {
     display: flex;
-    flex-direction: row;
-    gap: 20px;
+    flex-direction: row; /* 가로 정렬 */
+    gap: 20px; /* 버튼 간 간격 */
     padding-top: 20px;
 }
 
@@ -45,12 +46,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: hidden;  /* 카메라가 영역을 벗어나지 않도록 */
 }
 
-/* 카메라가 LargeMain 내부에서 벗어나지 않도록 조정 */
+/* 카메라가 Smallmain 내부에서 벗어나지 않도록 조정 */
 .right-panel .camera {
-    width: 100%; /* 부모 컨테이너 크기에 맞춤 */
+    width: 50%;
     height: 100%;
     object-fit: cover;
 }
