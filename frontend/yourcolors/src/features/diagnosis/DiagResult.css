@@ -6,40 +6,43 @@
   flex-shrink: 0;
   display: flex;
   flex-direction: column; /* 세로로 배치 */
-  gap:100px; /* up과 down 컨테이너 사이에 간격을 띄움 */
+  gap:40px; /* up과 down 컨테이너 사이에 간격을 띄움 */
 }
 
 .container-up,
-.container-down {
+.container-center {
   display: flex;
   flex-direction: column;  /* 세로로 배치 */
-  gap: 20px;               /* 항목들 사이의 간격 */
+  gap: 10px;               /* 항목들 사이의 간격 */
   min-width: 400px; /* 최소 너비 설정 */
 }
 
-.default-text,
+.container-down{
+  display: flex;
+  flex-direction: row;  /* 세로로 배치 */
+  gap: 30px;               /* 항목들 사이의 간격 */
+  min-width: 400px; /* 최소 너비 설정 */
+}
+
 .main-color,
 .sub-color {
   font-family: Arial, sans-serif;
   margin: 5px 0; /* 항목들 간의 마진 설정 */
-}
-
-.main-color,
-.sub-color {
   display: inline;
 }
 
-/* 기본 텍스트 스타일 */
-.default-text {
+/* '서브컬러' */
+.title-sub {
   font-size: 16px;
   font-weight: normal;
   color: #333;
 	margin-left: 10px;
+  align-self: center;
 }
 
 /* 상단의 '당신의 퍼스널컬러는' */
 .title-main {
-  font-size: 30px;
+  font-size: 20px;
   font-weight: normal;
   color: #333;
 	top:0;
@@ -49,14 +52,14 @@
 
 /* 메인 컬러 텍스트: 가장 크게, 굵게 */
 .main-color {
-  font-size: 40px;
-  font-weight: bold;
+  font-size: 50px;
+  font-weight: bolder;
   color: #333;
 }
 
 /* 하단의 '서브컬러는'과 '입니다' */
 .title-sub {
-  font-size: 25px;
+  font-size: 20px;
   font-weight: normal;
   color: #333;
 }
