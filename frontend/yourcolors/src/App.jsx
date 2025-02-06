@@ -1,9 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./features/start/Home";
+import EndPage from "./features/start/EndPage";
+import CheckPage from "./features/start/CheckPage";
 import MainPage from "./features/start/Mainpage";
 import Mainpage2 from "./features/start/Mainpage2";
 import DiagCapture from "./features/diagnosis/DiagCapture";
+import DiagCaptureX from "./features/diagnosis/DiagCaptureX";
 import DiagImage from "./features/diagnosis/DiagImage";
 import LoadingPage from "./button/LoadingPage/LoadingPage.jsx";
 import TestPage from "./common/components/TestPage";
@@ -19,9 +22,11 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/endpage" element={<EndPage />} />
+        <Route path="/checkpage" element={<CheckPage />} />
         <Route path="/mainpage" element={<MainPage />} />
         <Route path="/mainpage2" element={<Mainpage2 />} />
         <Route path="/diagcapture" element={<DiagCapture />} />
+        <Route path="/diagcapturex" element={<DiagCaptureX />} />
         <Route path="/diagimage" element={<DiagImage />} />
         <Route path="/mediapipecamera" element={<MediapipeCamera />} />
         <Route path="/loadingpage" element={<LoadingPage />} />
