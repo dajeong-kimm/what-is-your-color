@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import Background from "../../background/background/BackGround";
 import SmallMain from "../../background/background/SmallMain";
@@ -7,6 +7,7 @@ import Bottombar from "../../button/bottom/BottomBar";
 // import "./DiagResult.css";
 
 import personalColors from "../../data/PersonalColors";
+import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
 
 const colorImageMap = {
   "봄 라이트": "spring-light",
@@ -24,6 +25,16 @@ const colorImageMap = {
 };
 
 const DiagResult = () => {
+  const personalId = 1;
+  const { fetchPersonalColorDetails } = useStore();
+
+  useEffect(() => {
+    // 컴포넌트가 렌더링될 때 API 호출하여 상세 정보 가져오기
+    fetchPersonalColorDetails(1);
+  }, [personalId, fetchPersonalColorDetails]);
+
+
+
   const location = useLocation();
 
   // 🔹 백엔드 연동 시 사용 (현재 주석 처리)

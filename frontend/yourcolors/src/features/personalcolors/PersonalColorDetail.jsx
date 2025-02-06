@@ -9,8 +9,8 @@ import { useParams } from "react-router-dom";
 // import personalColors from "../../data/PersonalColors";
 // import dummyData from "../../data/dummy-data";
 
-import useStore from '../../store/useStore';
-import personalColorInfo from '../../store/personalColorInfo';
+import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
+import personalColorInfo from '../../store/personalColorInfo';  //정적 객체 데이터
 
 const PersonalColorDetail = () => {
   const { id } = useParams();

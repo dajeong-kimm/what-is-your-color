@@ -6,7 +6,7 @@ import Background from "../../background/background/BackGround";
 import LargeMain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import "./PersonalButton.css"; // ✅ 버튼 스타일 적용
-import useStore from '../../store/useStore';
+import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
 
 const PersonalColorMain = () => {
   const { fetchPersonalColors } = useStore(); //Zustand 상태관리

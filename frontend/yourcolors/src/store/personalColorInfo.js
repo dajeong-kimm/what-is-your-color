@@ -1,3 +1,4 @@
+//단순한 정적 데이터 객체 (Zustand 로 관리하는 객체 아님)
 const personalColorInfo = {
     6: {
       imageUrl: "../public/여름뮤트색상표.jpg",
