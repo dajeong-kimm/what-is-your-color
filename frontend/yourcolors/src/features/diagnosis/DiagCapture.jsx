@@ -12,6 +12,7 @@ const DiagCapture = () => {
         
       <Background>
       <Smallmain>
+			<Camera/>
 			<MediapipeCameraTimer/>
 			</Smallmain>
       <Topbar />
