@@ -1,10 +1,10 @@
-.personal-detail-container {
+/* .personal-detail-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 50px; /* 좌우 간격 조정 */
+  gap: 50px; 
   width: 100%;
-}
+} */
 
 .personal-detail-container-left {
     text-align: center;
