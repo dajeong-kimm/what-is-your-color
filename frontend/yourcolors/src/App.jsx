@@ -16,8 +16,7 @@ import PersonalColorMain from './features/personalcolors/PersonalColorMain';
 import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
 import MakeupByColor from "./features/makeup/MakeupByColor";
 import Makeup from "./features/makeup/Makeup";
-import PersonalColorDetail from "./features/personalcolors/PersonalColorDetail";
-import MediapipeCamera from "./features/camera/mediapipecameraX.jsx";
+import MediapipeCameraX from "./features/camera/mediapipecameraX.jsx";
 import PersonalRecommend from "./features/recommend/PersonalRecommend";
 
 import { RecoilRoot } from 'recoil';
