@@ -5,7 +5,7 @@ import Smallmain from "../../background/background/SmallMain";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
-import MediapipeCameraTimer from '../camera/MediapipeCameraTimer';
+import MediapipeCameraXTimer from '../camera/MediapipeCameraXTimer';
 const DiagCaptureX = () => {
   return (
     
