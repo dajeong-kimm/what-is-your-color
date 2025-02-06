@@ -1,5 +1,5 @@
 import React from "react";
-import Background from "../../background/background/Background";
+import Background from "../../background/background/BackGround";
 import StartImage from "../../assets/start.png"; // 이미지 파일 불러오기
 import Topbutton from "../../button/top/TopButton"; // 버튼 재사용
 import "./Home.css";

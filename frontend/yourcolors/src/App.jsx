@@ -10,7 +10,7 @@ import DiagImage from "./features/diagnosis/DiagImage";
 import MediapipeCamera from "./features/camera/mediapipecamera";
 import DiagResult from "./features/diagnosis/DiagResult";
 import BestWorst from "./features/diagnosis/BestWorst";
-import LoadingPage from "./button/LoadingPage/LoadingPage";
+import LoadingPage from "./button/loadingpage/LoadingPage";
 import TestPage from "./common/components/TestPage";
 import PersonalColorMain from './features/personalcolors/PersonalColorMain';
 import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
