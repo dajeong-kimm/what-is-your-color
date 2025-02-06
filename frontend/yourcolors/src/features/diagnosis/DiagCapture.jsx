@@ -4,6 +4,7 @@ import Background from "../../background/background/BackGround";
 import Smallmain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
+import MediapipeCameraTimer from '../camera/MediapipeCameraTimer';
 const DiagCapture = () => {
   return (
     
@@ -11,10 +12,10 @@ const DiagCapture = () => {
         
       <Background>
       <Smallmain>
-			<Camera/>
+			<MediapipeCameraTimer/>
 			</Smallmain>
       <Topbar />
-      <Bottombar />
+      {/* <Bottombar /> */}
     </Background>
       </div>
     

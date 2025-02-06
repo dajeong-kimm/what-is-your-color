@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom"; // useNavigate 추가
-import Background from "../../background/background/Background";
+import Background from "../../background/background/BackGround";
 import Largemain from "../../background/background/LargeMain";
 import YesNoButton from "../../button/yesnobutton/YesNoButton"; // YesNoButton 컴포넌트 임포트
 import "./CheckPage.css";
