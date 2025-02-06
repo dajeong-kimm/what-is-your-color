@@ -26,11 +26,11 @@
   flex: 1;
   color: rgba(255, 255, 255, 0.85);
   font-family: NanumGothic;
-  font-size: 20-px;
+  font-size: 50px;
   font-style: normal;
   font-weight: 800;
   line-height: normal;
-  /* margin-left: 75px; */
+  margin-left: 75px;
   
 } 
 
@@ -39,20 +39,8 @@
   position: absolute;
   display: flex;
   flex-direction: row;
-
   gap: 10px;
   align-items: center;
   right: 20px;
   margin-right: 150px;
-}
-
-
-.logo-img {
-  width: 130px;  /* 원하는 크기로 조정 */
-  height: auto;
-  margin-right: 0px;
-  margin-left: 80px;
-  padding-bottom: 10px;
-
-
 }

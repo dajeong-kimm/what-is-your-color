@@ -1,10 +1,9 @@
 import React from 'react';
 import Camera from './Diagcamera';  // Camera 컴포넌트 import
-import Background from "../../background/background/Background";
+import Background from "../../background/background/BackGround";
 import Smallmain from "../../background/background/SmallMain";
-import Topbar from "../../button/top/Topbar";
-import Bottombar from "../../button/bottom/Bottombar";
-import MediapipeCamera from '../camera/mediapipecamera';
+import Topbar from "../../button/top/TopBar";
+import Bottombar from "../../button/bottom/BottomBar";
 const DiagCapture = () => {
   return (
     
@@ -12,7 +11,7 @@ const DiagCapture = () => {
         
       <Background>
       <Smallmain>
-			<MediapipeCamera/>
+			<Camera/>
 			</Smallmain>
       <Topbar />
       <Bottombar />

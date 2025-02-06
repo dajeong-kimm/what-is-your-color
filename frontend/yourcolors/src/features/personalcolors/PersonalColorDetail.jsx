@@ -1,9 +1,9 @@
 import React from "react";
-import Background from "../../background/background/Background";
+import Background from "../../background/background/BackGround";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
-import Bottombar from "../../button/bottom/Bottombar";
-import "./personalbutton.css";
+import Bottombar from "../../button/bottom/BottomBar";
+import "./PersonalButton.css";
 import "./PersonalColorDetail.css";
 import { useParams } from "react-router-dom";
 import personalColors from "../../data/PersonalColors";

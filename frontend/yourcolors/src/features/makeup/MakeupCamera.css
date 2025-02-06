@@ -1,25 +1,15 @@
 .camera {
-    position: relative;
-    width: 100%;
+    position: absolute;
+    right: 0; /* 오른쪽에 정렬 */
+    width: 50%; /* 화면의 반만 차지 */
     height: 100%;
-    background-color: black;
+    background-color: black; /* 웹캠이 없을 때 대비 */
     overflow: hidden;
 }
 
-/* 기존 비디오 스타일 유지 (셀카 모드) */
-.camera-video {
+.camera video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: scaleX(-1); /* 좌우 반전 */
-}
-
-/* 얼굴 랜드마크 캔버스 추가 */
-.camera-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+    transform: scaleX(-1); /* 거울 효과 */
 }
