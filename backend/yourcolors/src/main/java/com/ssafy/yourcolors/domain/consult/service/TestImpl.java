@@ -1,5 +1,6 @@
 package com.ssafy.yourcolors.domain.consult.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.yourcolors.domain.consult.dto.AiResponse;
 import com.ssafy.yourcolors.domain.consult.dto.DistResponse;
@@ -24,7 +25,7 @@ public class TestImpl implements ConsultService {
 
     private final String FLASK_AI = "http://3.35.236.198:5000/predict/model";
     private final String FLASK_DIST = "http://3.35.236.198:5000/predict/colordist";
-    private final String GPT_API_URL = "https://api.openai.com/v1/completions";
+    private final String GPT_API_URL = "https://api.openai.com/v1/chat/completions";
     private final String GPT_API_KEY = "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";
 
     @Override
@@ -147,29 +148,33 @@ public class TestImpl implements ConsultService {
         // GPT 프롬프트 생성
         String prompt = generatePromptForAI(results);
 
-        // 요청 JSON 데이터 생성
+        // 요청 JSON 데이터 생성 (Chat API 형식)
         Map<String, Object> requestBodyMap = Map.of(
                 "model", "gpt-3.5-turbo",
-//                "messages", List.of(
-//                        Map.of("role", "system", "content", "너는 퍼스널 컬러 컨설턴트야. 요청에 따라 퍼스널 컬러에 맞는 추천을 해줘."),
-//                        Map.of("role", "user", "content", prompt)
-//                ),
-//                "temperature", 0.7,
-                "max_tokens", 100
+                "messages", List.of(
+                        Map.of("role", "system", "content", "너는 퍼스널 컬러 컨설턴트야. 요청에 따라 퍼스널 컬러에 맞는 추천을 해줘."),
+                        Map.of("role", "user", "content", prompt)
+                ),
+                "temperature", 0.7,
+                "max_tokens", 200
         );
 
         try {
-            // JSON 변환 (디버깅용 로그 추가)
             String requestBody = objectMapper.writeValueAsString(requestBodyMap);
-            System.out.println("🔍 OpenAI API 요청 JSON: " + requestBody);  // 디버깅 로그 추가
+            System.out.println("🔍 OpenAI API 요청 JSON: " + requestBody);
 
             HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
 
-            // OpenAI API 호출
             ResponseEntity<String> response = restTemplate.postForEntity(GPT_API_URL, request, String.class);
-            System.out.println("✅ OpenAI API 응답: " + response.getBody());  // 응답 확인 로그 추가
+            System.out.println("✅ OpenAI API 응답: " + response.getBody());
 
-            return response.getBody();
+            // 응답 JSON 파싱
+            String responseBody = response.getBody();
+            JsonNode root = objectMapper.readTree(responseBody);
+            // choices 배열의 첫번째 요소의 message.content 값을 추출
+            String messageContent = root.path("choices").get(0).path("message").path("content").asText();
+
+            return messageContent;
         } catch (Exception e) {
             e.printStackTrace();
             return "GPT API 호출 중 오류 발생";
@@ -185,10 +190,8 @@ public class TestImpl implements ConsultService {
         headers.setBearerAuth(GPT_API_KEY);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // GPT 프롬프트 생성
         String prompt = generatePromptForDist(results);
 
-        // 요청 JSON 데이터 생성
         Map<String, Object> requestBodyMap = Map.of(
                 "model", "gpt-3.5-turbo",
                 "messages", List.of(
@@ -196,21 +199,24 @@ public class TestImpl implements ConsultService {
                         Map.of("role", "user", "content", prompt)
                 ),
                 "temperature", 0.7,
-                "max_tokens", 100
+                "max_tokens", 250
         );
 
         try {
-            // JSON 변환 (디버깅용 로그 추가)
             String requestBody = objectMapper.writeValueAsString(requestBodyMap);
-            System.out.println("🔍 OpenAI API 요청 JSON: " + requestBody);  // 디버깅 로그 추가
+            System.out.println("🔍 OpenAI API 요청 JSON: " + requestBody);
 
             HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
 
-            // OpenAI API 호출
             ResponseEntity<String> response = restTemplate.postForEntity(GPT_API_URL, request, String.class);
-            System.out.println("✅ OpenAI API 응답: " + response.getBody());  // 응답 확인 로그 추가
+            System.out.println("✅ OpenAI API 응답: " + response.getBody());
 
-            return response.getBody();
+            // 응답 JSON 파싱
+            String responseBody = response.getBody();
+            JsonNode root = objectMapper.readTree(responseBody);
+            String messageContent = root.path("choices").get(0).path("message").path("content").asText();
+
+            return messageContent;
         } catch (Exception e) {
             e.printStackTrace();
             return "GPT API 호출 중 오류 발생";
@@ -248,6 +254,7 @@ public class TestImpl implements ConsultService {
                     - **서브 컬러**: %s, %s 
                   
                     결과는 친절한 컨설턴트 말투로 자연스럽게 설명해줘.
+                    **최종 추천 요약을 250자 내로 간결하게 작성해줘.**
                 """, mainColor, subColor1, subColor2);
     }
 
