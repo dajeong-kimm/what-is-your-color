@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Holistic } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
-import cv from "@techstark/opencv-js"; // OpenCV.js 라이브러리 사용
+import cv from "@techstark/opencv-js";
 
 const MediapipeCamera = () => {
   const videoRef = useRef(null);
