@@ -1,9 +1,9 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import Background from "../../background/background/Background";
+import Background from "../../background/background/BackGround";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
-import Bottombar from "../../button/bottom/Bottombar";
+import Bottombar from "../../button/bottom/BottomBar";
 import "./DiagResult.css";
 
 import personalColors from "../../data/PersonalColors";

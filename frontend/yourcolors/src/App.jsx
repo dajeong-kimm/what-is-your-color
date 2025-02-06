@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./features/start/Home";
 import EndPage from "./features/start/EndPage";
@@ -12,13 +13,12 @@ import DiagResult from "./features/diagnosis/DiagResult";
 import BestWorst from "./features/diagnosis/BestWorst";
 import LoadingPage from "./button/loadingpage/LoadingPage";
 import TestPage from "./common/components/TestPage";
-import PersonalColorMain from './features/personalcolors/PersonalColorMain';
-import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
-import MakeupByColor from "./features/makeup/MakeupByColor";
+import PersonalColorMain from "./features/personalcolors/PersonalColorMain";
 import Makeup from "./features/makeup/Makeup";
-import PersonalRecommend from "./features/recommend/PersonalRecommend";
+import PersonalColorDetail from "./features/personalcolors/PersonalColorDetail";
+import MediapipeCamera from "./features/camera/mediapipecameraX.jsx";
 
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot } from "recoil";
 
 const App = () => {
   return (
