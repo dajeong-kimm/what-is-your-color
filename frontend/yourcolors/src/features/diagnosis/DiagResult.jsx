@@ -4,7 +4,7 @@ import Background from "../../background/background/BackGround";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
-import "./DiagResult.css";
+// import "./DiagResult.css";
 
 import personalColors from "../../data/PersonalColors";
 
