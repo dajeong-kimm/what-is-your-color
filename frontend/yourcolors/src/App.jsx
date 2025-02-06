@@ -8,12 +8,16 @@ import Mainpage2 from "./features/start/Mainpage2";
 import DiagCapture from "./features/diagnosis/DiagCapture";
 import DiagCaptureX from "./features/diagnosis/DiagCaptureX";
 import DiagImage from "./features/diagnosis/DiagImage";
+import DiagResult from "./features/diagnosis/DiagResult.jsx";
 import LoadingPage from "./button/LoadingPage/LoadingPage.jsx";
 import TestPage from "./common/components/TestPage";
 import PersonalColorMain from "./features/personalcolors/PersonalColorMain";
 import Makeup from "./features/makeup/Makeup";
 import PersonalColorDetail from "./features/personalcolors/PersonalColorDetail";
+import MediapipeCamera from "./features/camera/mediapipecameraX.jsx";
+
 import { RecoilRoot } from "recoil";
+
 
 const App = () => {
   return (
