@@ -4,23 +4,23 @@ import Background from "../../background/background/BackGround";
 import Smallmain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
-import MediapipeCameraTimer from '../camera/MediapipeCameraTimer';
-const DiagCapture = () => {
+import MediapipeCameraX from '../camera/mediapipecameraX';
+const DiagCaptureX = () => {
   return (
     
       <div className="camera-container">
         
       <Background>
       <Smallmain>
-			<MediapipeCameraTimer/>
+			<MediapipeCameraX/>
 			</Smallmain>
       <Topbar />
-      {/* <Bottombar /> */}
+      <Bottombar />
     </Background>
       </div>
     
   );
 };
 
-export default DiagCapture;
+export default DiagCaptureX;
 
