@@ -1,8 +1,15 @@
 import React from 'react';
+<<<<<<< HEAD
 import Background from "../../background/background/Background";
 import Smallmain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/Topbar";
 import Bottombar from "../../button/bottom/Bottombar";
+=======
+import Background from "../../background/background/BackGround";
+import Smallmain from "../../background/background/SmallMain";
+import Topbar from "../../button/top/TopBar";
+import Bottombar from "../../button/bottom/BottomBar";
+>>>>>>> feature/front/develop
 import MakeupCamera from './MakeupCamera';
 import ProductButton from '../../button/productbutton/ProductButton';
 import "./Makeup.css";
