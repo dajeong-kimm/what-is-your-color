@@ -2,8 +2,8 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Background from '../../background/background/BackGround';
 import Smallmain from '../../background/background/SmallMain';
-import Topbar from '../../button/top/TopBar';
-import Bottombar from '../../button/bottom/BottomBar';
+import Topbar from '../../button/top/Topbar';
+import Bottombar from '../../button/bottom/Bottombar';
 import DiagnosticBox from '../../button/diagnosticbox/DiagnosticBox';
 
 const DiagImage = () => {
