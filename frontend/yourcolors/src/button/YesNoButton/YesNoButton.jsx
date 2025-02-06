@@ -1,20 +1,20 @@
-import React from 'react';
-import './YesNoButton.css';
+import React from "react";
+import "./YesNoButton.css";
 
-const YesNoButton = ({ onYesClick, onNoClick }) => {
+const YesNoButton = ({ onYesClick, onNoClick, yesLabel = "예", noLabel = "아니오" }) => {
   return (
     <div className="answer-buttons-container">
       <button 
         className="answer-button"
         onClick={onYesClick}
       >
-        예
+        {yesLabel}
       </button>
       <button 
         className="answer-button"
         onClick={onNoClick}
       >
-        아니오
+        {noLabel}
       </button>
     </div>
   );
