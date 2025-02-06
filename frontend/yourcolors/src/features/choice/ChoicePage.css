@@ -1,44 +1,56 @@
 .choice-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  flex-direction: row;
   width: 100%;
-  /* height: 100%; */
+  height: 100%;
   padding: 20px;
 }
 
-/* .choice-column {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 50%;
-  height: 100%;
-} */
-
-.choice-left, .choice-right {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.choice-left .choice-button, .choice-right .choice-button {
-  width: 80%;
-  max-width: 400px;
+.choice-button {
+  width: 45%;
+  height: auto;
+  background-color: #82DC28;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
   padding: 20px;
-  background-color: #82DC28;
-  color: white;
+  margin: 25px;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.choice-image {
+  width: 50%;
+  height: 50%;
+  border-radius: 15px;
+  margin-bottom: 10px;
+}
+
+.choice-description {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.choice-title {
   font-size: 18px;
   font-weight: bold;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 800px) {
+  .choice-container {
+    flex-direction: column;
+  }
+  .choice-button {
+    width: 90%;
+    margin-bottom: 20px;
+  }
 }
