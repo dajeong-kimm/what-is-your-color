@@ -16,8 +16,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:80"
-    networks:
-      - yourcolors-network
+    network_mode: host
     depends_on:
       - backend
 
