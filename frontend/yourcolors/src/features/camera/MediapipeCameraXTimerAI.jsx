@@ -1,4 +1,4 @@
-// color-distance, 얼굴만 보내는 버전
+// ai-model, 얼굴만 보내는 버전
 import React, { useRef, useEffect, useState } from "react";
 import { Holistic } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
@@ -7,7 +7,7 @@ import axios from "axios";
 
 let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)
 
-const MediapipeCameraXTimer = () => {
+const MediapipeCameraXTimerAI = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -166,7 +166,7 @@ const MediapipeCameraXTimer = () => {
   const sendImagesToServer = (faceImage) => {
     console.log("[sendImagesToServer] Sending to server...");
     axios
-      .post("http://localhost:9000/api/colorlab/color-dist", {
+      .post("http://localhost:9000/api/colorlab/ai-model", {
         face_image: faceImage || "",
         a4_image: "", // 종이는 빈 문자열
       })
@@ -356,4 +356,4 @@ const MediapipeCameraXTimer = () => {
   );
 };
 
-export default MediapipeCameraXTimer;
+export default MediapipeCameraXTimerAI;
