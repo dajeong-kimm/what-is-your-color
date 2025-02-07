@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import Background from "../../background/background/BackGround";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
 import "./personalbutton.css";
 import "./PersonalColorDetail.css";
-import { useParams } from "react-router-dom";
+import LeftRightButton from "../../button/LeftRightButton/LeftRightButton"; // 🔹 추가
+import { useParams, useNavigate } from "react-router-dom";
 // import personalColors from "../../data/PersonalColors";
 // import dummyData from "../../data/dummy-data";
 
@@ -13,6 +14,7 @@ import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
 import personalColorInfo from '../../store/personalColorInfo';  //정적 객체 데이터
 
 const PersonalColorDetail = () => {
+  const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
   const { id } = useParams();
   // const colorInfo = dummyData.find((color) => color.id === parseInt(id));
   const { personalColors, fetchPersonalColors } = useStore();
@@ -47,6 +49,14 @@ const PersonalColorDetail = () => {
 // 그레이가 잘 어울리는 타입으로 스타일링도 메이크업도 전체적으로 은은하게 연출하면 좋아요!
 // 말린 장미, 팥죽색 같은 채도가 낮은 부드러운 색을 선택하세요.`;
 
+const handleRightClick = () => {
+  navigate("/bestworst");
+};
+
+const handleLeftClick = () => {
+  navigate("/diagresult");
+};
+
   return (
     <Background>
       <Topbar />
@@ -79,6 +89,13 @@ const PersonalColorDetail = () => {
         </div>
         
       </SmallMain>
+
+      {/* 🔹 화살표 네비게이션 버튼 추가 */}
+      <LeftRightButton 
+        onLeftClick={handleLeftClick} // 왼쪽 버튼 동작 추가 가능
+        onRightClick={handleRightClick} // 오른쪽 버튼 누르면 "/bestworst"로 이동
+      />
+
       <Bottombar />
     </Background>
   );

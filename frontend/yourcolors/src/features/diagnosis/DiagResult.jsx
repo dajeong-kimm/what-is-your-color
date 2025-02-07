@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Background from "../../background/background/BackGround";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
+import LeftRightButton from "../../button/LeftRightButton/LeftRightButton"; // 🔹 추가
 import "./DiagResult.css";
 
 import personalColors from "../../data/PersonalColors";
-import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
+import useStore from '../../store/useStore'; //Zustand 상태관리 데이터
 
 const colorImageMap = {
   "봄 라이트": "spring-light",
@@ -25,6 +26,7 @@ const colorImageMap = {
 };
 
 const DiagResult = () => {
+  const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
   const personalId = 1;
   const { fetchPersonalColorDetails } = useStore();
 
@@ -32,8 +34,6 @@ const DiagResult = () => {
     // 컴포넌트가 렌더링될 때 API 호출하여 상세 정보 가져오기
     fetchPersonalColorDetails(1);
   }, [personalId, fetchPersonalColorDetails]);
-
-
 
   const location = useLocation();
 
@@ -65,6 +65,10 @@ const DiagResult = () => {
   // mainColor에 해당하는 이미지 URL 가져오기
   const imageUrl = colorMap[mainColor] || "기본 이미지 URL";
 
+  const handleRightClick = () => {
+    navigate("/personalcolors/12");
+  };
+
   return (
     <Background>
       <Topbar />
@@ -95,6 +99,13 @@ const DiagResult = () => {
           </div>
         </div>
       </SmallMain>
+
+      {/* 🔹 화살표 네비게이션 버튼 추가 */}
+      <LeftRightButton 
+        onLeftClick={() => console.log("왼쪽 버튼 클릭")} // 왼쪽 버튼 동작 추가 가능
+        onRightClick={handleRightClick} // 오른쪽 버튼 누르면 "/bestworst"로 이동
+      />
+
       <Bottombar />
     </Background>
   );
