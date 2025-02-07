@@ -12,6 +12,8 @@ const BestWorst = () => {
   const { personalColorDetails } = useStore();
   console.log("bestworst 페이지 ", personalColorDetails);
 
+
+
    return (
     <Background>
       <Topbar />

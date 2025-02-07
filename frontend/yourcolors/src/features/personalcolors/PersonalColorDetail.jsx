@@ -17,6 +17,7 @@ const PersonalColorDetail = () => {
   // const colorInfo = dummyData.find((color) => color.id === parseInt(id));
   const { personalColors, fetchPersonalColors } = useStore();
   const [loading, setLoading] = useState(true); // 🔹 로딩 상태 추가
+  
 
   // 🔹 데이터가 없으면 API 다시 호출
   useEffect(() => {
