@@ -6,7 +6,7 @@ import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/Bottombar";
 import ProductButton from "../../button/productbutton/ProductButton";
 import "./PersonalcolorRecommend.css";
-import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
+import useStore from '../../store/useStore'; //Zustand 상태관리 데이터
 
 // 더미 데이터 (카테고리별 화장품 목록)
 const dummyData = {
@@ -74,6 +74,7 @@ const PersonalRecommend = () => {
                 {products.map((product) => (
                   <div key={product.product_id} className="product-card">
                     <img src={product.image} alt={product.product_name} />
+                    <p>{product.brand}</p>
                     <p>{product.product_name}</p>
                     <p>{product.price}</p>
                   </div>

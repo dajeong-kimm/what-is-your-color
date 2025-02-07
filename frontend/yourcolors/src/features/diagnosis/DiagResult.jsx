@@ -25,7 +25,7 @@ import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
 // };
 
 const DiagResult = () => {
-  const personalId = 1;
+  const personalId = 1; // 진단결과로 ID 받아오면 이거 바꿔야함 지금은 임시로 1번 해둠
   const { fetchPersonalColorDetails } = useStore();
 
   useEffect(() => {
