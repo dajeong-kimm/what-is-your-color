@@ -20,6 +20,7 @@ import MakeupByColor from "./features/makeup/MakeupByColor";
 import Makeup from "./features/makeup/Makeup"; 
 import MediapipeCameraX from "./features/camera/mediapipecameraX.jsx";
 import PersonalRecommend from "./features/recommend/PersonalRecommend";
+import ChoicePage from "./features/choice/ChoicePage.jsx";
 
 import { RecoilRoot } from 'recoil';
 
@@ -57,6 +58,9 @@ const App = () => {
         <Route path="/diagnosis" element={<Diagnosis />} /> */}
 
         <Route path="/:personalColor/recommend" element={<PersonalRecommend />} />
+
+        <Route path="/choice" element={<ChoicePage />} />
+
 
       </Routes>
     </Router>

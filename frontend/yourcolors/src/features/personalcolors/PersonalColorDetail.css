@@ -1,21 +1,22 @@
-/* .personal-detail-container {
+.personal-detail-container {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 50px; 
   width: 100%;
-} */
+}
 
 .personal-detail-container-left {
+    display: flex;
+    flex-direction: column;
     text-align: center;
     padding: 10px;
     border-radius: 16px;
     min-width: 400px; /* 최소 너비 설정 */
-    min-height: 400px;
-    flex-basis: 33%;
-    flex-shrink: 0;
-
+    max-height: 400px;
+    object-fit: cover;
   }
+  
   
   .personal-detail-container-right {
       display: flex;
@@ -47,20 +48,21 @@
   
   .hashtag {
     display: inline-block;
-    background-color: #d9f7d9;
     color: #2e7d32;
-    padding: 5px 10px;
+    padding-right:  10px;
     border-radius: 8px;
     margin: 0 5px;
-    font-size: 1.2rem;
+    font-size: 1.8rem;
   }
   
-  .personal-detail-image img {
-    max-width: 80%;
-    height: 100%;
+  .personal-detail-image img{
+    min-width: 400px; /* 최소 너비 설정 */
+    max-height: 400px;
+    object-fit: cover; /* 이미지를 왜곡하지 않고 영역을 채우도록 설정 */
     border-radius: 16px;
-    margin-top: 50px;
-  }
+    margin-top: 20px;
+}
+
   
   .personal-detail-description {
     font-size: 20px;
