@@ -5,7 +5,7 @@ import CheckPage from "./features/start/CheckPage";
 import MainPage from "./features/start/MainPage";
 import Mainpage2 from "./features/start/MainPage2.jsx";
 import DiagCapture from "./features/diagnosis/DiagCapture";
-import DiagCaptureX from "./features/diagnosis/DiagCaptureX";npm
+import DiagCaptureX from "./features/diagnosis/DiagCaptureX";
 import DiagImage from "./features/diagnosis/DiagImage";
 import MediapipeCamera from "./features/camera/MediapipeCamera.jsx";
 import DiagResult from "./features/diagnosis/DiagResult";
