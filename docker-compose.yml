@@ -16,7 +16,7 @@ services:
       context: ./frontend/yourcolors
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "80:3000"
     networks:
       - yourcolors-network
     depends_on:
