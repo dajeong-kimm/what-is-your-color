@@ -1,18 +1,23 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Holistic } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
-import cv from "@techstark/opencv-js"; // OpenCV.js 라이브러리 사용
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const MediapipeCamera = () => {
+const MediapipeCameraXTimer = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [flash, setFlash] = useState(false);
-  const [faceDetected, setFaceDetected] = useState(false);
-  // 종이 인식 관련 상태 제거: paperDetected
-  const [captured, setCaptured] = useState(false);
-  const [uploadResponse, setUploadResponse] = useState(null);
+  const [countdown, setCountdown] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null);
+  const [showCaptureButton, setShowCaptureButton] = useState(true);
+  const [isFlashing, setIsFlashing] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    initializeCamera();
+  }, []);
+
+  const initializeCamera = () => {
     const holistic = new Holistic({
       locateFile: (file) =>
         `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
@@ -24,8 +29,7 @@ const MediapipeCamera = () => {
       refineFaceLandmarks: true,
     });
 
-    holistic.onResults((results) => {
-      // 캔버스에 영상을 그립니다.
+    holistic.onResults(() => {
       const ctx = canvasRef.current.getContext("2d");
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       ctx.drawImage(
@@ -35,18 +39,6 @@ const MediapipeCamera = () => {
         canvasRef.current.width,
         canvasRef.current.height
       );
-
-      console.log("Face Landmarks:", results.faceLandmarks);
-      console.log("Left Hand:", results.leftHandLandmarks);
-      console.log("Right Hand:", results.rightHandLandmarks);
-
-      const faceValid = detectFace(results);
-      setFaceDetected(faceValid);
-
-      // 종이 인식은 제거되어 얼굴 인식만으로 촬영함
-      if (faceValid && !captured) {
-        triggerFlashAndCapture();
-      }
     });
 
     if (videoRef.current) {
@@ -59,117 +51,95 @@ const MediapipeCamera = () => {
       });
       camera.start();
     }
-  }, [captured]);
-
-  const detectFace = (results) => {
-    if (!results.faceLandmarks) return false;
-
-    const nose = results.faceLandmarks[1];
-    const leftEye = results.faceLandmarks[33];
-    const rightEye = results.faceLandmarks[263];
-    const mouth = results.faceLandmarks[13];
-
-    const isInsideCircle = (point) => {
-      const centerX = 0.5,
-        centerY = 0.5,
-        radius = 0.15;
-      const dx = point.x - centerX;
-      const dy = point.y - centerY;
-      return dx * dx + dy * dy <= radius * radius;
-    };
-
-    return (
-      nose &&
-      leftEye &&
-      rightEye &&
-      mouth &&
-      isInsideCircle(nose) &&
-      isInsideCircle(leftEye) &&
-      isInsideCircle(rightEye) &&
-      isInsideCircle(mouth)
-    );
   };
 
-  const triggerFlashAndCapture = () => {
-    setFlash(true);
+  const handleCapture = async () => {
+    setCapturedImage(null);
+    setCountdown(5);
+    setShowCaptureButton(false);
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev === 1) {
+          clearInterval(timer);
+          capturePhoto();
+          return null;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const capturePhoto = () => {
+    setIsFlashing(true);
+
     setTimeout(() => {
-      capturePhoto();
-      setFlash(false);
-      setCaptured(true);
+      setIsFlashing(false);
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
+
+      if (canvas && video) {
+        const context = canvas.getContext("2d");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        context.save();
+        context.scale(-1, 1);
+        context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+        context.restore();
+
+        const imageData = canvas.toDataURL("image/png");
+        setCapturedImage(imageData);
+        setCountdown(null);
+
+        const faceImage = extractFaceImage(canvas);
+
+        sendImagesToServer(faceImage);
+      }
     }, 300);
   };
 
-  // 캡쳐된 사진에서 얼굴 영역(노란 동그라미 가이드 영역)만 잘라내어 백엔드로 전송
-  const capturePhoto = () => {
-    const canvas = canvasRef.current;
-    const video = videoRef.current;
-    if (canvas && video) {
-      const context = canvas.getContext("2d");
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+  const extractFaceImage = (canvas) => {
+    const faceCanvas = document.createElement("canvas");
+    const context = faceCanvas.getContext("2d");
+    const size = Math.min(canvas.width, canvas.height) * 0.3;
+    faceCanvas.width = size;
+    faceCanvas.height = size;
+    context.drawImage(
+      canvas,
+      canvas.width * 0.35,
+      canvas.height * 0.15,
+      size,
+      size,
+      0,
+      0,
+      size,
+      size
+    );
+    return faceCanvas.toDataURL("image/png");
+  };
 
-      context.save();
-      context.scale(-1, 1);
-      context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
-      context.restore();
-
-      // 전체 캡쳐된 이미지 (데이터 URL)
-      const capturedImage = canvas.toDataURL("image/png");
-      console.log("Captured Image:", capturedImage);
-
-      // 얼굴 영역 좌표 (노란 동그라미 가이드 영역)
-      const faceLeft = video.videoWidth * 0.35;
-      const faceTop = video.videoHeight * 0.15;
-      const faceWidth = video.videoWidth * 0.30;
-      const faceHeight = video.videoHeight * 0.70;
-
-      // 얼굴 영역 오프스크린 캔버스 생성
-      const faceCanvas = document.createElement("canvas");
-      faceCanvas.width = faceWidth;
-      faceCanvas.height = faceHeight;
-      const faceCtx = faceCanvas.getContext("2d");
-      faceCtx.drawImage(
-        canvas,
-        faceLeft,
-        faceTop,
-        faceWidth,
-        faceHeight,
-        0,
-        0,
-        faceWidth,
-        faceHeight
-      );
-      const faceImage = faceCanvas.toDataURL("image/png");
-
-      // POST 요청 전송: a4_image는 빈 문자열로 전송
-      fetch("http://localhost:8080/api/colorlab/ai-model", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          face_image: faceImage,
-          a4_image: ""
-        }),
+  const sendImagesToServer = (faceImage) => {
+    axios
+      .post("http://localhost:9000/api/colorlab/ai-model", {
+        face_image: faceImage || "",
+        a4_image: "", // 빈 문자열 전송
       })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error(`서버 응답 상태: ${res.status}`);
-          }
-          return res.json();
-        })
-        .then((data) => {
-          console.log("서버 응답:", data);
-          setUploadResponse(data);
-        })
-        .catch((err) => {
-          console.error("에러 발생:", err);
-          setUploadResponse({ error: err.toString() });
-        });
-    }
+      .then((response) => {
+        console.log("Server Response:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error sending images to server:", error);
+      });
+  };
+
+  const handleRetake = () => {
+    window.location.reload();
   };
 
   return (
     <div style={{ width: "100%", height: "115%", position: "relative", overflow: "hidden" }}>
-      {flash && (
+      {isFlashing && (
         <div
           style={{
             position: "absolute",
@@ -177,82 +147,155 @@ const MediapipeCamera = () => {
             left: 0,
             width: "100%",
             height: "100%",
-            background: "white",
+            backgroundColor: "white",
             opacity: 0.8,
             transition: "opacity 0.3s",
+            zIndex: 20,
           }}
         />
       )}
-      <video
-        ref={videoRef}
-        autoPlay
-        muted
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          transform: "scaleX(-1)",
-        }}
-      />
-      {/* 얼굴 인식 가이드 영역 (노란 동그라미) */}
-      <div
-        style={{
-          position: "absolute",
-          border: "8px dashed yellow",
-          width: "30%",
-          height: "70%",
-          top: "15%",
-          left: "35%",
-          borderRadius: "50%",
-          pointerEvents: "none",
-        }}
-      />
-      {/* 안내 텍스트 */}
-      <div
-        style={{
-          position: "absolute",
-          top: "7%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          color: "white",
-          fontWeight: "bold",
-          fontSize: "24px",
-          textAlign: "center",
-          pointerEvents: "none",
-        }}
-      >
-        얼굴을 가이드라인에 맞게 위치시켜 주세요
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          top: "10px",
-          left: "10px",
-          padding: "10px",
-          background: "rgba(0, 0, 0, 0.7)",
-          borderRadius: "10px",
-          color: "white",
-        }}
-      >
-        <p>
-          <input type="checkbox" checked={faceDetected} readOnly /> 얼굴 인식
-        </p>
-        <p>Captured: {captured ? "Yes" : "No"}</p>
-        {uploadResponse && (
-          <p>
-            Upload Response:{" "}
-            {uploadResponse.error
-              ? uploadResponse.error
-              : JSON.stringify(uploadResponse)}
-          </p>
-        )}
-      </div>
-      <canvas ref={canvasRef} style={{ display: "none" }} willreadfrequently="true" />
+
+      {countdown !== null && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            fontSize: "4rem",
+            fontWeight: "bold",
+            color: "white",
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
+            padding: "1.5rem 3rem",
+            borderRadius: "15px",
+            zIndex: 10,
+          }}
+        >
+          {countdown}
+        </div>
+      )}
+
+      {capturedImage ? (
+        <div style={{ width: "100%", height: "100%", position: "relative" }}>
+          <img
+            src={capturedImage}
+            alt="Captured"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              bottom: "5%",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              gap: "40px",
+              padding: "0 5%",
+            }}
+          >
+            <button
+              onClick={handleRetake}
+              style={{
+                padding: "1rem 2rem",
+                fontSize: "1.5rem",
+                fontWeight: "bold",
+                backgroundColor: "#82DC28",
+                color: "white",
+                border: "none",
+                borderRadius: "10px",
+                cursor: "pointer",
+                transform: "translateX(-65%)",
+              }}
+            >
+              다시 촬영하기
+            </button>
+            <button
+              onClick={() => navigate("/LoadingPage")}
+              style={{
+                padding: "1rem 2rem",
+                fontSize: "1.5rem",
+                fontWeight: "bold",
+                backgroundColor: "#82DC28",
+                color: "white",
+                border: "none",
+                borderRadius: "10px",
+                cursor: "pointer",
+                transform: "translateX(-15%)",
+              }}
+            >
+              다음으로
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              transform: "scaleX(-1)",
+            }}
+          />
+          <canvas ref={canvasRef} style={{ display: "none" }} willreadfrequently="true" />
+
+          <div
+            style={{
+              position: "absolute",
+              border: "8px dashed yellow",
+              width: "30%",
+              height: "70%",
+              top: "15%",
+              left: "35%",
+              borderRadius: "50%",
+              pointerEvents: "none",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              top: "5%",
+              left: "50%",
+              transform: "translateX(-50%)",
+              color: "black",
+              fontWeight: "bold",
+              fontSize: "24px",
+              textAlign: "center",
+              pointerEvents: "none",
+            }}
+          >
+            얼굴을 가이드라인에 맞게 위치시켜 주세요.
+          </div>
+
+          {showCaptureButton && (
+            <div style={{ position: "absolute", bottom: "40%", left: "50%", transform: "translateX(-50%)" }}>
+              <button
+                onClick={handleCapture}
+                style={{
+                  padding: "1.2rem 2.5rem",
+                  fontSize: "1.6rem",
+                  fontWeight: "bold",
+                  backgroundColor: "#82DC28",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "12px",
+                  cursor: "pointer",
+                }}
+              >
+                촬영하기
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 };
 
-export default MediapipeCamera;
+export default MediapipeCameraXTimer;
