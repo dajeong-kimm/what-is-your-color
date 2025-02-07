@@ -1,36 +1,33 @@
+/* 기본 Bottombutton 스타일 */
 .bottom-button {
-  display: flex; /*  Flexbox 사용 */
-  justify-content: center; /* 가로 중앙 정렬 */
-  align-items: center; /*  세로 중앙 정렬 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-left: 20px;
   text-decoration: none;
-  color: black;
+  background-color: #82dc28; /* 기본 배경색 */
+  color: white;              /* 기본 텍스트 색 (hover 전) */
   padding: 10px 20px;
   border-radius: 10px;
-  font-size:20px;
-  font-weight: 600; 
+  font-size: 20px;
+  font-weight: 600;
   font-family: NanumGothic;
-  transition: background-color 0.3s;
-  box-shadow: 0px 2.221px 2.221px 0px rgba(0, 0, 0, 0.25);
- 
+  transition: background-color 0.3s, color 0.3s;
+  box-shadow: 0px 2.22px 2.22px rgba(0, 0, 0, 0.25);
 }
 
-
-.bottom-button:hover {
-  background-color: #a0c9df;  /* hover 시 색상 변경 */
-  color: white;
-}
-
-/* 활성화된 버튼 */
+/* 마우스 오버 시 및 active 상태(현재 페이지와 링크가 같을 때) */
+.bottom-button:hover,
 .bottom-button.active {
-  background: #FFE5E5;  /* 활성화된 버튼 색상 */
+  background-color: #36972d;  /* hover 및 active 효과 색상 */
+  color: white;               /* 텍스트는 흰색 */
 }
 
-/* 각 버튼별 개별 색상 추가 */
+/* 만약 개별 버튼에 추가 스타일이 필요하면 (예시로 recommend, makeup) */
 .bottom-button.recommend {
-  background-color: #E5F6FF; 
+  background-color: #E5F6FF;
 }
 
 .bottom-button.makeup {
-  background-color: #FFE5E5; 
+  background-color: #FFE5E5;
 }
