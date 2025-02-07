@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./features/start/Home";
 import EndPage from "./features/start/EndPage";
 import CheckPage from "./features/start/CheckPage";
-import MainPage from "./features/start/MainPage.jsx";
+import MainPage from "./features/start/MainPage";
 import Mainpage2 from "./features/start/MainPage2.jsx";
 import DiagCapture from "./features/diagnosis/DiagCapture";
 import DiagCaptureX from "./features/diagnosis/DiagCaptureX";
@@ -18,6 +18,7 @@ import MakeupByColor from "./features/makeup/MakeupByColor";
 import Makeup from "./features/makeup/Makeup";
 import MediapipeCameraX from "./features/camera/MediapipeCameraX.jsx";
 import PersonalRecommend from "./features/recommend/PersonalRecommend";
+
 
 import { RecoilRoot } from 'recoil';
 
