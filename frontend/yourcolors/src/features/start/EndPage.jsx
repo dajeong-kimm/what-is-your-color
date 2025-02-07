@@ -24,7 +24,7 @@ const EndPage = () => {
         <div className="endpage-container">
           <div className="endpage-message">
             <h1>
-              " 너의 이름은 ? " <br />
+              " 너의 색깔은 ? " <br />
               체험이 완료되었습니다!
             </h1>
           </div>
