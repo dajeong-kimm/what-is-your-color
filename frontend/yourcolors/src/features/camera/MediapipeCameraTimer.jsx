@@ -3,6 +3,7 @@ import { Holistic } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
 import LoadingPage from "../../button/loadingpage/LoadingPage";
+import axios from "axios";
 
 const MediapipeCameraTimer = () => {
   const videoRef = useRef(null);
@@ -93,8 +94,73 @@ const MediapipeCameraTimer = () => {
         const imageData = canvas.toDataURL("image/png");
         setCapturedImage(imageData);
         setCountdown(null);
+
+        // 얼굴 이미지 및 A4 이미지 추출 로직
+        const faceImage = extractFaceImage(canvas);
+        const a4Image = extractA4Image(canvas);
+
+        // 📌 Console로 추출한 이미지 데이터 확인
+        console.log("Face Image Data:", faceImage);
+        console.log("A4 Image Data:", a4Image);
+
+        sendImagesToServer(faceImage, a4Image);
       }
     }, 300); // 촬영 애니메이션 지속시간
+  };
+
+  const extractFaceImage = (canvas) => {
+    const faceCanvas = document.createElement("canvas");
+    const context = faceCanvas.getContext("2d");
+    const size = Math.min(canvas.width, canvas.height) * 0.3;
+    faceCanvas.width = size;
+    faceCanvas.height = size;
+    context.drawImage(
+      canvas,
+      canvas.width * 0.35,
+      canvas.height * 0.15,
+      size,
+      size,
+      0,
+      0,
+      size,
+      size
+    );
+    return faceCanvas.toDataURL("image/png");
+  };
+
+  const extractA4Image = (canvas) => {
+    const a4Canvas = document.createElement("canvas");
+    const context = a4Canvas.getContext("2d");
+    const width = canvas.width * 0.15;
+    const height = canvas.height * 0.5;
+    a4Canvas.width = width;
+    a4Canvas.height = height;
+    context.drawImage(
+      canvas,
+      canvas.width * 0.7,
+      canvas.height * 0.2,
+      width,
+      height,
+      0,
+      0,
+      width,
+      height
+    );
+    return a4Canvas.toDataURL("image/png");
+  };
+
+  const sendImagesToServer = (faceImage, a4Image) => {
+    axios
+      .post("http://localhost:9000/api/colorlab/ai-model", {
+        face_image: faceImage,
+        a4_image: a4Image,
+      })
+      .then((response) => {
+        console.log("Server Response:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error sending images to server:", error);
+      });
   };
 
   /** 📌 다시 촬영하기 버튼 클릭 시 페이지 새로고침 */
@@ -129,7 +195,7 @@ const MediapipeCameraTimer = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            fontSize: "6rem",
+            fontSize: "4rem",
             fontWeight: "bold",
             color: "white",
             backgroundColor: "rgba(0, 0, 0, 0.7)",
