@@ -2,25 +2,24 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./features/start/Home";
 import EndPage from "./features/start/EndPage";
 import CheckPage from "./features/start/CheckPage";
-import MainPage from "./features/start/Mainpage";
-import Mainpage2 from "./features/start/Mainpage2";
+import MainPage from "./features/start/MainPage.jsx";
+import Mainpage2 from "./features/start/MainPage2.jsx";
 import DiagCapture from "./features/diagnosis/DiagCapture";
 import DiagCaptureX from "./features/diagnosis/DiagCaptureX";
 import DiagImage from "./features/diagnosis/DiagImage";
-import MediapipeCamera from "./features/camera/mediapipecamera";
+import MediapipeCamera from "./features/camera/MediapipeCamera.jsx";
 import DiagResult from "./features/diagnosis/DiagResult";
 import BestWorst from "./features/diagnosis/BestWorst";
-import LoadingPage from "./button/LoadingPage/LoadingPage";
+import LoadingPage from "./button/loading-page/LoadingPage.jsx";
 import TestPage from "./common/components/TestPage";
 import PersonalColorMain from './features/personalcolors/PersonalColorMain';
 import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
 import MakeupByColor from "./features/makeup/MakeupByColor";
 import Makeup from "./features/makeup/Makeup";
-import MediapipeCameraX from "./features/camera/mediapipecameraX.jsx";
+import MediapipeCameraX from "./features/camera/MediapipeCameraX.jsx";
 import PersonalRecommend from "./features/recommend/PersonalRecommend";
 
 import { RecoilRoot } from 'recoil';
-
 
 const App = () => {
   return (
