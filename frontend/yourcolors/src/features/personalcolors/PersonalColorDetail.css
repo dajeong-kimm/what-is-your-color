@@ -47,12 +47,11 @@
   
   .hashtag {
     display: inline-block;
-    background-color: #d9f7d9;
     color: #2e7d32;
-    padding: 5px 10px;
+    padding-right:  10px;
     border-radius: 8px;
     margin: 0 5px;
-    font-size: 1.2rem;
+    font-size: 1.8rem;
   }
   
   .personal-detail-image img {
