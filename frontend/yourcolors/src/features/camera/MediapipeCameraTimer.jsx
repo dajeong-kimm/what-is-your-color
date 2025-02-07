@@ -1,8 +1,8 @@
+// color-distance, 얼굴, 종이 다 보내는 버전
 import React, { useRef, useEffect, useState } from "react";
 import { Holistic } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
-import LoadingPage from "../../button/loadingpage/LoadingPage";
 import axios from "axios";
 
 const MediapipeCameraTimer = () => {
@@ -11,7 +11,7 @@ const MediapipeCameraTimer = () => {
   const [countdown, setCountdown] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [showCaptureButton, setShowCaptureButton] = useState(true);
-  const [isFlashing, setIsFlashing] = useState(false); // 촬영 애니메이션 효과
+  const [isFlashing, setIsFlashing] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,8 +20,7 @@ const MediapipeCameraTimer = () => {
 
   const initializeCamera = () => {
     const holistic = new Holistic({
-      locateFile: (file) =>
-        `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
+      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
     });
 
     holistic.setOptions({
@@ -54,7 +53,6 @@ const MediapipeCameraTimer = () => {
     }
   };
 
-  /** 📌 촬영 버튼 클릭 시 5초 카운트다운 후 사진 촬영 */
   const handleCapture = async () => {
     setCapturedImage(null);
     setCountdown(5);
@@ -72,9 +70,8 @@ const MediapipeCameraTimer = () => {
     }, 1000);
   };
 
-  /** 📌 사진 촬영 후 캡처한 이미지 저장 */
   const capturePhoto = () => {
-    setIsFlashing(true); // 📸 촬영 애니메이션 활성화
+    setIsFlashing(true);
 
     setTimeout(() => {
       setIsFlashing(false);
@@ -95,63 +92,74 @@ const MediapipeCameraTimer = () => {
         setCapturedImage(imageData);
         setCountdown(null);
 
-        // 얼굴 이미지 및 A4 이미지 추출 로직
         const faceImage = extractFaceImage(canvas);
         const a4Image = extractA4Image(canvas);
 
-        // 📌 Console로 추출한 이미지 데이터 확인
         console.log("Face Image Data:", faceImage);
         console.log("A4 Image Data:", a4Image);
 
         sendImagesToServer(faceImage, a4Image);
       }
-    }, 300); // 촬영 애니메이션 지속시간
+    }, 300);
   };
 
   const extractFaceImage = (canvas) => {
     const faceCanvas = document.createElement("canvas");
     const context = faceCanvas.getContext("2d");
-    const size = Math.min(canvas.width, canvas.height) * 0.3;
-    faceCanvas.width = size;
-    faceCanvas.height = size;
+
+    const faceX = canvas.width * 0.35;
+    const faceY = canvas.height * 0.28;
+    const faceWidth = canvas.width * 0.3;
+    const faceHeight = canvas.height * 0.46;
+
+    faceCanvas.width = faceWidth;
+    faceCanvas.height = faceHeight;
+
     context.drawImage(
       canvas,
-      canvas.width * 0.35,
-      canvas.height * 0.15,
-      size,
-      size,
+      faceX,
+      faceY,
+      faceWidth,
+      faceHeight,
       0,
       0,
-      size,
-      size
+      faceWidth,
+      faceHeight
     );
+
     return faceCanvas.toDataURL("image/png");
   };
 
   const extractA4Image = (canvas) => {
     const a4Canvas = document.createElement("canvas");
     const context = a4Canvas.getContext("2d");
-    const width = canvas.width * 0.15;
-    const height = canvas.height * 0.5;
-    a4Canvas.width = width;
-    a4Canvas.height = height;
+
+    const a4X = canvas.width * 0.7;
+    const a4Y = canvas.height * 0.3;
+    const a4Width = canvas.width * 0.15;
+    const a4Height = canvas.height * 0.4;
+
+    a4Canvas.width = a4Width;
+    a4Canvas.height = a4Height;
+
     context.drawImage(
       canvas,
-      canvas.width * 0.7,
-      canvas.height * 0.2,
-      width,
-      height,
+      a4X,
+      a4Y,
+      a4Width,
+      a4Height,
       0,
       0,
-      width,
-      height
+      a4Width,
+      a4Height
     );
+
     return a4Canvas.toDataURL("image/png");
   };
 
   const sendImagesToServer = (faceImage, a4Image) => {
     axios
-      .post("http://localhost:9000/api/colorlab/ai-model", {
+      .post("http://localhost:9000//api/colorlab/color-dist", {
         face_image: faceImage,
         a4_image: a4Image,
       })
@@ -163,14 +171,12 @@ const MediapipeCameraTimer = () => {
       });
   };
 
-  /** 📌 다시 촬영하기 버튼 클릭 시 페이지 새로고침 */
   const handleRetake = () => {
-    window.location.reload(); // 🔄 페이지 새로고침
+    window.location.reload();
   };
 
   return (
     <div style={{ width: "100%", height: "115%", position: "relative", overflow: "hidden" }}>
-      {/* 📸 촬영 애니메이션 (화면 깜빡임) */}
       {isFlashing && (
         <div
           style={{
@@ -187,7 +193,6 @@ const MediapipeCameraTimer = () => {
         />
       )}
 
-      {/* 📌 5초 카운트다운 화면 */}
       {countdown !== null && (
         <div
           style={{
@@ -208,7 +213,6 @@ const MediapipeCameraTimer = () => {
         </div>
       )}
 
-      {/* 📌 촬영된 이미지 표시 */}
       {capturedImage ? (
         <div style={{ width: "100%", height: "100%", position: "relative" }}>
           <img
@@ -216,15 +220,15 @@ const MediapipeCameraTimer = () => {
             alt="Captured"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
-                    {/* 📌 버튼 영역 */}
-                    <div 
+
+          <div 
             style={{ 
               position: "absolute", 
               bottom: "5%", 
               width: "100%", 
               display: "flex", 
-              justifyContent: "center",  /* 버튼을 중앙 정렬 */
-              gap: "40px",  /* 버튼 간 간격 조정 */
+              justifyContent: "center",  
+              gap: "40px",  
               padding: "0 5%" 
             }}
           >
@@ -239,8 +243,7 @@ const MediapipeCameraTimer = () => {
                 border: "none",
                 borderRadius: "10px",
                 cursor: "pointer",
-                transform: "translateX(-65%)", // 📌 버튼을 왼쪽으로 이동
-
+                transform: "translateX(-65%)",
               }}
             >
               다시 촬영하기
@@ -256,13 +259,12 @@ const MediapipeCameraTimer = () => {
                 border: "none",
                 borderRadius: "10px",
                 cursor: "pointer",
-                transform: "translateX(-15%)", // 📌 버튼을 더 왼쪽으로 이동
+                transform: "translateX(-15%)",
               }}
             >
               다음으로
             </button>
           </div>
-
         </div>
       ) : (
         <>
@@ -282,7 +284,6 @@ const MediapipeCameraTimer = () => {
           />
           <canvas ref={canvasRef} style={{ display: "none" }} willreadfrequently="true" />
 
-          {/* 📌 얼굴 인식 가이드 영역 */}
           <div
             style={{
               position: "absolute",
@@ -295,7 +296,6 @@ const MediapipeCameraTimer = () => {
               pointerEvents: "none",
             }}
           />
-          {/* 📌 종이 인식 가이드 영역 */}
           <div
             style={{
               position: "absolute",
@@ -307,7 +307,6 @@ const MediapipeCameraTimer = () => {
               pointerEvents: "none",
             }}
           />
-          {/* 📌 안내 텍스트 */}
           <div
             style={{
               position: "absolute",
@@ -325,7 +324,6 @@ const MediapipeCameraTimer = () => {
             네모 영역에 맞추어 종이를 들어주세요.
           </div>
 
-          {/* 📌 촬영하기 버튼 */}
           {showCaptureButton && (
             <div style={{ position: "absolute", bottom: "40%", left: "50%", transform: "translateX(-50%)" }}>
               <button
