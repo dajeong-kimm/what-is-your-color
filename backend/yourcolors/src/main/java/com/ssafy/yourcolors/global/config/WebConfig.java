@@ -17,7 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**") // API 요청에 대해서만 CORS 적용
                 .allowedOrigins(
-                        "http://localhost:3000", // 로컬 개발 환경
+                        "http://localhost:5173", // 로컬 개발 환경
                         "http://3.35.236.198" // 배포된 프론트엔드 서버
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
