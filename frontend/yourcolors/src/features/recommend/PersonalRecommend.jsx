@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom"; // URL에서 퍼스널컬러 가�
 import Background from "../../background/background/Background";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
-import Bottombar from "../../button/bottom/Bottombar";
-import ProductButton from "../../button/productbutton/ProductButton";
-import "./PersonalcolorRecommend.css";
+import Bottombar from "../../button/bottom/BottomBar";
+import ProductButton from "../../button/product-button/ProductButton";
+import "./PersonalColorRecommend.css";
 
 // 더미 데이터 (카테고리별 화장품 목록)
 const dummyData = {

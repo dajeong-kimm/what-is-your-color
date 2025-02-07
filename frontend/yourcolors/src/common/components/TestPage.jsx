@@ -1,7 +1,7 @@
 
 import React from "react";
-import ProductButton from "../../button/productbutton/ProductButton";
-import DiagnosticBox from "../../button/diagnosticbox/DiagnosticBox";
+import ProductButton from "../../button/product-button/ProductButton";
+import DiagnosticBox from "../../button/diagnostic-box/DiagnosticBox";
 const TestPage = () => {
   return (
       <div style={styles.componentWrapper}>

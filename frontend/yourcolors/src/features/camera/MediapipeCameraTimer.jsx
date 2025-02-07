@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { Holistic } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
+import LoadingPage from "../../button/loading-page/LoadingPage";
 import axios from "axios";
 
 const MediapipeCameraTimer = () => {

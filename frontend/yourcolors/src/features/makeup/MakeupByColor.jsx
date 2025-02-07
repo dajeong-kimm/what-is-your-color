@@ -1,10 +1,10 @@
 import React from 'react';
-import Background from "../../background/background/BackGround";
+import Background from "../../background/background/Background";
 import Smallmain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
 import MakeupCamera from './MakeupCamera';
-import ProductButton from '../../button/productbutton/ProductButton';
+import ProductButton from '../../button/product-button/ProductButton';
 import "./Makeup.css";
 
 const MakeupByColor = () => {
