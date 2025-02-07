@@ -1,7 +1,7 @@
 // components/Topbar.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Topbar.css';
+import './TopBar.css';
 import Topbutton from './TopButton';
 import Logo from "../../assets/Logo.png"; // 이미지 import
 
