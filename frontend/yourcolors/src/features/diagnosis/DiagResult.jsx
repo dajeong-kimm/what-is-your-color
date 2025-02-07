@@ -9,20 +9,20 @@ import "./DiagResult.css";
 import personalColors from "../../data/PersonalColors";
 import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
 
-// const colorImageMap = {
-//   "봄 라이트": "spring-light",
-//   "봄 브라이트": "spring-bright",
-//   "봄 비비드": "spring-vivid",
-//   "여름 라이트": "summer-light",
-//   "여름 브라이트": "summer-bright",
-//   "여름 뮤트": "summer-mute",
-//   "가을 뮤트": "autumn-mute",
-//   "가을 스트롱": "autumn-strong",
-//   "가을 다크": "autumn-dark",
-//   "겨울 비비드": "winter-vivid",
-//   "겨울 스트롱": "winter-strong",
-//   "겨울 다크": "winter-dark",
-// };
+const colorImageMap = {
+  "봄 라이트": "spring-light",
+  "봄 브라이트": "spring-bright",
+  "봄 비비드": "spring-vivid",
+  "여름 라이트": "summer-light",
+  "여름 브라이트": "summer-bright",
+  "여름 뮤트": "summer-mute",
+  "가을 뮤트": "autumn-mute",
+  "가을 스트롱": "autumn-strong",
+  "가을 다크": "autumn-dark",
+  "겨울 비비드": "winter-vivid",
+  "겨울 스트롱": "winter-strong",
+  "겨울 다크": "winter-dark",
+};
 
 const DiagResult = () => {
   const personalId = 1;
@@ -42,10 +42,10 @@ const DiagResult = () => {
 
   // 🔹 임시 예시 데이터
   const exampleData = {
-    mainColor: "봄 라이트",
-    subColors: ["가을 뮤트", "여름 라이트"],
-    summary: "러블리의 인간화",
-    hashtags: ["#밝은", "#부드러운","#스윗한"],
+    mainColor: "겨울 다크",
+    subColors: ["가을 다크", "겨울 스트롱"],
+    summary: "모던함의 인간화",
+    hashtags: ["#차가운", "#시크한","#카리스마"],
   };
 
   // 백엔드 연결 후 exampleData 부분 삭제 가능
