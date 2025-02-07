@@ -2,87 +2,76 @@ import os
 import cv2
 import mediapipe as mp
 import numpy as np
+import time
+from tensorflow.keras.applications import MobileNetV2
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.layers import Dense, Dropout, BatchNormalization, GlobalAveragePooling2D
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.callbacks import ModelCheckpoint
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import KFold
 
 # Mediapipe Face Mesh 설정
 mp_face_mesh = mp.solutions.face_mesh
-face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1)
+face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1, min_detection_confidence=0.5)
 
-# 랜드마크 기반 ROI 색상 추출 함수
-def get_average_color(image, center, size_ratio=0.01):
-    h, w, _ = image.shape
-    size = int(min(h, w) * size_ratio)
-    x, y = center
-    x_min, x_max = max(0, x - size // 2), min(w, x + size // 2)
-    y_min, y_max = max(0, y - size // 2), min(h, y + size // 2)
-    region = image[y_min:y_max, x_min:x_max]
-    if region.size > 0:
-        return np.mean(region, axis=(0, 1))
-    return [0, 0, 0]
-
-# 랜드마크 기반 중간 좌표 계산 함수
-def get_midpoint(landmarks, index1, index2, h, w):
-    x = int((landmarks[index1].x + landmarks[index2].x) / 2 * w)
-    y = int((landmarks[index1].y + landmarks[index2].y) / 2 * h)
-    return (x, y)
-
-# 얼굴 특징 추출 함수
-def extract_features(image):
+# 얼굴 특정 영역 크롭 함수
+def crop_face_regions(image):
     results = face_mesh.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     if not results.multi_face_landmarks:
         return None
 
-    for face_landmarks in results.multi_face_landmarks:
-        landmarks = face_landmarks.landmark
-        h, w, _ = image.shape
-        features = []
+    h, w, _ = image.shape
+    face_landmarks = results.multi_face_landmarks[0].landmark
 
-        landmark_map = {
-            "skin_color": [1],
-            "left_eye_color": (33, 133),
-            "right_eye_color": (362, 263),
-            "hair_color": [10],
-            "lips_color": [13],
-            "cheek_left_color": [234],
-            "cheek_right_color": [454],
-        }
+    region_map = {
+        "forehead": [10],  # 이마 중앙
+        "left_cheek": [234],  # 왼쪽 볼
+        "right_cheek": [454],  # 오른쪽 볼
+        "lips": [13],  # 입술 중앙
+        "left_eye": (33, 133),  # 왼쪽 눈
+        "right_eye": (362, 263)  # 오른쪽 눈
+    }
 
-        for feature, indices in landmark_map.items():
-            try:
-                if feature in ["left_eye_color", "right_eye_color"]:
-                    center = get_midpoint(landmarks, indices[0], indices[1], h, w)
-                else:
-                    center = (int(landmarks[indices[0]].x * w), int(landmarks[indices[0]].y * h))
-                color = get_average_color(image, center, size_ratio=0.03)
-                features.extend(color)
-            except IndexError:
-                continue
-        return np.array(features)
+    regions = []
+    for key, indices in region_map.items():
+        if isinstance(indices, tuple):  # 눈 중앙 좌표
+            x = int((face_landmarks[indices[0]].x + face_landmarks[indices[1]].x) / 2 * w)
+            y = int((face_landmarks[indices[0]].y + face_landmarks[indices[1]].y) / 2 * h)
+        else:  # 단일 좌표
+            x = int(face_landmarks[indices[0]].x * w)
+            y = int(face_landmarks[indices[0]].y * h)
+
+        size = int(min(h, w) * 0.1)
+        x_min, x_max = max(0, x - size // 2), min(w, x + size // 2)
+        y_min, y_max = max(0, y - size // 2), min(h, y + size // 2)
+
+        region = image[y_min:y_max, x_min:x_max]
+        if region.size > 0:
+            resized = cv2.resize(region, (64, 64))
+            regions.append(resized)
+
+    if len(regions) == len(region_map):
+        return np.concatenate(regions, axis=1)
     return None
 
-# 데이터 로드 및 준비
+# 데이터 로드 함수
 def load_data(dataset_path, categories):
-    data = []
-    labels = []
+    data, labels = [], []
     for label, category in enumerate(categories):
         category_path = os.path.join(dataset_path, category)
         for file_name in os.listdir(category_path):
             file_path = os.path.join(category_path, file_name)
             image = cv2.imread(file_path)
             if image is not None:
-                features = extract_features(image)
-                if features is not None:
-                    data.append(features)
+                cropped_image = crop_face_regions(image)
+                if cropped_image is not None:
+                    data.append(cropped_image)
                     labels.append(label)
-    return np.array(data), to_categorical(np.array(labels), num_classes=len(categories))
+    return np.array(data) / 255.0, to_categorical(np.array(labels), num_classes=len(categories))
 
 # 데이터셋 경로
 train_path = r"C:\Users\SSAFY\Desktop\dataset_split\train"
-val_path = r"C:\Users\SSAFY\Desktop\dataset_split\val"
 categories = [
     "autumn_dark", "autumn_muted", "autumn_strong",
     "spring_light", "spring_bright", "spring_vivid",
@@ -91,21 +80,75 @@ categories = [
 ]
 
 X_train, y_train = load_data(train_path, categories)
-X_val, y_val = load_data(val_path, categories)
 
-# 모델 설계 및 학습
-input_dim = X_train.shape[1]
-model = Sequential([
-    Dense(128, activation='relu', input_shape=(input_dim,)),
-    Dropout(0.3),
-    Dense(64, activation='relu'),
-    Dense(len(categories), activation='softmax')
-])
+# CNN 기반 모델 설계
+def build_model(input_shape, num_classes):
+    base_model = MobileNetV2(weights="imagenet", include_top=False, input_shape=input_shape)
+    base_model.trainable = False  # 사전 학습된 가중치 고정
 
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    model = Sequential([
+        base_model,
+        GlobalAveragePooling2D(),
+        Dense(256, activation='relu'),
+        BatchNormalization(),
+        Dropout(0.3),
+        Dense(128, activation='relu'),
+        BatchNormalization(),
+        Dropout(0.3),
+        Dense(num_classes, activation='softmax')
+    ])
+    
+    model.compile(optimizer=Adam(learning_rate=0.0005), 
+                  loss='categorical_crossentropy', 
+                  metrics=['accuracy'])
+    
+    return model
 
-# 모델 체크포인트 저장
-checkpoint = ModelCheckpoint("personal_color_classifier.h5", save_best_only=True, monitor='val_accuracy', mode='max')
-model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=50, batch_size=32, callbacks=[checkpoint])
+# K-Fold Cross Validation 설정
+kf = KFold(n_splits=5, shuffle=True, random_state=42)
 
-print("모델 학습 완료 및 저장 완료.")
+# 학습 진행
+best_model = None
+best_accuracy = 0.0
+
+input_shape = (64, 384, 3)  # 6개 영역을 가로로 결합 (64x64 * 6 = 64x384)
+
+for fold, (train_idx, val_idx) in enumerate(kf.split(X_train)):
+    print(f"🔹 Training Fold {fold+1}/5...")
+
+    X_train_fold, X_val_fold = X_train[train_idx], X_train[val_idx]
+    y_train_fold, y_val_fold = y_train[train_idx], y_train[val_idx]
+
+    model = build_model(input_shape, len(categories))
+
+    checkpoint = ModelCheckpoint(f"personal_color_classifier_fold{fold+1}.h5", save_best_only=True, monitor='val_accuracy', mode='max')
+    early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+
+    # 학습 예상 시간 출력
+    start_time = time.time()
+    total_epochs = 50
+
+    for epoch in range(total_epochs):
+        epoch_start = time.time()
+        
+        history = model.fit(X_train_fold, y_train_fold, 
+                            validation_data=(X_val_fold, y_val_fold),
+                            epochs=1, batch_size=32, verbose=1)
+
+        elapsed_time = time.time() - start_time
+        epoch_time = time.time() - epoch_start
+        remaining_epochs = total_epochs - (epoch + 1)
+        estimated_remaining_time = remaining_epochs * epoch_time
+
+        print(f"🕒 [Epoch {epoch+1}/{total_epochs}] 경과 시간: {elapsed_time:.2f}s | 예상 남은 시간: {estimated_remaining_time:.2f}s")
+
+        if early_stopping.stopped_epoch:
+            print("🛑 Early Stopping 적용됨!")
+            break
+
+    val_acc = max(history.history['val_accuracy'])
+    if val_acc > best_accuracy:
+        best_accuracy = val_acc
+        best_model = model
+
+print("✅ 모델 학습 완료 및 저장 완료.")
