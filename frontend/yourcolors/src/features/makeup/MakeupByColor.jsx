@@ -35,4 +35,5 @@ const MakeupByColor = () => {
   );
 };
 
+
 export default MakeupByColor;
