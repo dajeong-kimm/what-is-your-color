@@ -19,7 +19,7 @@ public class ConsultController {
      * AI 모델을 이용한 퍼스널 컬러 진단 API
      */
     @PostMapping("/ai")
-    public ResponseEntity<AiResponse> consultWithAI(@RequestParam("face") MultipartFile image) {
+    public ResponseEntity<AiResponse> consultWithAI(@RequestParam("image") MultipartFile image) {
         AiResponse response = consultService.consultWithAI(image);
         return ResponseEntity.ok(response);
     }
@@ -29,7 +29,7 @@ public class ConsultController {
      */
     @PostMapping("/dist")
     public ResponseEntity<DistResponse> consultWithDist(
-            @RequestParam("face") MultipartFile face,
+            @RequestParam("face_image") MultipartFile face,
             @RequestParam(value = "a4", required = false) MultipartFile a4) {
         DistResponse response = consultService.consultWithDist(face, a4);
         return ResponseEntity.ok(response);

@@ -30,7 +30,7 @@ public class TestImpl implements ConsultService {
 
     @Override
     public AiResponse consultWithAI(MultipartFile image) {
-        List<AiResponse.Result> results = processFlaskResponse(image);
+        List<AiResponse.Result> results = processAiResponse(image);
         String gptSummary = callGptApiForAI(results); // AI 모델용 GPT API 호출
 
         return new AiResponse(results, gptSummary);
@@ -38,7 +38,7 @@ public class TestImpl implements ConsultService {
 
     @Override
     public DistResponse consultWithDist(MultipartFile face, MultipartFile a4) {
-        List<DistResponse.Result> results = processDeltaEResponse(face, a4);
+        List<DistResponse.Result> results = processDistEResponse(face, a4);
         String gptSummary = callGptApiForDist(results); // Dist 모델용 GPT API 호출
 
         return new DistResponse(results, gptSummary);
@@ -47,7 +47,7 @@ public class TestImpl implements ConsultService {
     /**
      * AI 모델을 통한 퍼스널 컬러 진단
      */
-    private List<AiResponse.Result> processFlaskResponse(MultipartFile image) {
+    private List<AiResponse.Result> processAiResponse(MultipartFile image) {
         ResponseEntity<List<Map<String, String>>> response = sendToFlaskAI(image);
 
         if (response == null || response.getBody() == null || response.getBody().isEmpty()) {
@@ -66,7 +66,7 @@ public class TestImpl implements ConsultService {
     /**
      * 색상 거리 기반 퍼스널 컬러 진단
      */
-    private List<DistResponse.Result> processDeltaEResponse(MultipartFile face, MultipartFile a4) {
+    private List<DistResponse.Result> processDistEResponse(MultipartFile face, MultipartFile a4) {
         ResponseEntity<Map<String, Object>> response = sendToFlaskDist(face, a4);
 
         if (response == null || response.getBody() == null) {
@@ -89,7 +89,7 @@ public class TestImpl implements ConsultService {
 
         List<Map<String, Object>> diagnosisList = (List<Map<String, Object>>) diagnosisObj;
 
-        return diagnosisList.stream().filter(item -> ((Number) item.get("rank")).intValue() <= 3).map(item -> new DistResponse.Result(((Number) item.get("rank")).intValue(), formatPersonalColor((String) item.get("personal_color")))).collect(Collectors.toList());
+        return diagnosisList.stream().filter(item -> ((Number) item.get("rank")).intValue() <= 3).map(item -> new DistResponse.Result(((Number) item.get("rank")).intValue(), (String) item.get("personal_color"))).collect(Collectors.toList());
     }
 
     /**
@@ -156,7 +156,7 @@ public class TestImpl implements ConsultService {
                         Map.of("role", "user", "content", prompt)
                 ),
                 "temperature", 0.7,
-                "max_tokens", 200
+                "max_tokens", 1000
         );
 
         try {
@@ -199,7 +199,7 @@ public class TestImpl implements ConsultService {
                         Map.of("role", "user", "content", prompt)
                 ),
                 "temperature", 0.7,
-                "max_tokens", 250
+                "max_tokens", 1000
         );
 
         try {
