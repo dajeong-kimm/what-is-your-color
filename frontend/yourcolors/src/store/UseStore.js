@@ -10,7 +10,7 @@ const useStore = create((set) => ({
     // 새로운 API 호출: 퍼스널 컬러 상세 정보 조회
     fetchPersonalColorDetails: async (personalId) => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/info/${personalId}`);
+        const response = await axios.get(`/api/info/${personalId}`);
         console.log(response.data);
         
         // 데이터를 상태에 저장
@@ -27,7 +27,7 @@ const useStore = create((set) => ({
   
   fetchPersonalColors: async () => {
     try {
-      const response = await axios.get('http://localhost:9000/api/info/tag-list');
+      const response = await axios.get('/api/info/tag-list');
       console.log(response.data.personal_colors);
       set({ personalColors: response.data.personal_colors }); // 받아온 데이터를 상태에 저장
     } catch (error) {
@@ -42,7 +42,7 @@ const useStore = create((set) => ({
   fetchCosmetics: async (personalId) => {
     set({ loading: true });
     try {
-      const response = await axios.get(`http://localhost:9000/api/info/cosmetic/${personalId}`);
+      const response = await axios.get(`/api/info/cosmetic/${personalId}`);
       set({
         cosmetics: {
           lip: response.data.lip_products || [],

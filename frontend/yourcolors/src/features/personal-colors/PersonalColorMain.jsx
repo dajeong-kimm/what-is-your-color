@@ -6,10 +6,7 @@ import Background from "../../background/background/Background";
 import LargeMain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import "./PersonalButton.css"; // ✅ 버튼 스타일 적용
-<<<<<<< HEAD:frontend/yourcolors/src/features/personalcolors/PersonalColorMain.jsx
-=======
 import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터터
->>>>>>> origin:frontend/yourcolors/src/features/personal-colors/PersonalColorMain.jsx
 
 const PersonalColorMain = () => {
   const colors = useRecoilValue(PersonalColorState); // Recoil에서 퍼스널컬러 데이터 가져오기

@@ -16,8 +16,6 @@ const BestWorst = () => {
   const { personalColorDetails } = useStore();
   console.log("bestworst 페이지 ", personalColorDetails);
 
-<<<<<<< HEAD
-=======
   // 🔹 임시 예시 데이터 (여기에 GPT의견 이랑 베스트워스트 컬러 색상 불러오는 것임~!!!!!!!!!!!)
   const exampleData = {
     consulting: `봄 웜 라이트 톤에는 금빛 악세서리와 밝은 파스텔 색상의 악세서리가 잘 어울립니다. 
@@ -37,7 +35,6 @@ const BestWorst = () => {
   const handleRightClick = () => {
     navigate("/recommend");
   };
->>>>>>> origin
 
 
    return (

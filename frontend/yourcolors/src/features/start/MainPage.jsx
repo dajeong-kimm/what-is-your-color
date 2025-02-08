@@ -1,10 +1,5 @@
-<<<<<<< HEAD:frontend/yourcolors/src/features/start/Mainpage.jsx
-import React, { useEffect } from "react";
-import Background from "../../background/background/BackGround";
-=======
 import React from "react";
 import Background from "../../background/background/Background";
->>>>>>> origin:frontend/yourcolors/src/features/start/MainPage.jsx
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import MainButton from "../../button/main-button/MainButton";
