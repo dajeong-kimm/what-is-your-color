@@ -9,7 +9,23 @@ from tensorflow.keras.layers import Dense, Dropout, BatchNormalization, GlobalAv
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.keras.utils import to_categorical
-from sklearn.model_selection import KFold
+import tensorflow as tf
+
+# GPU 설정
+os.environ['CUDA_VISIBLE_DEVICES'] = '5'
+
+print(tf.__version__)
+print(tf.config.list_physical_devices('GPU'))
+
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    try:
+        tf.config.experimental.set_virtual_device_configuration(
+            gpus[0], [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=16000)]
+        )  # 16GB 메모리 제한 설정
+        print("✅ GPU 메모리 제한 적용됨 (16GB)")
+    except RuntimeError as e:
+        print(e)
 
 # Mediapipe Face Mesh 설정
 mp_face_mesh = mp.solutions.face_mesh
@@ -71,7 +87,8 @@ def load_data(dataset_path, categories):
     return np.array(data) / 255.0, to_categorical(np.array(labels), num_classes=len(categories))
 
 # 데이터셋 경로
-train_path = r"C:\Users\SSAFY\Desktop\dataset_split\train"
+train_path = "/home/j-i12d106/dataset/dataset_split/train"
+
 categories = [
     "autumn_dark", "autumn_muted", "autumn_strong",
     "spring_light", "spring_bright", "spring_vivid",
@@ -104,51 +121,46 @@ def build_model(input_shape, num_classes):
     
     return model
 
-# K-Fold Cross Validation 설정
-kf = KFold(n_splits=5, shuffle=True, random_state=42)
-
-# 학습 진행
-best_model = None
-best_accuracy = 0.0
-
+# 입력 이미지 크기
 input_shape = (64, 384, 3)  # 6개 영역을 가로로 결합 (64x64 * 6 = 64x384)
 
-for fold, (train_idx, val_idx) in enumerate(kf.split(X_train)):
-    print(f"🔹 Training Fold {fold+1}/5...")
+# 모델 생성
+model = build_model(input_shape, len(categories))
 
-    X_train_fold, X_val_fold = X_train[train_idx], X_train[val_idx]
-    y_train_fold, y_val_fold = y_train[train_idx], y_train[val_idx]
+# 저장할 디렉토리 생성
+save_dir = "/home/j-i12d106/saved_models"
+os.makedirs(save_dir, exist_ok=True)
 
-    model = build_model(input_shape, len(categories))
+# 체크포인트 설정 (명확한 경로 지정)
+checkpoint_path = os.path.join(save_dir, "personal_color_classifier.h5")
+checkpoint = ModelCheckpoint(checkpoint_path, save_best_only=True, monitor='val_accuracy', mode='max')
+early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 
-    checkpoint = ModelCheckpoint(f"personal_color_classifier_fold{fold+1}.h5", save_best_only=True, monitor='val_accuracy', mode='max')
-    early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+# 학습 시작
+start_time = time.time()
+total_epochs = 50
 
-    # 학습 예상 시간 출력
-    start_time = time.time()
-    total_epochs = 50
+for epoch in range(total_epochs):
+    epoch_start = time.time()
+    
+    history = model.fit(X_train, y_train, 
+                        validation_split=0.2,  # 20% 데이터 검증
+                        epochs=1, batch_size=32, verbose=1)
 
-    for epoch in range(total_epochs):
-        epoch_start = time.time()
-        
-        history = model.fit(X_train_fold, y_train_fold, 
-                            validation_data=(X_val_fold, y_val_fold),
-                            epochs=1, batch_size=32, verbose=1)
+    elapsed_time = time.time() - start_time
+    epoch_time = time.time() - epoch_start
+    remaining_epochs = total_epochs - (epoch + 1)
+    estimated_remaining_time = remaining_epochs * epoch_time
 
-        elapsed_time = time.time() - start_time
-        epoch_time = time.time() - epoch_start
-        remaining_epochs = total_epochs - (epoch + 1)
-        estimated_remaining_time = remaining_epochs * epoch_time
+    print(f"🕒 [Epoch {epoch+1}/{total_epochs}] 경과 시간: {elapsed_time:.2f}s | 예상 남은 시간: {estimated_remaining_time:.2f}s")
 
-        print(f"🕒 [Epoch {epoch+1}/{total_epochs}] 경과 시간: {elapsed_time:.2f}s | 예상 남은 시간: {estimated_remaining_time:.2f}s")
+    if early_stopping.stopped_epoch:
+        print("🛑 Early Stopping 적용됨!")
+        break
 
-        if early_stopping.stopped_epoch:
-            print("🛑 Early Stopping 적용됨!")
-            break
+# 학습 완료 후 명시적으로 모델 저장
+model.save(checkpoint_path)
+print(f"✅ 모델 학습 완료 및 저장 완료: {checkpoint_path}")
 
-    val_acc = max(history.history['val_accuracy'])
-    if val_acc > best_accuracy:
-        best_accuracy = val_acc
-        best_model = model
-
-print("✅ 모델 학습 완료 및 저장 완료.")
+# 저장된 파일 확인
+print(f"📁 저장된 모델 확인: {os.listdir(save_dir)}")

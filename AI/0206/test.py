@@ -1,87 +1,79 @@
+import os
 import cv2
 import numpy as np
+import tensorflow as tf
 from tensorflow.keras.models import load_model
-import os
-import mediapipe as mp
 from tensorflow.keras.utils import to_categorical
+from sklearn.metrics import accuracy_score
+import mediapipe as mp
 
-# Mediapipe 설정 및 함수 동일
-# (train.py의 Mediapipe 설정 및 `extract_features` 함수 복사)
-# Mediapipe Face Mesh 설정
+# ✅ Mediapipe Face Mesh 설정 (메모리 누수 방지)
 mp_face_mesh = mp.solutions.face_mesh
-face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1)
 
-# 랜드마크 기반 ROI 색상 추출 함수
-def get_average_color(image, center, size_ratio=0.01):
-    h, w, _ = image.shape
-    size = int(min(h, w) * size_ratio)
-    x, y = center
-    x_min, x_max = max(0, x - size // 2), min(w, x + size // 2)
-    y_min, y_max = max(0, y - size // 2), min(h, y + size // 2)
-    region = image[y_min:y_max, x_min:x_max]
-    if region.size > 0:
-        return np.mean(region, axis=(0, 1))
-    return [0, 0, 0]
+# ✅ 얼굴 특정 영역 크롭 함수
+def crop_face_regions(image):
+    with mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1, min_detection_confidence=0.5) as face_mesh:
+        results = face_mesh.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        if not results.multi_face_landmarks:
+            return None
 
-# 랜드마크 기반 중간 좌표 계산 함수
-def get_midpoint(landmarks, index1, index2, h, w):
-    x = int((landmarks[index1].x + landmarks[index2].x) / 2 * w)
-    y = int((landmarks[index1].y + landmarks[index2].y) / 2 * h)
-    return (x, y)
-
-# 얼굴 특징 추출 함수
-def extract_features(image):
-    results = face_mesh.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-    if not results.multi_face_landmarks:
-        return None
-
-    for face_landmarks in results.multi_face_landmarks:
-        landmarks = face_landmarks.landmark
         h, w, _ = image.shape
-        features = []
+        face_landmarks = results.multi_face_landmarks[0].landmark
 
-        landmark_map = {
-            "skin_color": [1],
-            "left_eye_color": (33, 133),
-            "right_eye_color": (362, 263),
-            "hair_color": [10],
-            "lips_color": [13],
-            "cheek_left_color": [234],
-            "cheek_right_color": [454],
+        region_map = {
+            "forehead": [10],  # 이마 중앙
+            "left_cheek": [234],  # 왼쪽 볼
+            "right_cheek": [454],  # 오른쪽 볼
+            "lips": [13],  # 입술 중앙
+            "left_eye": (33, 133),  # 왼쪽 눈
+            "right_eye": (362, 263)  # 오른쪽 눈
         }
 
-        for feature, indices in landmark_map.items():
-            try:
-                if feature in ["left_eye_color", "right_eye_color"]:
-                    center = get_midpoint(landmarks, indices[0], indices[1], h, w)
-                else:
-                    center = (int(landmarks[indices[0]].x * w), int(landmarks[indices[0]].y * h))
-                color = get_average_color(image, center, size_ratio=0.03)
-                features.extend(color)
-            except IndexError:
-                continue
-        return np.array(features)
-    return None
+        regions = []
+        for key, indices in region_map.items():
+            if isinstance(indices, tuple):  # 눈 중앙 좌표
+                x = int((face_landmarks[indices[0]].x + face_landmarks[indices[1]].x) / 2 * w)
+                y = int((face_landmarks[indices[0]].y + face_landmarks[indices[1]].y) / 2 * h)
+            else:  # 단일 좌표
+                x = int(face_landmarks[indices[0]].x * w)
+                y = int(face_landmarks[indices[0]].y * h)
 
-# 데이터 로드 및 준비
+            size = int(min(h, w) * 0.1)
+            x_min, x_max = max(0, x - size // 2), min(w, x + size // 2)
+            y_min, y_max = max(0, y - size // 2), min(h, y + size // 2)
+
+            region = image[y_min:y_max, x_min:x_max]
+            if region.size > 0:
+                resized = cv2.resize(region, (64, 64))
+                regions.append(resized)
+
+        if len(regions) == len(region_map):
+            return np.concatenate(regions, axis=1)
+        return None
+
+# ✅ 데이터 로드 함수
 def load_data(dataset_path, categories):
-    data = []
-    labels = []
+    data, labels = [], []
     for label, category in enumerate(categories):
         category_path = os.path.join(dataset_path, category)
         for file_name in os.listdir(category_path):
             file_path = os.path.join(category_path, file_name)
             image = cv2.imread(file_path)
             if image is not None:
-                features = extract_features(image)
-                if features is not None:
-                    data.append(features)
+                cropped_image = crop_face_regions(image)
+                if cropped_image is not None:
+                    data.append(cropped_image)
                     labels.append(label)
-    return np.array(data), to_categorical(np.array(labels), num_classes=len(categories))
 
+    if len(data) == 0 or len(labels) == 0:
+        print("❌ 데이터가 로드되지 않았습니다. 경로를 확인하세요.")
+        exit()
 
-# 모델 로드
-model = load_model("personal_color_classifier.h5")
+    return np.array(data) / 255.0, to_categorical(np.array(labels), num_classes=len(categories))
+
+# ✅ 테스트 데이터 로드
+test_path = "/home/j-i12d106/dataset/dataset_split/test"
+
 categories = [
     "autumn_dark", "autumn_muted", "autumn_strong",
     "spring_light", "spring_bright", "spring_vivid",
@@ -89,34 +81,23 @@ categories = [
     "winter_dark", "winter_strong", "winter_vivid"
 ]
 
-# 테스트 데이터셋 로드
-test_path = r"C:\Users\SSAFY\Desktop\dataset_split\test"
 X_test, y_test = load_data(test_path, categories)
 
-# 모델 성능 평가
-loss, accuracy = model.evaluate(X_test, y_test)
-print(f"테스트 데이터 정확도: {accuracy:.2f}")
+# ✅ 저장된 모델 불러오기 (경로 수정)
+model_path = "/home/j-i12d106/saved_models/personal_color_classifier.h5"  # 올바른 경로로 변경
+if not os.path.exists(model_path):
+    print(f"❌ 모델 파일이 존재하지 않습니다: {model_path}")
+    exit()
 
-# 테스트 이미지 개별 예측
-test_image_path = r"C:\Users\SSAFY\Desktop\test_image.png"
-image = cv2.imread(test_image_path)
+print(f"🔄 모델 로드 중... {model_path}")
+model = load_model(model_path)
 
-if image is not None:
-    features = extract_features(image)
-    if features is not None:
-        features = features.reshape(1, -1)
-        predictions = model.predict(features)
-        predicted_index = np.argmax(predictions)
-        confidence = predictions[0][predicted_index]
-        predicted_label = categories[predicted_index]
+# ✅ 모델 평가 (배치 사이즈 명시)
+print("🔍 테스트 데이터로 정확도 평가 중...")
+y_pred = model.predict(X_test, batch_size=32, verbose=1)
+y_pred_labels = np.argmax(y_pred, axis=1)
+y_test_labels = np.argmax(y_test, axis=1)
 
-        print(f"예측된 퍼스널 컬러: {predicted_label}")
-        print(f"신뢰도: {confidence:.2f}")
-
-        # 상위 3개 출력
-        top_3_indices = predictions[0].argsort()[-3:][::-1]
-        print("상위 3개의 퍼스널 컬러:")
-        for i, index in enumerate(top_3_indices):
-            print(f"{i+1}위: {categories[index]} (확률: {predictions[0][index]:.2f})")
-else:
-    print("이미지를 로드할 수 없습니다.")
+# ✅ 정확도 출력
+test_accuracy = accuracy_score(y_test_labels, y_pred_labels)
+print(f"✅ 테스트 데이터 정확도: {test_accuracy:.4f}")
