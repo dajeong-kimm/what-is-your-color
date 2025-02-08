@@ -1,0 +1,20 @@
+.endpage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+  /* 텍스트를 약간 위로 올리기 위해 상단 마진을 줄입니다 */
+  margin-top: -40px;
+}
+
+.endpage-message h1 {
+  font-size: 5rem; /* 문구 크기를 크게 조정 */
+  color: #000000;
+  margin-bottom: 60px; /* 텍스트와 버튼 사이 간격 확대 */
+  line-height: 1.2; /* 줄 간격 조정 */
+}
+
+

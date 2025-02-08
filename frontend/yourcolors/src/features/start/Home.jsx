@@ -1,6 +1,6 @@
 import React from "react";
 import Background from "../../background/background/Background";
-import StartImage from "../../assets/start.png"; // 이미지 파일 불러오기
+import StartImage from "../../assets/Start.png"; // 이미지 파일 불러오기
 import Topbutton from "../../button/top/TopButton"; // 버튼 재사용
 import "./Home.css";
 
