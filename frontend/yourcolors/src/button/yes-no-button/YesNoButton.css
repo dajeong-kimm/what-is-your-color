@@ -1,0 +1,22 @@
+.answer-buttons-container {
+  display: flex;
+  gap: 80px; /* 버튼 사이 간격을 늘렸습니다 */
+  margin: 20px 0;
+}
+
+.answer-button {
+  background-color: #82DC28;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 18px 36px;  /* 버튼이 글자보다 넉넉하게 커지도록 패딩을 증가 */
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 30px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.answer-button:hover {
+  background-color: #7FCD7F;
+}

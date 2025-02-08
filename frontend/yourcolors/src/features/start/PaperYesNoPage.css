@@ -1,0 +1,29 @@
+.paper-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+    text-align: center;
+    /* 텍스트를 약간 위로 올리기 위해 상단 마진을 줄입니다 */
+    margin-top: -40px;
+  }
+  
+  .paper-message h1 {
+    font-size: 1.6rem; /* 문구 크기를 크게 조정 */
+    color: #000000;
+    margin-bottom: 60px; /* 텍스트와 버튼 사이 간격 확대 */
+    line-height: 1.2; /* 줄 간격 조정 */
+    font-weight: lighter;
+  }
+  
+  /* 질문 부분만 별도로 스타일링 */
+.paper-question {
+    font-size: 2.5rem; /* 더 크게 변경 가능 */
+    font-weight: bold; /* 굵게 표시 */
+    /* 필요하다면 색상/여백 등 추가 */
+    /* color: #333; */
+    /* margin-top: 10px; */
+  }
+  
