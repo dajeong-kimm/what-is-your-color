@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useLocation } from "react-router-dom";
-import Background from "../../background/background/BackGround";
+import Background from "../../background/background/Background";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
 import "./DiagResult.css";
 
 import personalColors from "../../data/PersonalColors";
-import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
+import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터터
 
 // const colorImageMap = {
 //   "봄 라이트": "spring-light",

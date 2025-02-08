@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import Background from "../../background/background/BackGround";
+import Background from "../../background/background/Background";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
 import "./BestWorst.css"; // 스타일 import
-import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
+import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터터
 
 
 const BestWorst = () => {

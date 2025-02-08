@@ -3,27 +3,26 @@ import Home from "./features/start/Home";
 import EndPage from "./features/start/EndPage";
 import PaperYesNoPage from "./features/start/PaperYesNoPage";
 import CheckPage from "./features/start/CheckPage";
-import MainPage from "./features/start/Mainpage";
-import Mainpage2 from "./features/start/Mainpage2";
+import MainPage from "./features/start/MainPage";
+import Mainpage2 from "./features/start/MainPage2.jsx";
 import DiagCapture from "./features/diagnosis/DiagCapture";
 import DiagCaptureX from "./features/diagnosis/DiagCaptureX";
 import DiagCaptureXAI from "./features/diagnosis/DiagCaptureXAI";
 import DiagImage from "./features/diagnosis/DiagImage";
-import MediapipeCamera from "./features/camera/mediapipecamera";
+import MediapipeCamera from "./features/camera/MediapipeCamera.jsx";
 import DiagResult from "./features/diagnosis/DiagResult";
 import BestWorst from "./features/diagnosis/BestWorst";
-import LoadingPage from "./button/loadingpage/LoadingPage";
+import LoadingPage from "./button/loading-page/LoadingPage.jsx";
 import TestPage from "./common/components/TestPage";
-import PersonalColorMain from './features/personalcolors/PersonalColorMain';
-import PersonalColorDetail from './features/personalcolors/PersonalColorDetail';
+import PersonalColorMain from './features/personal-colors/PersonalColorMain.jsx';
+import PersonalColorDetail from './features/personal-colors/PersonalColorDetail.jsx';
 import MakeupByColor from "./features/makeup/MakeupByColor";
-import Makeup from "./features/makeup/Makeup"; 
-import MediapipeCameraX from "./features/camera/mediapipecameraX.jsx";
+import Makeup from "./features/makeup/Makeup";
+import MediapipeCameraX from "./features/camera/MediapipeCameraX.jsx";
 import PersonalRecommend from "./features/recommend/PersonalRecommend";
 import ChoicePage from "./features/choice/ChoicePage.jsx";
 
 import { RecoilRoot } from 'recoil';
-
 
 const App = () => {
   return (
