@@ -3,7 +3,7 @@ import Background from "../../background/background/BackGround";
 import LargeMain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import MakeupCamera from './MakeupCamera';
-import ProductButton from '../../button/productbutton/ProductButton';
+import ProductButton from '../../button/product-button/ProductButton';
 import "./Makeup.css";
 import useStore from '../../store/useStore'; //Zustand 상태관리 데이터
 

@@ -3,25 +3,17 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "9000:9000"
+    container_name: yourcolors-backend
     environment:
       - APP_NAME=yourcolors
       - APP_VERSION=1.0.0
-    networks:
-      - yourcolors-network
+    network_mode: host  # 백엔드는 host 네트워크 사용
 
   frontend:
     build:
       context: ./frontend/yourcolors
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    networks:
-      - yourcolors-network
+    container_name: yourcolors-frontend
+    network_mode: host  # 프론트엔드도 host 네트워크 사용
     depends_on:
       - backend
-
-networks:
-  yourcolors-network:
-    driver: bridge

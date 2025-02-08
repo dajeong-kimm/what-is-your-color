@@ -1,5 +1,5 @@
 import React from 'react';
-import './BackGround.css';
+import './Background.css';
 
 
 const Largemain = ({ children }) => {

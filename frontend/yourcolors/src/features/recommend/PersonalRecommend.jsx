@@ -7,6 +7,15 @@ import Bottombar from "../../button/bottom/Bottombar";
 import ProductButton from "../../button/productbutton/ProductButton";
 import "./PersonalcolorRecommend.css";
 import useStore from '../../store/useStore'; //Zustand 상태관리 데이터
+import React, { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom"; // URL에서 퍼스널컬러 가져오기
+import Background from "../../background/background/Background";
+import SmallMain from "../../background/background/SmallMain";
+import Topbar from "../../button/top/TopBar";
+import Bottombar from "../../button/bottom/BottomBar";
+import ProductButton from "../../button/product-button/ProductButton";
+import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
+import "./PersonalColorRecommend.css";
 
 // 더미 데이터 (카테고리별 화장품 목록)
 const dummyData = {
@@ -48,6 +57,17 @@ const PersonalRecommend = () => {
   };
   const products = categoryMap[selectedCategory] || [];
   
+  const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
+  
+  const handleRightClick = () => {
+    console.log("오른쪽으로 이동 불가 ㅡㅡ");
+  };
+  
+  const handleLeftClick = () => {
+    navigate("/bestworst");
+  };
+  
+
   return (
     <Background>
       <Topbar />
@@ -86,6 +106,11 @@ const PersonalRecommend = () => {
           </div>
         </div>
       </SmallMain>
+      {/* 🔹 화살표 네비게이션 버튼 추가 */}
+      <LeftRightButton 
+        onLeftClick={handleLeftClick} // 왼쪽 버튼 동작 추가 가능
+ 
+      />
       <Bottombar />
     </Background>
   );

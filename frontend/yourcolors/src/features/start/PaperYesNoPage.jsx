@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom"; 
-import Background from "../../background/background/BackGround";
+import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
-import YesNoButton from "../../button/yesnobutton/YesNoButton"; 
+import YesNoButton from "../../button/yes-no-button/YesNoButton"; 
 import "./PaperYesNoPage.css"; // 이미 임포트된 CSS
 
 const EndPage = () => {

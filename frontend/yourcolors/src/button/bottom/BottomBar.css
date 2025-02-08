@@ -1,5 +1,3 @@
-/* Bottombar.css */
-
 .Bottombar {
   position: fixed;
   bottom: 0;
@@ -9,25 +7,51 @@
   width: 100%;
   height: 50px;
   padding: 35.699px 30.679px 36.257px 30.121px;
-  justify-content: flex-start; /* 전체적으로 왼쪽 정렬 */
+  justify-content: flex-start;
   align-items: center;
-  bottom: 0;
-  /* background-color: #D2F096; */
+  background-color: #D2F096;
 }
 
-/* 컨테이너 정렬 */
 .Bottombar-container {
   display: flex;
-  justify-content: flex-start; /* 왼쪽 정렬 */
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
 }
 
-/* 버튼 컨테이너 스타일 */
 .Bottombar-buttons {
   display: flex;
   flex-direction: row;
   gap: 10px;
   align-items: center;
   margin-left: 75px;
+}
+
+/* 기존 close-button 스타일은 closebutton.css에 정의되어 있으나, 여기서 Bottombar 내부에서의 위치를 재정의 */
+.Bottombar .close-button {
+  margin-left: 470px; /* 기존 auto 대신 30px로 설정 (필요에 따라 값 조정) */
+}
+
+/* 또는, 래퍼에 대해 별도 스타일을 줄 수도 있음 */
+.close-button-wrapper {
+  /* 이 클래스가 있다면 margin-left를 여기서 지정할 수도 있습니다.
+     예: margin-left: 30px; */
+  margin-left: 30px;
+}
+
+/* 기존 Bottombutton 스타일은 그대로 유지 */
+.Bottombutton {
+  background-color: #82dc28;
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.Bottombutton:hover {
+  background-color: #76c825;
 }

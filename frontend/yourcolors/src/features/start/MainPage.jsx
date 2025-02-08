@@ -1,8 +1,13 @@
+<<<<<<< HEAD:frontend/yourcolors/src/features/start/Mainpage.jsx
 import React, { useEffect } from "react";
 import Background from "../../background/background/BackGround";
+=======
+import React from "react";
+import Background from "../../background/background/Background";
+>>>>>>> origin:frontend/yourcolors/src/features/start/MainPage.jsx
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
-import MainButton from "../../button/MainButton/MainButton";
+import MainButton from "../../button/main-button/MainButton";
 import { useNavigate } from "react-router-dom";
 import "./MainPage.css";
 import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
@@ -31,7 +36,7 @@ useEffect(() => {
       <Largemain>
         <div className="main-button-container">
           <MainButton text="퍼스널컬러란?" onClick={() => navigate("/personalcolors")} />
-          <MainButton text="퍼스널컬러 진단" onClick={() => navigate("/diagcapture")} />
+          <MainButton text="퍼스널컬러 진단" onClick={() => navigate("/choice")} />
           <MainButton text="AI 메이크업 합성" onClick={() => navigate("/makeup")} />
         </div>
       </Largemain>
