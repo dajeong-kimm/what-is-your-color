@@ -50,16 +50,13 @@ const App = () => {
         <Route path="/makeup" element={<Makeup />} />
         <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
         <Route path="/makeupbycolor" element={<MakeupByColor />} />
-        {/* <Route path="/recommend" element={<Recommend />} />
-        
-        {/* <Route path="/recommend" element={<Recommend />} />
-        <Route path="/makeup" element={<Makeup />} />
-        <Route path="/diagnosis" element={<Diagnosis />} /> */}
-
-        <Route path="/:personalColor/recommend" element={<PersonalRecommend />} />
-
+        <Route path="/recommend" element={<PersonalRecommend />} />
         <Route path="/choice" element={<ChoicePage />} />
 
+        <Route path="/result1" element={<DiagResult />} />
+        {/* <Route path="/personalcolors/:id" element={<PersonalColorDetail />} /> */}
+        {/* <Route path="/bestworst" element={<BestWorst />} /> */}
+        {/* <Route path="/:personalColor/recommend" element={<PersonalRecommend />} /> */}
 
       </Routes>
     </Router>

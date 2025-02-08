@@ -1,5 +1,5 @@
 import React from "react";
-import Background from "../../background/background/BackGround";
+import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import { useNavigate } from "react-router-dom";
