@@ -32,7 +32,10 @@ const CloseButton = () => {
       {isModalOpen && (
         <div className="close-modal-overlay">
           <div className="close-modal-content">
-            <h2>“너의 색깔은 ?” <br />체험을 종료하시겠습니까?</h2>
+            <h2>
+              “너의 색깔은 ?” <br />
+              체험을 종료하시겠습니까?
+            </h2>
             <div className="close-modal-buttons">
               <button className="close-modal-yes" onClick={handleYes}>
                 예
