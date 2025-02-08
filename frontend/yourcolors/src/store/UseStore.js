@@ -28,6 +28,7 @@ const useStore = create((set) => ({
   fetchPersonalColors: async () => {
     try {
       const response = await axios.get('/api/info/tag-list');
+      // console.log("오우 된다!!!!!")
       console.log(response.data.personal_colors);
       set({ personalColors: response.data.personal_colors }); // 받아온 데이터를 상태에 저장
     } catch (error) {

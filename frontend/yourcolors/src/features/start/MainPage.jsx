@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
