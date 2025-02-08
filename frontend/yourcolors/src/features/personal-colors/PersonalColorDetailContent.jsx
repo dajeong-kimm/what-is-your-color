@@ -71,11 +71,6 @@ const PersonalColorDetailContent = () => {
         </div>
       </div>
 
-      {/* 🔹 화살표 네비게이션 버튼 */}
-      <LeftRightButton
-        onLeftClick={handleLeftClick}
-        onRightClick={handleRightClick}
-      />
     </SmallMain>
   );
 };

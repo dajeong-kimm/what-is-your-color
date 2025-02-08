@@ -54,7 +54,7 @@ const App = () => {
         <Route path="/recommend" element={<PersonalRecommend />} />
         <Route path="/choice" element={<ChoicePage />} />
 
-        <Route path="/result1" element={<DiagResult />} />
+        <Route path="/diagresult" element={<DiagResult />} />
         {/* <Route path="/bestworst" element={<BestWorst />} /> */}
         {/* <Route path="/:personalColor/recommend" element={<PersonalRecommend />} /> */}
 

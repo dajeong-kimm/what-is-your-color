@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // URL에서 퍼스널컬러 가져오기
-import Background from "../../background/background/Background";
-import SmallMain from "../../background/background/SmallMain";
-import Topbar from "../../button/top/TopBar";
-import Bottombar from "../../button/bottom/BottomBar";
 import ProductButton from "../../button/product-button/ProductButton";
+import SmallMain from '../../background/background/SmallMain';
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
 import "./PersonalColorRecommend.css";
 
@@ -44,9 +41,8 @@ const PersonalRecommend = () => {
   
 
   return (
-    <Background>
-      <Topbar />
-      <SmallMain>
+    <SmallMain>
+
         <div className="full-container">
           <div className="top">
             {/* 퍼스널컬러 이름 + "Pick!" 형태로 출력 */}
@@ -76,14 +72,10 @@ const PersonalRecommend = () => {
             )}
           </div>
         </div>
-      </SmallMain>
-      {/* 🔹 화살표 네비게이션 버튼 추가 */}
-      <LeftRightButton 
-        onLeftClick={handleLeftClick} // 왼쪽 버튼 동작 추가 가능
- 
-      />
-      <Bottombar />
-    </Background>
+      
+</SmallMain>
+
+
   );
 };
 
