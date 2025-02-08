@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import Background from "../../background/background/BackGround";
+import React, { useEffect, useState } from 'react';
+import Background from "../../background/background/Background";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
-import "./personalbutton.css";
+import "./PersonalButton.css";
 import "./PersonalColorDetail.css";
-import LeftRightButton from "../../button/LeftRightButton/LeftRightButton"; // 🔹 추가
+import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
 import { useParams, useNavigate } from "react-router-dom";
 // import personalColors from "../../data/PersonalColors";
 // import dummyData from "../../data/dummy-data";
 
-import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
-import personalColorInfo from '../../store/personalColorInfo';  //정적 객체 데이터
+import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터터
+import personalColorInfo from '../../store/PersonalColorInfo';  //정적 객체 데이터
 
 const PersonalColorDetail = () => {
   const navigate = useNavigate(); // 🔹 네비게이션 훅 추가

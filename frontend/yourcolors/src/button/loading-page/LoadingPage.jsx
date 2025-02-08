@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../loading-spinner/LoadingSpinner";
 import './LoadingPage.css';
-import Background from '../../background/background/BackGround';
+import Background from '../../background/background/Background';
 
 const LoadingPage = () => {
   const navigate = useNavigate();

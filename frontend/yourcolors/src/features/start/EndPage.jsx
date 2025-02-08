@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom"; // useNavigate 추가
-import Background from "../../background/background/BackGround";
+import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
-import YesNoButton from "../../button/yesnobutton/YesNoButton"; // YesNoButton 컴포넌트 임포트
+import YesNoButton from "../../button/yes-no-button/YesNoButton"; // YesNoButton 컴포넌트 임포트
 import "./EndPage.css";
 
 const EndPage = () => {
@@ -24,7 +24,7 @@ const EndPage = () => {
         <div className="endpage-container">
           <div className="endpage-message">
             <h1>
-              " 너의 이름은 ? " <br />
+              " 너의 색깔은 ? " <br />
               체험이 완료되었습니다!
             </h1>
           </div>

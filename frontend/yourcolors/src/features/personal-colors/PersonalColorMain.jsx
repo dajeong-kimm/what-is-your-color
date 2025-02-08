@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { useRecoilValue } from "recoil";
 import { PersonalColorState } from "../../recoil/PersonalColorsAtom";
 import PersonalButton from "./PersonalButton";
-import Background from "../../background/background/BackGround";
+import Background from "../../background/background/Background";
 import LargeMain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import "./PersonalButton.css"; // ✅ 버튼 스타일 적용
-import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
+import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터터
 
 const PersonalColorMain = () => {
   const { fetchPersonalColors } = useStore(); //Zustand 상태관리

@@ -1,9 +1,9 @@
 import React from 'react';
-import Background from "../../background/background/BackGround";
+import Background from "../../background/background/Background";
 import LargeMain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import MakeupCamera from './MakeupCamera';
-import ProductButton from '../../button/productbutton/ProductButton';
+import ProductButton from '../../button/product-button/ProductButton';
 import "./Makeup.css";
 
 const Makeup = () => {
