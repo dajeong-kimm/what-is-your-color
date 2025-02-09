@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRecoilValue } from "recoil";
 import { PersonalColorState } from "../../recoil/PersonalColorsAtom";
 import PersonalButton from "./PersonalButton";
@@ -6,23 +6,21 @@ import Background from "../../background/background/Background";
 import LargeMain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import "./PersonalButton.css"; // ✅ 버튼 스타일 적용
-import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터터
+import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
+import personalColorInfo from '../../store/PersonalColorInfo';
 
 const PersonalColorMain = () => {
-  const { fetchPersonalColors } = useStore(); //Zustand 상태관리
-  useEffect(() => {
-    fetchPersonalColors(); // 컴포넌트가 렌더링될 때 데이터 fetch
-  }, [fetchPersonalColors]);
+  const colors = useRecoilValue(PersonalColorState); 
 
-  const colors = useRecoilValue(PersonalColorState); // Recoil에서 퍼스널컬러 데이터 가져오기
 
   // 퍼스널컬러 그룹 (제공된 배열 구조로 나누기)
   const groupedColors = [
-    colors.slice(0, 3), // 봄: 라이트, 브라이트, 비비드
+    colors.slice(0, 3), // 봄: 라이트, 비비드, 브라이트
     colors.slice(3, 6), // 여름: 라이트, 브라이트, 뮤트
     colors.slice(6, 9), // 가을: 뮤트, 스트롱, 다크
     colors.slice(9, 12), // 겨울: 비비드, 스트롱, 다크
-  ];
+  ]
+  
 
   const colorTitles = ["Spring", "Summer", "Autumn", "Winter"];
 
