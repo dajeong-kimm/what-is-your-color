@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Background from "../../background/background/Background";
@@ -12,7 +12,6 @@ import PersonalRecommend from "../recommend/PersonalRecommend";
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가!
 import "./DiagResult.css"; 
 import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
-
 
 const DiagResult = () => {
 
