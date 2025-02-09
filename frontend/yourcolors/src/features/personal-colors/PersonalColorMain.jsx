@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRecoilValue } from "recoil";
 import { PersonalColorState } from "../../recoil/PersonalColorsAtom";
 import PersonalButton from "./PersonalButton";
@@ -9,11 +9,6 @@ import "./PersonalButton.css"; // ✅ 버튼 스타일 적용
 import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터터
 
 const PersonalColorMain = () => {
-  const { fetchPersonalColors } = useStore(); //Zustand 상태관리
-  useEffect(() => {
-    fetchPersonalColors(); // 컴포넌트가 렌더링될 때 데이터 fetch
-  }, [fetchPersonalColors]);
-
   const colors = useRecoilValue(PersonalColorState); // Recoil에서 퍼스널컬러 데이터 가져오기
 
   // 퍼스널컬러 그룹 (제공된 배열 구조로 나누기)

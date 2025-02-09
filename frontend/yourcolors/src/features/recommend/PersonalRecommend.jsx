@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // URL에서 퍼스널컬러 가져오기
 import Background from "../../background/background/Background";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
-import Bottombar from "../../button/bottom/BottomBar";
+import Bottombar from "../../button/bottom/Bottombar";
 import ProductButton from "../../button/product-button/ProductButton";
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
-import "./PersonalColorRecommend.css";
+import "./PersonalcolorRecommend.css";
+import useStore from '../../store/useStore'; //Zustand 상태관리 데이터
 
 // 더미 데이터 (카테고리별 화장품 목록)
 const dummyData = {
@@ -28,10 +29,26 @@ const dummyData = {
 };
 
 const PersonalRecommend = () => {
-  const { personalColor } = useParams(); // URL에서 퍼스널컬러 가져오기
-  const [selectedCategory, setSelectedCategory] = useState("립"); // 기본값 립
-  const products = dummyData[selectedCategory] || []; // 선택한 카테고리의 화장품 리스트
+  const { personalColor } = useParams();
+  const [selectedCategory, setSelectedCategory] = useState("lip"); // 기본값 립
+  const { cosmetics, fetchCosmetics, loading } = useStore();
 
+  useEffect(() => {
+    if (personalColor) {
+      fetchCosmetics(personalColor);
+    }
+  }, [personalColor, fetchCosmetics]);
+
+  // 선택한 카테고리에 맞는 제품 리스트 가져오기
+  console.log(cosmetics)
+  
+  const categoryMap = {
+    lip: cosmetics.lip,
+    eye: cosmetics.eye,
+    cheek: cosmetics.cheek,
+  };
+  const products = categoryMap[selectedCategory] || [];
+  
   const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
   
   const handleRightClick = () => {
@@ -52,7 +69,7 @@ const PersonalRecommend = () => {
             {/* 퍼스널컬러 이름 + "Pick!" 형태로 출력 */}
             <div className="color-pick">{personalColor} Pick!</div>
             <div className="button-container">
-              {["립", "아이섀도우", "치크"].map((category) => (
+             {["lip", "eye", "cheek"].map((category) => (
                 <ProductButton
                   key={category}
                   text={category}
@@ -62,12 +79,16 @@ const PersonalRecommend = () => {
             </div>
           </div>
           <div className="product-container">
-            {products.length > 0 ? (
+            {loading ? (
+              <p className="loading-text">로딩 중...</p>
+            ) :products.length > 0 ? (
               <div className="product-grid">
                 {products.map((product) => (
-                  <div key={product.id} className="product-card">
-                    <img src={product.image} alt={product.name} />
-                    <p>{product.name}</p>
+                  <div key={product.product_id} className="product-card">
+                    <img src={product.image} alt={product.product_name} />
+                    <p>{product.brand}</p>
+                    <p>{product.product_name}</p>
+                    <p>{product.price}</p>
                   </div>
                 ))}
               </div>

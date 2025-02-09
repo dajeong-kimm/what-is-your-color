@@ -26,8 +26,8 @@ const colorImageMap = {
 };
 
 const DiagResult = () => {
+  const personalId = 1; // 진단결과로 ID 받아오면 이거 바꿔야함 지금은 임시로 1번 해둠
   const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
-  const personalId = 1;
   const { fetchPersonalColorDetails } = useStore();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const DiagResult = () => {
     fetchPersonalColorDetails(1);
   }, [personalId, fetchPersonalColorDetails]);
 
-  const location = useLocation();
+  // const location = useLocation();
 
   // 🔹 백엔드 연동 시 사용 (현재 주석 처리)
   // const { mainColor, subColors } = location.state || {};

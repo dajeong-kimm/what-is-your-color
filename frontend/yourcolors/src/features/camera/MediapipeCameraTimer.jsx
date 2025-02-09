@@ -160,7 +160,7 @@ const MediapipeCameraTimer = () => {
 
   const sendImagesToServer = (faceImage, a4Image) => {
     axios
-      .post("http://localhost:9000//api/colorlab/color-dist", {
+      .post("http://localhost:9000/api/consult/dist", {
         face_image: faceImage,
         a4_image: a4Image,
       })
