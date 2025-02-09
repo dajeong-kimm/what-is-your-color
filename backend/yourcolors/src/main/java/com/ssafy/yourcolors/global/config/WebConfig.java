@@ -19,7 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://localhost:5173", // 로컬 개발 환경
                         "http://3.35.236.198", // 배포된 프론트엔드 서버
-                        "http://172.30.1.18:3000"
+                        "http://172.30.1.18:3000", //로컬 서버
+                        "http://localhost:3000"  //로컬 프론트 환경
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
                 .allowedHeaders("*") // 모든 헤더 허용
