@@ -11,7 +11,7 @@ const Bottombar = () => {
   // 버튼 정보 배열 (첫 번째 버튼의 to 값을 "/diagresult"로 변경)
   const buttons = [
     { to: "/diagresult", label: "진단결과", name: "diagnosis" },
-    { to: "/personalcolors/:id", label: "컬러상세", name: "colorDetails" },
+    { to: "/personalcolors/1", label: "컬러상세", name: "colorDetails" },
     { to: "/bestworst", label: "BEST/WORST", name: "bestWorst" },
     { to: "/recommend", label: "화장품추천", name: "cosmeticRecommend" },
   ];
