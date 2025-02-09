@@ -5,7 +5,7 @@ import Topbar from "../../button/top/TopBar";
 import { useNavigate } from "react-router-dom";
 import DrAi from "../../images/dr_ai.png"
 import Curator from "../../images/color_curator.png"
-import "../start/Mainpage.css";
+import "../start/MainPage.css";
 import "./ChoicePage.css";
 
 const ChoicePage = () => {

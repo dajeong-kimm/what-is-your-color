@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "./BottomBar.css";
-import Bottombutton from "./Bottombutton";
+import Bottombutton from "./BottomButton";
 import CloseButton from "../closebutton/CloseButton"; // 종료하기 버튼
 
 const Bottombar = () => {
