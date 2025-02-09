@@ -4,23 +4,8 @@ import SmallMain from "../../background/background/SmallMain";
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
 import "./DiagResult.css";
 
-import personalColors from "../../data/PersonalColors";
-import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터터
-
-const colorImageMap = {
-  "봄 라이트": "spring-light",
-  "봄 브라이트": "spring-bright",
-  "봄 비비드": "spring-vivid",
-  "여름 라이트": "summer-light",
-  "여름 브라이트": "summer-bright",
-  "여름 뮤트": "summer-mute",
-  "가을 뮤트": "autumn-mute",
-  "가을 스트롱": "autumn-strong",
-  "가을 다크": "autumn-dark",
-  "겨울 비비드": "winter-vivid",
-  "겨울 스트롱": "winter-strong",
-  "겨울 다크": "winter-dark",
-};
+import personalColorInfo from "../../store/PersonalColorInfo"; // 정적 객체 데이터
+import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
 
 const DiagResult = () => {
   const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
@@ -51,16 +36,9 @@ const DiagResult = () => {
   const summary = exampleData.summary;
   const hashtags = exampleData.hashtags;
 
-  // 이미지 파일명 변환
-  // const imageFileName = colorImageMap[mainColor] || "default"; // 매칭되는 이미지 없으면 default.png 사용
-  // 배열을 객체(Map) 형태로 변환
-  const colorMap = personalColors.reduce((acc, color) => {
-    acc[color.name] = color.characterUrl;
-    return acc;
-  }, {});
-
   // mainColor에 해당하는 이미지 URL 가져오기
-  const imageUrl = colorMap[mainColor] || "기본 이미지 URL";
+  // const imageUrl = colorMap[mainColor] || "기본 이미지 URL";
+  const imageUrl = personalColorInfo[1].characterUrl // 일단 1번 봄라이트 이미지로...
 
   const handleRightClick = () => {
     navigate("/personalcolors/12");
