@@ -5,7 +5,7 @@ import Topbar from "../../button/top/TopBar";
 import MainButton from "../../button/main-button/MainButton";
 import { useNavigate } from "react-router-dom";
 import "./MainPage.css";
-import useStore from '../../store/useStore'; //Zustand 상태관리 데이터터
+import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ useEffect(() => {
       <Topbar />
       <Largemain>
         <div className="main-button-container">
-          <MainButton text="퍼스널컬러란?" onClick={() => navigate("/personalcolors")} />
+          <MainButton text="퍼스널컬러 종류" onClick={() => navigate("/personalcolors")} />
           <MainButton text="퍼스널컬러 진단" onClick={() => navigate("/choice")} />
           <MainButton text="AI 메이크업 합성" onClick={() => navigate("/makeup")} />
         </div>

@@ -7,6 +7,7 @@ const PersonalButton = ({ id, label, colorClass }) => {
     <Link to={`/personalcolors/${id}`} className={`personal-button ${colorClass}`}>
       {label}
     </Link>
+
   );
 };
 

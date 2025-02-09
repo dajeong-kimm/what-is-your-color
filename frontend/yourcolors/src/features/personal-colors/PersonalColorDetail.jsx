@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom"; // URL에서 퍼스널컬러 가져오기
+import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터터
 import Background from "../../background/background/Background";
-import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
+import PersonalColorDetailContent from "./PersonalColorDetailContent";
+import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
+
 import "./PersonalButton.css";
 import "./PersonalColorDetail.css";
-import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
-import { useParams, useNavigate } from "react-router-dom";
-// import personalColors from "../../data/PersonalColors";
-// import dummyData from "../../data/dummy-data";
 
-import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터터
-import personalColorInfo from '../../store/PersonalColorInfo';  //정적 객체 데이터
 
 const PersonalColorDetail = () => {
-  const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
   const { id } = useParams();
   // const colorInfo = dummyData.find((color) => color.id === parseInt(id));
   const { personalColors, fetchPersonalColors } = useStore();
@@ -43,61 +40,11 @@ const PersonalColorDetail = () => {
   }
   // console.log(colorInfo)
 
-  // const { name, hashtags, description, imageUrl } = colorInfo;
-//     const imageUrl = "../public/여름뮤트색상표.jpg"
-//   const description = `장밋빛 피부를 가지고 있는 뮤트톤!
-// 중간 밝기에서 어두운색의 스킨톤에 블랙이나 다크 브라운 계열의 눈동자 색을 가지고 있어 대비감은 약합니다.
-// 그레이가 잘 어울리는 타입으로 스타일링도 메이크업도 전체적으로 은은하게 연출하면 좋아요!
-// 말린 장미, 팥죽색 같은 채도가 낮은 부드러운 색을 선택하세요.`;
-
-const handleRightClick = () => {
-  navigate("/bestworst");
-};
-
-const handleLeftClick = () => {
-  navigate("/diagresult");
-};
-
   return (
     <Background>
       <Topbar />
-      <SmallMain>
-        <div className="personal-detail-container-left">
-          {/* 상단 타이틀 */}
-          <h1 className="personal-detail-title">{personalColors[id-1].name}</h1>
-          {/* 색상 이미지 */}
-          <div className="personal-detail-image">
-            <img src={personalColorInfo[id].imageUrl} alt={personalColors[id-1].name} />
-          </div>
-        </div>  
-
-        <div className="personal-detail-container-right">
-          {/* 해시태그 */}
-          <div className="personal-detail-hashtags">
-            {personalColors[id-1].hashtag.map((tag, index) => (
-              <span key={index} className="hashtag">
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          {/* 상세 설명 */}
-          <div className="personal-detail-content">
-            <div className="personal-detail-description">
-              <p>{personalColorInfo[id].description}</p>
-            </div>
-          </div>
-        </div>
-        
-      </SmallMain>
-
-      {/* 🔹 화살표 네비게이션 버튼 추가 */}
-      <LeftRightButton 
-        onLeftClick={handleLeftClick} // 왼쪽 버튼 동작 추가 가능
-        onRightClick={handleRightClick} // 오른쪽 버튼 누르면 "/bestworst"로 이동
-      />
-
-      <Bottombar />
+      <PersonalColorDetailContent />
+      {/* <Bottombar /> */}
     </Background>
   );
 };

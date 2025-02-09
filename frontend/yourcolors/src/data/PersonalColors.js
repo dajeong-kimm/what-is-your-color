@@ -1,7 +1,7 @@
 const personalColors = [
   {
     id: 1,
-    name: "봄 라이트",
+    name: "봄 웜 라이트",
     path: "/spring-light",
     colorClass: "spring-light",
     characterUrl: "character/spring-light.png",
@@ -11,20 +11,7 @@ const personalColors = [
   },
   {
     id: 2,
-    name: "봄 브라이트",
-    path: "/spring-bright",
-    colorClass: "spring-bright",
-    characterUrl: "character/spring-bright.png",
-    description: `화사하고 생기 있는 피부 톤을 가진 브라이트톤!
-피부가 맑고 투명하며, 눈동자 색이 밝고 반짝이는 느낌이에요.
-선명한 색상을 사용하면 얼굴이 더 화사해 보입니다.
-명도가 높은 비비드한 컬러와 잘 어울려요.
-메이크업은 자연스러운 글로우 느낌을 살리는 것이 좋아요.
-레몬 옐로우, 맑은 민트, 청량한 코랄 컬러가 찰떡궁합!`,
-  },
-  {
-    id: 3,
-    name: "봄 비비드",
+    name: "봄 웜 비비드",
     path: "/spring-vivid",
     colorClass: "spring-vivid",
     characterUrl: "character/spring-vivid.png",
@@ -36,8 +23,21 @@ const personalColors = [
 체리 레드, 쨍한 오렌지, 라즈베리 핑크가 최고의 선택!`,
   },
   {
+    id: 3,
+    name: "봄 웜 브라이트",
+    path: "/spring-bright",
+    colorClass: "spring-bright",
+    characterUrl: "character/spring-bright.png",
+    description: `화사하고 생기 있는 피부 톤을 가진 브라이트톤!
+피부가 맑고 투명하며, 눈동자 색이 밝고 반짝이는 느낌이에요.
+선명한 색상을 사용하면 얼굴이 더 화사해 보입니다.
+명도가 높은 비비드한 컬러와 잘 어울려요.
+메이크업은 자연스러운 글로우 느낌을 살리는 것이 좋아요.
+레몬 옐로우, 맑은 민트, 청량한 코랄 컬러가 찰떡궁합!`,
+  },
+  {
     id: 4,
-    name: "여름 라이트",
+    name: "여름 쿨 라이트",
     path: "/summer-light",
     colorClass: "summer-light",
     characterUrl: "character/summer-light.png",
@@ -50,7 +50,7 @@ const personalColors = [
   },
   {
     id: 5,
-    name: "여름 브라이트",
+    name: "여름 쿨 브라이트",
     path: "/summer-bright",
     colorClass: "summer-bright",
     characterUrl: "character/summer-bright.png",
@@ -63,7 +63,7 @@ const personalColors = [
   },
   {
     id: 6,
-    name: "여름 뮤트",
+    name: "여름 쿨 뮤트",
     path: "/summer-mute",
     colorClass: "summer-mute",
     characterUrl: "character/summer-mute.png",
@@ -74,7 +74,7 @@ const personalColors = [
   },
   {
     id: 7,
-    name: "가을 뮤트",
+    name: "가을 웜 뮤트",
     path: "/autumn-mute",
     colorClass: "autumn-mute",
     characterUrl: "character/autumn-mute.png",
@@ -87,7 +87,7 @@ const personalColors = [
   },
   {
     id: 8,
-    name: "가을 스트롱",
+    name: "가을 웜 스트롱",
     path: "/autumn-strong",
     colorClass: "autumn-strong",
     characterUrl: "character/autumn-strong.png",
@@ -100,7 +100,7 @@ const personalColors = [
   },
   {
     id: 9,
-    name: "가을 다크",
+    name: "가을 웜 다크",
     path: "/autumn-dark",
     colorClass: "autumn-dark",
     characterUrl: "character/autumn-dark.png",
@@ -113,7 +113,7 @@ const personalColors = [
   },
   {
     id: 10,
-    name: "겨울 비비드",
+    name: "겨울 쿨 비비드",
     path: "/winter-vivid",
     colorClass: "winter-vivid",
     characterUrl: "character/winter-vivid.png",
@@ -126,7 +126,7 @@ const personalColors = [
   },
   {
     id: 11,
-    name: "겨울 스트롱",
+    name: "겨울 쿨 스트롱",
     path: "/winter-strong",
     colorClass: "winter-strong",
     characterUrl: "character/winter-strong.png",
@@ -139,7 +139,7 @@ const personalColors = [
   },
   {
     id: 12,
-    name: "겨울 다크",
+    name: "겨울 쿨 다크",
     path: "/winter-dark",
     colorClass: "winter-dark",
     characterUrl: "character/winter-dark.png",
