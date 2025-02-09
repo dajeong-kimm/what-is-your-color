@@ -163,16 +163,16 @@ const MediapipeCameraXTimerAI = () => {
     return faceCanvas.toDataURL("image/png");
   };
 
-  // 🔥 Base64 -> Blob 변환 함수
-const base64ToBlob = (base64, mimeType) => {
-  const byteCharacters = atob(base64.split(",")[1]);
-  const byteNumbers = new Array(byteCharacters.length);
-  for (let i = 0; i < byteCharacters.length; i++) {
-    byteNumbers[i] = byteCharacters.charCodeAt(i);
-  }
-  const byteArray = new Uint8Array(byteNumbers);
-  return new Blob([byteArray], { type: mimeType });
-};
+    // 🔥 Base64 -> Blob 변환 함수
+  const base64ToBlob = (base64, mimeType) => {
+    const byteCharacters = atob(base64.split(",")[1]);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+  };
 
   const sendImagesToServer = (faceImageBase64) => {
     console.log("[sendImagesToServer] Sending to server...");
