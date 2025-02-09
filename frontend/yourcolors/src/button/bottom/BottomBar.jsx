@@ -11,9 +11,9 @@ const Bottombar = () => {
   // 버튼 정보 배열 (첫 번째 버튼의 to 값을 "/diagresult"로 변경)
   const buttons = [
     { to: "/diagresult", label: "진단결과", name: "diagnosis" },
-    { to: "/color-details", label: "컬러상세", name: "colorDetails" },
-    { to: "/best-worst", label: "BEST/WORST", name: "bestWorst" },
-    { to: "/cosmetic-recommend", label: "화장품추천", name: "cosmeticRecommend" },
+    { to: "/personalcolors/:id", label: "컬러상세", name: "colorDetails" },
+    { to: "/bestworst", label: "BEST/WORST", name: "bestWorst" },
+    { to: "/recommend", label: "화장품추천", name: "cosmeticRecommend" },
   ];
 
   // 현재 경로에 따라 activeButton 설정
