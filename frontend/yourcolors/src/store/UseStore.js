@@ -58,6 +58,17 @@ const useStore = create((set) => ({
     }
   },
 
+  // 6. 화장품 컬러 상세 조회 API
+  productDetails: {}, // 화장품 상세 정보 상태
+  fetchProductDetails: async (productID) => {
+    try {
+      const response = await axios.get(`/api/info/cosmetic/product/${productID}`);
+      console.log("화장품 컬러 상세 정보:", response.data);
+      set({ productDetails: response.data });
+    } catch (error) {
+      console.error("화장품 상세 정보 불러오기 실패:", error);
+    }
+  },
 
 }));
 

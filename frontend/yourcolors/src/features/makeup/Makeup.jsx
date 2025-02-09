@@ -49,7 +49,11 @@ const Makeup = () => {
                     <div 
                     key={product.product_id}
                     className={`product-card ${selectedProduct === product ? "selected" : ""}`}
-                    onClick={() => setSelectedProduct(product)}
+                      onClick={() => {
+                        setSelectedProduct(product)
+                        console.log("클릭@!!!");
+                      }
+                    }
                   >
                     <img src={product.image} alt={product.product_name} />
                     <p>{product.product_name}</p>
