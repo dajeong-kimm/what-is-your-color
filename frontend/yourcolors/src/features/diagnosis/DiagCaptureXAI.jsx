@@ -5,7 +5,7 @@ import Smallmain from "../../background/background/SmallMain";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
-import MediapipeCameraXTimer from '../camera/MediapipeCameraXTimer';
+import MediapipeCameraXTimerAI from '../camera/MediapipeCameraXTimerAI';
 const DiagCaptureXAI = () => {
   return (
     
@@ -13,7 +13,7 @@ const DiagCaptureXAI = () => {
         
       <Background>
       <Largemain>
-			<MediapipeCameraXTimer/>
+			<MediapipeCameraXTimerAI/>
 			</Largemain>
       <Topbar />
       {/* <Bottombar /> */}

@@ -4,7 +4,7 @@ import Background from "../../background/background/Background";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
-import LeftRightButton from "../../button/LeftRightButton/LeftRightButton"; // 🔹 추가
+import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
 import "./DiagResult.css";
 
 import personalColors from "../../data/PersonalColors";

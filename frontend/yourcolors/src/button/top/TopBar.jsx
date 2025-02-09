@@ -13,7 +13,7 @@ const [activeButton, setActiveButton] = useState(null)
 // 버튼 정보 배열
 const buttons = [
   { to: '/personalcolors', label: '퍼스널컬러란?', name: 'personalcolor' },
-  { to: '/diagcapture', label: '퍼스널컬러 진단', name: 'diagnosis' },
+  { to: '/choice', label: '퍼스널컬러 진단', name: 'diagnosis' },
   { to: '/makeup', label: 'AI 메이크업 합성', name: 'makeup' },
 ];
 
