@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom"; // URL에서 퍼스�
 import ProductButton from "../../button/product-button/ProductButton";
 import SmallMain from '../../background/background/SmallMain';
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
-import "./PersonalcolorRecommend.css";
+import "./PersonalColorRecommend.css";
 
 import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
 
