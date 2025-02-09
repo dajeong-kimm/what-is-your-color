@@ -21,7 +21,6 @@ import Makeup from "./features/makeup/Makeup";
 import MediapipeCameraX from "./features/camera/MediapipeCameraX.jsx";
 import PersonalRecommend from "./features/recommend/PersonalRecommend";
 import ChoicePage from "./features/choice/ChoicePage.jsx";
-
 import { RecoilRoot } from 'recoil';
 
 const App = () => {
@@ -43,18 +42,13 @@ const App = () => {
         <Route path="/loadingpage" element={<LoadingPage />} />
         <Route path="/diagresult" element={<DiagResult />} />
         <Route path="/bestworst" element={<BestWorst />} />
-
-
         <Route path="/test" element={<TestPage />} />
         <Route path="/personalcolors" element={<PersonalColorMain />} />
         <Route path="/makeup" element={<Makeup />} />
         <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
+        {/* <Route path="/detail" element={<PersonalColorDetailContent />} /> */}
         <Route path="/makeupbycolor" element={<MakeupByColor />} />
-        <Route path="/recommend" element={<PersonalRecommend />} />
         <Route path="/choice" element={<ChoicePage />} />
-
-        <Route path="/result1" element={<DiagResult />} />
-        {/* <Route path="/personalcolors/:id" element={<PersonalColorDetail />} /> */}
         {/* <Route path="/bestworst" element={<BestWorst />} /> */}
         {/* <Route path="/:personalColor/recommend" element={<PersonalRecommend />} /> */}
 

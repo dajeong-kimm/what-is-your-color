@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
-import Background from "../../background/background/Background";
-import SmallMain from "../../background/background/SmallMain";
-import Topbar from "../../button/top/TopBar";
-import Bottombar from "../../button/bottom/BottomBar";
 import "./BestWorst.css"; // 스타일 import
 import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
 import { useNavigate } from "react-router-dom";
+import SmallMain from '../../background/background/SmallMain';
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
 
 
@@ -38,8 +35,6 @@ const BestWorst = () => {
 
 
    return (
-    <Background>
-      <Topbar />
       <SmallMain>
         <div className="full-container">
 
@@ -83,17 +78,9 @@ const BestWorst = () => {
             <div className="GPT-consulting">{consulting}</div>
           </div>
         </div>
-      </SmallMain>
+      
+</SmallMain>
 
-      {/* 🔹 화살표 네비게이션 버튼 추가 */}
-      <LeftRightButton 
-        onLeftClick={handleLeftClick} // 왼쪽 버튼 동작 추가 가능
-        onRightClick={handleRightClick} // 오른쪽 버튼 누르면 "/bestworst"로 이동
-      />
-
-
-      <Bottombar />
-    </Background>
   );
 };
 
