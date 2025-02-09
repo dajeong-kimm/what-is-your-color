@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Background from "../../background/background/BackGround";
+import Background from "../../background/background/Background";
 import LargeMain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import MakeupCamera from './MakeupCamera';
