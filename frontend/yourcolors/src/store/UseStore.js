@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const useStore = create((set) => ({
 
@@ -10,7 +11,7 @@ const useStore = create((set) => ({
     // 새로운 API 호출: 퍼스널 컬러 상세 정보 조회
     fetchPersonalColorDetails: async (personalId) => {
       try {
-        const response = await axios.get(`/api/info/${personalId}`);
+        const response = await axios.get(`${apiBaseUrl}/api/info/${personalId}`);
         console.log(response.data);
         
         // 데이터를 상태에 저장
@@ -27,7 +28,7 @@ const useStore = create((set) => ({
   
   fetchPersonalColors: async () => {
     try {
-      const response = await axios.get('/api/info/tag-list');
+      const response = await axios.get(`${apiBaseUrl}/api/info/tag-list`);
       // console.log("오우 된다!!!!!")
       console.log(response.data.personal_colors);
       set({ personalColors: response.data.personal_colors }); // 받아온 데이터를 상태에 저장
@@ -43,7 +44,7 @@ const useStore = create((set) => ({
   fetchCosmetics: async (personalId) => {
     set({ loading: true });
     try {
-      const response = await axios.get(`/api/info/cosmetic/${personalId}`);
+      const response = await axios.get(`${apiBaseUrl}/api/info/cosmetic/${personalId}`);
       set({
         cosmetics: {
           lip: response.data.lip_products || [],
@@ -62,7 +63,7 @@ const useStore = create((set) => ({
   productDetails: {}, // 화장품 상세 정보 상태
   fetchProductDetails: async (productID) => {
     try {
-      const response = await axios.get(`/api/info/cosmetic/product/${productID}`);
+      const response = await axios.get(`${apiBaseUrl}/api/info/cosmetic/product/${productID}`);
       console.log("화장품 컬러 상세 정보:", response.data);
       set({ productDetails: response.data });
     } catch (error) {
