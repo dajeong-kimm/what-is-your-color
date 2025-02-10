@@ -18,6 +18,5 @@ services:
     depends_on:
       - backend
     volumes:
-      - /etc/nginx/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
-      - /etc/nginx/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+      - /etc/nginx/ssl:/etc/nginx/ssl:ro
       
