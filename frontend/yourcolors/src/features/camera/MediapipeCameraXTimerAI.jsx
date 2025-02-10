@@ -190,12 +190,6 @@ const MediapipeCameraXTimerAI = () => {
     // Base64 → Blob 변환
     const blob = base64ToBlob(faceImageBase64, "image/png");
 
-    console.log("Blob 객체 확인:", blob);
-
-    // Blob 타입이 올바른지 체크
-    console.log("Blob 타입:", blob.type);
-    console.log("Blob 크기:", blob.size);
-
     // 🟢 상태 업데이트: 유저 이미지 파일 저장
     setUserImageFile(blob); // ✅ Zustand 상태 업데이트
     const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
