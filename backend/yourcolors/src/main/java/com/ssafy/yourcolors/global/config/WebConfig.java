@@ -17,6 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**") // API 요청에 대해서만 CORS 적용
                 .allowedOrigins(
+                        "https://i12e106.p.ssafy.io",
                         "http://localhost:5173", // 로컬 개발 환경(Vite 기본 포트)
                         "http://3.35.236.198", // 배포된 프론트엔드 서버
                         "http://172.30.1.18:3000", //로컬 네트워크(사설 IP)
