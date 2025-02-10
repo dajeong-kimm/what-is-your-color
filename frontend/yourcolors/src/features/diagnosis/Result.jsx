@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import SmallMain from "../../background/background/SmallMain";
+import LargeMain from "../../background/background/LargeMain";
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
 import "./DiagResult.css";
 
 import personalColorInfo from "../../store/PersonalColorInfo"; // 정적 객체 데이터
 import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
+import Largemain from '../../background/background/LargeMain';
 
-const DiagResult = () => {
+const Result = () => {
   const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
   const personalId = 1;
   const { fetchPersonalColorDetails } = useStore();
@@ -78,4 +80,4 @@ const DiagResult = () => {
   );
 };
 
-export default DiagResult;
+export default Result;

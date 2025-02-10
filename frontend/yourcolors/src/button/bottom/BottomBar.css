@@ -22,14 +22,14 @@
 .Bottombar-buttons {
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 0px;
   align-items: center;
-  margin-left: 75px;
+  margin-left: 160px;
 }
 
 /* 기존 close-button 스타일은 closebutton.css에 정의되어 있으나, 여기서 Bottombar 내부에서의 위치를 재정의 */
 .Bottombar .close-button {
-  margin-left: 470px; /* 기존 auto 대신 30px로 설정 (필요에 따라 값 조정) */
+  margin-left: 360px; /* 기존 auto 대신 30px로 설정 (필요에 따라 값 조정) */
 }
 
 /* 또는, 래퍼에 대해 별도 스타일을 줄 수도 있음 */
@@ -54,4 +54,7 @@
 
 .Bottombutton:hover {
   background-color: #76c825;
+}
+.Bottombar-container{
+  margin-top : -20px;
 }

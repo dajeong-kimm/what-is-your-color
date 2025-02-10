@@ -1,13 +1,15 @@
+// DiagResult.jsx
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Background from "../../background/background/Background";
 import Topbar from "../../button/top/TopBar";
-import Bottombar from "../../button/bottom/BottomBar"; // 수정된 Bottombar (prop 전달)
+import Bottombar from "../../button/bottom/BottomBar"; // Bottombar: currentStep prop 전달
 import Result from "./Result";
 import PersonalColorDetailContent from "../personal-colors/PersonalColorDetailContent";
 import BestWorst from "./BestWorst";
 import PersonalRecommend from "../recommend/PersonalRecommend";
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 좌우 이동 버튼
+import ModalContainer from "./ModalContainer";  // 새로 만든 모달 컨테이너
 import "./DiagResult.css"; 
 import useStore from '../../store/UseStore'; // Zustand 상태관리 데이터
 
@@ -51,7 +53,10 @@ const DiagResult = () => {
             exit={{ x: -100, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {steps[currentStep].component}
+            {/* ModalContainer로 감싸면 크기, 배경색, 정렬 등을 한 번에 관리 가능 */}
+            <ModalContainer>
+              {steps[currentStep].component}
+            </ModalContainer>
           </motion.div>
         </AnimatePresence>
 

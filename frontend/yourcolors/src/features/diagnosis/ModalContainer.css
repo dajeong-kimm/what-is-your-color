@@ -1,0 +1,19 @@
+/* ModalContainer.css */
+.modal-container {
+    width: 1300px;           /* 고정 너비 (필요에 따라 조정) */
+    max-width: 90vw;         /* 뷰포트에 따라 유동적으로 조절 */
+    height: 750px;           /* 고정 높이 */
+    margin-top: -20px;          /* 좌우 중앙 정렬 */
+    background-color: #D2F096;  /* 원하는 배경색 */
+    padding: 0px;           /* 내부 여백 */
+    box-sizing: border-box;  /* 패딩 포함 계산 */
+    
+    display: flex;
+    align-items: center;     /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    
+    /* 필요에 따라 추가 스타일 (예: border, box-shadow 등) */
+    box-shadow: none;
+    overflow: hidden;        /* 내부 내용이 넘칠 경우 처리 */
+  }
+  
