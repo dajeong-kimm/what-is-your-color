@@ -3,7 +3,7 @@
 /* 화면 하단에 고정 */
 .bottom-bar-personal {
     position: fixed;
-    bottom: 20px;
+    bottom: 30px;
     left: 0;
     width: 100%;
     background-color: #D2F096; /* 연두색 배경 */
