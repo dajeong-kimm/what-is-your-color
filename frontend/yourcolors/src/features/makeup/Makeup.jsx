@@ -6,6 +6,7 @@ import MakeupCamera from './MakeupCamera';
 import ProductButton from '../../button/product-button/ProductButton';
 import "./Makeup.css";
 import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
+import RightButton from "../../button/left-right-button/RightButton";
 
 const Makeup = () => {
   const { cosmetics, loading } = useStore();
@@ -72,7 +73,7 @@ const Makeup = () => {
             </div>
           </div>
         </LargeMain>
-
+          <RightButton/>
       </Background>
     </div>
   );
