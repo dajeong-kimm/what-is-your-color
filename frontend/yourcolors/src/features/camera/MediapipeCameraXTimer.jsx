@@ -4,6 +4,7 @@ import { Holistic } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)
 
@@ -186,7 +187,7 @@ const MediapipeCameraXTimer = () => {
     formData.append("a4_image", ""); // 현재는 빈 값
   
     axios
-      .post("http://localhost:9000/api/consult/dist", formData, {
+      .post(`${apiBaseUrl}/api/consult/dist`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -4,6 +4,9 @@ import { Holistic } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 
 let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)
 
@@ -18,6 +21,7 @@ const MediapipeCameraXTimerAI = () => {
   const [hasCaptured, setHasCaptured] = useState(false); // 이미 촬영했는지 체크
 
   const navigate = useNavigate();
+  const { setUserPersonalId, setResults, setGptSummary } = useStore();
 
   useEffect(() => {
     console.log("[useEffect] Component mounted -> Initialize camera");
@@ -185,13 +189,13 @@ const MediapipeCameraXTimerAI = () => {
     formData.append("image", blob, "captured_face.png"); // 파일명 지정
   
     axios
-      .post("http://localhost:9000/api/consult/ai", formData, {
+      .post(`${apiBaseUrl}/api/consult/ai`, formData, {
         headers: {
           "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더 설정
         },
       })
       .then((response) => {
-        console.log("Server Response:", response.data);
+        console.log("Server Response(AI 진단 결과):", response.data);
       })
       .catch((error) => {
         console.error("Error sending images to server:", error);

@@ -15,7 +15,7 @@ useEffect(() => {
   fetchPersonalColors(); // 컴포넌트가 렌더링될 때 데이터 fetch
   fetchCosmetics(1); //임시로 봄(1번) 넣어둠
 }, [fetchPersonalColors, fetchCosmetics]);
-  console.log(cosmetics)
+  // console.log(cosmetics)
   
 
 // useEffect(() => {

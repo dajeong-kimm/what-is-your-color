@@ -7,6 +7,13 @@ const useStore = create((set) => ({
   userPersonalId: null, 
   setUserPersonalId: (id) => set({ userPersonalId: id }),
 
+  // ✅ AI 진단 결과 상태 추가
+  Results: [], // 퍼스널 컬러 진단 결과 (results 배열)
+  gptSummary: "", // ChatGPT 요약 결과
+
+  setResults: (data) => set({ Results: data }), // AI 진단 결과 저장
+  setGptSummary: (summary) => set({ gptSummary: summary }), // GPT 요약 저장
+
   // 3. 퍼스널 컬러 상세 정보 조회
   personalColorDetails: {}, // 퍼스널 컬러 상세 정보를 저장할 객체
   setPersonalColorDetails: (data) => set({ personalColorDetails: data }), // 퍼스널 컬러 상세 정보 상태 업데이트
@@ -33,7 +40,7 @@ const useStore = create((set) => ({
     try {
       const response = await axios.get(`${apiBaseUrl}/api/info/tag-list`);
       // console.log("오우 된다!!!!!")
-      console.log(response.data.personal_colors);
+      console.log("4. 전체 퍼스널 컬러 이름 및 태그 정보 조회 API", response.data.personal_colors);
       set({ personalColors: response.data.personal_colors }); // 받아온 데이터를 상태에 저장
     } catch (error) {
       console.error('Error fetching personal colors:', error);
@@ -48,6 +55,7 @@ const useStore = create((set) => ({
     set({ loading: true });
     try {
       const response = await axios.get(`${apiBaseUrl}/api/info/cosmetic/${personalId}`);
+      console.log("5. 특정 퍼스널컬러의 화장품 목록 조회 API", response.data);
       set({
         cosmetics: {
           lip: response.data.lip_products || [],
