@@ -27,15 +27,15 @@ import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
 // };
 
 const PersonalRecommend = () => {
-  const { personalColor } = useParams();
+  // const { personalColor } = useParams();
   const [selectedCategory, setSelectedCategory] = useState("lip"); // 기본값 립
-  const { cosmetics, fetchCosmetics, loading } = useStore();
+  const { cosmetics, fetchCosmetics, loading, userPersonalId, personalColorDetails } = useStore();
 
   useEffect(() => {
-    if (personalColor) {
-      fetchCosmetics(personalColor);
+    if (userPersonalId) {
+      fetchCosmetics(userPersonalId);
     }
-  }, [personalColor, fetchCosmetics]);
+  }, [userPersonalId, fetchCosmetics]);
 
   // 선택한 카테고리에 맞는 제품 리스트 가져오기
   console.log(cosmetics)
@@ -64,7 +64,7 @@ const PersonalRecommend = () => {
         <div className="full-container">
           <div className="top">
             {/* 퍼스널컬러 이름 + "Pick!" 형태로 출력 */}
-            <div className="color-pick">{personalColor} Pick!</div>
+            <div className="color-pick">{personalColorDetails.name} Pick!</div>
             <div className="button-container">
              {["lip", "eye", "cheek"].map((category) => (
                 <ProductButton
