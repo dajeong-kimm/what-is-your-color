@@ -71,6 +71,7 @@
   color: #555;
 }
 
+
 /* 이미지 컨테이너 */
 .image-container {
   display: flex;
@@ -86,3 +87,17 @@
   max-height: 400px;
   border-radius: 10px; /* 이미지의 둥근 모서리 (원하는 대로 조정) */
 }
+
+.modal-content {
+  width: 90vw;         /* 뷰포트 너비의 90% */
+  max-width: 1300px;   /* 최대 너비 제한 */
+  min-height: 500px;
+  max-height: 500px;
+  margin: auto;
+  background-color: #D2F096; 
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;  /* 수평, 수직 모두 숨김 */
+  box-shadow: none;
+}
+

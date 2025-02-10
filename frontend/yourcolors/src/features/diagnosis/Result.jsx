@@ -1,23 +1,29 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import SmallMain from "../../background/background/SmallMain";
+import LargeMain from "../../background/background/LargeMain";
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
 import "./DiagResult.css";
 
 import personalColorInfo from "../../store/PersonalColorInfo"; // 정적 객체 데이터
 import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
+import Largemain from '../../background/background/LargeMain';
 
-const DiagResult = () => {
+const Result = () => {
   const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
-  const personalId = 1;
-  const { fetchPersonalColorDetails } = useStore();
+  // const personalId = 1;
+  const { userPersonalId, personalColorDetails, Results } = useStore();
+  
+  console.log("본인 결과 확인 => ", Results);
+  // console.log("확인 작업2 ㅡㅡ", personalColorDetails);
 
-  useEffect(() => {
-    // 컴포넌트가 렌더링될 때 API 호출하여 상세 정보 가져오기
-    fetchPersonalColorDetails(1);
-  }, [personalId, fetchPersonalColorDetails]);
+  // useEffect(() => {
+  //   // 컴포넌트가 렌더링될 때 API 호출하여 상세 정보 가져오기
+  //   fetchPersonalColorDetails(userPersonalId);
+  // }, [userPersonalId, fetchPersonalColorDetails]);
 
-  const location = useLocation();
+  // const location = useLocation();
+
 
   // 🔹 백엔드 연동 시 사용 (현재 주석 처리)
   // const { mainColor, subColors } = location.state || {};
@@ -38,7 +44,7 @@ const DiagResult = () => {
 
   // mainColor에 해당하는 이미지 URL 가져오기
   // const imageUrl = colorMap[mainColor] || "기본 이미지 URL";
-  const imageUrl = personalColorInfo[1].characterUrl // 일단 1번 봄라이트 이미지로...
+  const imageUrl = personalColorInfo[userPersonalId].characterUrl // 일단 1번 봄라이트 이미지로...
 
   const handleRightClick = () => {
     navigate("/personalcolors/12");
@@ -50,17 +56,19 @@ const DiagResult = () => {
 
           <div className="container-up">
             <div className="title-main">당신의 퍼스널컬러는</div>
-            <strong className="main-color">{mainColor}</strong>
+            <strong className="main-color">{personalColorDetails.name}</strong>
           </div>
 
           <div className="container-center">
-            <div className="summary">{summary}</div>
-            <div className="hashtag">{hashtags.join(" ")}</div>
+            <div className="summary">{personalColorDetails.description}</div>
+          {/* <div className="hashtag">{personalColorDetails.hashtag.join(" ")}</div> */}
+          {Array.isArray(personalColorDetails.hashtag) ? personalColorDetails.hashtag.join(" ") : ""}
           </div>
 
           <div className="container-down">
             <div className="title-sub">서브컬러</div>
-            <strong className="sub-color">{subColors.join(" & ")}</strong>
+          {/* <strong className="sub-color">{subColors.join(" & ")}</strong> */}
+          <strong className="sub-color">{Results[1].personal_color} & {Results[2].personal_color}</strong>
           </div>
         
         </div>
@@ -78,4 +86,4 @@ const DiagResult = () => {
   );
 };
 
-export default DiagResult;
+export default Result;
