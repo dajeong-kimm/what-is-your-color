@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.yourcolors.domain.consult.dto.AiResponse;
 import com.ssafy.yourcolors.domain.consult.dto.DistResponse;
+import com.ssafy.yourcolors.domain.consult.entity.ConsultPersonalColor;
+import com.ssafy.yourcolors.domain.consult.repository.PersonalColorRepository;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-//@Service
+@Service
 public class TestImpl implements ConsultService {
 
     private final RestTemplate restTemplate = new RestTemplate();
@@ -28,10 +30,18 @@ public class TestImpl implements ConsultService {
     private final String GPT_API_URL = "https://api.openai.com/v1/chat/completions";
     private final String GPT_API_KEY = "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";
 
+    private final PersonalColorRepository personalColorRepository;
+
+    public TestImpl(PersonalColorRepository personalColorRepository) {
+        this.personalColorRepository = personalColorRepository;
+    }
+
+
     @Override
     public AiResponse consultWithAI(MultipartFile image) {
         List<AiResponse.Result> results = processAiResponse(image);
         String gptSummary = callGptApiForAI(results); // AI 모델용 GPT API 호출
+        System.out.println("result >>> " + results.get(0).getPersonalColor());
 
         return new AiResponse(results, gptSummary);
     }
@@ -41,6 +51,7 @@ public class TestImpl implements ConsultService {
         List<DistResponse.Result> results = processDistEResponse(face, a4);
         String gptSummary = callGptApiForDist(results); // Dist 모델용 GPT API 호출
 
+        System.out.println("result : " + results.get(0).getPersonalColor());
         return new DistResponse(results, gptSummary);
     }
 
@@ -55,12 +66,16 @@ public class TestImpl implements ConsultService {
         }
 
         return response.getBody().stream()
-                .map(item -> new AiResponse.Result(
-                        Double.parseDouble(item.get("probability").replace("%", "")),
-                        formatPersonalColor(item.get("class_name"))
-                ))
+                .map(item -> {
+                    double probability = Double.parseDouble(item.get("probability").replace("%", ""));
+                    String formattedColor = formatPersonalColor(item.get("class_name"));
+                    // personal_color 테이블에서 name이 formattedColor와 일치하는 personal_id 조회
+                    int personalId = personalColorRepository.findByName(formattedColor)
+                            .map(ConsultPersonalColor::getPersonalId)
+                            .orElse(0); // 없을 경우 기본값 0 또는 예외 처리 가능
+                    return new AiResponse.Result(probability, formattedColor, personalId);
+                })
                 .collect(Collectors.toList());
-
     }
 
     /**
@@ -89,7 +104,16 @@ public class TestImpl implements ConsultService {
 
         List<Map<String, Object>> diagnosisList = (List<Map<String, Object>>) diagnosisObj;
 
-        return diagnosisList.stream().filter(item -> ((Number) item.get("rank")).intValue() <= 3).map(item -> new DistResponse.Result(((Number) item.get("rank")).intValue(), (String) item.get("personal_color"))).collect(Collectors.toList());
+        return diagnosisList.stream().filter(item -> ((Number) item.get("rank")).intValue() <= 3).map(item -> {
+            int rank = ((Number) item.get("rank")).intValue();
+            // 원본 personal_color 값 가져오기
+            String formattedColor = (String) item.get("personal_color");
+            // personal_color 테이블에서 formattedColor와 일치하는 personalId 조회
+            int personalId = personalColorRepository.findByName(formattedColor)
+                    .map(ConsultPersonalColor::getPersonalId)
+                    .orElse(0);
+            return new DistResponse.Result(rank, formattedColor, personalId);
+        }).collect(Collectors.toList());
     }
 
     /**
