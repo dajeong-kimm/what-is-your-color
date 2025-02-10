@@ -163,12 +163,33 @@ const MediapipeCameraXTimer = () => {
     return faceCanvas.toDataURL("image/png");
   };
 
-  const sendImagesToServer = (faceImage) => {
+  // 🔥 Base64 -> Blob 변환 함수
+  const base64ToBlob = (base64, mimeType) => {
+    const byteCharacters = atob(base64.split(",")[1]);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+  };
+
+  const sendImagesToServer = (faceImageBase64) => {
     console.log("[sendImagesToServer] Sending to server...");
+  
+    // Base64 → Blob 변환
+    const blob = base64ToBlob(faceImageBase64, "image/png");
+  
+    // FormData 객체 생성
+    const formData = new FormData();
+    formData.append("face_image", blob, "captured_face.png"); // 얼굴 이미지 추가
+    formData.append("a4_image", ""); // 현재는 빈 값
+  
     axios
-      .post("http://localhost:9000/api/colorlab/color-dist", {
-        face_image: faceImage || "",
-        a4_image: "", // 종이는 빈 문자열
+      .post("http://localhost:9000/api/consult/dist", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
       .then((response) => {
         console.log("Server Response:", response.data);

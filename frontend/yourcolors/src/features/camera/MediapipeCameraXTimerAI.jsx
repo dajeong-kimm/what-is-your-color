@@ -163,12 +163,32 @@ const MediapipeCameraXTimerAI = () => {
     return faceCanvas.toDataURL("image/png");
   };
 
-  const sendImagesToServer = (faceImage) => {
+    // 🔥 Base64 -> Blob 변환 함수
+  const base64ToBlob = (base64, mimeType) => {
+    const byteCharacters = atob(base64.split(",")[1]);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+  };
+
+  const sendImagesToServer = (faceImageBase64) => {
     console.log("[sendImagesToServer] Sending to server...");
+
+      // Base64 → Blob 변환
+    const blob = base64ToBlob(faceImageBase64, "image/png");
+  
+    // FormData 객체 생성
+    const formData = new FormData();
+    formData.append("image", blob, "captured_face.png"); // 파일명 지정
+  
     axios
-      .post("http://localhost:9000/api/colorlab/ai-model", {
-        face_image: faceImage || "",
-        a4_image: "", // 종이는 빈 문자열
+      .post("http://localhost:9000/api/consult/ai", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더 설정
+        },
       })
       .then((response) => {
         console.log("Server Response:", response.data);
