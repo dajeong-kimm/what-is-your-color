@@ -2,14 +2,14 @@
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: black;
+    /* background-color: black; */
     overflow: hidden;
 }
 
 /* 기존 비디오 스타일 유지 (셀카 모드) */
 .camera-video {
-    width: 100%;
-    height: 100%;
+    width: auto;
+    height: auto;
     object-fit: cover;
     transform: scaleX(-1); /* 좌우 반전 */
 }
