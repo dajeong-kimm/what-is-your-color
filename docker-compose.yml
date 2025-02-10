@@ -18,7 +18,6 @@ services:
     depends_on:
       - backend
     volumes:
-      - /etc/letsencrypt/archive:/etc/letsencrypt/archive:ro  # 🔥 심볼릭 링크가 포함된 archive 디렉토리 마운트 추가
-      - /etc/letsencrypt/live/i12e106.p.ssafy.io/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
-      - /etc/letsencrypt/live/i12e106.p.ssafy.io/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+      - /etc/nginx/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - /etc/nginx/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
       
