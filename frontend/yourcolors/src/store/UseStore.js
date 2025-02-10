@@ -4,7 +4,7 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const useStore = create((set) => ({
   // ✅ userPersonalId 상태 추가 (set으로만 관리)
-  userPersonalId: null, 
+  userPersonalId: 1, 
   setUserPersonalId: (id) => set({ userPersonalId: id }),
 
   // ✅ AI 진단 결과 상태 추가
