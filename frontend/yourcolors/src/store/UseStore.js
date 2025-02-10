@@ -22,12 +22,12 @@ const useStore = create((set) => ({
     fetchPersonalColorDetails: async (personalId) => {
       try {
         const response = await axios.get(`${apiBaseUrl}/api/info/${personalId}`);
-        console.log(response.data);
+        console.log("3. 퍼스널 컬러 상세 정보 조회", response.data);
         
         // 데이터를 상태에 저장
         set({ personalColorDetails: response.data });
       } catch (error) {
-        console.error('Error fetching personal color details:', error);
+        console.error('3. 퍼스널 컬러 상세 정보 조회 오류 발생', error);
       }
     },
 
@@ -43,7 +43,7 @@ const useStore = create((set) => ({
       console.log("4. 전체 퍼스널 컬러 이름 및 태그 정보 조회 API", response.data.personal_colors);
       set({ personalColors: response.data.personal_colors }); // 받아온 데이터를 상태에 저장
     } catch (error) {
-      console.error('Error fetching personal colors:', error);
+      console.error('4. 전체 퍼스널 컬러 이름 및 태그 정보 조회 API 오류 발생', error);
     }
   },
 
@@ -65,7 +65,7 @@ const useStore = create((set) => ({
         loading: false,
       });
     } catch (error) {
-      console.error("화장품 데이터를 불러오는 중 오류 발생:", error);
+      console.error("5. 특정 퍼스널컬러의 화장품 목록 조회 API 오류 발생:", error);
       set({ loading: false });
     }
   },
@@ -75,10 +75,10 @@ const useStore = create((set) => ({
   fetchProductDetails: async (productID) => {
     try {
       const response = await axios.get(`${apiBaseUrl}/api/info/cosmetic/product/${productID}`);
-      console.log("화장품 컬러 상세 정보:", response.data);
+      console.log("6. 화장품 컬러 상세 조회 API", response.data);
       set({ productDetails: response.data });
     } catch (error) {
-      console.error("화장품 상세 정보 불러오기 실패:", error);
+      console.error("6. 화장품 컬러 상세 조회 API 오류 발생", error);
     }
   },
 

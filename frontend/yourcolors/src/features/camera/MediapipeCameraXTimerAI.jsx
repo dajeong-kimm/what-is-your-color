@@ -180,6 +180,7 @@ const MediapipeCameraXTimerAI = () => {
 
   const sendImagesToServer = (faceImageBase64) => {
     console.log("[sendImagesToServer] Sending to server...");
+    console.log("10. AI 모델 사용 API");
 
       // Base64 → Blob 변환
     const blob = base64ToBlob(faceImageBase64, "image/png");
