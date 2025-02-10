@@ -19,5 +19,6 @@ public class AiResponse {
     public static class Result {
         private double probability;  // 확률을 double로 변경 (ex: 84.46%)
         private String personalColor;
+        private int personalId;
     }
 }

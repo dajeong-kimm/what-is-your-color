@@ -5,6 +5,8 @@ import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
 import LoadingPage from "../../button/loading-page/LoadingPage";
 import axios from "axios";
+import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const MediapipeCameraTimer = () => {
   const videoRef = useRef(null);
@@ -182,7 +184,7 @@ const MediapipeCameraTimer = () => {
     formData.append("a4_image", a4Blob, "a4_image.png"); // 종이 이미지 추가
   
     axios
-      .post("http://localhost:9000/api/consult/dist", formData, {
+      .post(`${apiBaseUrl}/api/consult/dist`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
