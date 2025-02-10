@@ -3,6 +3,9 @@ import axios from 'axios';
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const useStore = create((set) => ({
+  // ✅ userPersonalId 상태 추가 (set으로만 관리)
+  userPersonalId: null, 
+  setUserPersonalId: (id) => set({ userPersonalId: id }),
 
   // 3. 퍼스널 컬러 상세 정보 조회
   personalColorDetails: {}, // 퍼스널 컬러 상세 정보를 저장할 객체
