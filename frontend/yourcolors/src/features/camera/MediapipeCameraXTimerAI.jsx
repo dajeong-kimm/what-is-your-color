@@ -1,4 +1,4 @@
-// color-distance, 얼굴만 보내는 버전
+// ai-model, 얼굴만 보내는 버전
 import React, { useRef, useEffect, useState } from "react";
 import { Holistic } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
@@ -7,7 +7,7 @@ import axios from "axios";
 
 let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)
 
-const MediapipeCameraXTimer = () => {
+const MediapipeCameraXTimerAI = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -163,7 +163,7 @@ const MediapipeCameraXTimer = () => {
     return faceCanvas.toDataURL("image/png");
   };
 
-  // 🔥 Base64 -> Blob 변환 함수
+    // 🔥 Base64 -> Blob 변환 함수
   const base64ToBlob = (base64, mimeType) => {
     const byteCharacters = atob(base64.split(",")[1]);
     const byteNumbers = new Array(byteCharacters.length);
@@ -176,19 +176,18 @@ const MediapipeCameraXTimer = () => {
 
   const sendImagesToServer = (faceImageBase64) => {
     console.log("[sendImagesToServer] Sending to server...");
-  
-    // Base64 → Blob 변환
+
+      // Base64 → Blob 변환
     const blob = base64ToBlob(faceImageBase64, "image/png");
   
     // FormData 객체 생성
     const formData = new FormData();
-    formData.append("face_image", blob, "captured_face.png"); // 얼굴 이미지 추가
-    formData.append("a4_image", ""); // 현재는 빈 값
+    formData.append("image", blob, "captured_face.png"); // 파일명 지정
   
     axios
-      .post("http://localhost:9000/api/consult/dist", formData, {
+      .post("http://localhost:9000/api/consult/ai", formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더 설정
         },
       })
       .then((response) => {
@@ -377,4 +376,4 @@ const MediapipeCameraXTimer = () => {
   );
 };
 
-export default MediapipeCameraXTimer;
+export default MediapipeCameraXTimerAI;

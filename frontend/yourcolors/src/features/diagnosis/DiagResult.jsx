@@ -1,31 +1,32 @@
-import React, { useEffect } from 'react';
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import Background from "../../background/background/Background";
 import SmallMain from "../../background/background/SmallMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
-import "./DiagResult.css";
-
-import personalColors from "../../data/PersonalColors";
-import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터터
-
-// const colorImageMap = {
-//   "봄 라이트": "spring-light",
-//   "봄 브라이트": "spring-bright",
-//   "봄 비비드": "spring-vivid",
-//   "여름 라이트": "summer-light",
-//   "여름 브라이트": "summer-bright",
-//   "여름 뮤트": "summer-mute",
-//   "가을 뮤트": "autumn-mute",
-//   "가을 스트롱": "autumn-strong",
-//   "가을 다크": "autumn-dark",
-//   "겨울 비비드": "winter-vivid",
-//   "겨울 스트롱": "winter-strong",
-//   "겨울 다크": "winter-dark",
-// };
+import Result from "./Result";
+import PersonalColorDetailContent from "../personal-colors/PersonalColorDetailContent";
+import BestWorst from "./BestWorst";
+import PersonalRecommend from "../recommend/PersonalRecommend";
+import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가!
+import "./DiagResult.css"; 
+import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
 
 const DiagResult = () => {
-  const personalId = 1;
+
+  const [currentStep, setCurrentStep] = useState(0); // 현재 표시할 콘텐츠 상태
+
+  // 🔹 콘텐츠 변경 로직
+  const nextStep = () => {
+    setCurrentStep((prevStep) => (prevStep + 1) % 4); // 0 → 1 → 2 → 3 → 0
+  }
+
+  const prevStep = () => {
+    setCurrentStep((prevStep) => (prevStep - 1 + 4) % 4); // 3 → 2 → 1 → 0 → 3
+  };
+
+  const personalId = 1; // 진단결과로 ID 받아오면 이거 바꿔야함 지금은 임시로 1번 해둠
   const { fetchPersonalColorDetails } = useStore();
 
   useEffect(() => {
@@ -33,71 +34,49 @@ const DiagResult = () => {
     fetchPersonalColorDetails(1);
   }, [personalId, fetchPersonalColorDetails]);
 
-
-
-  const location = useLocation();
-
-  // 🔹 백엔드 연동 시 사용 (현재 주석 처리)
-  // const { mainColor, subColors } = location.state || {};
-
   // 🔹 임시 예시 데이터
   const exampleData = {
-    mainColor: "봄 라이트",
-    subColors: ["가을 뮤트", "여름 라이트"],
-    summary: "러블리의 인간화",
-    hashtags: ["#밝은", "#부드러운","#스윗한"],
+    mainColor: "겨울 다크",
+    subColors: ["가을 다크", "겨울 스트롱"],
+    summary: "모던함의 인간화",
+    hashtags: ["#차가운", "#시크한","#카리스마"],
   };
 
-  // 백엔드 연결 후 exampleData 부분 삭제 가능
-  const mainColor = exampleData.mainColor; // location.state?.mainColor || exampleData.mainColor
-  const subColors = exampleData.subColors; // location.state?.subColors || exampleData.subColors
-  const summary = exampleData.summary;
-  const hashtags = exampleData.hashtags;
-
-  // 이미지 파일명 변환
-  // const imageFileName = colorImageMap[mainColor] || "default"; // 매칭되는 이미지 없으면 default.png 사용
-  // 배열을 객체(Map) 형태로 변환
-  const colorMap = personalColors.reduce((acc, color) => {
-    acc[color.name] = color.characterUrl;
-    return acc;
-  }, {});
-
-  // mainColor에 해당하는 이미지 URL 가져오기
-  const imageUrl = colorMap[mainColor] || "기본 이미지 URL";
+  // 🔹 콘텐츠 배열 (순서 유지)
+  const steps = [
+    { id: 0, component: <Result /> },  // 🔹 대표 퍼스널컬러
+    { id: 1, component: <PersonalColorDetailContent /> },  // 🔹 세부 특징
+    { id: 2, component: <BestWorst /> },  // 🔹 Best/Worst 컬러
+    { id: 3, component: <PersonalRecommend /> },  // 🔹 추천 상품
+  ];
 
   return (
     <Background>
       <Topbar />
-      <SmallMain>
-        <div className="container-left">
+      <div className="diag-result-container">
+      {/* 🔹 애니메이션 적용된 콘텐츠 변경 */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentStep} 
+          initial={{ x: 100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -100, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          // className="content-wrapper"
+        >
+          {steps[currentStep].component}
+        </motion.div>
+      </AnimatePresence>
 
-          <div className="container-up">
-            <div className="title-main">당신의 퍼스널컬러는</div>
-            <strong className="main-color">{mainColor}</strong>
-          </div>
+      {/* 🔹 좌우 이동 버튼 */}
+      <LeftRightButton onLeftClick={prevStep} onRightClick={nextStep} />
+    </div>
 
-          <div className="container-center">
-            <div className="summary">{summary}</div>
-            <div className="hashtag">{hashtags.join(" ")}</div>
-          </div>
-
-          <div className="container-down">
-            <div className="title-sub">서브컬러</div>
-            <strong className="sub-color">{subColors.join(" & ")}</strong>
-          </div>
-        
-        </div>
-
-        {/* 이미지 컨테이너 (우측 정렬) */}
-        <div className="image-container">
-          <div className="personal-character-image">
-            <img src={imageUrl} alt={mainColor} />
-          </div>
-        </div>
-      </SmallMain>
       <Bottombar />
-    </Background>
+      </Background>
+    
   );
 };
+
 
 export default DiagResult;
