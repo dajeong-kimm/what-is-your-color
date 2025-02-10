@@ -1,13 +1,15 @@
+// DiagResult.jsx
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Background from "../../background/background/Background";
 import Topbar from "../../button/top/TopBar";
-import Bottombar from "../../button/bottom/BottomBar"; // 수정된 Bottombar (prop 전달)
+import Bottombar from "../../button/bottom/BottomBar"; // Bottombar: currentStep prop 전달
 import Result from "./Result";
 import PersonalColorDetailContent from "../personal-colors/PersonalColorDetailContent";
 import BestWorst from "./BestWorst";
 import PersonalRecommend from "../recommend/PersonalRecommend";
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 좌우 이동 버튼
+import ModalContainer from "./ModalContainer";  // 새로 만든 모달 컨테이너
 import "./DiagResult.css"; 
 import useStore from '../../store/UseStore'; // Zustand 상태관리 데이터
 
@@ -42,16 +44,27 @@ const DiagResult = () => {
     <Background>
       <Topbar />
       <div className="diag-result-container">
-        {/* 애니메이션 적용된 콘텐츠 전환 */}
+        {/* AnimatePresence 및 motion.div를 사용한 Zoom 효과 (깜빡임 없이 부드럽게 확대/축소) */}
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStep}
-            initial={{ x: 100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -100, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            initial={{ scale: 0.95, opacity: 1 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.95, opacity: 1 }}
+            transition={{ duration: 0.15, ease: "easeInOut" }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              overflow: "hidden",
+              zIndex: 0,
+            }}
           >
-            {steps[currentStep].component}
+            <ModalContainer>
+              {steps[currentStep].component}
+            </ModalContainer>
           </motion.div>
         </AnimatePresence>
 
