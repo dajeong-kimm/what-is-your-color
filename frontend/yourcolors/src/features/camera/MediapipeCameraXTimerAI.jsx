@@ -21,7 +21,7 @@ const MediapipeCameraXTimerAI = () => {
   const [hasCaptured, setHasCaptured] = useState(false); // 이미 촬영했는지 체크
 
   const navigate = useNavigate();
-  const { setUserPersonalId, setResults, setGptSummary } = useStore();
+  const { setUserPersonalId, setResults, setGptSummary } = useStore(); //Zustand 상태관리 데이터
 
   useEffect(() => {
     console.log("[useEffect] Component mounted -> Initialize camera");
@@ -196,6 +196,10 @@ const MediapipeCameraXTimerAI = () => {
       })
       .then((response) => {
         console.log("Server Response(AI 진단 결과):", response.data);
+        console.log("너의 색깔은?? : ", response.data.results[0].personal_id);
+        setUserPersonalId(response.data.results[0].personal_id);
+        setResults(response.data.results); // AI 분석 결과 저장
+        setGptSummary(response.data.gpt_summary); // GPT 요약 저장
       })
       .catch((error) => {
         console.error("Error sending images to server:", error);

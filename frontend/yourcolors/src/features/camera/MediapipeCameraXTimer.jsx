@@ -4,6 +4,7 @@ import { Holistic } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)

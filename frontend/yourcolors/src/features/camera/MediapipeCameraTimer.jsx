@@ -5,6 +5,7 @@ import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
 import LoadingPage from "../../button/loading-page/LoadingPage";
 import axios from "axios";
+import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const MediapipeCameraTimer = () => {
