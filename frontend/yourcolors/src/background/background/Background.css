@@ -1,5 +1,6 @@
 /* Background.css */
 .Sub-back {
+  transform: none !important;
   display: flex;
   justify-content: center;
   align-items: center;
