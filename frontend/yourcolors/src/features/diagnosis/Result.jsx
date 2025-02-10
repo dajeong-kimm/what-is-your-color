@@ -10,10 +10,10 @@ import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
 const DiagResult = () => {
   const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
   // const personalId = 1;
-  const { userPersonalId, personalColorDetails, fetchPersonalColorDetails, Results } = useStore();
+  const { userPersonalId, personalColorDetails, Results } = useStore();
   
-  console.log("확인 작업1 ㅡㅡ", Results);
-  console.log("확인 작업2 ㅡㅡ", personalColorDetails);
+  console.log("본인 결과 확인 => ", Results);
+  // console.log("확인 작업2 ㅡㅡ", personalColorDetails);
 
   // useEffect(() => {
   //   // 컴포넌트가 렌더링될 때 API 호출하여 상세 정보 가져오기
