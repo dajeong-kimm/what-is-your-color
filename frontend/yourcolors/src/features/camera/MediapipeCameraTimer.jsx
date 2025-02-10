@@ -158,11 +158,34 @@ const MediapipeCameraTimer = () => {
     return a4Canvas.toDataURL("image/png");
   };
 
-  const sendImagesToServer = (faceImage, a4Image) => {
+  // 🔥 Base64 -> Blob 변환 함수
+  const base64ToBlob = (base64, mimeType) => {
+    const byteCharacters = atob(base64.split(",")[1]);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+  };
+
+  const sendImagesToServer = (faceImageBase64, a4ImageBase64) => {
+    console.log("[sendImagesToServer] Sending to server...");
+  
+    // Base64 → Blob 변환
+    const faceBlob = base64ToBlob(faceImageBase64, "image/png");
+    const a4Blob = base64ToBlob(a4ImageBase64, "image/png");
+  
+    // FormData 객체 생성
+    const formData = new FormData();
+    formData.append("face_image", faceBlob, "face_image.png"); // 얼굴 이미지 추가
+    formData.append("a4_image", a4Blob, "a4_image.png"); // 종이 이미지 추가
+  
     axios
-      .post("http://localhost:9000/api/consult/dist", {
-        face_image: faceImage,
-        a4_image: a4Image,
+      .post("http://localhost:9000/api/consult/dist", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
       .then((response) => {
         console.log("Server Response:", response.data);
