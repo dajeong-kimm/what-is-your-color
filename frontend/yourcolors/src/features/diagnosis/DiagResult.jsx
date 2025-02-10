@@ -25,12 +25,12 @@ const DiagResult = () => {
     setCurrentStep((prevStep) => (prevStep - 1 + 4) % 4);
   };
 
-  const personalId = 1; // 임시 ID (추후 변경)
-  const { fetchPersonalColorDetails } = useStore();
+  // const personalId = 1; // 임시 ID (추후 변경)
+  const { userPersonalId, fetchPersonalColorDetails } = useStore();
 
   useEffect(() => {
-    fetchPersonalColorDetails(personalId);
-  }, [personalId, fetchPersonalColorDetails]);
+    fetchPersonalColorDetails(userPersonalId);
+  }, [userPersonalId, fetchPersonalColorDetails]);
 
   // 콘텐츠 배열 (순서 유지)
   const steps = [

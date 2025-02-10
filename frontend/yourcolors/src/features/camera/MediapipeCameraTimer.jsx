@@ -16,6 +16,7 @@ const MediapipeCameraTimer = () => {
   const [showCaptureButton, setShowCaptureButton] = useState(true);
   const [isFlashing, setIsFlashing] = useState(false);
   const navigate = useNavigate();
+  const { setUserPersonalId, setResults, setGptSummary } = useStore(); //Zustand 상태관리 데이터
 
   useEffect(() => {
     initializeCamera();
@@ -173,6 +174,7 @@ const MediapipeCameraTimer = () => {
 
   const sendImagesToServer = (faceImageBase64, a4ImageBase64) => {
     console.log("[sendImagesToServer] Sending to server...");
+    console.log("11. 색상 거리 사용 API");
   
     // Base64 → Blob 변환
     const faceBlob = base64ToBlob(faceImageBase64, "image/png");
@@ -190,7 +192,11 @@ const MediapipeCameraTimer = () => {
         },
       })
       .then((response) => {
-        console.log("Server Response:", response.data);
+        console.log("Server Response(색상거리 종이있음):", response.data);
+        console.log("너의 색깔은?? : ", response.data.results[0].personal_id);
+        setUserPersonalId(response.data.results[0].personal_id);
+        setResults(response.data.results); // AI 분석 결과 저장
+        setGptSummary(response.data.gpt_summary); // GPT 요약 저장
       })
       .catch((error) => {
         console.error("Error sending images to server:", error);
