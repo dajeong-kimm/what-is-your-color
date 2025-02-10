@@ -23,6 +23,7 @@ public class DistResponse {
     public static class Result {
         private int rank;
         private String personalColor;
+        private int personalId;
     }
 
 }

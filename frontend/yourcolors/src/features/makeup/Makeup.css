@@ -1,56 +1,125 @@
+/* Makeup.css */
+
+/* 전체 컨테이너 스타일 */
 .camera-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-    padding: 0;
-    margin: 0;
-    display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background-color: #f8f8f8;
 }
 
-/* LargeMain 내부를 좌우로 나누기 */
-.largemain { /* 수정됨 */
-    display: flex;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
+.largemain {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  height: 80%;
+  gap: 30px;
 }
 
-/* 왼쪽 패널 - 버튼 */
+/* 왼쪽 패널 스타일 */
 .left-panel {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: flex-start; /* 상단 정렬 */
-    justify-content: flex-start; /* 왼쪽 정렬 */
-    position: relative;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  /* background-color: #fff; */
+  padding: 20px;
+  /* border-radius: 10px; */
+  /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
 }
 
-/* 버튼 컨테이너 - 가로 정렬 */
 .button-container {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    padding-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
 }
 
-/* 오른쪽 패널 - 카메라 */
+/* 제품 리스트 가로 정렬 */
+.product-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  gap: 10px;
+  justify-content: center;
+}
+
+.product-card {
+  width: 100px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  background-color: #fff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-card.selected {
+  border: 2px solid #ff4081;
+  transform: scale(1.1);
+}
+
+.product-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* 오른쪽 패널 스타일 */
 .right-panel {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* 카메라가 LargeMain 내부에서 벗어나지 않도록 조정 */
-.right-panel .camera {
-    width: 100%; /* 부모 컨테이너 크기에 맞춤 */
-    height: 100%;
-    object-fit: cover;
+/* 모달 스타일 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* 색상 선택 옵션 스타일 */
+.color-options {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.color-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid #ddd;
 }
