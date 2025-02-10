@@ -1,0 +1,26 @@
+/* BottomBarPersonal.css */
+
+/* 화면 하단에 고정 */
+.bottom-bar-personal {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    background-color: #D2F096; /* 연두색 배경 */
+    padding-top: 20px;
+
+    z-index: 9999;
+  }
+  
+  /* 내부 컨테이너: 오른쪽 정렬 */
+  .bottom-bar-inner {
+    display: flex;
+    justify-content: flex-end; /* 기본적으로 오른쪽 정렬 */
+    align-items: center;
+  }
+  
+  /* CloseButton을 오른쪽 끝에서 약간 왼쪽으로 이동 (예: 20px 만큼) */
+  .bottom-bar-inner .close-button {
+    margin-right: 132px;
+  }
+  

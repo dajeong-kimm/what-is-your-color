@@ -4,6 +4,7 @@ import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터터
 import Background from "../../background/background/Background";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
+import BottomBarPersonal from "../../button/bottom/BottomBarPersonal"
 import PersonalColorDetailContent from "./PersonalColorDetailContent";
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
 
@@ -44,7 +45,7 @@ const PersonalColorDetail = () => {
     <Background>
       <Topbar />
       <PersonalColorDetailContent />
-      {/* <Bottombar /> */}
+    <BottomBarPersonal />
     </Background>
   );
 };
