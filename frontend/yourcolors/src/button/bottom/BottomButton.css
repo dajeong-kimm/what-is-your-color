@@ -6,7 +6,7 @@
   margin-left: 20px;
   text-decoration: none;
   background-color: #82dc28; /* 기본 배경색 */
-  color: white;              /* 기본 텍스트 색 (hover 전) */
+  color: white;              /* 기본 텍스트 색 */
   padding: 10px 20px;
   border-radius: 10px;
   font-size: 20px;
@@ -16,14 +16,14 @@
   box-shadow: 0px 2.22px 2.22px rgba(0, 0, 0, 0.25);
 }
 
-/* 마우스 오버 시 및 active 상태(현재 페이지와 링크가 같을 때) */
+/* 마우스 오버 시 및 active 상태 */
 .bottom-button:hover,
 .bottom-button.active {
-  background-color: #36972d;  /* hover 및 active 효과 색상 */
-  color: white;               /* 텍스트는 흰색 */
+  background-color: #36972d;
+  color: white;
 }
 
-/* 만약 개별 버튼에 추가 스타일이 필요하면 (예시로 recommend, makeup) */
+/* 추가 스타일 (예시) */
 .bottom-button.recommend {
   background-color: #E5F6FF;
 }
