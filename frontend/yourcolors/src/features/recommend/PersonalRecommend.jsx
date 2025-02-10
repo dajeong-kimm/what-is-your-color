@@ -8,23 +8,23 @@ import "./PersonalColorRecommend.css";
 import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
 
 // 더미 데이터 (카테고리별 화장품 목록)
-const dummyData = {
-  립: [
-    { id: 1, name: "레드 립스틱", image: "/images/lip1.jpg" },
-    { id: 2, name: "핑크 틴트", image: "/images/lip2.jpg" },
-    { id: 3, name: "코랄 립밤", image: "/images/lip3.jpg" },
-    { id: 4, name: "버건디 립스틱", image: "/images/lip4.jpg" },
-    { id: 5, name: "누드 립스틱", image: "/images/lip5.jpg" },
-  ],
-  아이섀도우: [
-    { id: 1, name: "브라운 섀도우", image: "/images/shadow1.jpg" },
-    { id: 2, name: "골드 섀도우", image: "/images/shadow2.jpg" },
-  ],
-  치크: [
-    { id: 1, name: "핑크 블러셔", image: "/images/blush1.jpg" },
-    { id: 2, name: "피치 블러셔", image: "/images/blush2.jpg" },
-  ],
-};
+// const dummyData = {
+//   립: [
+//     { id: 1, name: "레드 립스틱", image: "/images/lip1.jpg" },
+//     { id: 2, name: "핑크 틴트", image: "/images/lip2.jpg" },
+//     { id: 3, name: "코랄 립밤", image: "/images/lip3.jpg" },
+//     { id: 4, name: "버건디 립스틱", image: "/images/lip4.jpg" },
+//     { id: 5, name: "누드 립스틱", image: "/images/lip5.jpg" },
+//   ],
+//   아이섀도우: [
+//     { id: 1, name: "브라운 섀도우", image: "/images/shadow1.jpg" },
+//     { id: 2, name: "골드 섀도우", image: "/images/shadow2.jpg" },
+//   ],
+//   치크: [
+//     { id: 1, name: "핑크 블러셔", image: "/images/blush1.jpg" },
+//     { id: 2, name: "피치 블러셔", image: "/images/blush2.jpg" },
+//   ],
+// };
 
 const PersonalRecommend = () => {
   const { personalColor } = useParams();
