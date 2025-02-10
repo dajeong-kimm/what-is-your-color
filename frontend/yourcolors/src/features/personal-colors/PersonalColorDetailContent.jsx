@@ -10,8 +10,7 @@ import personalColorInfo from "../../store/PersonalColorInfo"; // 정적 객체 
 
 const PersonalColorDetailContent = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const { personalColors, fetchPersonalColors } = useStore();
+  const { userPersonalId, personalColors, fetchPersonalColors } = useStore();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,7 +26,7 @@ const PersonalColorDetailContent = () => {
     return <h2>로딩 중...</h2>;
   }
 
-  if (!personalColors[id - 1]) {
+  if (!personalColors[userPersonalId - 1]) {
     return <h2>해당 퍼스널컬러 정보를 찾을 수 없습니다.</h2>;
   }
 
@@ -43,12 +42,12 @@ const PersonalColorDetailContent = () => {
     <SmallMain>
       <div className="personal-detail-container-left">
         {/* 상단 타이틀 */}
-        <h1 className="personal-detail-title">{personalColors[id - 1].name}</h1>
+        <h1 className="personal-detail-title">{personalColors[userPersonalId - 1].name}</h1>
         {/* 색상 이미지 */}
         <div className="personal-detail-image">
           <img
-            src={personalColorInfo[id].imageUrl}
-            alt={personalColors[id - 1].name}
+            src={personalColorInfo[userPersonalId].imageUrl}
+            alt={personalColors[userPersonalId - 1].name}
           />
         </div>
       </div>
@@ -56,7 +55,7 @@ const PersonalColorDetailContent = () => {
       <div className="personal-detail-container-right">
         {/* 해시태그 */}
         <div className="personal-detail-hashtags">
-          {personalColors[id - 1].hashtag.map((tag, index) => (
+          {personalColors[userPersonalId - 1].hashtag.map((tag, index) => (
             <span key={index} className="hashtag">
               {tag}
             </span>
@@ -66,7 +65,7 @@ const PersonalColorDetailContent = () => {
         {/* 상세 설명 */}
         <div className="personal-detail-content">
           <div className="personal-detail-description">
-            <p>{personalColorInfo[id].description}</p>
+            <p>{personalColorInfo[userPersonalId].description}</p>
           </div>
         </div>
       </div>
