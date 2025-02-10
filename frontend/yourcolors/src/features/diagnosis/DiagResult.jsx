@@ -44,16 +44,24 @@ const DiagResult = () => {
     <Background>
       <Topbar />
       <div className="diag-result-container">
-        {/* 애니메이션 적용된 콘텐츠 전환 */}
+        {/* AnimatePresence 및 motion.div를 사용한 Zoom 효과 (깜빡임 없이 부드럽게 확대/축소) */}
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStep}
-            initial={{ x: 100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -100, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            initial={{ scale: 0.95, opacity: 1 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.95, opacity: 1 }}
+            transition={{ duration: 0.15, ease: "easeInOut" }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              overflow: "hidden",
+              zIndex: 0,
+            }}
           >
-            {/* ModalContainer로 감싸면 크기, 배경색, 정렬 등을 한 번에 관리 가능 */}
             <ModalContainer>
               {steps[currentStep].component}
             </ModalContainer>
