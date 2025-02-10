@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 import { FilesetResolver, FaceLandmarker } from "@mediapipe/tasks-vision";
-import '../makeup/MakeupCamera.css';
+import "../makeup/MakeupCamera.css";
 
-const MakeupCamera = ({ cam }) => {
+const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const faceLandmarkerRef = useRef(null);
@@ -28,24 +28,20 @@ const MakeupCamera = ({ cam }) => {
 
     const startCamera = async () => {
       try {
-        // 기존 스트림 정리
         if (videoRef.current) {
           const currentStream = videoRef.current.srcObject;
           if (currentStream) {
-            const tracks = currentStream.getTracks();
-            tracks.forEach((track) => track.stop());
+            currentStream.getTracks().forEach((track) => track.stop());
           }
 
-          // 새 스트림 설정
           const stream = await navigator.mediaDevices.getUserMedia({ video: true });
           videoRef.current.srcObject = stream;
 
-          // 스트림을 설정한 후 비디오 로드하고 일정 시간 후 play() 호출
           videoRef.current.load();
           setTimeout(() => {
             videoRef.current.play().catch((error) => console.error("Play 오류:", error));
-          }, 500);  // 500ms 대기 후 play() 호출
-          
+          }, 500);
+
           detectFaces();
         }
       } catch (error) {
@@ -59,14 +55,9 @@ const MakeupCamera = ({ cam }) => {
     })();
 
     return () => {
-      // 정리: 애니메이션 프레임 취소 및 스트림 종료
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
       if (videoRef.current && videoRef.current.srcObject) {
-        const stream = videoRef.current.srcObject;
-        const tracks = stream.getTracks();
-        tracks.forEach((track) => track.stop());
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
       }
     };
   }, []);
@@ -92,7 +83,6 @@ const MakeupCamera = ({ cam }) => {
     const results = await faceLandmarkerRef.current.detectForVideo(video, performance.now());
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     ctx.save();
     ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
@@ -102,10 +92,15 @@ const MakeupCamera = ({ cam }) => {
     if (results.faceLandmarks.length > 0) {
       const landmarks = results.faceLandmarks[0];
 
-      const fillRegion = (indices, color) => {
+      const drawSmoothRegion = (indices, color, blur = 10) => {
         if (indices.length === 0) return;
 
         ctx.beginPath();
+        ctx.shadowColor = color;
+        ctx.shadowBlur = blur;
+        ctx.globalAlpha = 0.6; // 투명도 조절 (경계를 부드럽게)
+
+        // 첫 번째 점 이동
         const firstPoint = landmarks[indices[0]];
         ctx.moveTo((1 - firstPoint.x) * canvas.width, firstPoint.y * canvas.height);
 
@@ -116,21 +111,104 @@ const MakeupCamera = ({ cam }) => {
           const cpY = p1.y * canvas.height;
           const endX = (1 - p2.x) * canvas.width;
           const endY = p2.y * canvas.height;
+
           ctx.quadraticCurveTo(cpX, cpY, endX, endY);
         }
 
         ctx.closePath();
+
+        // 자연스러운 블렌딩 모드 사용
         ctx.fillStyle = color;
+        ctx.globalCompositeOperation = "overlay";
         ctx.fill();
+
+        // 블러 효과 강화
+        ctx.filter = `blur(${blur}px)`;
+        ctx.globalCompositeOperation = "soft-light";
+        ctx.fill();
+
+        // 원래대로 복구
+        ctx.filter = "none";
+        ctx.globalCompositeOperation = "source-over";
+        ctx.globalAlpha = 1;
       };
 
-      // 얼굴 영역에 색상을 채우는 부분
-      fillRegion([33, 130, 226, 247, 30, 29, 27, 28, 56, 190, 243, 133, 173, 157, 158, 159, 160, 161, 246], "rgba(0, 0, 255, 0.3)");
-      fillRegion([463, 414, 286, 258, 257, 259, 260, 467, 446, 359, 263, 466, 388, 387, 386, 385, 384, 398, 362], "rgba(0, 0, 255, 0.3)");
-      fillRegion([61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 291, 306, 292, 308, 415, 310, 311, 312, 13, 82, 81, 80, 191, 78, 62, 76], "rgba(255, 0, 0, 0.5)");
-      fillRegion([61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291, 306, 292, 308, 324, 318, 402, 317, 14, 87, 178, 88, 95, 78, 62, 76, 61], "rgba(255, 0, 0, 0.5)");
-      fillRegion([117, 123, 187, 205, 101, 118, 117], "rgba(255, 182, 193, 0.3)");
-      fillRegion([411, 352, 346, 347, 330, 425, 411], "rgba(255, 182, 193, 0.3)");
+      // 입술 윤곽
+      const UPPER_LIP = [61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291, 308, 324, 318, 402, 317, 14];
+      const LOWER_LIP = [87, 178, 88, 95, 185, 40, 39, 37, 0, 267, 269, 270, 409, 415, 310, 311, 312, 13];
+
+      // 입술 라인 블렌딩 처리
+      drawSmoothRegion(UPPER_LIP, lipColor || "rgba(196, 85, 94, 0.6)", 25);
+      drawSmoothRegion(LOWER_LIP, lipColor || "rgba(196, 85, 94, 0.6)", 25);
+
+      // 아이섀도우 - 양쪽 눈 적용
+      const LEFT_EYE_SHADOW = [33, 130, 226, 247, 30, 29, 27, 28, 56, 190, 243, 133, 173, 157, 158, 159, 160, 161, 246];
+      const RIGHT_EYE_SHADOW = [263, 359, 446, 467, 260, 259, 257, 258, 286, 414, 463, 353, 383, 362, 398, 384, 385, 386, 466];
+
+      // 양쪽 눈에 적용
+      drawSmoothRegion(LEFT_EYE_SHADOW, eyeShadowColor || "rgba(111, 68, 61, 0.4)", 15);
+      drawSmoothRegion(RIGHT_EYE_SHADOW, eyeShadowColor || "rgba(111, 68, 61, 0.4)", 15);
+
+      // // 치크 (볼터치)
+      // drawSmoothRegion([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(255, 102, 102, 0.3)", 60);
+      // drawSmoothRegion([411, 352, 346, 347, 330, 425, 411], blushColor || "rgba(255, 102, 102, 0.3)", 60);
+      const drawBlushGradient = (indices, color, radius) => {
+        if (!indices.length) return;
+    
+        ctx.save();
+    
+        // 중심 좌표 계산 (선택된 점들의 평균)
+        let centerX = 0, centerY = 0;
+        indices.forEach(idx => {
+            centerX += (1 - landmarks[idx].x) * canvas.width;
+            centerY += landmarks[idx].y * canvas.height;
+        });
+        centerX /= indices.length;
+        centerY /= indices.length;
+    
+        // 좌우 대칭 계산
+        const mirroredCenterX = canvas.width - centerX; // 반사된 X 좌표 계산
+    
+        // 부드러운 블러 효과를 위한 그라디언트 생성
+        const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+        gradient.addColorStop(0, color.replace(/[\d.]+\)$/, "0.6)")); // 중심부 색상 (진함)
+        gradient.addColorStop(0.3, color.replace(/[\d.]+\)$/, "0.3)")); // 중간 영역 (연해짐)
+        gradient.addColorStop(0.8, color.replace(/[\d.]+\)$/, "0.1)")); // 외곽 (거의 투명)
+        gradient.addColorStop(1, color.replace(/[\d.]+\)$/, "0)")); // 가장자리 투명
+    
+        // 그림자 효과 추가 (자연스러운 경계 표현)
+        ctx.shadowColor = color.replace(/[\d.]+\)$/, "0.2)"); // 연한 그림자
+        ctx.shadowBlur = 20; // 더 부드러운 블러 효과 적용
+    
+        // 그라디언트 채우기
+        ctx.fillStyle = gradient;
+        ctx.globalAlpha = 0.8; // 전체 투명도 조절
+    
+        // 원형 블러 효과 적용 (좌측)
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2, false);
+        ctx.fill();
+    
+        // 원형 블러 효과 적용 (우측 - 좌우 대칭)
+        ctx.beginPath();
+        ctx.arc(mirroredCenterX, centerY, radius, 0, Math.PI * 2, false);
+        ctx.fill();
+    
+        // 원래 설정 복원
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+        ctx.restore();
+    };
+    
+    // 기존 볼터치 영역에 자연스러운 그라데이션 블러셔 적용 (좌우 대칭 추가됨)
+    drawBlushGradient([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(220, 119, 119, 0.8)", 35);
+    drawBlushGradient([411, 352, 346, 347, 330, 425, 411], blushColor || "rgba(220, 119, 119, 0.8)", 35);
+    
+    
+      
+      
+
+
     }
 
     animationFrameRef.current = requestAnimationFrame(detectFaces);
@@ -143,5 +221,7 @@ const MakeupCamera = ({ cam }) => {
     </div>
   );
 };
+
+
 
 export default MakeupCamera;
