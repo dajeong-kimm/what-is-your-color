@@ -140,7 +140,16 @@ const MediapipeCameraXTimer = () => {
         const faceImage = extractFaceImage(canvas);
         console.log("Extracted Face Image (base64):", faceImage);
 
-        sendImagesToServer(faceImage);
+        // Base64 → Blob 변환
+        const blob = base64ToBlob(faceImage, "image/png");
+
+        // 🟢 상태 업데이트: 유저 이미지 파일 저장
+        setUserImageFile(blob); // ✅ Zustand 상태 업데이트
+        const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
+        console.log("웃어봐요 활짝", imageUrl);
+
+
+        // sendImagesToServer(faceImage); //여기서 실행하면 안된다
       }
     }, 300);
   };
@@ -187,17 +196,17 @@ const MediapipeCameraXTimer = () => {
     console.log("[sendImagesToServer] Sending to server...");
     console.log("11. 색상 거리 사용 API");
 
-    // Base64 → Blob 변환
-    const blob = base64ToBlob(faceImageBase64, "image/png");
+    // // Base64 → Blob 변환
+    // const blob = base64ToBlob(faceImageBase64, "image/png");
 
-    // 🟢 상태 업데이트: 유저 이미지 파일 저장
-    setUserImageFile(blob); // ✅ Zustand 상태 업데이트
-    const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
-    console.log("웃어봐요 활짝", imageUrl);
+    // // 🟢 상태 업데이트: 유저 이미지 파일 저장
+    // setUserImageFile(blob); // ✅ Zustand 상태 업데이트
+    // const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
+    // console.log("웃어봐요 활짝", imageUrl);
 
     // FormData 객체 생성
     const formData = new FormData();
-    formData.append("face_image", blob, "captured_face.png"); // 얼굴 이미지 추가
+    formData.append("face_image", faceImageBase64, "captured_face.png"); // 얼굴 이미지 추가
     formData.append("a4_image", ""); // 현재는 빈 값
 
     axios
@@ -304,7 +313,14 @@ const MediapipeCameraXTimer = () => {
               다시 촬영하기
             </button>
             <button
-              onClick={() => navigate("/LoadingPage")}
+                onClick={() => {
+                if (userImageFile) {
+                    setResults([]); // ✅ Zustand 상태 업데이트
+                    setGptSummary(""); // ✅ Zustand 상태 업데이트
+                    sendImagesToServer(userImageFile); // 서버로 이미지 전송
+                    navigate("/LoadingPage"); // 전송 후 페이지 이동
+                  }
+                }}
               style={{
                 padding: "1rem 2rem",
                 fontSize: "1.5rem",
@@ -317,7 +333,7 @@ const MediapipeCameraXTimer = () => {
                 transform: "translateX(-15%)",
               }}
             >
-              다음으로
+              진단하기
             </button>
           </div>
         </div>
