@@ -11,13 +11,21 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const MediapipeCameraTimer = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+
   const [countdown, setCountdown] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [showCaptureButton, setShowCaptureButton] = useState(true);
   const [isFlashing, setIsFlashing] = useState(false);
+  const [a4Blob, setA4Blob] = useState(null); //버튼에서 사용해야 해서 useState로 관리
+
   const navigate = useNavigate();
-  const { setUserPersonalId, setUserImageFile, setResults, setGptSummary } =
-    useStore(); //Zustand 상태관리 데이터
+  const {
+    setUserPersonalId,
+    userImageFile,
+    setUserImageFile,
+    setResults,
+    setGptSummary,
+  } = useStore(); //Zustand 상태관리 데이터
 
   useEffect(() => {
     initializeCamera();
@@ -94,6 +102,7 @@ const MediapipeCameraTimer = () => {
         context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
         context.restore();
 
+        // 전체 캡처한 이미지
         const imageData = canvas.toDataURL("image/png");
         setCapturedImage(imageData);
         setCountdown(null);
@@ -104,7 +113,19 @@ const MediapipeCameraTimer = () => {
         console.log("Face Image Data:", faceImage);
         console.log("A4 Image Data:", a4Image);
 
-        sendImagesToServer(faceImage, a4Image);
+
+        // Base64 → Blob 변환
+        const faceBlob = base64ToBlob(faceImage, "image/png");
+        setA4Blob(base64ToBlob(a4Image, "image/png")); //버튼에서 사용해야 해서 useState로 관리리
+        // const a4Blob = base64ToBlob(a4Image, "image/png");
+
+        // 🟢 상태 업데이트: 유저 이미지 파일 저장
+        setUserImageFile(faceBlob); // ✅ Zustand 상태 업데이트
+        const imageUrl = URL.createObjectURL(faceBlob); // 🔹 blob을 바로 URL로 변환
+        console.log("웃어봐요 활짝", imageUrl);
+
+
+        // sendImagesToServer(faceImage, a4Image); //여기서 실행하면 안된다.
       }
     }, 300);
   };
@@ -178,17 +199,19 @@ const MediapipeCameraTimer = () => {
     console.log("[sendImagesToServer] Sending to server...");
     console.log("11. 색상 거리 사용 API");
 
-    // Base64 → Blob 변환
-    const faceBlob = base64ToBlob(faceImageBase64, "image/png");
-    const a4Blob = base64ToBlob(a4ImageBase64, "image/png");
+    // // Base64 → Blob 변환
+    // const faceBlob = base64ToBlob(faceImageBase64, "image/png");
+    // const a4Blob = base64ToBlob(a4ImageBase64, "image/png");
 
-    // 🟢 상태 업데이트: 유저 이미지 파일 저장
-    setUserImageFile(faceBlob); // ✅ Zustand 상태 업데이트
+    // // 🟢 상태 업데이트: 유저 이미지 파일 저장
+    // setUserImageFile(faceBlob); // ✅ Zustand 상태 업데이트
+    // const imageUrl = URL.createObjectURL(faceBlob); // 🔹 blob을 바로 URL로 변환
+    // console.log("웃어봐요 활짝", imageUrl);
 
     // FormData 객체 생성
     const formData = new FormData();
-    formData.append("face_image", faceBlob, "face_image.png"); // 얼굴 이미지 추가
-    formData.append("a4_image", a4Blob, "a4_image.png"); // 종이 이미지 추가
+    formData.append("face_image", faceImageBase64, "face_image.png"); // 얼굴 이미지 추가
+    formData.append("a4_image", a4ImageBase64, "a4_image.png"); // 종이 이미지 추가
 
     axios
       .post(`${apiBaseUrl}/api/consult/dist`, formData, {
@@ -293,7 +316,14 @@ const MediapipeCameraTimer = () => {
               다시 촬영하기
             </button>
             <button
-              onClick={() => navigate("/LoadingPage")}
+              onClick={() => {
+                if (userImageFile) {
+                    setResults([]); // ✅ Zustand 상태 업데이트
+                    setGptSummary(""); // ✅ Zustand 상태 업데이트
+                    sendImagesToServer(userImageFile, a4Blob); // 서버로 이미지 전송
+                    navigate("/LoadingPage"); // 전송 후 페이지 이동
+                  }
+                }}
               style={{
                 padding: "1rem 2rem",
                 fontSize: "1.5rem",
@@ -306,7 +336,7 @@ const MediapipeCameraTimer = () => {
                 transform: "translateX(-15%)",
               }}
             >
-              다음으로
+              진단하기
             </button>
           </div>
         </div>

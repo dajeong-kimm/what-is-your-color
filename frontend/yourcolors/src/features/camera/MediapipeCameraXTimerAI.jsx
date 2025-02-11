@@ -317,8 +317,8 @@ const MediapipeCameraXTimerAI = () => {
                 if (userImageFile) {
                   setResults([]); // ✅ Zustand 상태 업데이트
                   setGptSummary(""); // ✅ Zustand 상태 업데이트
-                    sendImagesToServer(userImageFile); // 서버로 이미지 전송
-                    navigate("/LoadingPage"); // 전송 후 페이지 이동
+                  sendImagesToServer(userImageFile); // 서버로 이미지 전송
+                  navigate("/LoadingPage"); // 전송 후 페이지 이동
                   }
                 }}
               style={{
