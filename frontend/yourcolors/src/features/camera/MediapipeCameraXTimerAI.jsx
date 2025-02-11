@@ -153,6 +153,7 @@ const MediapipeCameraXTimerAI = () => {
           const formData = new FormData();
           formData.append("image", blob, "captured_face.png"); // 파일명 지정
           setUserImageFile(formData); // ✅ Zustand 상태 업데이트
+          console.log("AI 진단 - 얼굴 이미지 form-data로 저장 완료!!!!")
           formData.forEach((value, key) => {
             console.log(`Key: ${key}, Value:`, value);
           });

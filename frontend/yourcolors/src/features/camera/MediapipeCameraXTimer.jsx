@@ -144,9 +144,21 @@ const MediapipeCameraXTimer = () => {
         const blob = base64ToBlob(faceImage, "image/png");
 
         // 🟢 상태 업데이트: 유저 이미지 파일 저장
-        setUserImageFile(blob); // ✅ Zustand 상태 업데이트
-        const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
-        console.log("웃어봐요 활짝", imageUrl);
+        // setUserImageFile(blob); // ✅ Zustand 상태 업데이트
+        // const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
+        // console.log("웃어봐요 활짝", imageUrl);
+
+          // FormData 객체 생성
+          const formData = new FormData();
+          formData.append("face_image", blob, "captured_face.png"); // 파일명 지정
+          formData.append("a4_image", ""); // 현재는 빈 값  
+          setUserImageFile(formData); // ✅ Zustand 상태 업데이트
+        
+
+          console.log("색상거리(종이X) - 얼굴 이미지 form-data로 저장 완료!!!!")
+          formData.forEach((value, key) => {
+            console.log(`Key: ${key}, Value:`, value);
+          });
 
 
         // sendImagesToServer(faceImage); //여기서 실행하면 안된다
@@ -192,7 +204,7 @@ const MediapipeCameraXTimer = () => {
     return new Blob([byteArray], { type: mimeType });
   };
 
-  const sendImagesToServer = (faceImageBase64) => {
+  const sendImagesToServer = (formData) => {
     console.log("[sendImagesToServer] Sending to server...");
     console.log("11. 색상 거리 사용 API");
 
@@ -205,9 +217,9 @@ const MediapipeCameraXTimer = () => {
     // console.log("웃어봐요 활짝", imageUrl);
 
     // FormData 객체 생성
-    const formData = new FormData();
-    formData.append("face_image", faceImageBase64, "captured_face.png"); // 얼굴 이미지 추가
-    formData.append("a4_image", ""); // 현재는 빈 값
+    // const formData = new FormData();
+    // formData.append("face_image", faceImageBase64, "captured_face.png"); // 얼굴 이미지 추가
+    // formData.append("a4_image", ""); // 현재는 빈 값
 
     axios
       .post(`${apiBaseUrl}/api/consult/dist`, formData, {

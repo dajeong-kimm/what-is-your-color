@@ -16,7 +16,7 @@ const MediapipeCameraTimer = () => {
   const [capturedImage, setCapturedImage] = useState(null);
   const [showCaptureButton, setShowCaptureButton] = useState(true);
   const [isFlashing, setIsFlashing] = useState(false);
-  const [a4Blob, setA4Blob] = useState(null); //버튼에서 사용해야 해서 useState로 관리
+  // const [a4Blob, setA4Blob] = useState(null); //버튼에서 사용해야 해서 useState로 관리
 
   const navigate = useNavigate();
   const {
@@ -116,14 +116,28 @@ const MediapipeCameraTimer = () => {
 
         // Base64 → Blob 변환
         const faceBlob = base64ToBlob(faceImage, "image/png");
-        setA4Blob(base64ToBlob(a4Image, "image/png")); //버튼에서 사용해야 해서 useState로 관리리
-        // const a4Blob = base64ToBlob(a4Image, "image/png");
+        // setA4Blob(base64ToBlob(a4Image, "image/png")); //버튼에서 사용해야 해서 useState로 관리리
+        const a4Blob = base64ToBlob(a4Image, "image/png");
 
         // 🟢 상태 업데이트: 유저 이미지 파일 저장
-        setUserImageFile(faceBlob); // ✅ Zustand 상태 업데이트
-        const imageUrl = URL.createObjectURL(faceBlob); // 🔹 blob을 바로 URL로 변환
-        console.log("웃어봐요 활짝", imageUrl);
+        // setUserImageFile(faceBlob); // ✅ Zustand 상태 업데이트
+        // const imageUrl = URL.createObjectURL(faceBlob); // 🔹 blob을 바로 URL로 변환
+        // console.log("웃어봐요 활짝", imageUrl);
 
+        
+        // console.log("a4Blob 타입 확인:", a4Blob instanceof Blob);
+
+        // FormData 객체 생성
+        const formData = new FormData();
+        formData.append("face_image", faceBlob, "captured_face.png"); // 파일명 지정
+        formData.append("a4_image", a4Blob, "a4_image.png"); // 종이 이미지 추가
+        setUserImageFile(formData); // ✅ Zustand 상태 업데이트
+        
+        
+        console.log("색상거리(종이O) - 얼굴 이미지 form-data로 저장 완료!!!!")
+        formData.forEach((value, key) => {
+          console.log(`Key: ${key}, Value:`, value);
+        });
 
         // sendImagesToServer(faceImage, a4Image); //여기서 실행하면 안된다.
       }
@@ -195,7 +209,7 @@ const MediapipeCameraTimer = () => {
     return new Blob([byteArray], { type: mimeType });
   };
 
-  const sendImagesToServer = (faceImageBase64, a4ImageBase64) => {
+  const sendImagesToServer = (formData) => {
     console.log("[sendImagesToServer] Sending to server...");
     console.log("11. 색상 거리 사용 API");
 
@@ -209,9 +223,9 @@ const MediapipeCameraTimer = () => {
     // console.log("웃어봐요 활짝", imageUrl);
 
     // FormData 객체 생성
-    const formData = new FormData();
-    formData.append("face_image", faceImageBase64, "face_image.png"); // 얼굴 이미지 추가
-    formData.append("a4_image", a4ImageBase64, "a4_image.png"); // 종이 이미지 추가
+    // const formData = new FormData();
+    // formData.append("face_image", faceImageBase64, "face_image.png"); // 얼굴 이미지 추가
+    // formData.append("a4_image", a4ImageBase64, "a4_image.png"); // 종이 이미지 추가
 
     axios
       .post(`${apiBaseUrl}/api/consult/dist`, formData, {
@@ -322,7 +336,7 @@ const MediapipeCameraTimer = () => {
                 if (userImageFile) {
                     setResults([]); // ✅ Zustand 상태 업데이트
                     setGptSummary(""); // ✅ Zustand 상태 업데이트
-                    sendImagesToServer(userImageFile, a4Blob); // 서버로 이미지 전송
+                    sendImagesToServer(userImageFile); // 서버로 이미지 전송
                     // navigate("/LoadingPage"); // 전송 후 페이지 이동
                     navigate("/LoadingPage", { state: { from: "MediapipeCameraTimer" } }) //진단 실패시 되돌아가기 위해 주소 저장
                   }
