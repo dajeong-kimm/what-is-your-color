@@ -12,17 +12,18 @@ import LeftRightButton from "../../button/left-right-button/LeftRightButton"; //
 import ModalContainer from "./ModalContainer";  // 새로 만든 모달 컨테이너
 import "./DiagResult.css"; 
 import useStore from '../../store/UseStore'; // Zustand 상태관리 데이터
+import ColorConsulting from "./ColorConsulting.jsx";
 
 const DiagResult = () => {
   const [currentStep, setCurrentStep] = useState(0); // 현재 표시할 콘텐츠 상태
 
   // 콘텐츠 변경 로직 (좌우 버튼)
   const nextStep = () => {
-    setCurrentStep((prevStep) => (prevStep + 1) % 4);
+    setCurrentStep((prevStep) => (prevStep + 5) % 5);
   };
 
   const prevStep = () => {
-    setCurrentStep((prevStep) => (prevStep - 1 + 4) % 4);
+    setCurrentStep((prevStep) => (prevStep - 1 + 5) % 5);
   };
 
   // const personalId = 1; // 임시 ID (추후 변경)
@@ -38,6 +39,7 @@ const DiagResult = () => {
     { id: 1, component: <PersonalColorDetailContent /> },
     { id: 2, component: <BestWorst /> },
     { id: 3, component: <PersonalRecommend /> },
+    { id: 4, component: <ColorConsulting /> },
   ];
 
   return (
