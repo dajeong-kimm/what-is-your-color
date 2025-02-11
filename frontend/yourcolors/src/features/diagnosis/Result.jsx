@@ -44,7 +44,7 @@ const Result = () => {
 
   // mainColor에 해당하는 이미지 URL 가져오기
   // const imageUrl = colorMap[mainColor] || "기본 이미지 URL"
-  const imageUrl = personalColorInfo[4].characterUrl // 일단 1번 봄라이트 이미지로...
+  const imageUrl = personalColorInfo[userPersonalId].characterUrl // 일단 1번 봄라이트 이미지로...
 
   const handleRightClick = () => {
     navigate("/personalcolors/12")
