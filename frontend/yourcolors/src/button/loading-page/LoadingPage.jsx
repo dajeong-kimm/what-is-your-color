@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import LoadingSpinner from "../loading-spinner/LoadingSpinner";
 import './LoadingPage.css';
 import Background from '../../background/background/Background';
-import useStore from "../../store/useStore"; // Zustand store import
+import useStore from "../../store/UseStore"; // Zustand store import
 
 const LoadingPage = () => {
   const navigate = useNavigate();
