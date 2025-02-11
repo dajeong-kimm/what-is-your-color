@@ -1,60 +1,102 @@
-/* Makeup.css */
-
 /* 전체 컨테이너 스타일 */
 .camera-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   height: 100vh;
   background-color: #f8f8f8;
 }
-
-.largemain {
+.personal-color-buttons {
+  position: sticky;
+  top: 0;
+  width: 90%;
+  gap: 2rem;
+  z-index: 10;  /* 다른 요소들보다 위에 위치 */
   display: flex;
-  flex-direction: row;
-  width: 80%;
-  height: 80%;
-  gap: 30px;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  padding: 10px 0;
+  flex-wrap: nowrap; /* 줄 바꿈 방지 */
+  overflow-x: auto; /* 가로 스크롤 가능 */
+  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨김 */
+  -ms-overflow-style: none; /* IE에서 스크롤바 숨김 */
 }
 
-/* 왼쪽 패널 스타일 */
+/* 크롬, 사파리에서 스크롤바 숨기기 */
+.personal-color-buttons::-webkit-scrollbar {
+  display: none;
+}
+
+.personal-color-buttons button {
+  white-space: nowrap; /* 글자가 길어져도 줄 바꿈되지 않도록 설정 */
+  flex-shrink: 0; /* 버튼 크기가 줄어들지 않도록 설정 */
+}
+/* 바텀 패널 레이아웃 */
+.bottom-panel {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 1rem;
+  margin-right: 50px;
+  flex-grow: 1; /* 내부에서 최대한 늘어나도록 설정 */
+  margin-left: 50px;
+}
+
+/* left-panel 높이 조정 */
 .left-panel {
   display: flex;
   flex-direction: column;
-  width: 30%;
-  /* background-color: #fff; */
   padding: 20px;
-  /* border-radius: 10px; */
-  /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+  border-radius: 10px;
+  height: 100%;
+  overflow: hidden; /* 내용이 넘치지 않도록 설정 */
+  /* flex-grow: 1; */
+}
+.right-panel {
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  position: relative;
+  margin-right: 10px;
 }
 
+/* 버튼 컨테이너 */
 .button-container {
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
-}
-
-/* 제품 리스트 가로 정렬 */
-.product-list {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  overflow-y: auto;
-  gap: 10px;
   justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
+/* product-list 내부 스크롤 및 고정 높이 설정 */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개씩 배치 */
+  gap: 5px; /* 카드 사이 간격 */
+  justify-content: center;
+  padding: 10px;
+  border-radius: 10px;
+  overflow-y: auto; /* 내부 스크롤 활성화 */
+}
+
+
+/* product-card 크기 고정 */
 .product-card {
   width: 100px;
+  height: 150px; /* 높이 고정 */
   text-align: center;
   padding: 10px;
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.2s;
-  background-color: #fff;
+  /* background-color: #fff; */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* 이미지와 텍스트 간격 유지 */
 }
 
 .product-card.selected {
@@ -65,16 +107,7 @@
 .product-card img {
   width: 80px;
   height: 80px;
-  object-fit: cover;
-  border-radius: 5px;
-}
-
-/* 오른쪽 패널 스타일 */
-.right-panel {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  object-fit: cover; /* 비율 유지하면서 크기 맞춤 */
 }
 
 /* 모달 스타일 */
@@ -108,18 +141,27 @@
   cursor: pointer;
 }
 
-/* 색상 선택 옵션 스타일 */
+.modal-close:hover {
+  color: black;
+}
+
+/* 색상 선택 모달 */
 .color-options {
   display: flex;
-  gap: 10px;
+  gap: 0.5rem;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 1rem;
 }
 
 .color-circle {
-  width: 30px;
-  height: 30px;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
+  border: 1px solid #d1d5db;
   cursor: pointer;
-  border: 1px solid #ddd;
+  transition: transform 0.2s ease-in-out;
+}
+
+.color-circle:hover {
+  transform: scale(1.1);
 }
