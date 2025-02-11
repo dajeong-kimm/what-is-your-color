@@ -101,3 +101,64 @@
   box-shadow: none;
 }
 
+
+
+
+
+
+
+
+
+
+
+.container-left {
+display: flex;
+flex-direction: column; 
+justify-content: center; 
+padding: 20px; 
+width: 60%;
+}
+.title-main {
+font-size: 1.2rem; 
+font-weight: bold; 
+color: #2c3e50;
+}
+.main-color {
+font-size: 3rem; 
+color: #000000; 
+margin: 10px 0; 
+text-align: center;
+
+}
+.container-up{
+}
+.container-center {
+font-size: 1.5rem;
+color: #000000; 
+line-height: 1.5; 
+text-align: center;
+}
+.title-sub {
+font-size: 1.5rem; 
+font-weight: bold;
+color: #2980b9; 
+text-align: center;
+
+}
+.sub-color {
+font-size: 2rem; 
+color: #16a085; 
+
+}
+
+.image-container {
+display: flex; 
+justify-content: center; 
+align-items: center; 
+width: 40%; 
+}
+.personal-character-image img {
+max-width: 100%; 
+height: auto; 
+border-radius: 10px; 
+}
