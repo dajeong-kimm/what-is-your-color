@@ -24,8 +24,10 @@ const ChoicePage = () => {
             <div className="choice-content">
               <h2 className="choice-title">Dr.AI</h2>
               <p className="choice-description">
-                나는 수많은 퍼스널컬러 데이터를 학습한 AI 컬러 전문가입니다! 얼굴을 분석하여
-                가장 가능성이 높은 퍼스널컬러 타입을 빠르게 찾아드릴게요.
+                나는 <strong>수많은 퍼스널컬러 데이터를 학습</strong>한 <br />AI 컬러 전문가입니다! <br />
+                <strong>형광등, 자연광 등 다양한 환경</strong>에서의 <br />데이터까지 반영하여
+                얼굴을 분석하고, <br /><strong>가장 가능성이 높은 퍼스널컬러 타입</strong>을 <br />
+                빠르게 찾아드릴게요.
               </p>
             </div>
             <div className="choice-footer blue-footer">머신러닝 컬러 분석</div>
@@ -39,8 +41,11 @@ const ChoicePage = () => {
             <div className="choice-content">
               <h2 className="choice-title">컬러 큐레이터</h2>
               <p className="choice-description">
-                나는 직접 눈, 피부, 머리카락의 색을 추출해 최적의 컬러를 찾아주는 전문가입니다! 
-                세밀한 색감 분석을 원하시는 분들에게 추천해요.
+                나는 직접 <strong>눈, 피부, 머리카락의 색</strong>을 추출해 <br />
+                <strong>최적의 컬러</strong>를 찾아주는 전문가입니다! <br />
+                세밀한 색감 분석을 원하시는 분들에게 추천해요. <br />
+                A4 용지를 사용하면 <strong><br />색 보정을 통해 실물과 가까운 컬러</strong>로 <br />
+                더욱 정확한 진단을 받을 수 있습니다.
               </p>
             </div>
             <div className="choice-footer red-footer">피부톤 컬러 매칭</div>
