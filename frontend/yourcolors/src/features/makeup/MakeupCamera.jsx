@@ -145,54 +145,112 @@ useEffect(() => {
         ctx.globalAlpha = 1;
       };
 
-      // // 치크 (볼터치)
+    //   const drawBlushGradient = (indices, color, radius) => {
+    //     if (!indices.length) return;
+    
+    //     ctx.save();
+    
+    //     // 선택된 점들의 평균 좌표로 blush의 중심 계산
+    //     let centerX = 0, centerY = 0;
+    //     indices.forEach(idx => {
+    //         centerX += (1 - landmarks[idx].x) * canvas.width;
+    //         centerY += landmarks[idx].y * canvas.height;
+    //     });
+    //     centerX /= indices.length;
+    //     centerY /= indices.length;
+    
+    //     // 방사형 그라데이션 생성
+    //     // 중심에서 바깥쪽으로 갈수록 점진적으로 투명해지도록 알파 값을 낮춤
+    //     const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+    //     gradient.addColorStop(0, color.replace(/[\d.]+\)$/, "0.4)"));  // 중심: 약 40% opacity
+    //     gradient.addColorStop(0.3, color.replace(/[\d.]+\)$/, "0.25)")); // 중간: 약 25% opacity
+    //     gradient.addColorStop(0.6, color.replace(/[\d.]+\)$/, "0.1)"));  // 외곽 근처: 약 10% opacity
+    //     gradient.addColorStop(1, color.replace(/[\d.]+\)$/, "0)"));       // 가장자리: 완전 투명
+    
+    //     // 그림자 효과 추가 (자연스러운 블러 효과)
+    //     ctx.shadowColor = color.replace(/[\d.]+\)$/, "0.1)"); // 그림자도 더 투명하게
+    //     ctx.shadowBlur = 20;
+    
+    //     // 전체적인 투명도 조절 (더 낮은 값으로 설정)
+    //     ctx.fillStyle = gradient;
+    //     ctx.globalAlpha = 0.35; 
+    
+    //     // 불규칙한 경계를 만들기 위해 단순한 원 대신 다각형을 사용
+    //     ctx.beginPath();
+    //     const segments = 32;  // 분할 수가 많을수록 경계가 부드러워짐
+    //     for (let i = 0; i < segments; i++) {
+    //         const angle = (i / segments) * Math.PI * 2;
+    //         // 반지름에 약 ±10% 무작위 변화를 주어 자연스러운 윤곽 생성
+    //         const randomFactor = 0.9 + Math.random() * 0.2;
+    //         const curRadius = radius * randomFactor;
+    //         const x = centerX + curRadius * Math.cos(angle);
+    //         const y = centerY + curRadius * Math.sin(angle);
+    //         if (i === 0) {
+    //             ctx.moveTo(x, y);
+    //         } else {
+    //             ctx.lineTo(x, y);
+    //         }
+    //     }
+    //     ctx.closePath();
+    //     ctx.fill();
+    
+    //     // 원래의 설정 복원
+    //     ctx.shadowBlur = 0;
+    //     ctx.globalAlpha = 1;
+    //     ctx.restore();
+    // };
+    
+    
+
+    
+      
+
+      // 치크 (볼터치)
       const drawBlushGradient = (indices, color, radius) => {
-        if (!indices.length || color === "rgba(0, 0, 0, 0)") return; // color가 "rgba(0, 0, 0, 0)"이면 종료
-        
+        if (!indices.length || color === "transparent") return; // 투명 색상이면 적용 안 함
+      
         ctx.save();
-        
+      
         // 중심 좌표 계산 (선택된 점들의 평균)
         let centerX = 0, centerY = 0;
         indices.forEach(idx => {
-            centerX += (1 - landmarks[idx].x) * canvas.width;
-            centerY += landmarks[idx].y * canvas.height;
+          centerX += (1 - landmarks[idx].x) * canvas.width;
+          centerY += landmarks[idx].y * canvas.height;
         });
         centerX /= indices.length;
         centerY /= indices.length;
-        
-        // 좌우 대칭 계산
-        const mirroredCenterX = canvas.width - centerX; // 반사된 X 좌표 계산
-        
+      
         // 부드러운 블러 효과를 위한 그라디언트 생성
         const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
-        gradient.addColorStop(0, color.replace(/[\d.]+\)$/, "0.6)")); // 중심부 색상 (진함)
-        gradient.addColorStop(0.3, color.replace(/[\d.]+\)$/, "0.3)")); // 중간 영역 (연해짐)
-        gradient.addColorStop(0.8, color.replace(/[\d.]+\)$/, "0.1)")); // 외곽 (거의 투명)
-        gradient.addColorStop(1, color.replace(/[\d.]+\)$/, "0)")); // 가장자리 투명
-        
-        // 그림자 효과 추가 (자연스러운 경계 표현)
-        ctx.shadowColor = color.replace(/[\d.]+\)$/, "0.2)"); // 연한 그림자
-        ctx.shadowBlur = 20; // 더 부드러운 블러 효과 적용
-        
-        // 그라디언트 채우기
+        gradient.addColorStop(0, color.replace(/[\d.]+\)$/, "1)")); // 중심부 (더 투명)
+        gradient.addColorStop(0.3, color.replace(/[\d.]+\)$/, "0.9)")); // 중간 (연한 색상)
+        gradient.addColorStop(0.7, color.replace(/[\d.]+\)$/, "0.2)")); // 외곽 (거의 투명)
+        gradient.addColorStop(1, color.replace(/[\d.]+\)$/, "0)")); // 가장자리 완전 투명
+      
+        // 그림자 효과 추가 (더 부드러운 블러 효과)
+        ctx.shadowColor = color.replace(/[\d.]+\)$/, "0.4)"); // 그림자 효과
+        ctx.shadowBlur = 100; // 기존보다 더 퍼지게 적용
+      
+        // 채우기 설정 (부드러운 블렌딩)
         ctx.fillStyle = gradient;
-        ctx.globalAlpha = 0.8; // 전체 투명도 조절
-        
-        // 원형 블러 효과 적용 (좌측)
+        ctx.globalAlpha = 0.85; // 기존보다 더 투명하게 조절
+        ctx.globalCompositeOperation = "soft-light"; // 피부와 자연스럽게 섞이도록 설정
+        // ctx.globalCompositeOperation = "overlay";  // 피부와 자연스럽게 섞이도록 설정
+        // ctx.globalCompositeOperation = "multiply";  // 피부와 자연스럽게 섞이도록 설정
+      
+        // 단일 볼터치 적용
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, 0, Math.PI * 2, false);
         ctx.fill();
-        
-        // 원형 블러 효과 적용 (우측 - 좌우 대칭)
-        ctx.beginPath();
-        ctx.arc(mirroredCenterX, centerY, radius, 0, Math.PI * 2, false);
-        ctx.fill();
-        
+      
         // 원래 설정 복원
         ctx.shadowBlur = 0;
         ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = "source-over";
         ctx.restore();
-    };
+      };
+      
+      
     
 
       // 입술 윤곽
@@ -211,14 +269,9 @@ useEffect(() => {
       drawSmoothRegion(LEFT_EYE_SHADOW, eyeShadowColor || "rgba(0,0,0,0)", 15);
       drawSmoothRegion(RIGHT_EYE_SHADOW, eyeShadowColor || "rgba(0,0,0,0)", 15);
 
-      // drawSmoothRegion([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(0, 0, 0, 0)", 35);
-      // drawSmoothRegion([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(0, 0, 0, 0)", 35);
-
-      drawBlushGradient([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(0, 0, 0, 0)", 35);
-      drawBlushGradient([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(0, 0, 0, 0)", 35);
-
-      
-      // drawBlushGradient([117, 123, 187, 205, 101, 118, 117],"rgba(0, 0, 0, 0)", 35);
+      // drawBlushGradient([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(0, 0, 0, 0)", 35);
+      drawBlushGradient([117, 123, 185, 203, 101, 118, 117], blushColor || "rgba(0, 0, 0, 0)", 20);
+      drawBlushGradient([411, 352, 346, 347, 330, 425, 411], blushColor || "rgba(0, 0, 0, 0)", 20);
     
     // 기존 볼터치 영역에 자연스러운 그라데이션 블러셔 적용 (좌우 대칭 추가됨)
     // drawBlushGradient([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(220, 119, 119, 0.8)", 35);

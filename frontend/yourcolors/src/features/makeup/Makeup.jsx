@@ -5,7 +5,7 @@ import Topbar from "../../button/top/TopBar";
 import MakeupCamera from "./MakeupCamera";
 import ProductButton from "../../button/product-button/ProductButton";
 import "./Makeup.css";
-import useStore from "../../store/UseStore"; //Zustand 상태관리 데이터
+import useStore from "../../store/UseStore"; // Zustand 상태관리 데이터
 
 const Modal = ({ children, onClose }) => {
   return (
@@ -47,41 +47,58 @@ const Makeup = () => {
   const [selectedCategory, setSelectedCategory] = useState("lip");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedColor, setSelectedColor] = useState(null);
+  
+  // 개별 카테고리별 색상 상태 저장 (기본값: 투명)
+  const [selectedColors, setSelectedColors] = useState({
+    lip: { hex: "transparent" },
+    eye: { hex: "transparent" },
+    cheek: { hex: "transparent" },
+  });
 
   // 선택한 카테고리의 화장품 리스트 가져오기
   const categoryMap = {
-    lip: cosmetics.lip,
-    eye: cosmetics.eye,
-    cheek: cosmetics.cheek,
+    lip: cosmetics.lip || [],
+    eye: cosmetics.eye || [],
+    cheek: cosmetics.cheek || [],
   };
 
-  const products = categoryMap[selectedCategory] || [];
+  const products = categoryMap[selectedCategory];
 
   useEffect(() => {
     if (selectedPersonalColor) fetchCosmetics(selectedPersonalColor);
-  }, [selectedPersonalColor]);
+  }, [selectedPersonalColor, fetchCosmetics]);
 
   useEffect(() => {
     if (selectedProduct) {
       fetchProductDetails(selectedProduct.product_id);
     }
-  }, [selectedProduct]);
+  }, [selectedProduct, fetchProductDetails]);
 
   useEffect(() => {
     if (productDetails?.colors?.length > 1) {
       setIsModalOpen(true);
     } else if (productDetails?.colors?.length === 1) {
-      setSelectedColor(productDetails.colors[0]);
+      setSelectedColors((prev) => ({
+        ...prev,
+        [selectedCategory]: productDetails.colors[0],
+      }));
     }
-  }, [productDetails]);
+  }, [productDetails, selectedCategory]);
 
   const handleProductClick = (product) => {
-    // 제품을 클릭할 때마다 모달을 다시 띄우기
-    setSelectedProduct(product);
-    setIsModalOpen(true); // 동일 제품 클릭 시에도 모달 띄우기
+    if (selectedProduct?.product_id !== product.product_id) {
+      setSelectedProduct(product);
+    }
+    setIsModalOpen(true);
   };
 
+  // 선택한 카테고리의 색상을 초기화하는 함수
+  const resetColor = (category) => {
+    setSelectedColors((prev) => ({
+      ...prev,
+      [category]: { hex: "transparent" },
+    }));
+  };
 
   return (
     <div className="camera-container">
@@ -95,14 +112,14 @@ const Makeup = () => {
                 className={`personal-color-button ${
                   selectedPersonalColor === color.id ? "selected" : ""
                 }`}
-                onClick={() => setSelectedPersonalColor(color.id)} // personalId로 색상 선택
+                onClick={() => setSelectedPersonalColor(color.id)}
               >
                 {color.name}
               </button>
             ))}
           </div>
 
-          {/* bottom-panel: left-panel과 right-panel이 좌우 배치됨 */}
+          {/* bottom-panel: 좌우 배치 */}
           <div className="bottom-panel">
             <div className="left-panel">
               <div className="button-container">
@@ -115,7 +132,7 @@ const Makeup = () => {
                 ))}
               </div>
 
-              {/* 선택한 카테고리의 화장품 리스트 */}
+              {/* 선택한 카테고리의 제품 리스트 */}
               <div className="product-list">
                 {loading ? (
                   <p>로딩 중...</p>
@@ -124,7 +141,7 @@ const Makeup = () => {
                     <div
                       key={product.product_id}
                       className={`product-card ${
-                        selectedProduct === product ? "selected" : ""
+                        selectedProduct?.product_id === product.product_id ? "selected" : ""
                       }`}
                       onClick={() => handleProductClick(product)}
                     >
@@ -138,35 +155,56 @@ const Makeup = () => {
               </div>
             </div>
 
-            {/* 오른쪽 패널 - 카메라 */}
+            {/* 오른쪽 패널 - 카메라 및 색상 확인 */}
             <div className="right-panel">
-              {/* <MakeupCamera selectedColor={selectedColor} /> */}
-              {/* <MakeupCamera /> */}
               <MakeupCamera
-                lipColor={
-                  selectedCategory === "lip" ? selectedColor?.hex : null
-                }
-                eyeShadowColor={
-                  selectedCategory === "eye" ? selectedColor?.hex : null
-                }
-                blushColor={
-                  selectedCategory === "cheek" ? selectedColor?.hex : null
-                }
+                lipColor={selectedColors.lip?.hex}
+                eyeShadowColor={selectedColors.eye?.hex}
+                blushColor={selectedColors.cheek?.hex}
               />
+              <div className="selected-colors-container">
+  <h3>💄 현재 색상</h3>
+  <div className="selected-colors">
+    {["lip", "eye", "cheek"].map((category) => (
+      <div key={category} className="color-item">
+        <span className="color-label">{category.toUpperCase()}</span>
+        <div
+          className="color-preview"
+          style={{
+            backgroundColor: selectedColors[category]?.hex !== "transparent"
+              ? selectedColors[category]?.hex
+              : "#f0f0f0",
+            border: selectedColors[category]?.hex === "transparent"
+              ? "2px dashed #aaa"
+              : "2px solid #ccc",
+          }}
+        >
+          {selectedColors[category]?.hex === "transparent" ? "❌" : ""}
+        </div>
+        <button className="reset-btn" onClick={() => resetColor(category)}>초기화</button>
+      </div>
+    ))}
+  </div>
+</div>
+
             </div>
           </div>
         </LargeMain>
+
         {isModalOpen && productDetails?.colors?.length > 0 && (
           <Modal onClose={() => setIsModalOpen(false)}>
             <h3>색상을 선택하세요</h3>
             <div className="color-options">
-              {productDetails.colors.map((color, index) => (
+              {productDetails.colors.map((color) => (
                 <div
-                  key={index}
+                  key={color.hex}
                   className="color-circle"
                   style={{ backgroundColor: color.hex }}
                   onClick={() => {
-                    setSelectedColor(color);
+                    setSelectedColors((prev) => ({
+                      ...prev,
+                      [selectedCategory]: color,
+                    }));
                     setIsModalOpen(false);
                   }}
                 ></div>
