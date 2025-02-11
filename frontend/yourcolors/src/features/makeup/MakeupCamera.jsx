@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { FilesetResolver, FaceLandmarker } from "@mediapipe/tasks-vision";
+import useStore from "../../store/UseStore";
 import "../makeup/MakeupCamera.css";
 
 const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor }) => {
@@ -7,6 +8,9 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor }) => {
   const canvasRef = useRef(null);
   const faceLandmarkerRef = useRef(null);
   const animationFrameRef = useRef(null);
+  
+
+
 
   useEffect(() => {
     const setupFaceLandmarker = async () => {
@@ -134,8 +138,10 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor }) => {
       };
 
       // 입술 윤곽
-      const UPPER_LIP = [61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291, 308, 324, 318, 402, 317, 14];
-      const LOWER_LIP = [87, 178, 88, 95, 185, 40, 39, 37, 0, 267, 269, 270, 409, 415, 310, 311, 312, 13];
+      const UPPER_LIP = [61,185,40,39,37,0,267,269,270,409,291,306,292,308,415,310,311,312,13,82,81,80,191,78,62,76];
+      const LOWER_LIP = [61,146,91,181,84,17,314,405,321,375,291,306,292,308,324,318,402,317,14,87,178,88,95,78,62,76,61];
+      // const UPPER_LIP = [61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291, 308, 324, 318, 402, 317, 14];
+      // const LOWER_LIP = [87, 178, 88, 95, 185, 40, 39, 37, 0, 267, 269, 270, 409, 415, 310, 311, 312, 13];
 
       // 입술 라인 블렌딩 처리
       drawSmoothRegion(UPPER_LIP, lipColor || "rgba(196, 85, 94, 0.6)", 25);
