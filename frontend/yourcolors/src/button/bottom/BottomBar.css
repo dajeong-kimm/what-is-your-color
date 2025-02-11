@@ -21,10 +21,11 @@
 
 .Bottombar-buttons {
   display: flex;
-  flex-direction: row;
+  flex-direction : row;
   gap: 10px;
   align-items: center;
   margin-left: 75px;
+  margin-bottom :40px;
 }
 
 /* 기존 close-button 스타일은 closebutton.css에 정의되어 있으나, 여기서 Bottombar 내부에서의 위치를 재정의 */
