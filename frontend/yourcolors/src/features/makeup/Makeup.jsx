@@ -71,6 +71,18 @@ const Makeup = () => {
     }
   }, [productDetails]);
 
+//   // selectedColor가 업데이트 될 때마다 MakeupCamera에 색상을 전달
+// useEffect(() => {
+//   if (selectedColor) {
+//     // MakeupCamera에 선택된 색상 전달
+//     setSelectedProduct((prevProduct) => ({
+//       ...prevProduct,
+//       color: selectedColor.hex, // selectedColor의 hex 값
+//     }));
+//   }
+// }, [selectedColor]);
+
+
   return (
     <div className="camera-container">
       <Background>
@@ -129,7 +141,12 @@ const Makeup = () => {
             {/* 오른쪽 패널 - 카메라 */}
             <div className="right-panel">
               {/* <MakeupCamera selectedColor={selectedColor} /> */}
-              <MakeupCamera />
+              {/* <MakeupCamera /> */}
+              <MakeupCamera
+  lipColor={selectedCategory === "lip" ? selectedColor?.hex : null}
+  eyeShadowColor={selectedCategory === "eye" ? selectedColor?.hex : null}
+  blushColor={selectedCategory === "cheek" ? selectedColor.hex : null}
+/>
             </div>
           </div>
         </LargeMain>

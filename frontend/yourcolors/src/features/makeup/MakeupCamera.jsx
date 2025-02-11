@@ -138,20 +138,18 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor }) => {
       const LOWER_LIP = [87, 178, 88, 95, 185, 40, 39, 37, 0, 267, 269, 270, 409, 415, 310, 311, 312, 13];
 
       // 입술 라인 블렌딩 처리
-      drawSmoothRegion(UPPER_LIP, lipColor || "rgba(196, 85, 94, 0.6)", 25);
-      drawSmoothRegion(LOWER_LIP, lipColor || "rgba(196, 85, 94, 0.6)", 25);
+      drawSmoothRegion(UPPER_LIP, lipColor ||"rgba(0,0,0,0)", 25);
+      drawSmoothRegion(LOWER_LIP, lipColor || "rgba(0,0,0,0)", 25);
 
       // 아이섀도우 - 양쪽 눈 적용
       const LEFT_EYE_SHADOW = [33, 130, 226, 247, 30, 29, 27, 28, 56, 190, 243, 133, 173, 157, 158, 159, 160, 161, 246];
       const RIGHT_EYE_SHADOW = [263, 359, 446, 467, 260, 259, 257, 258, 286, 414, 463, 353, 383, 362, 398, 384, 385, 386, 466];
 
       // 양쪽 눈에 적용
-      drawSmoothRegion(LEFT_EYE_SHADOW, eyeShadowColor || "rgba(111, 68, 61, 0.4)", 15);
-      drawSmoothRegion(RIGHT_EYE_SHADOW, eyeShadowColor || "rgba(111, 68, 61, 0.4)", 15);
+      drawSmoothRegion(LEFT_EYE_SHADOW, eyeShadowColor || "rgba(0,0,0,0)", 15);
+      drawSmoothRegion(RIGHT_EYE_SHADOW, eyeShadowColor || "rgba(0,0,0,0)", 15);
 
       // // 치크 (볼터치)
-      // drawSmoothRegion([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(255, 102, 102, 0.3)", 60);
-      // drawSmoothRegion([411, 352, 346, 347, 330, 425, 411], blushColor || "rgba(255, 102, 102, 0.3)", 60);
       const drawBlushGradient = (indices, color, radius) => {
         if (!indices.length) return;
     
@@ -205,11 +203,13 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor }) => {
     drawBlushGradient([411, 352, 346, 347, 330, 425, 411], blushColor || "rgba(220, 119, 119, 0.8)", 35);
     
     
-      
-      
 
 
     }
+
+    // setTimeout(() => {
+    //   animationFrameRef.current = requestAnimationFrame(detectFaces);
+    // }, 1000 / 30); // Limit to 30 FPS
 
     animationFrameRef.current = requestAnimationFrame(detectFaces);
   };
