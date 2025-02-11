@@ -8,6 +8,11 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor }) => {
   const faceLandmarkerRef = useRef(null);
   const animationFrameRef = useRef(null);
 
+  // 콘솔로 색상값 확인
+  console.log("lipColor:", lipColor);
+  console.log("eyeShadowColor:", eyeShadowColor);
+  console.log("blushColor:", blushColor);
+
   useEffect(() => {
     const setupFaceLandmarker = async () => {
       const vision = await FilesetResolver.forVisionTasks(
@@ -61,6 +66,13 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor }) => {
       }
     };
   }, []);
+
+  // 🎨 색상 값이 변경될 때마다 다시 그리기
+useEffect(() => {
+  if (canvasRef.current) {
+    detectFaces(); // 색상이 변경될 때마다 얼굴을 다시 감지하고 메이크업을 적용
+  }
+}, [eyeShadowColor, blushColor, lipColor]);
 
   const detectFaces = async () => {
     if (!faceLandmarkerRef.current || !videoRef.current || !canvasRef.current) {
@@ -133,6 +145,56 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor }) => {
         ctx.globalAlpha = 1;
       };
 
+      // // 치크 (볼터치)
+      const drawBlushGradient = (indices, color, radius) => {
+        if (!indices.length || color === "rgba(0, 0, 0, 0)") return; // color가 "rgba(0, 0, 0, 0)"이면 종료
+        
+        ctx.save();
+        
+        // 중심 좌표 계산 (선택된 점들의 평균)
+        let centerX = 0, centerY = 0;
+        indices.forEach(idx => {
+            centerX += (1 - landmarks[idx].x) * canvas.width;
+            centerY += landmarks[idx].y * canvas.height;
+        });
+        centerX /= indices.length;
+        centerY /= indices.length;
+        
+        // 좌우 대칭 계산
+        const mirroredCenterX = canvas.width - centerX; // 반사된 X 좌표 계산
+        
+        // 부드러운 블러 효과를 위한 그라디언트 생성
+        const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+        gradient.addColorStop(0, color.replace(/[\d.]+\)$/, "0.6)")); // 중심부 색상 (진함)
+        gradient.addColorStop(0.3, color.replace(/[\d.]+\)$/, "0.3)")); // 중간 영역 (연해짐)
+        gradient.addColorStop(0.8, color.replace(/[\d.]+\)$/, "0.1)")); // 외곽 (거의 투명)
+        gradient.addColorStop(1, color.replace(/[\d.]+\)$/, "0)")); // 가장자리 투명
+        
+        // 그림자 효과 추가 (자연스러운 경계 표현)
+        ctx.shadowColor = color.replace(/[\d.]+\)$/, "0.2)"); // 연한 그림자
+        ctx.shadowBlur = 20; // 더 부드러운 블러 효과 적용
+        
+        // 그라디언트 채우기
+        ctx.fillStyle = gradient;
+        ctx.globalAlpha = 0.8; // 전체 투명도 조절
+        
+        // 원형 블러 효과 적용 (좌측)
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2, false);
+        ctx.fill();
+        
+        // 원형 블러 효과 적용 (우측 - 좌우 대칭)
+        ctx.beginPath();
+        ctx.arc(mirroredCenterX, centerY, radius, 0, Math.PI * 2, false);
+        ctx.fill();
+        
+        // 원래 설정 복원
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+        ctx.restore();
+    };
+    
+
       // 입술 윤곽
       const UPPER_LIP = [61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291, 308, 324, 318, 402, 317, 14];
       const LOWER_LIP = [87, 178, 88, 95, 185, 40, 39, 37, 0, 267, 269, 270, 409, 415, 310, 311, 312, 13];
@@ -149,70 +211,26 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor }) => {
       drawSmoothRegion(LEFT_EYE_SHADOW, eyeShadowColor || "rgba(0,0,0,0)", 15);
       drawSmoothRegion(RIGHT_EYE_SHADOW, eyeShadowColor || "rgba(0,0,0,0)", 15);
 
-      // // 치크 (볼터치)
-      const drawBlushGradient = (indices, color, radius) => {
-        if (!indices.length) return;
-    
-        ctx.save();
-    
-        // 중심 좌표 계산 (선택된 점들의 평균)
-        let centerX = 0, centerY = 0;
-        indices.forEach(idx => {
-            centerX += (1 - landmarks[idx].x) * canvas.width;
-            centerY += landmarks[idx].y * canvas.height;
-        });
-        centerX /= indices.length;
-        centerY /= indices.length;
-    
-        // 좌우 대칭 계산
-        const mirroredCenterX = canvas.width - centerX; // 반사된 X 좌표 계산
-    
-        // 부드러운 블러 효과를 위한 그라디언트 생성
-        const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
-        gradient.addColorStop(0, color.replace(/[\d.]+\)$/, "0.6)")); // 중심부 색상 (진함)
-        gradient.addColorStop(0.3, color.replace(/[\d.]+\)$/, "0.3)")); // 중간 영역 (연해짐)
-        gradient.addColorStop(0.8, color.replace(/[\d.]+\)$/, "0.1)")); // 외곽 (거의 투명)
-        gradient.addColorStop(1, color.replace(/[\d.]+\)$/, "0)")); // 가장자리 투명
-    
-        // 그림자 효과 추가 (자연스러운 경계 표현)
-        ctx.shadowColor = color.replace(/[\d.]+\)$/, "0.2)"); // 연한 그림자
-        ctx.shadowBlur = 20; // 더 부드러운 블러 효과 적용
-    
-        // 그라디언트 채우기
-        ctx.fillStyle = gradient;
-        ctx.globalAlpha = 0.8; // 전체 투명도 조절
-    
-        // 원형 블러 효과 적용 (좌측)
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2, false);
-        ctx.fill();
-    
-        // 원형 블러 효과 적용 (우측 - 좌우 대칭)
-        ctx.beginPath();
-        ctx.arc(mirroredCenterX, centerY, radius, 0, Math.PI * 2, false);
-        ctx.fill();
-    
-        // 원래 설정 복원
-        ctx.shadowBlur = 0;
-        ctx.globalAlpha = 1;
-        ctx.restore();
-    };
+      // drawSmoothRegion([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(0, 0, 0, 0)", 35);
+      // drawSmoothRegion([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(0, 0, 0, 0)", 35);
+
+      drawBlushGradient([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(0, 0, 0, 0)", 35);
+      drawBlushGradient([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(0, 0, 0, 0)", 35);
+
+      
+      // drawBlushGradient([117, 123, 187, 205, 101, 118, 117],"rgba(0, 0, 0, 0)", 35);
     
     // 기존 볼터치 영역에 자연스러운 그라데이션 블러셔 적용 (좌우 대칭 추가됨)
-    drawBlushGradient([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(220, 119, 119, 0.8)", 35);
-    drawBlushGradient([411, 352, 346, 347, 330, 425, 411], blushColor || "rgba(220, 119, 119, 0.8)", 35);
+    // drawBlushGradient([117, 123, 187, 205, 101, 118, 117], blushColor || "rgba(220, 119, 119, 0.8)", 35);
+    // drawBlushGradient([411, 352, 346, 347, 330, 425, 411], blushColor || "rgba(220, 119, 119, 0.8)", 35);
     
-    
-
-
     }
 
-    // setTimeout(() => {
-    //   animationFrameRef.current = requestAnimationFrame(detectFaces);
-    // }, 1000 / 30); // Limit to 30 FPS
-
+  
     animationFrameRef.current = requestAnimationFrame(detectFaces);
   };
+
+  
 
   return (
     <div className={`camera ${cam}`}>

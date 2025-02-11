@@ -32,12 +32,17 @@ const personalColors = [
   { id: 9, name: "가을 웜 다크" },
   { id: 10, name: "겨울 쿨 비비드" },
   { id: 11, name: "겨울 쿨 스트롱" },
-  { id: 12, name: "겨울 쿨 다크" }
+  { id: 12, name: "겨울 쿨 다크" },
 ];
 
-
 const Makeup = () => {
-  const { cosmetics, loading, fetchCosmetics, fetchProductDetails, productDetails } = useStore();
+  const {
+    cosmetics,
+    loading,
+    fetchCosmetics,
+    fetchProductDetails,
+    productDetails,
+  } = useStore();
   const [selectedPersonalColor, setSelectedPersonalColor] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("lip");
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -71,16 +76,11 @@ const Makeup = () => {
     }
   }, [productDetails]);
 
-//   // selectedColor가 업데이트 될 때마다 MakeupCamera에 색상을 전달
-// useEffect(() => {
-//   if (selectedColor) {
-//     // MakeupCamera에 선택된 색상 전달
-//     setSelectedProduct((prevProduct) => ({
-//       ...prevProduct,
-//       color: selectedColor.hex, // selectedColor의 hex 값
-//     }));
-//   }
-// }, [selectedColor]);
+  const handleProductClick = (product) => {
+    // 제품을 클릭할 때마다 모달을 다시 띄우기
+    setSelectedProduct(product);
+    setIsModalOpen(true); // 동일 제품 클릭 시에도 모달 띄우기
+  };
 
 
   return (
@@ -88,32 +88,32 @@ const Makeup = () => {
       <Background>
         <Topbar />
         <LargeMain>
-        <div className="personal-color-buttons">
-                  {personalColors.map((color) => (
-                    <button
-                      key={color.id}
-                      className={`personal-color-button ${
-                        selectedPersonalColor === color.id ? "selected" : ""
-                      }`}
-                      onClick={() => setSelectedPersonalColor(color.id)} // personalId로 색상 선택
-                    >
-                      {color.name}
-                    </button>
-                  ))}
-                </div>
+          <div className="personal-color-buttons">
+            {personalColors.map((color) => (
+              <button
+                key={color.id}
+                className={`personal-color-button ${
+                  selectedPersonalColor === color.id ? "selected" : ""
+                }`}
+                onClick={() => setSelectedPersonalColor(color.id)} // personalId로 색상 선택
+              >
+                {color.name}
+              </button>
+            ))}
+          </div>
 
-                {/* bottom-panel: left-panel과 right-panel이 좌우 배치됨 */}
-                <div className="bottom-panel">
-                  <div className="left-panel">
-                  <div className="button-container">
-                    {["lip", "eye", "cheek"].map((category) => (
-                      <ProductButton
-                        key={category}
-                        text={category}
-                        onClick={() => setSelectedCategory(category)}
-                      />
-                    ))}
-                  </div>
+          {/* bottom-panel: left-panel과 right-panel이 좌우 배치됨 */}
+          <div className="bottom-panel">
+            <div className="left-panel">
+              <div className="button-container">
+                {["lip", "eye", "cheek"].map((category) => (
+                  <ProductButton
+                    key={category}
+                    text={category}
+                    onClick={() => setSelectedCategory(category)}
+                  />
+                ))}
+              </div>
 
               {/* 선택한 카테고리의 화장품 리스트 */}
               <div className="product-list">
@@ -126,7 +126,7 @@ const Makeup = () => {
                       className={`product-card ${
                         selectedProduct === product ? "selected" : ""
                       }`}
-                      onClick={() => setSelectedProduct(product)}
+                      onClick={() => handleProductClick(product)}
                     >
                       <img src={product.image} alt={product.product_name} />
                       <p>{product.product_name}</p>
@@ -143,33 +143,39 @@ const Makeup = () => {
               {/* <MakeupCamera selectedColor={selectedColor} /> */}
               {/* <MakeupCamera /> */}
               <MakeupCamera
-  lipColor={selectedCategory === "lip" ? selectedColor?.hex : null}
-  eyeShadowColor={selectedCategory === "eye" ? selectedColor?.hex : null}
-  blushColor={selectedCategory === "cheek" ? selectedColor.hex : null}
-/>
+                lipColor={
+                  selectedCategory === "lip" ? selectedColor?.hex : null
+                }
+                eyeShadowColor={
+                  selectedCategory === "eye" ? selectedColor?.hex : null
+                }
+                blushColor={
+                  selectedCategory === "cheek" ? selectedColor?.hex : null
+                }
+              />
             </div>
           </div>
         </LargeMain>
         {isModalOpen && productDetails?.colors?.length > 0 && (
-        <Modal onClose={() => setIsModalOpen(false)}>
-          <h3>색상을 선택하세요</h3>
-          <div className="color-options">
-            {productDetails.colors.map((color, index) => (
-              <div
-                key={index}
-                className="color-circle"
-                style={{ backgroundColor: color.hex }}
-                onClick={() => {
-                  setSelectedColor(color);
-                  setIsModalOpen(false);
-                }}
-              ></div>
-            ))}
-          </div>
-        </Modal>
-      )}
+          <Modal onClose={() => setIsModalOpen(false)}>
+            <h3>색상을 선택하세요</h3>
+            <div className="color-options">
+              {productDetails.colors.map((color, index) => (
+                <div
+                  key={index}
+                  className="color-circle"
+                  style={{ backgroundColor: color.hex }}
+                  onClick={() => {
+                    setSelectedColor(color);
+                    setIsModalOpen(false);
+                  }}
+                ></div>
+              ))}
+            </div>
+          </Modal>
+        )}
       </Background>
-      </div>
+    </div>
   );
 };
 
