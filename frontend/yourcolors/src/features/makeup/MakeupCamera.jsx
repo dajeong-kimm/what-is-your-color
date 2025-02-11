@@ -3,12 +3,17 @@ import { FilesetResolver, FaceLandmarker } from "@mediapipe/tasks-vision";
 import useStore from "../../store/UseStore";
 import "../makeup/MakeupCamera.css";
 
-const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor }) => {
+const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category}) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const faceLandmarkerRef = useRef(null);
   const animationFrameRef = useRef(null);
-  
+  // const lipColor = useRef(null);
+
+    console.log(eyeShadowColor)
+    console.log(category)
+    console.log(lipColor)
+    console.log(blushColor)
 
 
 

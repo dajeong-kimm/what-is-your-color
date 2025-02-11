@@ -129,7 +129,11 @@ const Makeup = () => {
             {/* 오른쪽 패널 - 카메라 */}
             <div className="right-panel">
               {/* <MakeupCamera selectedColor={selectedColor} /> */}
-              <MakeupCamera />
+              <MakeupCamera 
+              category={selectedCategory}
+              Color={selectedColor}  // 아이섀도우 색상 전달
+              
+              />
             </div>
           </div>
         </LargeMain>
