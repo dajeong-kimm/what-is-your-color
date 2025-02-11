@@ -44,6 +44,7 @@ const LoadingPage = () => {
   
   useEffect(() => {
     // ✅ Results가 비어있지 않고 gptSummary가 존재하면 diagresult로 이동
+    console.log("실패하더라도 여긴 왔다.")
     if (Results.length > 0 && gptSummary) {
       navigate("/diagresult");
     }
