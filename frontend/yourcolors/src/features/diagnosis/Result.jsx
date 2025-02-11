@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import SmallMain from "../../background/background/SmallMain";
+// import LargeMain from "../../background/background/LargeMain";
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
 import "./DiagResult.css";
 
 import personalColorInfo from "../../store/PersonalColorInfo"; // 정적 객체 데이터
 import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
+// import Largemain from '../../background/background/LargeMain';
 
-const DiagResult = () => {
+const Result = () => {
   const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
   // const personalId = 1;
   const { userPersonalId, personalColorDetails, Results } = useStore();
@@ -41,11 +43,11 @@ const DiagResult = () => {
   const hashtags = exampleData.hashtags;
 
   // mainColor에 해당하는 이미지 URL 가져오기
-  // const imageUrl = colorMap[mainColor] || "기본 이미지 URL";
-  const imageUrl = personalColorInfo[userPersonalId].characterUrl // 일단 1번 봄라이트 이미지로...
+  // const imageUrl = colorMap[mainColor] || "기본 이미지 URL"
+  const imageUrl = personalColorInfo[4].characterUrl // 일단 1번 봄라이트 이미지로...
 
   const handleRightClick = () => {
-    navigate("/personalcolors/12");
+    navigate("/personalcolors/12")
   };
 
   return (
@@ -66,7 +68,7 @@ const DiagResult = () => {
           <div className="container-down">
             <div className="title-sub">서브컬러</div>
           {/* <strong className="sub-color">{subColors.join(" & ")}</strong> */}
-          <strong className="sub-color">{Results[1].personal_color} & {Results[2].personal_color}</strong>
+          <strong className="sub-color">{Results[1].personal_color} <br />& {Results[2].personal_color}</strong>
           </div>
         
         </div>
@@ -84,4 +86,5 @@ const DiagResult = () => {
   );
 };
 
-export default DiagResult;
+export default Result;
+
