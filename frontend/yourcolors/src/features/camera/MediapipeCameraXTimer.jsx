@@ -224,6 +224,8 @@ const MediapipeCameraXTimer = () => {
       })
       .catch((error) => {
         console.error("Error sending images to server:", error);
+        alert("퍼스널컬러 진단에 실패했습니다. 화면에 맞춰서 다시 시도해주세요.");
+        navigate(-1); // 🔴 이전 페이지로 이동
       });
   };
 
@@ -318,7 +320,8 @@ const MediapipeCameraXTimer = () => {
                     setResults([]); // ✅ Zustand 상태 업데이트
                     setGptSummary(""); // ✅ Zustand 상태 업데이트
                     sendImagesToServer(userImageFile); // 서버로 이미지 전송
-                    navigate("/LoadingPage"); // 전송 후 페이지 이동
+                    // navigate("/LoadingPage"); // 전송 후 페이지 이동
+                    navigate("/LoadingPage", { state: { from: "MediapipeCameraXTimer" } }) //진단 실패시 되돌아가기 위해 주소 저장
                   }
                 }}
               style={{
