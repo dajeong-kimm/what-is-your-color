@@ -99,4 +99,9 @@ const useStore = create((set) => ({
   },
 }));
 
+// 🔹 상태를 window 객체에 등록 (개발용)
+if (typeof window !== "undefined") {
+  window.store = useStore;
+}
+
 export default useStore;
