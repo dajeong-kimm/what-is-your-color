@@ -144,11 +144,19 @@ const MediapipeCameraXTimerAI = () => {
         const blob = base64ToBlob(faceImage, "image/png");
 
         // 🟢 상태 업데이트: 유저 이미지 파일 저장
-        setUserImageFile(blob); // ✅ Zustand 상태 업데이트
-        const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
-        console.log("웃어봐요 활짝", imageUrl);
+        // setUserImageFile(blob); // ✅ Zustand 상태 업데이트
+        // const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
+        // console.log("웃어봐요 활짝", imageUrl);
         
 
+          // FormData 객체 생성
+          const formData = new FormData();
+          formData.append("image", blob, "captured_face.png"); // 파일명 지정
+          setUserImageFile(formData); // ✅ Zustand 상태 업데이트
+          formData.forEach((value, key) => {
+            console.log(`Key: ${key}, Value:`, value);
+          });
+        
         // sendImagesToServer(faceImage); //여기서 실행하면 안된다
 
       }
@@ -193,7 +201,7 @@ const MediapipeCameraXTimerAI = () => {
     return new Blob([byteArray], { type: mimeType });
   };
 
-  const sendImagesToServer = (faceImageBase64) => {
+  const sendImagesToServer = (formData) => {
     console.log("[sendImagesToServer] Sending to server...");
     console.log("10. AI 모델 사용 API");
 
@@ -205,9 +213,9 @@ const MediapipeCameraXTimerAI = () => {
     // const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
     // console.log("웃어봐요 활짝", imageUrl);
 
-    // FormData 객체 생성
-    const formData = new FormData();
-    formData.append("image", faceImageBase64, "captured_face.png"); // 파일명 지정
+    // // FormData 객체 생성
+    // const formData = new FormData();
+    // formData.append("image", faceImageBase64, "captured_face.png"); // 파일명 지정
 
     axios
       .post(`${apiBaseUrl}/api/consult/ai`, formData, {
