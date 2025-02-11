@@ -1,6 +1,7 @@
 import React from "react";
 import "./BottomBar.css";
 import Bottombutton from "./BottomButton";
+import SendButton from "../sendbutton/SendButton"; 
 import CloseButton from "../closebutton/CloseButton"; // 종료하기 버튼
 
 const Bottombar = ({ currentStep, setCurrentStep }) => {
@@ -29,6 +30,7 @@ const Bottombar = ({ currentStep, setCurrentStep }) => {
               className={button.name}
             />
           ))}
+          <SendButton />
           <CloseButton />
         </div>
       </div>
