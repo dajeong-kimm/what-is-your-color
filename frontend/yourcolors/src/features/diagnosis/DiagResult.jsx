@@ -19,11 +19,11 @@ const DiagResult = () => {
 
   // 콘텐츠 변경 로직 (좌우 버튼)
   const nextStep = () => {
-    setCurrentStep((prevStep) => (prevStep + 5) % 5);
+    setCurrentStep((prevStep) => (prevStep + 1 + 4) % 4);
   };
 
   const prevStep = () => {
-    setCurrentStep((prevStep) => (prevStep - 1 + 5) % 5);
+    setCurrentStep((prevStep) => (prevStep - 1 + 4) % 4);
   };
 
   // const personalId = 1; // 임시 ID (추후 변경)
@@ -36,10 +36,10 @@ const DiagResult = () => {
   // 콘텐츠 배열 (순서 유지)
   const steps = [
     { id: 0, component: <Result /> },
-    { id: 1, component: <PersonalColorDetailContent /> },
-    { id: 2, component: <BestWorst /> },
-    { id: 3, component: <PersonalRecommend /> },
-    { id: 4, component: <ColorConsulting /> },
+    // { id: 1, component: <PersonalColorDetailContent /> },
+    { id: 1, component: <BestWorst /> },
+    { id: 2, component: <PersonalRecommend /> },
+    { id: 3, component: <ColorConsulting /> },
   ];
 
   return (

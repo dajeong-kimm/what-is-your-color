@@ -62,9 +62,9 @@ const BestWorst = () => {
 
             </div>
           </div>
-          <div className="bottom-container">
+          {/* <div className="bottom-container">
             <div className="GPT-consulting">{gptSummary}</div>
-          </div>
+          </div> */}
         </div>
       
 </SmallMain>
