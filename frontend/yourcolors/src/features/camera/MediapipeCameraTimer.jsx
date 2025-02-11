@@ -5,7 +5,7 @@ import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
 import LoadingPage from "../../button/loading-page/LoadingPage";
 import axios from "axios";
-import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
+import useStore from "../../store/UseStore"; //Zustand 상태관리 데이터
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const MediapipeCameraTimer = () => {
@@ -16,7 +16,8 @@ const MediapipeCameraTimer = () => {
   const [showCaptureButton, setShowCaptureButton] = useState(true);
   const [isFlashing, setIsFlashing] = useState(false);
   const navigate = useNavigate();
-  const { setUserPersonalId, setResults, setGptSummary } = useStore(); //Zustand 상태관리 데이터
+  const { setUserPersonalId, setUserImageFile, setResults, setGptSummary } =
+    useStore(); //Zustand 상태관리 데이터
 
   useEffect(() => {
     initializeCamera();
@@ -24,7 +25,8 @@ const MediapipeCameraTimer = () => {
 
   const initializeCamera = () => {
     const holistic = new Holistic({
-      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
+      locateFile: (file) =>
+        `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
     });
 
     holistic.setOptions({
@@ -175,16 +177,19 @@ const MediapipeCameraTimer = () => {
   const sendImagesToServer = (faceImageBase64, a4ImageBase64) => {
     console.log("[sendImagesToServer] Sending to server...");
     console.log("11. 색상 거리 사용 API");
-  
+
     // Base64 → Blob 변환
     const faceBlob = base64ToBlob(faceImageBase64, "image/png");
     const a4Blob = base64ToBlob(a4ImageBase64, "image/png");
-  
+
+    // 🟢 상태 업데이트: 유저 이미지 파일 저장
+    setUserImageFile(faceBlob); // ✅ Zustand 상태 업데이트
+
     // FormData 객체 생성
     const formData = new FormData();
     formData.append("face_image", faceBlob, "face_image.png"); // 얼굴 이미지 추가
     formData.append("a4_image", a4Blob, "a4_image.png"); // 종이 이미지 추가
-  
+
     axios
       .post(`${apiBaseUrl}/api/consult/dist`, formData, {
         headers: {
@@ -195,8 +200,8 @@ const MediapipeCameraTimer = () => {
         console.log("Server Response(색상거리 종이있음):", response.data);
         console.log("너의 색깔은?? : ", response.data.results[0].personal_id);
         setUserPersonalId(response.data.results[0].personal_id);
-        setResults(response.data.results); // AI 분석 결과 저장
-        setGptSummary(response.data.gpt_summary); // GPT 요약 저장
+        setResults(response.data.results); // ✅ Zustand 상태 업데이트 - AI 분석 결과 저장
+        setGptSummary(response.data.gpt_summary); // ✅ Zustand 상태 업데이트 - GPT 요약 저장
       })
       .catch((error) => {
         console.error("Error sending images to server:", error);
@@ -208,7 +213,14 @@ const MediapipeCameraTimer = () => {
   };
 
   return (
-    <div style={{ width: "100%", height: "115%", position: "relative", overflow: "hidden" }}>
+    <div
+      style={{
+        width: "100%",
+        height: "115%",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
       {isFlashing && (
         <div
           style={{
@@ -253,15 +265,15 @@ const MediapipeCameraTimer = () => {
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
 
-          <div 
-            style={{ 
-              position: "absolute", 
-              bottom: "5%", 
-              width: "100%", 
-              display: "flex", 
-              justifyContent: "center",  
-              gap: "40px",  
-              padding: "0 5%" 
+          <div
+            style={{
+              position: "absolute",
+              bottom: "5%",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              gap: "40px",
+              padding: "0 5%",
             }}
           >
             <button
@@ -314,7 +326,11 @@ const MediapipeCameraTimer = () => {
               transform: "scaleX(-1)",
             }}
           />
-          <canvas ref={canvasRef} style={{ display: "none" }} willreadfrequently="true" />
+          <canvas
+            ref={canvasRef}
+            style={{ display: "none" }}
+            willreadfrequently="true"
+          />
 
           <div
             style={{
@@ -357,7 +373,14 @@ const MediapipeCameraTimer = () => {
           </div>
 
           {showCaptureButton && (
-            <div style={{ position: "absolute", bottom: "40%", left: "50%", transform: "translateX(-50%)" }}>
+            <div
+              style={{
+                position: "absolute",
+                bottom: "40%",
+                left: "50%",
+                transform: "translateX(-50%)",
+              }}
+            >
               <button
                 onClick={handleCapture}
                 style={{
