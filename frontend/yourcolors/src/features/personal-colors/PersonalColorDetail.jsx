@@ -40,6 +40,13 @@ const PersonalColorDetail = () => {
   if (!personalColors[id-1]) {
     return <h2>해당 퍼스널컬러 정보를 찾을 수 없습니다.</h2>;
   }
+
+  // description에서 \n을 <br />로 바꾸는 함수
+  // const formatDescription = (description) => {
+  //   return description.split("\n").map((str, index) => (
+  //     <span key={index}>{str}<br /></span>
+  //   ));
+  // };
   // console.log(colorInfo)
 
   return (

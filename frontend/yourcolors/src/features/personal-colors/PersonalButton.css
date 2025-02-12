@@ -14,7 +14,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
   /* ✅ 두 줄 방지 및 넘치는 글자 처리 */
   white-space: nowrap;  /* 줄 바꿈 방지 */
   overflow: hidden;     /* 넘치는 글자 숨김 */
