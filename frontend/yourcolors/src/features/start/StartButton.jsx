@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Topbutton.css';
+import './StartButton.css';
 
 const StartButton = ({ to, label, onClick }) => {
   return (
