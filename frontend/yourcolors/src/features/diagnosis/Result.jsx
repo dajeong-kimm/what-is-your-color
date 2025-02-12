@@ -58,9 +58,12 @@ const Result = () => {
           </div>
 
           <div className="container-center">
-            <div className="summary">{personalColorDetails.description}</div>
-          {Array.isArray(personalColorDetails.hashtag) ? personalColorDetails.hashtag.join(" ") : ""}
+            <div className="summary">
+              <strong>{personalColorDetails.description}</strong>
+            </div>
+            {Array.isArray(personalColorDetails.hashtag) ? personalColorDetails.hashtag.join(" ") : ""}
           </div>
+
 
           <div className="container-down">
             <div className="title-sub">서브컬러</div>

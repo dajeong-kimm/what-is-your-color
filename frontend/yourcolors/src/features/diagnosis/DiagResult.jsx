@@ -71,12 +71,7 @@ const DiagResult = () => {
         </AnimatePresence>
 
         {/* 좌우 이동 버튼 */}
-        <LeftRightButton 
-          currentStep={currentStep} 
-          onLeftClick={prevStep} 
-          onRightClick={nextStep} 
-        />
-
+        <LeftRightButton onLeftClick={prevStep} onRightClick={nextStep} />
       </div>
 
       {/* Bottombar에 currentStep와 setCurrentStep을 prop으로 전달 */}
