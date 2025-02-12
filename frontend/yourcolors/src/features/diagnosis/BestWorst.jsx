@@ -4,6 +4,8 @@ import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
 import { useNavigate } from "react-router-dom";
 import SmallMain from '../../background/background/SmallMain';
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
+import BestWorstCamera from "../camera/BestWorstCamera";
+import BestWorstCamera2 from "../camera/BestWorstCamera2";
 
 
 const BestWorst = () => {
@@ -23,45 +25,52 @@ const BestWorst = () => {
 
 
    return (
-      <SmallMain>
+     <SmallMain>
+   {/* <BestWorstCamera/> */}
         <div className="full-container">
-
+        {/* <BestWorstCamera2/> */}
           <div className="top-container">
-
-          {/* Best Color Section */}
-          <div className="container-best">
-            <h1 className="title">Best Color</h1>
-            <div className="color-boxes">
-              {/* Best Color 목록에서 색상값을 렌더링 */}
-              {personalColorDetails.bestcolor.map((color, index) => (
-                  <div key={index} className="color-box" 
-                  style={{ backgroundColor: color }}></div> ))}
+        
+            {/* Best Color Section */}
+           <div className="container-best">
+            
+             <h1 className="title">Best Color</h1>
+              <div className="color-boxes">
+                {/* Best Color 목록에서 색상값을 렌더링 */}
+                {personalColorDetails.bestcolor.map((color, index) => (
+                    <div key={index} className="color-box" 
+                    style={{ backgroundColor: color }}></div> ))}
               </div> {/* 이거 5가지 컬러 박스니까 안에 데이터만 변경!!!!!!!!!!!!*/}
-
-              {/* <ul>
-                {personalColorDetails.bestcolor_name?.map((color, index) => (
-                  <li key={index}>{color}</li>
-                ))}
-              </ul> */}
-          </div>
-
-            {/* Worst Color Section */}
-          <div className="container-worst">
-            <h1 className="title">Worst Color</h1>
-            <div className="color-boxes">
-              {personalColorDetails.worstcolor.map((color, index) => (
-                  <div key={index} className="color-box" 
-                  style={{ backgroundColor: color }}></div> ))}
+              <BestWorstCamera/>
+                {/* <ul>
+                  {personalColorDetails.bestcolor_name?.map((color, index) => (
+                    <li key={index}>{color}</li>
+                  ))}
+                </ul> */}
+             {/* 베스트 컬러 색을 입힌 카메라 넣기 */}
+            
             </div>
+            
 
-              {/* <ul>
-                {personalColorDetails.worstcolor_name?.map((color, index) => (
-                  <li key={index}>{color}</li>
-                ))}
-              </ul> */}
+              {/* Worst Color Section */}
+            <div className="container-worst">
+              <h1 className="title">Worst Color</h1>
+              <div className="color-boxes">
+                {personalColorDetails.worstcolor.map((color, index) => (
+                    <div key={index} className="color-box" 
+                    style={{ backgroundColor: color }}></div> ))}
+              </div>
+              <BestWorstCamera/>
+                {/* <ul>
+                  {personalColorDetails.worstcolor_name?.map((color, index) => (
+                    <li key={index}>{color}</li>
+                  ))}
+                </ul> */}
+                  {/* 워스트 컬러 색을 입힌 카메라 넣기 */}
 
             </div>
-          </div>
+         </div>
+        
           {/* <div className="bottom-container">
             <div className="GPT-consulting">{gptSummary}</div>
           </div> */}
