@@ -26,9 +26,10 @@ const Topbar = () => {
 
   // 버튼 정보 배열
   const buttons = [
+    { to: '/choice', label: '퍼스널컬러란?', name: 'mean' },
     { to: '/personalcolors', label: '퍼스널컬러 종류', name: 'personalcolor' },
-    { to: '/choice', label: '퍼스널컬러 진단', name: 'diagnosis' },
-    { to: '/makeup', label: 'AI 메이크업 합성', name: 'makeup' },
+    { to: '/mainpage', label: '메인페이지', name: 'main' },
+    { to: '/', label: '처음으로', name: 'start' },
   ];
 
   return (

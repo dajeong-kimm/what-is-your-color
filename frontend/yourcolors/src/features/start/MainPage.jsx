@@ -30,9 +30,9 @@ useEffect(() => {
       <Topbar />
       <Largemain>
         <div className="main-button-container">
-          <MainButton text="퍼스널컬러 종류" onClick={() => navigate("/personalcolors")} />
-          <MainButton text="퍼스널컬러 진단" onClick={() => navigate("/choice")} />
-          <MainButton text="AI 메이크업 합성" onClick={() => navigate("/makeup")} />
+          <MainButton text="퍼스널컬러 진단 🔍 " onClick={() => navigate("/choice")} />
+          <MainButton text="AI 메이크업 🎨" onClick={() => navigate("/makeup")} />
+          <MainButton text="계절네컷 촬영 📸" onClick={() => navigate("/personalcolors")} />
         </div>
       </Largemain>
     </Background>
