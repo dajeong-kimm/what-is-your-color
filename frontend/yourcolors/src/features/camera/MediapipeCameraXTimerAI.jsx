@@ -20,13 +20,7 @@ const MediapipeCameraXTimerAI = () => {
   const [hasCaptured, setHasCaptured] = useState(false); // 이미 촬영했는지 체크
 
   const navigate = useNavigate();
-  const {
-    setUserPersonalId,
-    userImageFile,
-    setUserImageFile,
-    setResults,
-    setGptSummary,
-  } = useStore(); //Zustand 상태관리 데이터
+  const { setUserPersonalId, userImageFile, setUserImageFile, setResults, setGptSummary } = useStore(); //Zustand 상태관리 데이터
 
   useEffect(() => {
     console.log("[useEffect] Component mounted -> Initialize camera");
@@ -44,8 +38,7 @@ const MediapipeCameraXTimerAI = () => {
   const initializeCamera = () => {
     console.log("[initializeCamera] called");
     const holistic = new Holistic({
-      locateFile: (file) =>
-        `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
+      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
     });
     holistic.setOptions({
       modelComplexity: 1,
@@ -59,13 +52,7 @@ const MediapipeCameraXTimerAI = () => {
       if (!ctx) return;
 
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      ctx.drawImage(
-        videoRef.current,
-        0,
-        0,
-        canvasRef.current.width,
-        canvasRef.current.height
-      );
+      ctx.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
     });
 
     if (videoRef.current && !cameraInstance) {
@@ -147,19 +134,17 @@ const MediapipeCameraXTimerAI = () => {
         // setUserImageFile(blob); // ✅ Zustand 상태 업데이트
         // const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
         // console.log("웃어봐요 활짝", imageUrl);
-        
 
-          // FormData 객체 생성
-          const formData = new FormData();
-          formData.append("image", blob, "captured_face.png"); // 파일명 지정
-          setUserImageFile(formData); // ✅ Zustand 상태 업데이트
-          console.log("AI 진단 - 얼굴 이미지 form-data로 저장 완료!!!!")
-          formData.forEach((value, key) => {
-            console.log(`Key: ${key}, Value:`, value);
-          });
-        
+        // FormData 객체 생성
+        const formData = new FormData();
+        formData.append("image", blob, "captured_face.png"); // 파일명 지정
+        setUserImageFile(formData); // ✅ Zustand 상태 업데이트
+        console.log("AI 진단 - 얼굴 이미지 form-data로 저장 완료!!!!");
+        formData.forEach((value, key) => {
+          console.log(`Key: ${key}, Value:`, value);
+        });
+
         // sendImagesToServer(faceImage); //여기서 실행하면 안된다
-
       }
     }, 300);
   };
@@ -177,17 +162,7 @@ const MediapipeCameraXTimerAI = () => {
     faceCanvas.width = faceWidth;
     faceCanvas.height = faceHeight;
 
-    context.drawImage(
-      canvas,
-      faceX,
-      faceY,
-      faceWidth,
-      faceHeight,
-      0,
-      0,
-      faceWidth,
-      faceHeight
-    );
+    context.drawImage(canvas, faceX, faceY, faceWidth, faceHeight, 0, 0, faceWidth, faceHeight);
     return faceCanvas.toDataURL("image/png");
   };
 
@@ -291,11 +266,7 @@ const MediapipeCameraXTimerAI = () => {
 
       {capturedImage ? (
         <div style={{ width: "100%", height: "100%", position: "relative" }}>
-          <img
-            src={capturedImage}
-            alt="Captured"
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
+          <img src={capturedImage} alt="Captured" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           <div
             style={{
               position: "absolute",
@@ -324,15 +295,15 @@ const MediapipeCameraXTimerAI = () => {
               다시 촬영하기
             </button>
             <button
-                onClick={() => {
+              onClick={() => {
                 if (userImageFile) {
                   setResults([]); // ✅ Zustand 상태 업데이트
                   setGptSummary(""); // ✅ Zustand 상태 업데이트
                   sendImagesToServer(userImageFile); // 서버로 이미지 전송
                   // navigate("/LoadingPage"); // 전송 후 페이지 이동
-                  navigate("/LoadingPage", { state: { from: "MediapipeCameraXTimerAI" } }) //진단 실패시 되돌아가기 위해 주소 저장
-                  }
-                }}
+                  navigate("/LoadingPage", { state: { from: "MediapipeCameraXTimerAI" } }); //진단 실패시 되돌아가기 위해 주소 저장
+                }
+              }}
               style={{
                 padding: "1rem 2rem",
                 fontSize: "1.5rem",
@@ -365,11 +336,7 @@ const MediapipeCameraXTimerAI = () => {
               transform: "scaleX(-1)",
             }}
           />
-          <canvas
-            ref={canvasRef}
-            style={{ display: "none" }}
-            willreadfrequently="true"
-          />
+          <canvas ref={canvasRef} style={{ display: "none" }} willreadfrequently="true" />
           {/* 얼굴 인식 가이드 영역 */}
           <div
             style={{

@@ -24,9 +24,9 @@ const ColorConsulting = () => {
   return (
     <SmallMain>
       <div className="full-container">
-        <div className="top-container">
+        {/* <div className="top-container">
           <h1 className="title">당신을 위한 컬러 컨설팅</h1>
-        </div>
+        </div> */}
 
         {/* 🔹 GPT 컨설팅 내용 자동 변환 */}
         <div className="bottom-container">
