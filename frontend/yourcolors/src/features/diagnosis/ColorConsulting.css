@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 2vw;
   max-width: 100%;  /* SmallMain 너비를 넘지 않도록 설정 */
   height: 100%;
   overflow: hidden;  /* 자식 요소들이 부모 영역을 넘지 않도록 제한 */
@@ -14,10 +14,10 @@
 }
 
 .consulting-title {
-  font-size: 22px;
+  font-size: 2.2vw;
   font-weight: bold;
   color: #FF6F61; /* 🔹 강조 색상 */
-  margin-bottom: 8px; /* 🔹 간격 줄이기 */
+  margin-bottom: 2vx; /* 🔹 간격 줄이기 */
   text-align: center; /* 제목을 가운데 정렬 */
 }
 
