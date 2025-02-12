@@ -25,7 +25,7 @@ const SendButton = () => {
   const subColor1 = Results[1] || "";
   const subColor2 = Results[2] || "";
 
-  // 모달 열림 시 body에 클래스 추가
+  // 모달 열리면 body에 특정 클래스를 추가
   useEffect(() => {
     if (isModalOpen) {
       document.body.classList.add("modal-open");
@@ -74,7 +74,7 @@ const SendButton = () => {
     setEmail(email.slice(0, -1));
   };
 
-  // 실제 제출 함수 (키보드 상태와 관계없이 실행)
+  // 실제 제출 함수 (전송 로직)
   const handleSubmit = async () => {
     if (!email.includes("@") || !email.includes(".")) {
       setSendStatus("유효한 이메일 주소를 입력하세요.");
@@ -86,7 +86,7 @@ const SendButton = () => {
 
     setIsLoading(true); // 전송 시작
 
-    // userImageFile이 FormData라면, 내부에서 'image' 또는 'face_image' 키로 저장된 파일(Blob)을 추출
+    // userImageFile이 FormData라면 내부에서 'image' 또는 'face_image' 키의 Blob 추출
     let imageBlob;
     if (userImageFile instanceof FormData) {
       imageBlob = userImageFile.get("image") || userImageFile.get("face_image");
@@ -110,11 +110,11 @@ const SendButton = () => {
     formData.append("bestColor", bestColor.personal_color);
     formData.append("subColor1", subColor1.personal_color);
     formData.append("subColor2", subColor2.personal_color);
-
+    
     const htmlMessage = marked(gptSummary || "");
     formData.append("message", htmlMessage);
 
-    // 디버깅: FormData 내용 확인
+    // (디버깅용) FormData 내용 확인
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
@@ -144,13 +144,14 @@ const SendButton = () => {
     }
   };
 
-  // 제출 버튼 클릭 시 키보드가 열려있으면 먼저 닫고 바로 제출 실행하는 래퍼 함수
+  // 제출 버튼 클릭 시 키보드가 열려 있다면 먼저 닫고 바로 제출하는 래퍼 함수
   const handleSubmitWrapper = () => {
     if (isKeyboardOpen) {
       setIsKeyboardOpen(false);
-      setTimeout(() => {
+      // 키보드가 닫힌 후, requestAnimationFrame을 사용해 바로 제출
+      requestAnimationFrame(() => {
         handleSubmit();
-      }, 0);
+      });
     } else {
       handleSubmit();
     }
@@ -219,7 +220,10 @@ const SendButton = () => {
                   {sendStatus}
                 </span>
               ) : (
-                <button className="send-modal-yes" onClick={handleSubmitWrapper}>
+                <button
+                  className="send-modal-yes"
+                  onClick={handleSubmitWrapper}
+                >
                   제출하기
                 </button>
               )}
