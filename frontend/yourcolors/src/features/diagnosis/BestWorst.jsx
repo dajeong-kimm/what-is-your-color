@@ -41,7 +41,7 @@ const BestWorst = () => {
                     <div key={index} className="color-box" 
                     style={{ backgroundColor: color }}></div> ))}
               </div> {/* 이거 5가지 컬러 박스니까 안에 데이터만 변경!!!!!!!!!!!!*/}
-              <BestWorstCamera/>
+              <BestWorstCamera2/>
                 {/* <ul>
                   {personalColorDetails.bestcolor_name?.map((color, index) => (
                     <li key={index}>{color}</li>
