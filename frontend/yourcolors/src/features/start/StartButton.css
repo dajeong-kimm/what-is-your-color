@@ -1,0 +1,25 @@
+.start-button {
+    text-decoration: none;
+    color: white;
+    background-color: rgba(130, 220, 40, 0.40); /* 비활성화된 버튼 색 */
+    padding: 20px 80px; /* 위아래 15px, 좌우 40px로 크기 확대 */
+    border-radius: 50px;
+    font-size: 35px;
+    font-family: NanumGothic;
+    transition: background-color 0.3s;
+    letter-spacing: 8px; /* 🔹 자간 추가 */
+    font-weight: bolder;
+
+    box-shadow: 0px 2.221px 2.221px 0px rgba(0, 0, 0, 0.25);
+}
+
+/* hover 시 색상 변경 */
+.start-button:hover {
+    background-color: #82DC28;
+    color: white;
+}
+
+/* 활성화된 버튼 */
+.start-button.active {
+    background: #82DC28; /* 활성화된 버튼 색상 */
+}
