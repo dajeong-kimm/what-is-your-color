@@ -2,7 +2,8 @@
 FROM node:18 AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci && npm rebuild
+RUN npm install --legacy-peer-deps
+npm install --save-dev rollup
 COPY . .
 RUN npm run build
 
