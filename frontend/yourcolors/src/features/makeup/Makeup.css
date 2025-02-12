@@ -7,6 +7,7 @@
   width: 100%;
   height: 100vh;
   background-color: #f8f8f8;
+  overflow: hidden; /* 전체 화면 넘침 방지 */
 }
 .personal-color-buttons {
   position: sticky;
@@ -60,6 +61,7 @@
   border-radius: 10px;
   height: 100%;
   /* flex-grow: 1; */
+  overflow: hidden; /* 내용이 넘치지 않도록 설정 */
 }
 .right-panel {
   height: 100%;
@@ -88,6 +90,7 @@
   border-radius: 10px;
   overflow-y: auto; /* 내부 스크롤 활성화 */
   overflow-x: hidden;
+  max-height: 400px; /* 고정된 높이 설정 */
 }
 
 
@@ -100,7 +103,6 @@
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.2s;
-  /* background-color: #fff; */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -122,6 +124,7 @@
 /* 모달 스타일 */
 .modal-overlay {
   position: fixed;
+  z-index: 20;
   top: 0;
   left: 0;
   width: 100%;
@@ -133,13 +136,14 @@
 }
 
 .modal-content {
+  width: 300px;  /* 고정 크기 설정 */
+  height: 200px;
   background: white;
   padding: 20px;
   border-radius: 10px;
-  text-align: center;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
-
 .modal-close {
   position: absolute;
   top: 10px;
@@ -154,23 +158,90 @@
   color: black;
 }
 
-/* 색상 선택 모달 */
 .color-options {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);  /* 한 줄에 4개씩 */
+  gap: 10px;
+  max-height: 250px; /* 높이 제한 */
+  overflow-y: auto; /* 넘칠 경우 스크롤 */
+  padding: 10px;
 }
-
 .color-circle {
-  width: 2rem;
-  height: 2rem;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  border: 1px solid #d1d5db;
   cursor: pointer;
+  border: 2px solid transparent;
   transition: transform 0.2s ease-in-out;
 }
 
 .color-circle:hover {
   transform: scale(1.1);
+  border-color: black;
+}
+
+.selected-colors-container {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.selected-colors {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.color-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 80px;
+}
+
+.color-label {
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.color-preview {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.color-preview span {
+  font-size: 10px;
+  font-weight: bold;
+  color: #333;
+  position: absolute;
+  bottom: -18px;
+}
+
+.reset-btn {
+  background-color: #ff5c5c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.reset-btn:hover {
+  background-color: #e04a4a;
 }
