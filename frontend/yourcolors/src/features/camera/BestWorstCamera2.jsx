@@ -76,13 +76,11 @@ const BestWorstCamera2 = () => {
 
   return (
       <div className="wrapper">
-        {/* 배경 원형 분할 */}
         <svg viewBox="0 0 100 100" className="svg-background">
           {createSegments()}
-          {/* 마스크용 클리핑 패스 */}
           <defs>
             <clipPath id="circleClip">
-              <circle cx="200" cy="200" r="300" />
+              <circle cx="200" cy="200" r="400" />
             </clipPath>
           </defs>
         </svg>

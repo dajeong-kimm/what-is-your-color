@@ -23,7 +23,6 @@
 .container-best,
 .container-worst {
   width: 45%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,9 +31,16 @@
 
 /* Best 영역: 오른쪽 패딩과 구분선 추가 */
 .container-best {
-  padding-right: 20px;
-  border-right: 2px solid #ccc; /* 중앙 구분선 */
+  width: 45%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative; /* 추가 */
+  overflow: hidden; /* 넘치는 요소 감춤 */
 }
+
 
 
 /* Worst 영역: 왼쪽 패딩 추가 */
@@ -47,6 +53,7 @@
   gap: 15px; /* 기존 간격 유지 */
   margin-top: 20px; /* 제목과 색상 블록 사이에 여백 추가 */
   /* 필요에 따라 padding-top 도 사용 가능 */
+  margin-bottom: 20px; /* 제목과 색상 블록 사이에 여백 추가 */
 }
 
 /* 각 색상 블록: 크기를 60px, 모서리 둥글기 8px */
