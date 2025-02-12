@@ -55,7 +55,7 @@ const MediapipeCameraXTimerAI = () => {
       ctx.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
     });
 
-    if (videoRef.current && !cameraInstance) {
+    if (videoRef.current) {
       // 카메라가 이미 한 번 세팅되었다면 중복 세팅 방지
       console.log("[initializeCamera] Setup camera instance");
       cameraInstance = new Camera(videoRef.current, {

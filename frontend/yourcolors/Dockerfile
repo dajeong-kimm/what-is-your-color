@@ -3,6 +3,7 @@ FROM node:18 AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install --legacy-peer-deps
+RUN npm install --save-dev rollup
 COPY . .
 RUN npm run build
 
