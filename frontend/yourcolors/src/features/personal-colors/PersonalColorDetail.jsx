@@ -4,8 +4,11 @@ import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터터
 import Background from "../../background/background/Background";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
+import BottomBarPersonal from "../../button/bottom/BottomBarPersonal"
 import PersonalColorDetailContent from "./PersonalColorDetailContent";
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
+import personalColorInfo from "../../store/PersonalColorInfo"; // 정적 객체 데이터
+import SmallMain from "../../background/background/SmallMain";
 
 import "./PersonalButton.css";
 import "./PersonalColorDetail.css";
@@ -13,10 +16,9 @@ import "./PersonalColorDetail.css";
 
 const PersonalColorDetail = () => {
   const { id } = useParams();
-  // const colorInfo = dummyData.find((color) => color.id === parseInt(id));
   const { personalColors, fetchPersonalColors } = useStore();
-  const [loading, setLoading] = useState(true); // 🔹 로딩 상태 추가
-  
+  const [loading, setLoading] = useState(true);
+
 
   // 🔹 데이터가 없으면 API 다시 호출
   useEffect(() => {
@@ -43,8 +45,39 @@ const PersonalColorDetail = () => {
   return (
     <Background>
       <Topbar />
-      <PersonalColorDetailContent />
-      {/* <Bottombar /> */}
+      {/* <PersonalColorDetailContent /> */}
+      <SmallMain>
+      <div className="personal-detail-container-left">
+        {/* 상단 타이틀 */}
+        <h1 className="personal-detail-title">{personalColors[id - 1].name}</h1>
+        {/* 색상 이미지 */}
+        <div className="personal-detail-image">
+          <img
+            src={personalColorInfo[id].imageUrl}
+            alt={personalColors[id - 1].name}
+          />
+        </div>
+      </div>
+
+      <div className="personal-detail-container-right">
+        {/* 해시태그 */}
+        <div className="personal-detail-hashtags">
+          {personalColors[id - 1].hashtag.map((tag, index) => (
+            <span key={index} className="hashtag">
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        {/* 상세 설명 */}
+        <div className="personal-detail-content">
+          <div className="personal-detail-description">
+            <p>{personalColorInfo[id].description}</p>
+          </div>
+        </div>
+      </div>
+      </SmallMain>
+    <BottomBarPersonal />
     </Background>
   );
 };

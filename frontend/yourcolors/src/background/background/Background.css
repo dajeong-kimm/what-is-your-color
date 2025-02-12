@@ -1,5 +1,6 @@
 /* Background.css */
 .Sub-back {
+  transform: none !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,7 +17,7 @@
   display: flex;
   flex-direction: column;  /* 세로로 정렬 */
   align-items: center;  /* 중앙 정렬 */
-  justify-content: center;
+  justify-content: flex-start;
   width: 85%;
   height: 78%;
   background-color: rgba(255, 255, 255, 0.70); /* 배경 색 */

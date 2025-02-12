@@ -17,3 +17,6 @@ services:
     network_mode: host  # 프론트엔드도 host 네트워크 사용
     depends_on:
       - backend
+    volumes:
+      - /etc/nginx/ssl:/etc/nginx/ssl:ro
+      
