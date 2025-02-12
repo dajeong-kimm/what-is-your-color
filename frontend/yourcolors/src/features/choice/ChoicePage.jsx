@@ -20,6 +20,7 @@ const ChoicePage = () => {
           <div className="choice-card blue-bg" onClick={() => navigate("/diagcapturexai")}>
             <div className="choice-ai-image-wrapper">
               <img src={DrAi} alt="Dr.AI" className="choice-image" />
+              <p className="choice-name">저는<br /> <strong>머신러닝</strong><br />에 특화된 모델이에요!</p>
             </div>
             <div className="choice-content">
               <h2 className="choice-title">Dr.AI</h2>

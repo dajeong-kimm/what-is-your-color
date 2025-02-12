@@ -48,6 +48,9 @@
   background-color: white;
   padding: 20px;
 }
+.choice-name {
+  margin: 20px;
+}
 
 /* 하단 영역 스타일 */
 .choice-footer {
