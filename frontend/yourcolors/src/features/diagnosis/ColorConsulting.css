@@ -17,7 +17,7 @@
   font-size: 2.2vw;
   font-weight: bold;
   color: #FF6F61; /* 🔹 강조 색상 */
-  margin-bottom: 2vx; /* 🔹 간격 줄이기 */
+  margin-bottom: 2vw; /* 🔹 간격 줄이기 */
   text-align: center; /* 제목을 가운데 정렬 */
 }
 
@@ -28,7 +28,7 @@
 }
 
 .GPT-consulting {
-  padding: 15px; /* 🔹 내부 여백 조정 */
+  padding: 1.5vw; /* 🔹 내부 여백 조정 */
   border-radius: 10px;
   font-size: 16px; /* 🔹 글자 크기 조정 */
   line-height: 1.1; /* 🔹 줄 간격 최적화 */
@@ -47,6 +47,15 @@
   line-height: 1.0; /* 🔹 줄 간격 최적화 */
 
 
+}
+.full-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2vw;            /* 화면 너비의 2% 정도 여백 */
+  max-width: 100%;         /* SmallMain 너비를 넘지 않도록 */
+  height: 100%;
+  overflow: hidden;        /* 자식 요소들이 부모 영역을 넘지 않도록 제한 */
 }
 
 .GPT-consulting h2 {
@@ -67,7 +76,7 @@
 
 .GPT-consulting p {
   margin-top : 0px;
-  margin-bottom: -15px; /* 원하는 값으로 조정 (예: 4px) */
+  margin-bottom: -10px; /* 원하는 값으로 조정 (예: 4px) */
 }
 
 .GPT-consulting ul li {
@@ -76,5 +85,5 @@
   margin-bottom: 2px; /* 아래쪽 여백을 2px로 설정 */
 }
 .consulting-title{
-  margin-bottom : -25px;
+  margin-bottom : -45px;
 }
