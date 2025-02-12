@@ -8,9 +8,9 @@ const Bottombar = ({ currentStep, setCurrentStep }) => {
   // 각 버튼은 모달의 인덱스와 매핑됩니다.
   const buttons = [
     { index: 0, label: "진단결과", name: "diagnosis" },
-    { index: 1, label: "컬러상세", name: "colorDetails" },
-    { index: 2, label: "BEST/WORST", name: "bestWorst" },
-    { index: 3, label: "화장품추천", name: "cosmeticRecommend" },
+    { index: 1, label: "BEST/WORST", name: "bestWorst" },
+    { index: 2, label: "화장품추천", name: "cosmeticRecommend" },
+    { index: 3, label: "컬러컨설팅", name: "colorcunsulting" },
   ];
 
   const handleButtonClick = (index) => {

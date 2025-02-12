@@ -169,3 +169,7 @@
   body.modal-open .navigation-buttons {
     pointer-events: none;
   }
+  .send-button:hover {
+    background-color: #76c825;
+  }
+  

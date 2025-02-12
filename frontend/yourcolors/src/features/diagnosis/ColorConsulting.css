@@ -24,16 +24,19 @@
 .bottom-container {
   width: 100%;
   flex-grow: 1;  /* 남은 공간을 차지하도록 설정 */
-  overflow-y: auto;  /* 세로 스크롤을 허용 */
+  overflow-y: auto;  
 }
 
 .GPT-consulting {
   padding: 20px;
   border-radius: 10px;
   font-size: 18px;
-  line-height: 1.6;
+  /* line-height: 1.6; */
   color: #333;
-  overflow-y: auto;  /* 내용이 많을 경우 세로 스크롤 허용 */
+  /* overflow-y: auto;  */
+  background-color: transparent !important; /* 🔹 배경 완전 제거 */
+  box-shadow: none; /* 🔹 그림자 제거 (필요하면) */
+  border: none; /* 🔹 테두리 제거 (필요하면) */
 }
 
 .GPT-consulting h2 {
@@ -54,5 +57,5 @@
 
 .GPT-consulting strong {
   color: #FF6F61;
-  font-weight: bold;
+  font-weight: bolder;
 }
