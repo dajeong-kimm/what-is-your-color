@@ -1,25 +1,13 @@
 import React, { useEffect, useRef } from 'react';
+import './BestWorstCamera2.css'; // 추가 (CSS 파일 분리)
 
 const BestWorstCamera2 = () => {
   const videoRef = useRef(null);
-  const numSegments = 16; // Number of segments around the circle
+  const numSegments = 15;
   const colors = [
-    '#7CB9E8', // Blue
-    '#F0F8FF', // Light Blue
-    '#C4B454', // Cream
-    '#90EE90', // Light Green
-    '#FF69B4', // Pink
-    '#DDA0DD', // Plum
-    '#E6E6FA', // Lavender
-    '#98FB98', // Pale Green
-    '#87CEEB', // Sky Blue
-    '#F08080', // Light Coral
-    '#E0FFFF', // Light Cyan
-    '#FFB6C1', // Light Pink
-    '#B0C4DE', // Light Steel Blue
-    '#FFA07A', // Light Salmon
-    '#D8BFD8', // Thistle
-    '#AFEEEE', // Pale Turquoise
+    '#7CB9E8', '#F0F8FF', '#C4B454', '#90EE90', '#FF69B4',
+    '#DDA0DD', '#E6E6FA', '#98FB98', '#87CEEB', '#F08080',
+    '#E0FFFF', '#FFB6C1', '#B0C4DE', '#FFA07A', '#D8BFD8',
   ];
 
   useEffect(() => {
@@ -78,7 +66,7 @@ const BestWorstCamera2 = () => {
           key={i}
           d={pathData}
           fill={colors[i % colors.length]}
-          className="transition-all duration-300 hover:opacity-80"
+          className="segment"
         />
       );
     }
@@ -87,41 +75,26 @@ const BestWorstCamera2 = () => {
   };
 
   return (
-    <div className="relative w-full h-screen flex items-center justify-center bg-gray-900">
-      <div className="relative w-full max-w-2xl aspect-square">
-        {/* Background segments */}
-        <svg
-          viewBox="0 0 100 100"
-          className="absolute inset-0 w-full h-full"
-        >
+      <div className="wrapper">
+        {/* 배경 원형 분할 */}
+        <svg viewBox="0 0 100 100" className="svg-background">
           {createSegments()}
-          {/* Center circle mask */}
-          <circle
-            cx="50"
-            cy="50"
-            r="30"
-            fill="white"
-          />
+          {/* 마스크용 클리핑 패스 */}
+          <defs>
+            <clipPath id="circleClip">
+              <circle cx="200" cy="200" r="300" />
+            </clipPath>
+          </defs>
         </svg>
 
-        {/* Video container */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="relative w-3/5 h-3/5 overflow-hidden rounded-full">
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              className="absolute w-full h-full object-cover transform scale-x-[-1]"
-            />
-          </div>
+        {/* 웹캠 영상 (마스크 적용) */}
+        <div className="video-container">
+          <video ref={videoRef} autoPlay playsInline className="webcam-video" />
         </div>
 
-        {/* Guide circle */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-3/5 h-3/5 rounded-full border-4 border-yellow-400 border-dashed" />
-        </div>
+        {/* 노란색 점선 가이드 */}
+        {/* <div className="guide-circle" /> */}
       </div>
-    </div>
   );
 };
 

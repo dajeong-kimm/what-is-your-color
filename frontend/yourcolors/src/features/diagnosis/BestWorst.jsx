@@ -26,14 +26,11 @@ const BestWorst = () => {
 
    return (
      <SmallMain>
-   {/* <BestWorstCamera/> */}
         <div className="full-container">
-        {/* <BestWorstCamera2/> */}
           <div className="top-container">
-        
             {/* Best Color Section */}
            <div className="container-best">
-            
+               {/* <BestWorstCamera2/> */}
              <h1 className="title">Best Color</h1>
               <div className="color-boxes">
                 {/* Best Color 목록에서 색상값을 렌더링 */}
