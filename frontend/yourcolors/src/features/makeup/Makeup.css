@@ -13,15 +13,17 @@
   position: sticky;
   top: 0;
   width: 90%;
+  height: 100px; /* 부모 컨테이너 높이 */
   gap: 2rem;
-  z-index: 10;  /* 다른 요소들보다 위에 위치 */
+  z-index: 11;
   display: flex;
-  justify-content: flex-start; /* 왼쪽 정렬 */
+  align-items: center; /* 버튼들이 중앙 정렬되도록 설정 */
+  justify-content: flex-start;
   padding: 10px 0;
-  flex-wrap: nowrap; /* 줄 바꿈 방지 */
-  overflow-x: auto; /* 가로 스크롤 가능 */
-  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨김 */
-  -ms-overflow-style: none; /* IE에서 스크롤바 숨김 */
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 /* 크롬, 사파리에서 스크롤바 숨기기 */
@@ -30,8 +32,14 @@
 }
 
 .personal-color-buttons button {
-  white-space: nowrap; /* 글자가 길어져도 줄 바꿈되지 않도록 설정 */
-  flex-shrink: 0; /* 버튼 크기가 줄어들지 않도록 설정 */
+  height: 80px; /* 부모 높이보다 약간 작게 설정 */
+  min-height: 80px; /* 최소 높이 지정 */
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center; /* 내부 아이콘, 텍스트 수직 정렬 */
+  justify-content: center;
+  padding-top: 10px;
 }
 /* 바텀 패널 레이아웃 */
 .bottom-panel {
@@ -41,7 +49,6 @@
   gap: 10px;
   padding: 1rem;
   margin-right: 50px;
-  flex-grow: 1; /* 내부에서 최대한 늘어나도록 설정 */
   margin-left: 50px;
 }
 
@@ -49,14 +56,16 @@
 .left-panel {
   display: flex;
   flex-direction: column;
+  width: 400px;  /* 예시 크기, 필요에 따라 조정 */
   padding: 20px;
   border-radius: 10px;
   height: 100%;
+  /* flex-grow: 1; */
   overflow: hidden; /* 내용이 넘치지 않도록 설정 */
 }
 .right-panel {
   height: 100%;
-  flex-grow: 1;
+  /* flex-grow: 1; */
   display: flex;
   position: relative;
   margin-right: 10px;
@@ -73,22 +82,24 @@
 /* product-list 내부 스크롤 및 고정 높이 설정 */
 .product-list {
   display: grid;
+  height: 400px; /* 고정 크기 설정 */
   grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개씩 배치 */
   gap: 5px; /* 카드 사이 간격 */
   justify-content: center;
   padding: 10px;
   border-radius: 10px;
   overflow-y: auto; /* 내부 스크롤 활성화 */
+  overflow-x: hidden;
   max-height: 400px; /* 고정된 높이 설정 */
 }
 
 
 /* product-card 크기 고정 */
 .product-card {
-  width: 100px;
+  width: 80px;
   height: 150px; /* 높이 고정 */
   text-align: center;
-  padding: 10px;
+  padding: 20px;
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.2s;

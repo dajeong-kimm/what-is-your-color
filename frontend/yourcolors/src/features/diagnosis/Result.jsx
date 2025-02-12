@@ -43,7 +43,6 @@ const Result = () => {
   const hashtags = exampleData.hashtags;
 
   // mainColor에 해당하는 이미지 URL 가져오기
-  // const imageUrl = colorMap[mainColor] || "기본 이미지 URL";
   const imageUrl = personalColorInfo[userPersonalId].characterUrl // 일단 1번 봄라이트 이미지로...
 
   const handleRightClick = () => {
@@ -53,7 +52,6 @@ const Result = () => {
   return (
       <SmallMain>
         <div className="container-left">
-
           <div className="container-up">
             <div className="title-main">당신의 퍼스널컬러는</div>
             <strong className="main-color">{personalColorDetails.name}</strong>
