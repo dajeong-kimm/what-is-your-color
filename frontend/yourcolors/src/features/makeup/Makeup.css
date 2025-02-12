@@ -13,15 +13,17 @@
   position: sticky;
   top: 0;
   width: 90%;
+  height: 90px; /* 부모 컨테이너 높이 */
   gap: 2rem;
-  z-index: 10;  /* 다른 요소들보다 위에 위치 */
+  z-index: 11;
   display: flex;
-  justify-content: flex-start; /* 왼쪽 정렬 */
+  align-items: center; /* 버튼들이 중앙 정렬되도록 설정 */
+  justify-content: flex-start;
   padding: 10px 0;
-  flex-wrap: nowrap; /* 줄 바꿈 방지 */
-  overflow-x: auto; /* 가로 스크롤 가능 */
-  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨김 */
-  -ms-overflow-style: none; /* IE에서 스크롤바 숨김 */
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 /* 크롬, 사파리에서 스크롤바 숨기기 */
@@ -30,8 +32,14 @@
 }
 
 .personal-color-buttons button {
-  white-space: nowrap; /* 글자가 길어져도 줄 바꿈되지 않도록 설정 */
-  flex-shrink: 0; /* 버튼 크기가 줄어들지 않도록 설정 */
+  height: 50px; /* 부모 높이보다 약간 작게 설정 */
+  min-height: 40px; /* 최소 높이 지정 */
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center; /* 내부 아이콘, 텍스트 수직 정렬 */
+  justify-content: center;
+  padding-top: 10px;
 }
 /* 바텀 패널 레이아웃 */
 .bottom-panel {
@@ -41,7 +49,6 @@
   gap: 10px;
   padding: 1rem;
   margin-right: 50px;
-  flex-grow: 1; /* 내부에서 최대한 늘어나도록 설정 */
   margin-left: 50px;
 }
 
@@ -49,9 +56,12 @@
 .left-panel {
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  width: 350px;  /* 예시 크기, 필요에 따라 조정 */
+  padding-top: 0;
+  margin-left: 10px;
   border-radius: 10px;
   height: 100%;
+  /* flex-grow: 1; */
   overflow: hidden; /* 내용이 넘치지 않도록 설정 */
 }
 .right-panel {
@@ -67,28 +77,32 @@
   display: flex;
   justify-content: center;
   gap: 0.5rem;
+  top:0;
   margin-bottom: 1rem;
 }
 
 /* product-list 내부 스크롤 및 고정 높이 설정 */
 .product-list {
   display: grid;
+  height: 400px; /* 고정 크기 설정 */
   grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개씩 배치 */
   gap: 5px; /* 카드 사이 간격 */
   justify-content: center;
   padding: 10px;
   border-radius: 10px;
   overflow-y: auto; /* 내부 스크롤 활성화 */
+  overflow-x: hidden;
   max-height: 400px; /* 고정된 높이 설정 */
 }
 
 
 /* product-card 크기 고정 */
 .product-card {
-  width: 100px;
-  height: 150px; /* 높이 고정 */
+  width: 70px;
+  height: 100px; /* 높이 고정 */
   text-align: center;
-  padding: 10px;
+  font-size: 13px;
+  padding: 20px;
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.2s;
@@ -100,13 +114,13 @@
 }
 
 .product-card.selected {
-  border: 2px solid #ff4081;
-  transform: scale(1.1);
+  border: 2px solid #dfafbf;
+  transform: scale(1.05);
 }
 
 .product-card img {
   width: 80px;
-  height: 80px;
+  height: 60px;
   object-fit: cover; /* 비율 유지하면서 크기 맞춤 */
 }
 
@@ -125,22 +139,34 @@
 }
 
 .modal-content {
-  width: 300px;  /* 고정 크기 설정 */
-  height: 200px;
+  position: relative;  /* X 버튼 위치 조정을 위해 추가 */
+  width: 300px;  /* 크기 줄이기 */
+  min-height: 100px;  /* 최소 높이 */
+  max-height: 300px;  /* 최대 높이 (초과하면 스크롤) */
   background: white;
-  padding: 20px;
-  border-radius: 10px;
+  padding: 15px;
+  border-radius: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
+  overflow-y: auto;  /* 내용이 많아지면 스크롤 */
 }
 .modal-close {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 18px;
+  top: 10px; /* 모달 내부 상단 */
+  right: 10px; /* 모달 내부 우측 */
+  width: 30px; /* 동그라미 크기 */
+  height: 30px; /* 동그라미 크기 */
+  background: white; /* 배경색 */
+  /* border: 2px solid black; 동그라미 테두리 */
+
+  font-size: 18px; /* 글자 크기 */
+  font-weight: 900; /* 더 두껍게 */
   cursor: pointer;
+  color: black; /* X 색상 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease-in-out;
 }
 
 .modal-close:hover {
@@ -173,8 +199,8 @@
   margin-top: 20px;
   padding: 20px;
   border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  /* background-color: #fff; */
+  /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -183,8 +209,10 @@
 
 .selected-colors {
   display: flex;
-  gap: 20px;
+  flex-direction: column;  /* 세로 정렬 */
+  gap: 10px;
   justify-content: center;
+  align-items: center; /* 중앙 정렬 (필요하면 유지) */
 }
 
 .color-item {
@@ -221,7 +249,7 @@
 }
 
 .reset-btn {
-  background-color: #ff5c5c;
+  background-color: #f19a9a;
   color: white;
   border: none;
   padding: 6px 12px;
