@@ -1,0 +1,58 @@
+.full-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 100%;  /* SmallMain 너비를 넘지 않도록 설정 */
+    height: 100%;
+    overflow: hidden;  /* 자식 요소들이 부모 영역을 넘지 않도록 제한 */
+  }
+  
+  .top-container {
+    width: 100%;
+    text-align: center;
+  
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+  }
+  
+  .bottom-container {
+    width: 100%;
+    flex-grow: 1;  /* 남은 공간을 차지하도록 설정 */
+    overflow-y: auto;  /* 세로 스크롤을 허용 */
+  }
+  
+  .GPT-consulting {
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #333;
+    overflow-y: auto;  /* 내용이 많을 경우 세로 스크롤 허용 */
+  }
+  
+  .GPT-consulting h2 {
+    font-size: 22px;
+    color: #007BFF;
+    margin-top: 15px;
+  }
+  
+  .GPT-consulting ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .GPT-consulting li {
+    font-size: 18px;
+    margin: 5px 0;
+  }
+  
+  .GPT-consulting strong {
+    color: #FF6F61;
+    font-weight: bold;
+  }
