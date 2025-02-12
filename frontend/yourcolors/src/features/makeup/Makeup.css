@@ -17,6 +17,7 @@
   gap: 2rem;
   z-index: 11;
   display: flex;
+
   align-items: center; /* 버튼들이 중앙 정렬되도록 설정 */
   justify-content: flex-start;
   padding: 10px 0;
@@ -35,6 +36,7 @@
   height: 50px; /* 부모 높이보다 약간 작게 설정 */
   min-height: 40px; /* 최소 높이 지정 */
   white-space: nowrap;
+  background-color: #a8db66;
   flex-shrink: 0;
   display: flex;
   align-items: center; /* 내부 아이콘, 텍스트 수직 정렬 */

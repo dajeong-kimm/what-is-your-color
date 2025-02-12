@@ -5,7 +5,6 @@
     cursor: pointer;
     background-color: #82dc28;
     color: white;
-    border: none;
     opacity: 0.4; /* 기본 상태 (클릭 X) */
     transition: opacity 0.2s ease-in-out;
   }
