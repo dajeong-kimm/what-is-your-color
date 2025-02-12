@@ -128,7 +128,7 @@ const Makeup = () => {
           <div className="bottom-panel">
             <div className="left-panel">
               <div className="button-container">
-                {["LIP", "EYE", "CHEEK"].map((category) => (
+                {["lip", "eye", "cheek"].map((category) => (
                   <ProductButton
                     key={category}
                     text={category}
