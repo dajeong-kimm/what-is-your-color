@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Noto Sans KR', sans-serif; /* 여기에 Noto Sans KR 추가 */
   line-height: 1.5;
   font-weight: 400;
 
@@ -28,6 +28,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 h1 {
@@ -45,6 +46,8 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  font-family: 'Noto Sans KR', sans-serif;
+
 }
 button:hover {
   border-color: #646cff;
