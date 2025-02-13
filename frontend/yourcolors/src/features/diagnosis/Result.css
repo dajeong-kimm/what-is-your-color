@@ -90,4 +90,5 @@
     max-width: 400px; /* 원하는 이미지 크기 */
     max-height: 400px;
     border-radius: 10px; /* 이미지의 둥근 모서리 */
+    margin-left : 20px;
   }

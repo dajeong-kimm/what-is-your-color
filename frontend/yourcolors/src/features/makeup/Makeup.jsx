@@ -1,237 +1,132 @@
-import React, { useState, useEffect } from "react";
-import Background from "../../background/background/Background";
-import LargeMain from "../../background/background/LargeMain";
-import Topbar from "../../button/top/TopBar";
-import MakeupCamera from "./MakeupCamera";
-import ProductButton from "../../button/product-button/ProductButton";
-import "./Makeup.css";
-import useStore from "../../store/UseStore"; // Zustand 상태관리 데이터
+import React, { useEffect, useRef } from "react";
+import { FilesetResolver, FaceLandmarker } from "@mediapipe/tasks-vision";
+import useStore from "../../store/UseStore";
+import "../makeup/MakeupCamera.css";
 
-const Modal = ({ children, onClose }) => {
+const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) => {
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const faceLandmarkerRef = useRef(null);
+  const animationFrameRef = useRef(null);
+
+  console.log("MakeupCamera - props:", { eyeShadowColor, blushColor, lipColor, category });
+
+  useEffect(() => {
+    const setupFaceLandmarker = async () => {
+      console.log("MakeupCamera: Setting up FaceLandmarker...");
+      try {
+        const vision = await FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/wasm"
+        );
+        console.log("MakeupCamera: Vision tasks loaded:", vision);
+        const faceLandmarker = await FaceLandmarker.createFromOptions(vision, {
+          baseOptions: {
+            modelAssetPath:
+              "https://storage.googleapis.com/mediapipe-assets/face_landmarker.task",
+            delegate: "GPU",
+          },
+          runningMode: "VIDEO",
+          numFaces: 1,
+        });
+        console.log("MakeupCamera: FaceLandmarker instance created:", faceLandmarker);
+        faceLandmarkerRef.current = faceLandmarker;
+      } catch (error) {
+        console.error("MakeupCamera: Error setting up FaceLandmarker:", error);
+      }
+    };
+
+    const startCamera = async () => {
+      try {
+        console.log("MakeupCamera: Requesting user media...");
+        if (videoRef.current) {
+          const currentStream = videoRef.current.srcObject;
+          if (currentStream) {
+            console.log("MakeupCamera: Existing stream found, stopping tracks...");
+            currentStream.getTracks().forEach((track) => track.stop());
+          }
+
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          console.log("MakeupCamera: User media stream obtained:", stream);
+          videoRef.current.srcObject = stream;
+          videoRef.current.load();
+          setTimeout(() => {
+            videoRef.current
+              .play()
+              .then(() => console.log("MakeupCamera: Video playback started."))
+              .catch((error) => console.error("MakeupCamera: Play error:", error));
+          }, 500);
+          detectFaces();
+        }
+      } catch (error) {
+        console.error("MakeupCamera: Camera access error:", error);
+      }
+    };
+
+    (async () => {
+      await setupFaceLandmarker();
+      await startCamera();
+    })();
+
+    return () => {
+      console.log("MakeupCamera: Cleaning up...");
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+        console.log("MakeupCamera: Stopped all video tracks.");
+      }
+    };
+  }, []);
+
+  // 색상값이 변경될 때마다 얼굴 감지 및 메이크업 적용 재실행
+  useEffect(() => {
+    console.log("MakeupCamera: Color props updated. Re-detecting faces.");
+    if (canvasRef.current) {
+      detectFaces();
+    }
+  }, [eyeShadowColor, blushColor, lipColor]);
+
+  const detectFaces = async () => {
+    if (!faceLandmarkerRef.current || !videoRef.current || !canvasRef.current) {
+      animationFrameRef.current = requestAnimationFrame(detectFaces);
+      return;
+    }
+
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    if (!video.videoWidth || !video.videoHeight) {
+      animationFrameRef.current = requestAnimationFrame(detectFaces);
+      return;
+    }
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const results = await faceLandmarkerRef.current.detectForVideo(video, performance.now());
+    console.log("MakeupCamera: Face detection results:", results);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    ctx.restore();
+
+    if (results.faceLandmarks.length > 0) {
+      const landmarks = results.faceLandmarks[0];
+      console.log("MakeupCamera: Detected landmarks:", landmarks);
+      // 추가 메이크업 효과 적용 함수 호출 가능
+    }
+    animationFrameRef.current = requestAnimationFrame(detectFaces);
+  };
+
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>
-          X
-        </button>
-        {children}
-      </div>
+    <div className={`camera ${cam}`}>
+      <video ref={videoRef} autoPlay playsInline className="camera-video" style={{ display: "none" }} />
+      <canvas ref={canvasRef} className="camera-overlay"></canvas>
     </div>
   );
 };
 
-const personalColors = [
-  { id: 1, name: "봄 웜 라이트" },
-  { id: 2, name: "봄 웜 비비드" },
-  { id: 3, name: "봄 웜 브라이트" },
-  { id: 4, name: "여름 쿨 라이트" },
-  { id: 5, name: "여름 쿨 브라이트" },
-  { id: 6, name: "여름 쿨 뮤트" },
-  { id: 7, name: "가을 웜 뮤트" },
-  { id: 8, name: "가을 웜 스트롱" },
-  { id: 9, name: "가을 웜 다크" },
-  { id: 10, name: "겨울 쿨 비비드" },
-  { id: 11, name: "겨울 쿨 스트롱" },
-  { id: 12, name: "겨울 쿨 다크" },
-];
-
-const Makeup = () => {
-  const {
-    cosmetics,
-    loading,
-    fetchCosmetics,
-    fetchProductDetails,
-    productDetails,
-  } = useStore();
-  const [selectedPersonalColor, setSelectedPersonalColor] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("lip");
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // 개별 카테고리별 색상 상태 저장 (기본값: 투명)
-  const [selectedColors, setSelectedColors] = useState({
-    lip: { hex: "transparent" },
-    eye: { hex: "transparent" },
-    cheek: { hex: "transparent" },
-  });
-
-  // 선택한 카테고리의 화장품 리스트 가져오기
-  const categoryMap = {
-    lip: cosmetics.lip || [],
-    eye: cosmetics.eye || [],
-    cheek: cosmetics.cheek || [],
-  };
-
-  const products = categoryMap[selectedCategory];
-
-  // 상단 퍼스널컬러별로 화장품 불러오기
-  useEffect(() => {
-    if (selectedPersonalColor) fetchCosmetics(selectedPersonalColor);
-  }, [selectedPersonalColor, fetchCosmetics]);
-
-  // 제품의 세부 정보 (색상)
-  useEffect(() => {
-    if (selectedProduct) {
-      fetchProductDetails(selectedProduct.product_id);
-    }
-  }, [selectedProduct, fetchProductDetails]);
-
-  // 색상이 2개 이상이면 모달띄움
-  useEffect(() => {
-    if (productDetails?.colors?.length > 1) {
-      setIsModalOpen(true);
-    } else if (productDetails?.colors?.length === 1) {
-      setSelectedColors((prev) => ({
-        ...prev,
-        [selectedCategory]: productDetails.colors[0],
-      }));
-    }
-  }, [productDetails]); // selectedCategory 제거
-  
-
-  const handleProductClick = (product) => {
-    if (selectedProduct?.product_id !== product.product_id) {
-      setSelectedProduct(product);
-    }
-    setIsModalOpen(true);
-  };
-
-  // 선택한 카테고리의 색상을 초기화하는 함수
-  const resetColor = (category) => {
-    setSelectedColors((prev) => ({
-      ...prev,
-      [category]: { hex: "transparent" },
-    }));
-  };
-
-  
-  return (
-    <div className="camera-container">
-      <Background>
-        <Topbar />
-        <LargeMain>
-          <div className="personal-color-buttons">
-            {personalColors.map((color) => (
-              <button
-                key={color.id}
-                className={`personal-color-button ${
-                  selectedPersonalColor === color.id ? "selected" : ""
-                }`}
-                onClick={() => setSelectedPersonalColor(color.id)}
-              >
-                {color.name}
-              </button>
-            ))}
-          </div>
-
-          {/* bottom-panel: 좌우 배치 */}
-          <div className="bottom-panel">
-            <div className="left-panel">
-              <div className="button-container">
-                {["lip", "eye", "cheek"].map((category) => (
-                  <ProductButton
-                    key={category}
-                    text={category}
-                    onClick={() => setSelectedCategory(category)}
-                  />
-                ))}
-              </div>
-
-              {/* 선택한 카테고리의 제품 리스트 */}
-              <div className="product-list">
-                {loading ? (
-                  <p>로딩 중...</p>
-                ) : products.length > 0 ? (
-                  products.map((product) => (
-                    <div
-                      key={product.product_id}
-                      className={`product-card ${
-                        selectedProduct?.product_id === product.product_id
-                          ? "selected"
-                          : ""
-                      }`}
-                      onClick={() => handleProductClick(product)}
-                    >
-                      <img src={product.image} alt={product.product_name} />
-                      <p>{product.product_name}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p>상품이 없습니다.</p>
-                )}
-              </div>
-            </div>
-
-            {/* 오른쪽 패널 - 카메라 및 색상 확인 */}
-            <div className="right-panel">
-              <MakeupCamera
-                lipColor={selectedColors.lip?.hex}
-                eyeShadowColor={selectedColors.eye?.hex}
-                blushColor={selectedColors.cheek?.hex}
-              />
-              <div className="selected-colors-container">
-                <h3>💄 현재 색상</h3>
-                <div className="selected-colors">
-                  {["lip", "eye", "cheek"].map((category) => (
-                    <div key={category} className="color-item">
-                      <span className="color-label">
-                        {category.toUpperCase()}
-                      </span>
-                      <div
-                        className="color-preview"
-                        style={{
-                          backgroundColor:
-                            selectedColors[category]?.hex !== "transparent"
-                              ? selectedColors[category]?.hex
-                              : "#f0f0f0",
-                          border:
-                            selectedColors[category]?.hex === "transparent"
-                              ? "2px dashed #aaa"
-                              : "2px solid #ccc",
-                        }}
-                      >
-                        {selectedColors[category]?.hex === "transparent"
-                          ? "❌"
-                          : ""}
-                      </div>
-                      <button
-                        className="reset-btn"
-                        onClick={() => resetColor(category)}
-                      >
-                        초기화
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </LargeMain>
-
-        {isModalOpen && productDetails?.colors?.length > 1 && (
-          <Modal onClose={() => setIsModalOpen(false)}>
-            <h3>색상을 선택하세요</h3>
-            <div className="color-options">
-              {productDetails.colors.map((color) => (
-                <div
-                  key={color.hex}
-                  className="color-circle"
-                  style={{ backgroundColor: color.hex }}
-                  onClick={() => {
-                    setSelectedColors((prev) => ({
-                      ...prev,
-                      [selectedCategory]: color,
-                    }));
-                    setIsModalOpen(false);
-                  }}
-                ></div>
-              ))}
-            </div>
-          </Modal>
-        )}
-      </Background>
-    </div>
-  );
-};
-
-export default Makeup;
+export default MakeupCamera;
