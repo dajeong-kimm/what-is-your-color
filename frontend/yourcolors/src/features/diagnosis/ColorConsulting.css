@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2vw;
+  padding: 20px;
   max-width: 100%;  /* SmallMain 너비를 넘지 않도록 설정 */
   height: 100%;
   overflow: hidden;  /* 자식 요소들이 부모 영역을 넘지 않도록 제한 */
@@ -14,10 +14,10 @@
 }
 
 .consulting-title {
-  font-size: 2.2vw;
+  font-size: 22px;
   font-weight: bold;
   color: #FF6F61; /* 🔹 강조 색상 */
-  margin-bottom: 2vx; /* 🔹 간격 줄이기 */
+  margin-bottom: 8px; /* 🔹 간격 줄이기 */
   text-align: center; /* 제목을 가운데 정렬 */
 }
 
@@ -71,7 +71,7 @@
 }
 
 .GPT-consulting ul li {
-  line-height: 0.8;   /* 줄 간격을 1.0으로 줄임 */
+  line-height: 1.0;   /* 줄 간격을 1.0으로 줄임 */
   margin-top: 2px;    /* 위쪽 여백을 2px로 설정 */
   margin-bottom: 2px; /* 아래쪽 여백을 2px로 설정 */
 }

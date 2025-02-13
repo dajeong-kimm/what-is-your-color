@@ -33,10 +33,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 85%;
+  width: 88%;
   height: 65%;
   background-color: rgba(255, 255, 255, 0.70);
   border-radius: 27px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative; /* 자식 요소가 절대 위치로 배치되도록 */
+  padding-right : 0px;
 }
