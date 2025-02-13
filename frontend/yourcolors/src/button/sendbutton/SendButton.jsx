@@ -5,6 +5,7 @@ import useStore from "../../store/UseStore"; // Zustand 스토어
 import LoadingSpinner from "../loading-spinner/LoadingSpinnerS"; // LoadingSpinner 컴포넌트 (경로는 실제 프로젝트 구조에 맞게 수정)
 import "./SendButton.css";
 import { image } from "framer-motion/client";
+import QRTestButton from "../../features/photo/QRTestButton";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -37,18 +38,13 @@ const SendButton = () => {
   // 키보드 모달 외부 클릭 시 닫힘 처리
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        isKeyboardOpen &&
-        keyboardRef.current &&
-        !keyboardRef.current.contains(event.target)
-      ) {
+      if (isKeyboardOpen && keyboardRef.current && !keyboardRef.current.contains(event.target)) {
         setIsKeyboardOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isKeyboardOpen]);
 
   // 모달 열기
@@ -110,7 +106,7 @@ const SendButton = () => {
     formData.append("bestColor", bestColor.personal_color);
     formData.append("subColor1", subColor1.personal_color);
     formData.append("subColor2", subColor2.personal_color);
-    
+
     const htmlMessage = marked(gptSummary || "");
     formData.append("message", htmlMessage);
 
@@ -169,6 +165,10 @@ const SendButton = () => {
         이메일로 결과표 받기
       </button>
 
+      <div className="App">
+        <QRTestButton />
+      </div>
+
       {isModalOpen && (
         <div className="send-modal-overlay">
           <div className={`send-modal-content ${isKeyboardOpen ? "modal-up" : ""}`}>
@@ -176,10 +176,7 @@ const SendButton = () => {
               ✖
             </button>
             <h2>이메일을 입력하세요</h2>
-            <div
-              className="email-input-wrapper"
-              onClick={() => setIsKeyboardOpen(true)}
-            >
+            <div className="email-input-wrapper" onClick={() => setIsKeyboardOpen(true)}>
               <input
                 type="text"
                 className="email-input"
@@ -201,7 +198,7 @@ const SendButton = () => {
                     alignItems: "center",
                   }}
                 >
-                  전송중 {" "}
+                  전송중{" "}
                   <span style={{ display: "inline-block", marginLeft: "5px" }}>
                     <LoadingSpinner loading={true} size={20} />
                   </span>
@@ -220,10 +217,7 @@ const SendButton = () => {
                   {sendStatus}
                 </span>
               ) : (
-                <button
-                  className="send-modal-yes"
-                  onClick={handleSubmitWrapper}
-                >
+                <button className="send-modal-yes" onClick={handleSubmitWrapper}>
                   제출하기
                 </button>
               )}
@@ -234,18 +228,10 @@ const SendButton = () => {
 
       {isKeyboardOpen && (
         <div className="keyboard-modal-overlay">
-          <div
-            className="keyboard-modal-content"
-            ref={keyboardRef}
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="keyboard-modal-content" ref={keyboardRef} onClick={(e) => e.stopPropagation()}>
             <div className="keyboard-row">
               {row1.map((key) => (
-                <button
-                  key={key}
-                  className="keyboard-key"
-                  onClick={() => handleKeyClick(key)}
-                >
+                <button key={key} className="keyboard-key" onClick={() => handleKeyClick(key)}>
                   {key}
                 </button>
               ))}
@@ -282,9 +268,7 @@ const SendButton = () => {
               {row4.map((key) => (
                 <button
                   key={key}
-                  className={`keyboard-key ${
-                    key === "." || key === "_" ? "special-key" : ""
-                  }`}
+                  className={`keyboard-key ${key === "." || key === "_" ? "special-key" : ""}`}
                   onClick={() => handleKeyClick(key)}
                 >
                   {key}
