@@ -44,7 +44,7 @@ public class QrCodeServiceImpl implements QrCodeService {
 
     @Override
     public byte[] generateQrCode(String fileName) throws IOException, WriterException {
-        String fileDownloadUrl = "http://localhost:8080/api/files/download/" + fileName;
+        String fileDownloadUrl = "http://localhost:9000/api/photos/download/" + fileName;
         BufferedImage qrImage = generateQRCode(fileDownloadUrl);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
