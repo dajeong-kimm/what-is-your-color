@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.yourcolors.domain.consult.dto.AiResponse;
 import com.ssafy.yourcolors.domain.consult.dto.DistResponse;
+import com.ssafy.yourcolors.domain.consult.entity.ConsultPersonalColor;
+import com.ssafy.yourcolors.domain.consult.repository.PersonalColorRepository;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -28,10 +30,18 @@ public class ConsultServiceImpl implements ConsultService {
     private final String GPT_API_URL = "https://api.openai.com/v1/chat/completions";
     private final String GPT_API_KEY = "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";
 
+    private final PersonalColorRepository personalColorRepository;
+
+    public ConsultServiceImpl(PersonalColorRepository personalColorRepository) {
+        this.personalColorRepository = personalColorRepository;
+    }
+
+
     @Override
     public AiResponse consultWithAI(MultipartFile image) {
         List<AiResponse.Result> results = processAiResponse(image);
         String gptSummary = callGptApiForAI(results); // AI 모델용 GPT API 호출
+        System.out.println("result >>> " + results.get(0).getPersonalColor());
 
         return new AiResponse(results, gptSummary);
     }
@@ -41,6 +51,7 @@ public class ConsultServiceImpl implements ConsultService {
         List<DistResponse.Result> results = processDistEResponse(face, a4);
         String gptSummary = callGptApiForDist(results); // Dist 모델용 GPT API 호출
 
+        System.out.println("result : " + results.get(0).getPersonalColor());
         return new DistResponse(results, gptSummary);
     }
 
@@ -55,12 +66,16 @@ public class ConsultServiceImpl implements ConsultService {
         }
 
         return response.getBody().stream()
-                .map(item -> new AiResponse.Result(
-                        Double.parseDouble(item.get("probability").replace("%", "")),
-                        formatPersonalColor(item.get("class_name"))
-                ))
+                .map(item -> {
+                    double probability = Double.parseDouble(item.get("probability").replace("%", ""));
+                    String formattedColor = formatPersonalColor(item.get("class_name"));
+                    // personal_color 테이블에서 name이 formattedColor와 일치하는 personal_id 조회
+                    int personalId = personalColorRepository.findByName(formattedColor)
+                            .map(ConsultPersonalColor::getPersonalId)
+                            .orElse(0); // 없을 경우 기본값 0 또는 예외 처리 가능
+                    return new AiResponse.Result(probability, formattedColor, personalId);
+                })
                 .collect(Collectors.toList());
-
     }
 
     /**
@@ -89,7 +104,16 @@ public class ConsultServiceImpl implements ConsultService {
 
         List<Map<String, Object>> diagnosisList = (List<Map<String, Object>>) diagnosisObj;
 
-        return diagnosisList.stream().filter(item -> ((Number) item.get("rank")).intValue() <= 3).map(item -> new DistResponse.Result(((Number) item.get("rank")).intValue(), (String) item.get("personal_color"))).collect(Collectors.toList());
+        return diagnosisList.stream().filter(item -> ((Number) item.get("rank")).intValue() <= 3).map(item -> {
+            int rank = ((Number) item.get("rank")).intValue();
+            // 원본 personal_color 값 가져오기
+            String formattedColor = (String) item.get("personal_color");
+            // personal_color 테이블에서 formattedColor와 일치하는 personalId 조회
+            int personalId = personalColorRepository.findByName(formattedColor)
+                    .map(ConsultPersonalColor::getPersonalId)
+                    .orElse(0);
+            return new DistResponse.Result(rank, formattedColor, personalId);
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -236,26 +260,32 @@ public class ConsultServiceImpl implements ConsultService {
         String subColor2 = results.size() > 2 ? results.get(2).getPersonalColor() : "없음";
 
         return String.format("""
-                    너는 퍼스널 컬러 컨설턴트야.
-                    사용자의 퍼스널 컬러 정보를 기반으로 어울리는 **악세사리(안경, 목걸이, 귀걸이, 팔찌, 반지), 향수, 옷 컬러**를 추천해줘.
-                    결과는 다음 형식을 따라야 해.
-                    
-                    🌸 **퍼스널 컬러 컨설팅 결과** 🌸
-                    
-                    👓 **안경**: 
-                    💍 **악세사리**: 
-                    🫧 **향수**: 
-                    👗 **옷 컬러**: 
-                    - **메인**: 
-                    - **포인트**: 
-                    
-                    사용자 정보: 
-                    - **메인 컬러**: %s 
-                    - **서브 컬러**: %s, %s 
-                  
+                    너는 퍼스널 컬러 컨설턴트야.\n
+                    사용자의 퍼스널 컬러는 "%s"이야.\n
+                    보조 컬러로 "%s", "%s"도 고려할 수 있어.\n
+                    이 정보를 바탕으로 어울리는 **악세사리(안경, 목걸이, 귀걸이, 팔찌, 반지), 향수, 옷 컬러**를 추천해줘.\n\n
+
+                    🌸 **퍼스널 컬러 컨설팅 결과** 🌸\n\n
+
+                    👓 **안경**\n
+                    - 어울리는 안경 프레임을 추천해줘.\n
+                    - 어울리는 안경 스타일을 추천해줘.\n\n
+                     
+                    💍 **악세사리**\n
+                    - 어울리는 목걸이, 귀걸이를 추천해줘.\n
+                    - 어울리는 반지, 팔찌를 추천해줘.\n\n
+
+                    🫧 **향수**\n
+                    - 퍼스널 컬러에 어울리는 향수 스타일을 추천해줘.\n\n
+
+                    👗 **옷 컬러**\n
+                    - **메인**: \n
+                    - **포인트**: \n\n
+
+                    각 항목은 한 문장씩 줄바꿈해서 보여줘.
                     결과는 친절한 컨설턴트 말투로 자연스럽게 설명해줘.
-                    **최종 추천 요약을 250자 내로 간결하게 작성해줘.**
                 """, mainColor, subColor1, subColor2);
+
     }
 
     private String generatePromptForDist(List<DistResponse.Result> results) {
@@ -270,23 +300,29 @@ public class ConsultServiceImpl implements ConsultService {
         String subColor2 = results.size() > 2 ? results.get(2).getPersonalColor() : "없음";
 
         return String.format("""
-                    너는 퍼스널 컬러 컨설턴트야.
-                    사용자의 퍼스널 컬러 정보를 기반으로 어울리는 **악세사리(안경, 목걸이, 귀걸이, 팔찌, 반지), 향수, 옷 컬러**를 추천해줘.
-                    결과는 다음 형식을 따라야 해.
-                    
-                    🌸 **퍼스널 컬러 컨설팅 결과** 🌸
-                    
-                    👓 **안경**: 
-                    💍 **악세사리**: 
-                    🫧 **향수**: 
-                    👗 **옷 컬러**: 
-                    - **메인**: 
-                    - **포인트**: 
-                    
-                    사용자 정보: 
-                    - **메인 컬러**: %s 
-                    - **서브 컬러**: %s, %s 
-                  
+                    너는 퍼스널 컬러 컨설턴트야.\n
+                    사용자의 퍼스널 컬러는 "%s"이야.\n
+                    보조 컬러로 "%s", "%s"도 고려할 수 있어.\n
+                    이 정보를 바탕으로 어울리는 **악세사리(안경, 목걸이, 귀걸이, 팔찌, 반지), 향수, 옷 컬러**를 추천해줘.\n\n
+
+                    🌸 **퍼스널 컬러 컨설팅 결과** 🌸\n\n
+
+                    👓 **안경**\n
+                    - 어울리는 안경 프레임을 추천해줘.\n
+                    - 어울리는 안경 스타일을 추천해줘.\n\n
+                     
+                    💍 **악세사리**\n
+                    - 어울리는 목걸이, 귀걸이를 추천해줘.\n
+                    - 어울리는 반지, 팔찌를 추천해줘.\n\n
+
+                    🫧 **향수**\n
+                    - 퍼스널 컬러에 어울리는 향수 스타일을 추천해줘.\n\n
+
+                    👗 **옷 컬러**\n
+                    - **메인**: \n
+                    - **포인트**: \n\n
+
+                    각 항목은 한 문장씩 줄바꿈해서 보여줘.
                     결과는 친절한 컨설턴트 말투로 자연스럽게 설명해줘.
                 """, mainColor, subColor1, subColor2);
     }

@@ -1,56 +1,273 @@
+/* 전체 컨테이너 스타일 */
 .camera-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-    padding: 0;
-    margin: 0;
-    display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100vh;
+  background-color: #f8f8f8;
+  overflow: hidden; /* 전체 화면 넘침 방지 */
+}
+.personal-color-buttons {
+  position: sticky;
+  top: 0;
+  width: 90%;
+  height: 90px; /* 부모 컨테이너 높이 */
+  gap: 2rem;
+  z-index: 11;
+  display: flex;
+
+  align-items: center; /* 버튼들이 중앙 정렬되도록 설정 */
+  justify-content: flex-start;
+  padding: 10px 0;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* LargeMain 내부를 좌우로 나누기 */
-.largemain { /* 수정됨 */
-    display: flex;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
+/* 크롬, 사파리에서 스크롤바 숨기기 */
+.personal-color-buttons::-webkit-scrollbar {
+  display: none;
 }
 
-/* 왼쪽 패널 - 버튼 */
+.personal-color-buttons button {
+  height: 50px; /* 부모 높이보다 약간 작게 설정 */
+  min-height: 40px; /* 최소 높이 지정 */
+  white-space: nowrap;
+  background-color: #a8db66;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center; /* 내부 아이콘, 텍스트 수직 정렬 */
+  justify-content: center;
+  padding-top: 10px;
+}
+/* 바텀 패널 레이아웃 */
+.bottom-panel {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 1rem;
+  margin-right: 50px;
+  margin-left: 50px;
+}
+
+/* left-panel 높이 조정 */
 .left-panel {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: flex-start; /* 상단 정렬 */
-    justify-content: flex-start; /* 왼쪽 정렬 */
-    position: relative;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 350px;  /* 예시 크기, 필요에 따라 조정 */
+  padding-top: 0;
+  margin-left: 10px;
+  border-radius: 10px;
+  height: 100%;
+  /* flex-grow: 1; */
+  overflow: hidden; /* 내용이 넘치지 않도록 설정 */
 }
-
-/* 버튼 컨테이너 - 가로 정렬 */
-.button-container {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    padding-top: 20px;
-}
-
-/* 오른쪽 패널 - 카메라 */
 .right-panel {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  position: relative;
+  margin-right: 10px;
 }
 
-/* 카메라가 LargeMain 내부에서 벗어나지 않도록 조정 */
-.right-panel .camera {
-    width: 100%; /* 부모 컨테이너 크기에 맞춤 */
-    height: 100%;
-    object-fit: cover;
+/* 버튼 컨테이너 */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  top:0;
+  margin-bottom: 1rem;
+}
+
+/* product-list 내부 스크롤 및 고정 높이 설정 */
+.product-list {
+  display: grid;
+  height: 400px; /* 고정 크기 설정 */
+  grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개씩 배치 */
+  gap: 5px; /* 카드 사이 간격 */
+  justify-content: center;
+  padding: 10px;
+  border-radius: 10px;
+  overflow-y: auto; /* 내부 스크롤 활성화 */
+  overflow-x: hidden;
+  max-height: 400px; /* 고정된 높이 설정 */
+}
+
+
+/* product-card 크기 고정 */
+.product-card {
+  width: 70px;
+  height: 100px; /* 높이 고정 */
+  text-align: center;
+  font-size: 13px;
+  padding: 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* 이미지와 텍스트 간격 유지 */
+}
+
+.product-card.selected {
+  border: 2px solid #dfafbf;
+  transform: scale(1.05);
+}
+
+.product-card img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover; /* 비율 유지하면서 크기 맞춤 */
+}
+
+/* 모달 스타일 */
+.modal-overlay {
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  position: relative;  /* X 버튼 위치 조정을 위해 추가 */
+  width: 300px;  /* 크기 줄이기 */
+  min-height: 100px;  /* 최소 높이 */
+  max-height: 300px;  /* 최대 높이 (초과하면 스크롤) */
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  overflow-y: auto;  /* 내용이 많아지면 스크롤 */
+}
+.modal-close {
+  position: absolute;
+  top: 10px; /* 모달 내부 상단 */
+  right: 10px; /* 모달 내부 우측 */
+  width: 30px; /* 동그라미 크기 */
+  height: 30px; /* 동그라미 크기 */
+  background: white; /* 배경색 */
+  /* border: 2px solid black; 동그라미 테두리 */
+
+  font-size: 18px; /* 글자 크기 */
+  font-weight: 900; /* 더 두껍게 */
+  cursor: pointer;
+  color: black; /* X 색상 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease-in-out;
+}
+
+.modal-close:hover {
+  color: black;
+}
+
+.color-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);  /* 한 줄에 4개씩 */
+  gap: 10px;
+  max-height: 250px; /* 높이 제한 */
+  overflow-y: auto; /* 넘칠 경우 스크롤 */
+  padding: 10px;
+}
+.color-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s ease-in-out;
+}
+
+.color-circle:hover {
+  transform: scale(1.1);
+  border-color: black;
+}
+
+.selected-colors-container {
+  margin-top: 0px;
+  padding-top: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.selected-colors {
+  display: flex;
+  flex-direction: column;  /* 세로 정렬 */
+  gap: 10px;
+  justify-content: center;
+  align-items: center; /* 중앙 정렬 (필요하면 유지) */
+}
+/* h3 태그에 nowrap 적용 */
+.selected-colors-container h3 {
+  white-space: nowrap; /* 줄바꿈을 방지하고 한 줄로 표시 */
+  overflow: hidden;    /* 여백이 넘치지 않도록 */
+  margin-top: 0;  /* h3 태그에 직접 margin-top을 설정 */
+}
+
+.color-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 80px;
+}
+
+.color-label {
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.color-preview {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.color-preview span {
+  font-size: 10px;
+  font-weight: bold;
+  color: #333;
+  position: absolute;
+  bottom: -18px;
+}
+
+.reset-btn {
+  background-color: #f19a9a;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.reset-btn:hover {
+  background-color: #e04a4a;
 }

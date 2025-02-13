@@ -55,13 +55,25 @@
     font-size: 1.8rem;
   }
   
-  .personal-detail-image img{
-    min-width: 400px; /* 최소 너비 설정 */
-    max-height: 400px;
-    object-fit: cover; /* 이미지를 왜곡하지 않고 영역을 채우도록 설정 */
+  .personal-detail-image {
+    width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
+    max-width: 380px; /* 최대 크기 제한 */
+    height: 380px; /* 고정된 높이 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* 이미지가 튀어나오지 않도록 */
     border-radius: 16px;
-    margin-top: 20px;
-}
+  }
+
+  .personal-detail-image img {
+    
+      width: 100%; /* 부모 요소에 맞춤 */
+      height: 100%; /* 부모 요소에 맞춤 */
+      object-fit: contain; /* 원본 비율을 유지하며 잘리지 않도록 */
+      border-radius: 16px;
+  }
+
 
   
   .personal-detail-description {
@@ -70,7 +82,7 @@
     line-height: 1.6;
     justify-content: center;
     font-weight: lighter;
-    font-family: NanumGothic;
+    font-family: 'Noto Sans KR', sans-serif;
 
   }
   

@@ -1,16 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "./BottomButton.css";
 
-const Bottombutton = ({ to, label, isActive, onClick, className }) => {
+const Bottombutton = ({ label, isActive, onClick, className }) => {
   return (
-    <Link
-      to={to}
+    <button
       className={`bottom-button ${className} ${isActive ? "active" : ""}`}
       onClick={onClick}
     >
       {label}
-    </Link>
+    </button>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./closebutton.css";
+import "./CloseButton.css";
 
 const CloseButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

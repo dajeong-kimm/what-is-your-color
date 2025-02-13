@@ -1,0 +1,36 @@
+/* LeftButton.css */
+
+.nav-button {
+    background-color: #0b7c3e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 0;
+    position: relative;
+  }
+  
+  /* 왼쪽 버튼 전용 추가 스타일 (필요시 조절) */
+  .left-button {
+    /* 예시: 왼쪽에 약간의 여백을 줄 수 있음 */
+    margin-left: 20px;
+  }
+  
+  .nav-arrow {
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1;
+    user-select: none;
+  }
+  
