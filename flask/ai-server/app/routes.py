@@ -9,6 +9,7 @@ from .utils import (
     rgb_to_lab, delta_e, extract_face_colors,
     find_personal_color_using_skin_avg, color_correction_lab, to_hex
 )
+import os
 
 ###########################################
 # 퍼스널컬러 DB – 화장품 추천 색상 정보 (Lip, Cheek, Eye)
@@ -115,6 +116,35 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# ─────────────────────────────────────────────
+# [추가] a4_image 저장 API
+# ─────────────────────────────────────────────
+@api.route('/predict/store/a4', methods=['POST'])
+def store_a4():
+    if 'a4_image' not in request.files:
+        return jsonify({"error": "No a4_image file provided"}), 400
+
+    a4_file = request.files['a4_image']
+    if a4_file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if not allowed_file(a4_file.filename):
+        return jsonify({"error": "File type not allowed. Only PNG, JPG, JPEG are allowed."}), 400
+
+    try:
+        # 저장할 디렉토리 (예: app/static) 생성
+        save_dir = os.path.join(os.getcwd(), "app", "static")
+        os.makedirs(save_dir, exist_ok=True)
+        file_path = os.path.join(save_dir, "a4_image.jpg")
+        a4_file.save(file_path)
+        return jsonify({"message": "A4 image saved successfully", "file_path": file_path}), 200
+    except Exception as e:
+        logging.error(f"Failed to store a4 image: {str(e)}")
+        return jsonify({"error": "Failed to store a4 image"}), 500
+
+# ─────────────────────────────────────────────
+# /predict/model API (기존)
+# ─────────────────────────────────────────────
 @api.route('/predict/model', methods=['POST'])
 def predict():
     # 요청 검증
@@ -143,28 +173,41 @@ def predict():
     } for class_name, prob in top_3_results]
     return jsonify(response), 200
 
+# ─────────────────────────────────────────────
+# /predict/colordist API (수정됨)
+# ─────────────────────────────────────────────
 @api.route('/predict/colordist', methods=['POST'])
 def predict_color_distribution():
     try:
         if 'face_image' not in request.files:
             return jsonify({"error": "The 'face_image' file is required"}), 400
 
-        face_image = request.files['face_image']
-        a4_image = request.files.get('a4_image', None)  # A4 이미지 (선택적)
-
-        face_image = cv2.imdecode(np.frombuffer(face_image.read(), np.uint8), cv2.IMREAD_COLOR)
+        face_image_file = request.files['face_image']
+        face_image = cv2.imdecode(np.frombuffer(face_image_file.read(), np.uint8), cv2.IMREAD_COLOR)
         if face_image is None:
             return jsonify({"error": "Invalid 'face_image' file"}), 400
 
         # BGR -> RGB 변환
         face_rgb = cv2.cvtColor(face_image, cv2.COLOR_BGR2RGB)
 
-        if a4_image:
-            a4_image = cv2.imdecode(np.frombuffer(a4_image.read(), np.uint8), cv2.IMREAD_COLOR)
+        # a4_image: 요청으로 전송되었는지 확인하고, 없으면 저장된 파일 사용
+        a4_image_file = request.files.get('a4_image', None)
+        a4_rgb = None
+
+        if a4_image_file:
+            a4_image = cv2.imdecode(np.frombuffer(a4_image_file.read(), np.uint8), cv2.IMREAD_COLOR)
             if a4_image is None:
                 return jsonify({"error": "Invalid 'a4_image' file"}), 400
-
             a4_rgb = cv2.cvtColor(a4_image, cv2.COLOR_BGR2RGB)
+        else:
+            # 저장된 a4_image 파일 경로
+            stored_a4_path = os.path.join(os.getcwd(), "app", "static", "a4_image.jpg")
+            if os.path.exists(stored_a4_path):
+                stored_a4 = cv2.imread(stored_a4_path, cv2.IMREAD_COLOR)
+                if stored_a4 is not None:
+                    a4_rgb = cv2.cvtColor(stored_a4, cv2.COLOR_BGR2RGB)
+
+        if a4_rgb is not None:
             # A4 이미지 중앙의 화이트 레퍼런스 추출
             a4_x, a4_y = a4_rgb.shape[1] // 2, a4_rgb.shape[0] // 2
             white_ref = a4_rgb[a4_y, a4_x]
