@@ -38,7 +38,12 @@ const BestWorst = () => {
                     <div key={index} className="color-box" 
                     style={{ backgroundColor: color }}></div> ))}
               </div> {/* 이거 5가지 컬러 박스니까 안에 데이터만 변경!!!!!!!!!!!!*/}
-              <BestWorstCamera2/>
+              <BestWorstCamera2 colorData={personalColorDetails.bestcolor} />
+                {/* <ul>
+                  {personalColorDetails.bestcolor?.map((color, index) => (
+                    <li key={index}>{color}</li>
+                  ))}
+                </ul> */}
                 {/* <ul>
                   {personalColorDetails.bestcolor_name?.map((color, index) => (
                     <li key={index}>{color}</li>
@@ -57,7 +62,7 @@ const BestWorst = () => {
                     <div key={index} className="color-box" 
                     style={{ backgroundColor: color }}></div> ))}
               </div>
-              <BestWorstCamera2/>
+              <BestWorstCamera2 colorData={personalColorDetails.worstcolor} />
                 {/* <ul>
                   {personalColorDetails.worstcolor_name?.map((color, index) => (
                     <li key={index}>{color}</li>

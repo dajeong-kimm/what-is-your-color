@@ -1,14 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 import './BestWorstCamera2.css'; // 추가 (CSS 파일 분리)
 
-const BestWorstCamera2 = () => {
+const BestWorstCamera2 = ({ colorData }) => {
   const videoRef = useRef(null);
   const numSegments = 15;
-  const colors = [
-    '#7CB9E8', '#F0F8FF', '#C4B454', '#90EE90', '#FF69B4',
-    '#DDA0DD', '#E6E6FA', '#98FB98', '#87CEEB', '#F08080',
-    '#E0FFFF', '#FFB6C1', '#B0C4DE', '#FFA07A', '#D8BFD8',
-  ];
+  // 🔹 bestcolor 배열을 3번 반복해서 15개로 확장
+  const colors = Array(3).fill(colorData).flat(); 
+  console.log(colors);
+
+  // const colors = [
+  //   '#7CB9E8', '#F0F8FF', '#C4B454', '#90EE90', '#FF69B4',
+  //   '#DDA0DD', '#E6E6FA', '#98FB98', '#87CEEB', '#F08080',
+  //   '#E0FFFF', '#FFB6C1', '#B0C4DE', '#FFA07A', '#D8BFD8',
+  // ];
 
   useEffect(() => {
     const getWebcam = async () => {
