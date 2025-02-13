@@ -1,14 +1,15 @@
 from flask import Blueprint, request, jsonify
-from tensorflow.keras.models import load_model
-from .utils import process_image, predict_top_3
 import logging
 import cv2
 import traceback
 import numpy as np
+from tensorflow.keras.models import load_model
 from .utils import (
+    process_image, predict_top_3,
     rgb_to_lab, delta_e, extract_face_colors,
     find_personal_color_using_skin_avg, color_correction_lab, to_hex
 )
+import os
 
 ###########################################
 # 퍼스널컬러 DB – 화장품 추천 색상 정보 (Lip, Cheek, Eye)
@@ -58,7 +59,7 @@ eye_palette_db = {
     12: ["#DDC6BF", "#CDB5B6", "#A5868B", "#847279", "#52465A"]
 }
 
-# 별도로 personal_color_names (출력용)
+# 출력용 personal_color_names (퍼스널 컬러 진단용)
 personal_color_names = {
     1: "봄 웜 라이트",
     2: "봄 웜 비비드",
@@ -74,27 +75,76 @@ personal_color_names = {
     12: "겨울 쿨 다크"
 }
 
-
 api = Blueprint('api', __name__)
 
-# 모델 로드
-MODEL_PATH = './app/model/personal_color_classifier.h5'
+# ─────────────────────────────────────────────
+# 모델 로드 (새 모델 경로로 수정)
+# ─────────────────────────────────────────────
+MODEL_PATH = './app/model/new_model.h5'
 model = load_model(MODEL_PATH)
 
-# 클래스 정의
+# ─────────────────────────────────────────────
+# 새 모델에 맞는 클래스 목록 (영어 라벨)
+# ─────────────────────────────────────────────
 CATEGORIES = [
-    "가을_다크", "가을_뮤트", "가을_스트롱",
-    "겨울_다크", "겨울_비비드", "겨울_스트롱",
-    "봄_라이트", "봄_브라이트", "봄_비비드",
-    "여름_라이트", "여름_뮤트", "여름_브라이트"
+    "autumn_dark", "autumn_muted", "autumn_strong",
+    "spring_light", "spring_bright", "spring_vivid",
+    "summer_light", "summer_muted", "summer_bright",
+    "winter_dark", "winter_strong", "winter_vivid"
 ]
 
-# 허용된 확장자 목록
+# ─────────────────────────────────────────────
+# 영어 -> 한국어 라벨 매핑 (예측 응답시 사용)
+# ─────────────────────────────────────────────
+english_to_korean = {
+    "autumn_dark": "가을_다크",
+    "autumn_muted": "가을_뮤트",
+    "autumn_strong": "가을_스트롱",
+    "spring_light": "봄_라이트",
+    "spring_bright": "봄_브라이트",
+    "spring_vivid": "봄_비비드",
+    "summer_light": "여름_라이트",
+    "summer_muted": "여름_뮤트",
+    "summer_bright": "여름_브라이트",
+    "winter_dark": "겨울_다크",
+    "winter_strong": "겨울_스트롱",
+    "winter_vivid": "겨울_비비드"
+}
+
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# ─────────────────────────────────────────────
+# [추가] a4_image 저장 API
+# ─────────────────────────────────────────────
+@api.route('/predict/store/a4', methods=['POST'])
+def store_a4():
+    if 'a4_image' not in request.files:
+        return jsonify({"error": "No a4_image file provided"}), 400
+
+    a4_file = request.files['a4_image']
+    if a4_file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if not allowed_file(a4_file.filename):
+        return jsonify({"error": "File type not allowed. Only PNG, JPG, JPEG are allowed."}), 400
+
+    try:
+        # 저장할 디렉토리 (예: app/static) 생성
+        save_dir = os.path.join(os.getcwd(), "app", "static")
+        os.makedirs(save_dir, exist_ok=True)
+        file_path = os.path.join(save_dir, "a4_image.jpg")
+        a4_file.save(file_path)
+        return jsonify({"message": "A4 image saved successfully", "file_path": file_path}), 200
+    except Exception as e:
+        logging.error(f"Failed to store a4 image: {str(e)}")
+        return jsonify({"error": "Failed to store a4 image"}), 500
+
+# ─────────────────────────────────────────────
+# /predict/model API (기존)
+# ─────────────────────────────────────────────
 @api.route('/predict/model', methods=['POST'])
 def predict():
     # 요청 검증
@@ -108,76 +158,89 @@ def predict():
     if not allowed_file(image_file.filename):
         return jsonify({"error": "File type not allowed. Only PNG, JPG, JPEG are allowed."}), 400
 
-    # 이미지 처리 및 예측
     try:
-        image_array = process_image(image_file)  # 파일 객체 직접 전달
+        # 새 전처리 함수(process_image)를 이용하여 얼굴 영역 추출 후 모델 입력 생성
+        image_array = process_image(image_file)
         top_3_results = predict_top_3(model, image_array, CATEGORIES)
     except Exception as e:
         logging.error(f"Prediction error: {str(e)}")
         return jsonify({"error": "An error occurred during prediction"}), 500
 
-    # JSON 응답 반환
-    response = [{"class_name": class_name, "probability": f"{prob:.2%}"} for class_name, prob in top_3_results]
+    # 예측 결과를 영어 라벨에서 한국어 라벨로 변환하여 JSON 응답 생성
+    response = [{
+        "class_name": english_to_korean.get(class_name, class_name),
+        "probability": f"{prob:.2%}"
+    } for class_name, prob in top_3_results]
     return jsonify(response), 200
 
+# ─────────────────────────────────────────────
+# /predict/colordist API (수정됨)
+# ─────────────────────────────────────────────
 @api.route('/predict/colordist', methods=['POST'])
 def predict_color_distribution():
     try:
-        # 파일 검증
         if 'face_image' not in request.files:
             return jsonify({"error": "The 'face_image' file is required"}), 400
 
-        face_image = request.files['face_image']
-        a4_image = request.files.get('a4_image', None)  # A4 이미지가 선택적임
-
-        # 이미지 읽기 및 검증
-        face_image = cv2.imdecode(np.frombuffer(face_image.read(), np.uint8), cv2.IMREAD_COLOR)
+        face_image_file = request.files['face_image']
+        face_image = cv2.imdecode(np.frombuffer(face_image_file.read(), np.uint8), cv2.IMREAD_COLOR)
         if face_image is None:
             return jsonify({"error": "Invalid 'face_image' file"}), 400
 
         # BGR -> RGB 변환
         face_rgb = cv2.cvtColor(face_image, cv2.COLOR_BGR2RGB)
 
-        if a4_image:  # A4 이미지가 있으면 색상 보정 진행
-            a4_image = cv2.imdecode(np.frombuffer(a4_image.read(), np.uint8), cv2.IMREAD_COLOR)
+        # a4_image: 요청으로 전송되었는지 확인하고, 없으면 저장된 파일 사용
+        a4_image_file = request.files.get('a4_image', None)
+        a4_rgb = None
+
+        if a4_image_file:
+            a4_image = cv2.imdecode(np.frombuffer(a4_image_file.read(), np.uint8), cv2.IMREAD_COLOR)
             if a4_image is None:
                 return jsonify({"error": "Invalid 'a4_image' file"}), 400
-
             a4_rgb = cv2.cvtColor(a4_image, cv2.COLOR_BGR2RGB)
+        else:
+            # 저장된 a4_image 파일 경로
+            stored_a4_path = os.path.join(os.getcwd(), "app", "static", "a4_image.jpg")
+            if os.path.exists(stored_a4_path):
+                stored_a4 = cv2.imread(stored_a4_path, cv2.IMREAD_COLOR)
+                if stored_a4 is not None:
+                    a4_rgb = cv2.cvtColor(stored_a4, cv2.COLOR_BGR2RGB)
+
+        if a4_rgb is not None:
             # A4 이미지 중앙의 화이트 레퍼런스 추출
             a4_x, a4_y = a4_rgb.shape[1] // 2, a4_rgb.shape[0] // 2
             white_ref = a4_rgb[a4_y, a4_x]
-            # 화이트 레퍼런스를 기반으로 색 보정
+            # 화이트 레퍼런스를 기반으로 색상 보정
             corrected_face = color_correction_lab(face_rgb, white_ref)
 
-            # Mediapipe 색상 추출 (보정된 이미지 포함)
+            # 보정된 이미지에서 Mediapipe로 얼굴 색상 추출
             extracted_corr = extract_face_colors(corrected_face)
             if extracted_corr is None:
                 return jsonify({"error": "Failed to extract landmarks from corrected image"}), 400
 
             skin_avg_corr, _, eye_color_corr, hair_color_corr = extracted_corr
 
-            # 보정된 이미지 결과 분석
             ranking_corr = find_personal_color_using_skin_avg(
-                skin_avg_corr, eye_color_corr, hair_color_corr, lip_colors_db, cheek_colors_db, eye_palette_db
+                skin_avg_corr, eye_color_corr, hair_color_corr,
+                lip_colors_db, cheek_colors_db, eye_palette_db
             )
         else:
-            corrected_face = None  # 색상 보정 생략
+            corrected_face = None
             ranking_corr = None
 
-        # Mediapipe 색상 추출 (원본 이미지)
+        # 원본 이미지에서 얼굴 색상 추출
         extracted_orig = extract_face_colors(face_rgb)
         if extracted_orig is None:
             return jsonify({"error": "Failed to extract landmarks from original image"}), 400
 
         skin_avg_orig, _, eye_color_orig, hair_color_orig = extracted_orig
 
-        # 원본 이미지 결과 분석
         ranking_orig = find_personal_color_using_skin_avg(
-            skin_avg_orig, eye_color_orig, hair_color_orig, lip_colors_db, cheek_colors_db, eye_palette_db
+            skin_avg_orig, eye_color_orig, hair_color_orig,
+            lip_colors_db, cheek_colors_db, eye_palette_db
         )
 
-        # 결과 생성
         response = {
             "original_image": {
                 "skin_avg": to_hex(skin_avg_orig),
@@ -190,7 +253,7 @@ def predict_color_distribution():
             }
         }
 
-        if ranking_corr:  # A4 이미지가 있을 경우 보정된 결과 포함
+        if ranking_corr:
             response["corrected_image"] = {
                 "skin_avg": to_hex(skin_avg_corr),
                 "eye_color": to_hex(eye_color_corr),
