@@ -43,7 +43,7 @@ const Makeup = () => {
     fetchProductDetails,
     productDetails,
   } = useStore();
-  const [selectedPersonalColor, setSelectedPersonalColor] = useState(null);
+  const [selectedPersonalColor, setSelectedPersonalColor] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("lip");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
