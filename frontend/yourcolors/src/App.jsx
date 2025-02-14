@@ -21,7 +21,12 @@ import Makeup from "./features/makeup/Makeup";
 import MediapipeCameraX from "./features/camera/MediapipeCameraX.jsx";
 import PersonalRecommend from "./features/recommend/PersonalRecommend";
 import ChoicePage from "./features/choice/ChoicePage.jsx";
+import PhotoQrChoicePage from "./features/season-photo/PhotoQrChoicePage.jsx";
+import PersonalDefine from "./features/personal-colors/PersonalDefine.jsx";
+import PhotoCapturePage from "./features/season-photo/PhotoCapturePage.jsx";
 import { RecoilRoot } from 'recoil';
+import PhotoSelectionPage from "./features/season-photo/PhotoSelectionPage.jsx";
+import PhotoFrame from "./features/season-photo/PhotoFrame.jsx";
 
 const App = () => {
   return (
@@ -49,9 +54,13 @@ const App = () => {
         {/* <Route path="/detail" element={<PersonalColorDetailContent />} /> */}
         <Route path="/makeupbycolor" element={<MakeupByColor />} />
         <Route path="/choice" element={<ChoicePage />} />
+        <Route path="/photoqrchoice" element={<PhotoQrChoicePage />} />
         {/* <Route path="/bestworst" element={<BestWorst />} /> */}
         {/* <Route path="/:personalColor/recommend" element={<PersonalRecommend />} /> */}
-
+        <Route path="/personaldefine" element={<PersonalDefine />} />
+        <Route path="/photo" element={<PhotoCapturePage />} />
+        <Route path="/select" element={<PhotoSelectionPage />} />
+        <Route path="/frame" element={<PhotoFrame />} />
       </Routes>
     </Router>
     </RecoilRoot>
