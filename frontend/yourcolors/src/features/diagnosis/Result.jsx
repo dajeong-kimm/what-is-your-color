@@ -49,22 +49,24 @@ const Result = () => {
       <SmallMain>
         <div className="container-left">
           <div className="container-up">
-            <div className="title-main">당신의 퍼스널컬러는</div>
-            <strong className="main-color">{personalColorDetails.name}</strong>
+            <div className="title-main">🌈 당신의 퍼스널컬러는 🔍</div>
+            <strong className="main-color">🌟{personalColorDetails.name}✨</strong>
           </div>
 
           <div className="container-center">
             <div className="summary">
               <strong>{personalColorDetails.description}</strong>
             </div>
-            {Array.isArray(personalColorDetails.hashtag) ? personalColorDetails.hashtag.join(" ") : ""}
+            <div className="result-hashtag">
+            {Array.isArray(personalColorDetails.hashtag) ? personalColorDetails.hashtag.join(" ") : " "}
+            </div>
           </div>
 
 
           <div className="container-down">
-            <div className="title-sub">서브컬러</div>
-          {/* <strong className="sub-color">{subColors.join(" & ")}</strong> */}
-          <strong className="sub-color">{Results[1].personal_color} & {Results[2].personal_color}</strong>
+            
+          <strong className="sub-color">{Results[1].personal_color} & {Results[2].personal_color} 도 어울려요!</strong>
+          {/* <div className="title-sub">도 어울려요!</div> */}
           </div>
         
         </div>
