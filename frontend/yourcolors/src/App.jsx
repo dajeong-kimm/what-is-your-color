@@ -24,11 +24,15 @@ import ChoicePage from "./features/choice/ChoicePage.jsx";
 import QRTest from "./features/photo/QRTest.jsx";
 import QRTestButton from "./features/photo/QRTestButton.jsx";
 import { RecoilRoot } from "recoil";
+import PersonalDefine from "./features/personal-colors/PersonalDefine.jsx";
+import PhotoCapturePage from "./features/season-photo/PhotoCapturePage.jsx";
+import PhotoSelectionPage from "./features/season-photo/PhotoSelectionPage.jsx";
 
 const App = () => {
   return (
     <RecoilRoot>
       <Router>
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/endpage" element={<EndPage />} />
@@ -53,10 +57,13 @@ const App = () => {
           <Route path="/choice" element={<ChoicePage />} />
           {/* <Route path="/bestworst" element={<BestWorst />} /> */}
           {/* <Route path="/:personalColor/recommend" element={<PersonalRecommend />} /> */}
-          <Route path="/" element={<QRTestButton />} />
+          <Route path="/qrtestbutton" element={<QRTestButton />} />
           <Route path="/qrtest" element={<QRTest />} />
-        </Routes>
-      </Router>
+        <Route path="/photo" element={<PhotoCapturePage />} />
+        <Route path="/select" element={<PhotoSelectionPage />} />
+      </Routes>
+    </Router>
+
     </RecoilRoot>
   );
 };
