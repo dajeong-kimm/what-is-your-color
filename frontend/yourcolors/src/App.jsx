@@ -18,8 +18,6 @@ import PersonalColorMain from "./features/personal-colors/PersonalColorMain.jsx"
 import PersonalColorDetail from "./features/personal-colors/PersonalColorDetail.jsx";
 import MakeupByColor from "./features/makeup/MakeupByColor";
 import Makeup from "./features/makeup/Makeup";
-import MediapipeCameraX from "./features/camera/MediapipeCameraX.jsx";
-import PersonalRecommend from "./features/recommend/PersonalRecommend";
 import ChoicePage from "./features/choice/ChoicePage.jsx";
 import QRTest from "./features/photo/QRTest.jsx";
 import QRTestButton from "./features/photo/QRTestButton.jsx";

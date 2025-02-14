@@ -12,6 +12,7 @@ let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)
 const MediapipeCameraXTimerAI = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const holisticRef = useRef(null); // Holistic 인스턴스 저장용
 
   const [countdown, setCountdown] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
@@ -27,10 +28,24 @@ const MediapipeCameraXTimerAI = () => {
     initializeCamera();
     // cleanup: 컴포넌트 언마운트 시 카메라 정리
     return () => {
-      if (cameraInstance) {
-        // cameraInstance.stop() 가 제공되는지 여부는 카메라 라이브러리에 따라 다릅니다.
-        // Mediapipe CameraUtils에 stop()이 없다면 생략 가능합니다.
-        console.log("[useEffect cleanup] Camera stopped");
+      console.log("[useEffect cleanup] Stopping camera and releasing instances");
+
+      // Camera 인스턴스 종료 (stop() 메서드가 있으면 호출)
+      if (cameraInstance && typeof cameraInstance.stop === "function") {
+        cameraInstance.stop();
+      }
+      cameraInstance = null;
+
+      // video 스트림 정리: srcObject에 있는 모든 트랙 종료
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+        videoRef.current.srcObject = null;
+      }
+
+      // Holistic 인스턴스 종료
+      if (holisticRef.current && typeof holisticRef.current.close === "function") {
+        holisticRef.current.close();
+        holisticRef.current = null;
       }
     };
   }, []);
