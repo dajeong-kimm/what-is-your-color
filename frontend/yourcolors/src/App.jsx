@@ -22,7 +22,9 @@ import MediapipeCameraX from "./features/camera/MediapipeCameraX.jsx";
 import PersonalRecommend from "./features/recommend/PersonalRecommend";
 import ChoicePage from "./features/choice/ChoicePage.jsx";
 import PersonalDefine from "./features/personal-colors/PersonalDefine.jsx";
+import PhotoCapturePage from "./features/season-photo/PhotoCapturePage.jsx";
 import { RecoilRoot } from 'recoil';
+import PhotoSelectionPage from "./features/season-photo/PhotoSelectionPage.jsx";
 
 const App = () => {
   return (
@@ -53,6 +55,8 @@ const App = () => {
         {/* <Route path="/bestworst" element={<BestWorst />} /> */}
         {/* <Route path="/:personalColor/recommend" element={<PersonalRecommend />} /> */}
         <Route path="/personaldefine" element={<PersonalDefine />} />
+        <Route path="/photo" element={<PhotoCapturePage />} />
+        <Route path="/select" element={<PhotoSelectionPage />} />
       </Routes>
     </Router>
     </RecoilRoot>
