@@ -24,7 +24,6 @@ const PersonalColorMain = () => {
 
   const colorTitles = ["Spring", "Summer", "Autumn", "Winter"];
 
-
   return (
     <Background>
       <Topbar />
@@ -35,7 +34,7 @@ const PersonalColorMain = () => {
             groupedColors.map((group, index) => (
               <div key={index} className="personal-color-group">
                 {/* 각 그룹에 제목 추가 */}
-                <p className="color-group-title">{colorTitles[index]}</p>
+                <p className="color-group-title" style={{ color: "black" }}>{colorTitles[index]}</p>
                 {group.map((color) => (
                   <PersonalButton
                     key={color.id}
