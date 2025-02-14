@@ -8,7 +8,6 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
   const faceLandmarkerRef = useRef(null);
   const animationFrameRef = useRef(null);
 
-
   // 립 컨트롤 상태
   const [lipBlur, setLipBlur] = useState(10);
   const [lipIntensity, setLipIntensity] = useState(0.5);
@@ -114,6 +113,7 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
     }
   }, [eyeShadowColor, blushColor, lipColor]);
 
+  // 기존의 drawSmoothRegion (눈, 볼 등 용)
   const drawSmoothRegion = (ctx, landmarks, indices, color, blur, intensity) => {
     if (indices.length === 0) return;
     ctx.save();
@@ -136,6 +136,73 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
     ctx.fill();
     ctx.filter = "none";
     ctx.globalAlpha = 1;
+    ctx.restore();
+  };
+
+  // 새로 추가된 함수: 입술 영역(UPPER_LIP + LOWER_LIP)을 하나의 클리핑 영역으로 사용하여 블러 효과를 내부에만 적용
+  const drawLipRegion = (ctx, landmarks, color, blur, intensity) => {
+    // 외곽 입술 영역을 하나의 경로로 생성
+    // UPPER_LIP와 LOWER_LIP 배열을 결합하여 클로즈드 폴리곤 생성
+    const UPPER_LIP = [
+      61, 185, 40, 39, 37, 0, 267, 269, 270, 409,
+      291, 306, 292, 308, 415, 310, 311, 312, 13,
+      82, 81, 80, 191, 78, 62, 76
+    ];
+    const LOWER_LIP = [
+      61, 146, 91, 181, 84, 17, 314, 405, 321, 375,
+      291, 306, 292, 308, 324, 318, 402, 317, 14,
+      87, 178, 88, 95, 78, 62, 76, 61
+    ];
+
+    ctx.save();
+    ctx.beginPath();
+    // 먼저 UPPER_LIP 순서대로 그리기
+    for (let i = 0; i < UPPER_LIP.length; i++) {
+      const idx = UPPER_LIP[i];
+      const pt = landmarks[idx];
+      const x = (1 - pt.x) * canvasRef.current.width;
+      const y = pt.y * canvasRef.current.height;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    // 그 다음 LOWER_LIP를 역순으로 그려서 닫힌 경로 생성
+    for (let i = LOWER_LIP.length - 1; i >= 0; i--) {
+      const idx = LOWER_LIP[i];
+      const pt = landmarks[idx];
+      const x = (1 - pt.x) * canvasRef.current.width;
+      const y = pt.y * canvasRef.current.height;
+      ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    // 클리핑 영역 설정: 입술 영역 안으로만 그리기
+    ctx.clip();
+
+    // 클리핑 영역 내에서 동일한 경로를 다시 그려서 블러 효과 적용
+    ctx.save();
+    ctx.filter = `blur(${blur}px)`;
+    ctx.globalAlpha = intensity;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    for (let i = 0; i < UPPER_LIP.length; i++) {
+      const idx = UPPER_LIP[i];
+      const pt = landmarks[idx];
+      const x = (1 - pt.x) * canvasRef.current.width;
+      const y = pt.y * canvasRef.current.height;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    for (let i = LOWER_LIP.length - 1; i >= 0; i--) {
+      const idx = LOWER_LIP[i];
+      const pt = landmarks[idx];
+      const x = (1 - pt.x) * canvasRef.current.width;
+      const y = pt.y * canvasRef.current.height;
+      ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.filter = "none";
+    ctx.globalAlpha = 1;
+    ctx.restore();
     ctx.restore();
   };
 
@@ -168,16 +235,11 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
 
     if (results.faceLandmarks.length > 0) {
       const landmarks = results.faceLandmarks[0];
-      const UPPER_LIP = [
-        61, 185, 40, 39, 37, 0, 267, 269, 270, 409,
-        291, 306, 292, 308, 415, 310, 311, 312, 13,
-        82, 81, 80, 191, 78, 62, 76
-      ];
-      const LOWER_LIP = [
-        61, 146, 91, 181, 84, 17, 314, 405, 321, 375,
-        291, 306, 292, 308, 324, 318, 402, 317, 14,
-        87, 178, 88, 95, 78, 62, 76, 61
-      ];
+
+      // 입술은 새 함수 drawLipRegion로 처리하여 클리핑 영역 내에서 블러 효과 적용
+      drawLipRegion(ctx, landmarks, lipColor || "rgba(0,0,0,0)", lipBlurRef.current, lipIntensityRef.current);
+
+      // 나머지 부위는 기존 함수 사용
       const LEFT_EYE_SHADOW = [
         33, 130, 226, 247, 30, 29, 27, 28, 56,
         190, 243, 133, 173, 157, 158, 159, 160, 161, 246
@@ -189,8 +251,6 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
       const LEFT_BLUSH = [117,101,205,187,123,116,117];
       const RIGHT_BLUSH = [411, 352, 346, 347, 330, 425, 411];
 
-      drawSmoothRegion(ctx, landmarks, UPPER_LIP, lipColor || "rgba(0,0,0,0)", lipBlurRef.current, lipIntensityRef.current);
-      drawSmoothRegion(ctx, landmarks, LOWER_LIP, lipColor || "rgba(0,0,0,0)", lipBlurRef.current, lipIntensityRef.current);
       drawSmoothRegion(ctx, landmarks, LEFT_EYE_SHADOW, eyeShadowColor || "rgba(0,0,0,0)", eyeBlurRef.current, eyeIntensityRef.current);
       drawSmoothRegion(ctx, landmarks, RIGHT_EYE_SHADOW, eyeShadowColor || "rgba(0,0,0,0)", eyeBlurRef.current, eyeIntensityRef.current);
       drawSmoothRegion(ctx, landmarks, LEFT_BLUSH, blushColor || "rgba(0,0,0,0)", blushBlurRef.current, blushIntensityRef.current);
@@ -211,8 +271,8 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
       />
       <canvas ref={canvasRef} className="camera-overlay"></canvas>
 
-       {/* 컨트롤러 토글 버튼 - Updated colors */}
-       <button
+      {/* 컨트롤러 토글 버튼 */}
+      <button
         onClick={() => setShowControls(!showControls)}
         style={{
           position: 'absolute',
