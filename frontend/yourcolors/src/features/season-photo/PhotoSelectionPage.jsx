@@ -1,9 +1,10 @@
-// PhotoSelectionPage.jsx
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
+import { useLocation } from "react-router-dom";
+import PhotoFrame from "./PhotoFrame";
 import useStore from "../../store/UseStore"; // Zustand 상태관리 사용 (필요시 활용)
 
 const PhotoSelectionPage = () => {
@@ -147,66 +148,15 @@ const PhotoSelectionPage = () => {
           {/* 오른쪽 구역: 인생네컷 프레임 (세로 4 슬롯) */}
           <div
             style={{
-              flex: 1,
-              padding: "10px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              marginTop: "20px",
+              padding: "10px 20px",
+              fontSize: "16px",
+              cursor: "pointer",
             }}
           >
-            <div
-              style={{
-                border: "2px solid #333",
-                width: "100%",
-                height: "80%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              {Array.from({ length: 4 }).map((_, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    border: "1px solid #aaa",
-                    flex: 1,
-                    margin: "5px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  {selectedPhotos[idx] ? (
-                    <img
-                      src={selectedPhotos[idx]}
-                      alt={`선택 ${idx + 1}`}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-                  ) : (
-                    <span>빈 슬롯</span>
-                  )}
-                </div>
-              ))}
-            </div>
-            {selectedPhotos.length === 4 && (
-              <button
-                onClick={handlePrint}
-                style={{
-                  marginTop: "20px",
-                  padding: "10px 20px",
-                  fontSize: "16px",
-                  cursor: "pointer",
-                }}
-              >
-                인쇄하기
-              </button>
-            )}
-          </div>
-        </div>
+            인쇄하기
+          </button>
+        )} */}
       </Largemain>
     </Background>
   );

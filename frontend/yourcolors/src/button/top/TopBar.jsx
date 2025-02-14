@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './TopBar.css';
 import Topbutton from './TopButton';
-import Logo from "../../assets/Logo.png"; // 이미지 import
+import Logo from "../../assets/yourcolor.png"; // 이미지 import
 
 
 const Topbar = () => {
