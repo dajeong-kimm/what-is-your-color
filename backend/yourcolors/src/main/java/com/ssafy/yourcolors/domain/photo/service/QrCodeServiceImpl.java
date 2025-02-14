@@ -27,6 +27,9 @@ public class QrCodeServiceImpl implements QrCodeService {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
+    @Value("${custom.server.ip}")
+    private String serverIp;
+
     @Override
     public String uploadFile(MultipartFile file) throws IOException {
         File directory = new File(uploadDir);
@@ -44,8 +47,10 @@ public class QrCodeServiceImpl implements QrCodeService {
 
     @Override
     public byte[] generateQrCode(String fileName) throws IOException, WriterException {
-        String fileDownloadUrl = "http://localhost:9000/api/photos/download/" + fileName;
-        BufferedImage qrImage = generateQRCode(fileDownloadUrl);
+//        String fileDownloadUrl = serverIp + "/api/photos/download/" + fileName;
+        String fileViewUrl = serverIp + "/api/photos/view/" + fileName; // URL 변경
+
+        BufferedImage qrImage = generateQRCode(fileViewUrl);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(qrImage, "png", baos);
