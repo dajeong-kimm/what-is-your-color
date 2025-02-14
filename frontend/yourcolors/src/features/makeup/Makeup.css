@@ -79,8 +79,9 @@
   display: flex;
   justify-content: center;
   gap: 0.5rem;
-  top:0;
+  top: 5px;
   margin-bottom: 1rem;
+  margin-top: 10px;
 }
 
 /* product-list 내부 스크롤 및 고정 높이 설정 */
