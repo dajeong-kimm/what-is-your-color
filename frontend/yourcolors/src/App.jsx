@@ -14,55 +14,58 @@ import DiagResult from "./features/diagnosis/DiagResult";
 import BestWorst from "./features/diagnosis/BestWorst";
 import LoadingPage from "./button/loading-page/LoadingPage.jsx";
 import TestPage from "./common/components/TestPage";
-import PersonalColorMain from './features/personal-colors/PersonalColorMain.jsx';
-import PersonalColorDetail from './features/personal-colors/PersonalColorDetail.jsx';
+import PersonalColorMain from "./features/personal-colors/PersonalColorMain.jsx";
+import PersonalColorDetail from "./features/personal-colors/PersonalColorDetail.jsx";
 import MakeupByColor from "./features/makeup/MakeupByColor";
 import Makeup from "./features/makeup/Makeup";
 import MediapipeCameraX from "./features/camera/MediapipeCameraX.jsx";
 import PersonalRecommend from "./features/recommend/PersonalRecommend";
 import ChoicePage from "./features/choice/ChoicePage.jsx";
-import PhotoQrChoicePage from "./features/season-photo/PhotoQrChoicePage.jsx";
+import QRTest from "./features/photo/QRTest.jsx";
+import QRTestButton from "./features/photo/QRTestButton.jsx";
+import { RecoilRoot } from "recoil";
 import PersonalDefine from "./features/personal-colors/PersonalDefine.jsx";
 import PhotoCapturePage from "./features/season-photo/PhotoCapturePage.jsx";
-import { RecoilRoot } from 'recoil';
 import PhotoSelectionPage from "./features/season-photo/PhotoSelectionPage.jsx";
-import PhotoFrame from "./features/season-photo/PhotoFrame.jsx";
+import QrCodePage from "./button/print/QRCodePage.jsx";
 
 const App = () => {
   return (
     <RecoilRoot>
       <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/endpage" element={<EndPage />} />
-        <Route path="/paperyesnopage" element={<PaperYesNoPage />} />
-        <Route path="/checkpage" element={<CheckPage />} />
-        <Route path="/mainpage" element={<MainPage />} />
-        <Route path="/mainpage2" element={<Mainpage2 />} />
-        <Route path="/diagcapture" element={<DiagCapture />} />
-        <Route path="/diagcapturex" element={<DiagCaptureX />} />
-        <Route path="/diagcapturexai" element={<DiagCaptureXAI />} />
-        <Route path="/diagimage" element={<DiagImage />} />
-        <Route path="/mediapipecamera" element={<MediapipeCamera />} />
-        <Route path="/loadingpage" element={<LoadingPage />} />
-        <Route path="/diagresult" element={<DiagResult />} />
-        <Route path="/bestworst" element={<BestWorst />} />
-        <Route path="/test" element={<TestPage />} />
-        <Route path="/personalcolors" element={<PersonalColorMain />} />
-        <Route path="/makeup" element={<Makeup />} />
-        <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
-        {/* <Route path="/detail" element={<PersonalColorDetailContent />} /> */}
-        <Route path="/makeupbycolor" element={<MakeupByColor />} />
-        <Route path="/choice" element={<ChoicePage />} />
-        <Route path="/photoqrchoice" element={<PhotoQrChoicePage />} />
-        {/* <Route path="/bestworst" element={<BestWorst />} /> */}
-        {/* <Route path="/:personalColor/recommend" element={<PersonalRecommend />} /> */}
-        <Route path="/personaldefine" element={<PersonalDefine />} />
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/endpage" element={<EndPage />} />
+          <Route path="/paperyesnopage" element={<PaperYesNoPage />} />
+          <Route path="/checkpage" element={<CheckPage />} />
+          <Route path="/mainpage" element={<MainPage />} />
+          <Route path="/mainpage2" element={<Mainpage2 />} />
+          <Route path="/diagcapture" element={<DiagCapture />} />
+          <Route path="/diagcapturex" element={<DiagCaptureX />} />
+          <Route path="/diagcapturexai" element={<DiagCaptureXAI />} />
+          <Route path="/diagimage" element={<DiagImage />} />
+          <Route path="/mediapipecamera" element={<MediapipeCamera />} />
+          <Route path="/loadingpage" element={<LoadingPage />} />
+          <Route path="/diagresult" element={<DiagResult />} />
+          <Route path="/bestworst" element={<BestWorst />} />
+          <Route path="/test" element={<TestPage />} />
+          <Route path="/personalcolors" element={<PersonalColorMain />} />
+          <Route path="/makeup" element={<Makeup />} />
+          <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
+          {/* <Route path="/detail" element={<PersonalColorDetailContent />} /> */}
+          <Route path="/makeupbycolor" element={<MakeupByColor />} />
+          <Route path="/choice" element={<ChoicePage />} />
+          {/* <Route path="/bestworst" element={<BestWorst />} /> */}
+          {/* <Route path="/:personalColor/recommend" element={<PersonalRecommend />} /> */}
+          <Route path="/qrtestbutton" element={<QRTestButton />} />
+          <Route path="/qrtest" element={<QRTest />} />
         <Route path="/photo" element={<PhotoCapturePage />} />
         <Route path="/select" element={<PhotoSelectionPage />} />
-        <Route path="/frame" element={<PhotoFrame />} />
+        <Route path="/qr-code" element={<QrCodePage />} />
       </Routes>
     </Router>
+
     </RecoilRoot>
   );
 };
