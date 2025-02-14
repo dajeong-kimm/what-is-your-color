@@ -1,10 +1,9 @@
-// color-distance, 얼굴만 보내는 버전
 import React, { useRef, useEffect, useState } from "react";
 import { Holistic } from "@mediapipe/holistic";
 import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import useStore from "../../store/UseStore"; //Zustand 상태관리 데이터
+import useStore from "../../store/UseStore"; // Zustand 상태관리 데이터
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)
@@ -12,34 +11,54 @@ let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)
 const MediapipeCameraXTimer = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const holisticRef = useRef(null); // Holistic 인스턴스 저장용
 
   const [countdown, setCountdown] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [showCaptureButton, setShowCaptureButton] = useState(true);
   const [isFlashing, setIsFlashing] = useState(false);
-  const [hasCaptured, setHasCaptured] = useState(false); // 이미 촬영했는지 체크
+  const [hasCaptured, setHasCaptured] = useState(false); // 중복 촬영 방지
 
   const navigate = useNavigate();
-  const { setUserPersonalId, userImageFile, setUserImageFile, setResults, setGptSummary } = useStore(); //Zustand 상태관리 데이터
+  const { setUserPersonalId, userImageFile, setUserImageFile, setResults, setGptSummary } = useStore();
 
   useEffect(() => {
     console.log("[useEffect] Component mounted -> Initialize camera");
     initializeCamera();
-    // cleanup: 컴포넌트 언마운트 시 카메라 정리
+
+    // cleanup: 컴포넌트 언마운트 시 모든 인스턴스와 스트림 해제
     return () => {
-      if (cameraInstance) {
-        // cameraInstance.stop() 가 제공되는지 여부는 카메라 라이브러리에 따라 다릅니다.
-        // Mediapipe CameraUtils에 stop()이 없다면 생략 가능합니다.
-        console.log("[useEffect cleanup] Camera stopped");
+      console.log("[useEffect cleanup] Stopping camera and releasing instances");
+      
+      // Camera 인스턴스 정지 (stop() 메서드가 존재하면 호출)
+      if (cameraInstance && typeof cameraInstance.stop === "function") {
+        cameraInstance.stop();
+      }
+      cameraInstance = null;
+
+      // Holistic 인스턴스 해제
+      if (holisticRef.current) {
+        holisticRef.current.close();
+        holisticRef.current = null;
+      }
+
+      // video 스트림 정리
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+        videoRef.current.srcObject = null;
       }
     };
   }, []);
 
   const initializeCamera = () => {
     console.log("[initializeCamera] called");
+    // Holistic 인스턴스 생성 후 ref에 저장
     const holistic = new Holistic({
-      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
+      locateFile: (file) =>
+        `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
     });
+    holisticRef.current = holistic;
+
     holistic.setOptions({
       modelComplexity: 1,
       smoothLandmarks: true,
@@ -52,7 +71,13 @@ const MediapipeCameraXTimer = () => {
       if (!ctx) return;
 
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      ctx.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+      ctx.drawImage(
+        videoRef.current,
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
     });
 
     if (videoRef.current) {
@@ -69,7 +94,7 @@ const MediapipeCameraXTimer = () => {
   };
 
   const handleCapture = async () => {
-    // 버튼 클릭 시 중복 클릭 방지
+    // 버튼 중복 클릭 방지
     setShowCaptureButton(false);
 
     console.log("[handleCapture] Start 5s countdown");
@@ -95,7 +120,7 @@ const MediapipeCameraXTimer = () => {
       console.log("[capturePhoto] Already captured -> skip");
       return;
     }
-    setHasCaptured(true); // 이제부터는 중복 촬영 방지
+    setHasCaptured(true); // 중복 촬영 방지
 
     console.log("[capturePhoto] Capturing now...");
     setIsFlashing(true);
@@ -129,23 +154,18 @@ const MediapipeCameraXTimer = () => {
         // Base64 → Blob 변환
         const blob = base64ToBlob(faceImage, "image/png");
 
-        // 🟢 상태 업데이트: 유저 이미지 파일 저장
-        // setUserImageFile(blob); // ✅ Zustand 상태 업데이트
-        // const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
-        // console.log("웃어봐요 활짝", imageUrl);
-
         // FormData 객체 생성
         const formData = new FormData();
-        formData.append("face_image", blob, "captured_face.png"); // 파일명 지정
-        formData.append("a4_image", ""); // 현재는 빈 값
-        setUserImageFile(formData); // ✅ Zustand 상태 업데이트
+        formData.append("face_image", blob, "captured_face.png");
+        formData.append("a4_image", "");
+        setUserImageFile(formData);
 
         console.log("색상거리(종이X) - 얼굴 이미지 form-data로 저장 완료!!!!");
         formData.forEach((value, key) => {
           console.log(`Key: ${key}, Value:`, value);
         });
 
-        // sendImagesToServer(faceImage); //여기서 실행하면 안된다
+        // sendImagesToServer(faceImage); // 호출 시점 조정
       }
     }, 300);
   };
@@ -163,11 +183,21 @@ const MediapipeCameraXTimer = () => {
     faceCanvas.width = faceWidth;
     faceCanvas.height = faceHeight;
 
-    context.drawImage(canvas, faceX, faceY, faceWidth, faceHeight, 0, 0, faceWidth, faceHeight);
+    context.drawImage(
+      canvas,
+      faceX,
+      faceY,
+      faceWidth,
+      faceHeight,
+      0,
+      0,
+      faceWidth,
+      faceHeight
+    );
     return faceCanvas.toDataURL("image/png");
   };
 
-  // 🔥 Base64 -> Blob 변환 함수
+  // Base64 -> Blob 변환 함수
   const base64ToBlob = (base64, mimeType) => {
     const byteCharacters = atob(base64.split(",")[1]);
     const byteNumbers = new Array(byteCharacters.length);
@@ -182,19 +212,6 @@ const MediapipeCameraXTimer = () => {
     console.log("[sendImagesToServer] Sending to server...");
     console.log("11. 색상 거리 사용 API");
 
-    // // Base64 → Blob 변환
-    // const blob = base64ToBlob(faceImageBase64, "image/png");
-
-    // // 🟢 상태 업데이트: 유저 이미지 파일 저장
-    // setUserImageFile(blob); // ✅ Zustand 상태 업데이트
-    // const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
-    // console.log("웃어봐요 활짝", imageUrl);
-
-    // FormData 객체 생성
-    // const formData = new FormData();
-    // formData.append("face_image", faceImageBase64, "captured_face.png"); // 얼굴 이미지 추가
-    // formData.append("a4_image", ""); // 현재는 빈 값
-
     axios
       .post(`${apiBaseUrl}/api/consult/dist`, formData, {
         headers: {
@@ -205,13 +222,13 @@ const MediapipeCameraXTimer = () => {
         console.log("Server Response(색상거리 종이없음):", response.data);
         console.log("너의 색깔은?? : ", response.data.results[0].personal_id);
         setUserPersonalId(response.data.results[0].personal_id);
-        setResults(response.data.results); // ✅ Zustand 상태 업데이트 - AI 분석 결과 저장
-        setGptSummary(response.data.gpt_summary); // ✅ Zustand 상태 업데이트 - GPT 요약 저장
+        setResults(response.data.results);
+        setGptSummary(response.data.gpt_summary);
       })
       .catch((error) => {
         console.error("Error sending images to server:", error);
         alert("퍼스널컬러 진단에 실패했습니다. 화면에 맞춰서 다시 시도해주세요.");
-        navigate(-1); // 🔴 이전 페이지로 이동
+        navigate(-1);
       });
   };
 
@@ -268,7 +285,15 @@ const MediapipeCameraXTimer = () => {
 
       {capturedImage ? (
         <div style={{ width: "100%", height: "100%", position: "relative" }}>
-          <img src={capturedImage} alt="Captured" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img
+            src={capturedImage}
+            alt="Captured"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
           <div
             style={{
               position: "absolute",
@@ -299,11 +324,12 @@ const MediapipeCameraXTimer = () => {
             <button
               onClick={() => {
                 if (userImageFile) {
-                  setResults([]); // ✅ Zustand 상태 업데이트
-                  setGptSummary(""); // ✅ Zustand 상태 업데이트
-                  sendImagesToServer(userImageFile); // 서버로 이미지 전송
-                  // navigate("/LoadingPage"); // 전송 후 페이지 이동
-                  navigate("/LoadingPage", { state: { from: "MediapipeCameraXTimer" } }); //진단 실패시 되돌아가기 위해 주소 저장
+                  setResults([]);
+                  setGptSummary("");
+                  sendImagesToServer(userImageFile);
+                  navigate("/LoadingPage", {
+                    state: { from: "MediapipeCameraXTimer" },
+                  });
                 }
               }}
               style={{
@@ -338,7 +364,11 @@ const MediapipeCameraXTimer = () => {
               transform: "scaleX(-1)",
             }}
           />
-          <canvas ref={canvasRef} style={{ display: "none" }} willreadfrequently="true" />
+          <canvas
+            ref={canvasRef}
+            style={{ display: "none" }}
+            willreadfrequently="true"
+          />
           {/* 얼굴 인식 가이드 영역 */}
           <div
             style={{
