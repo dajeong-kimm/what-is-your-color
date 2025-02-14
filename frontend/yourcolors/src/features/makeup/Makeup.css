@@ -81,7 +81,7 @@
   gap: 0.5rem;
   top: 5px;
   margin-bottom: 1rem;
-  margin-top: 10px;
+
 }
 
 /* product-list 내부 스크롤 및 고정 높이 설정 */
@@ -209,20 +209,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.9); /* 배경색 추가 */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
 }
 
 .selected-colors {
   display: flex;
-  flex-direction: column;
+  flex-direction: column;  /* 세로 정렬 */
   gap: 10px;
   justify-content: center;
-  align-items: center;
-  padding: 15px;
-  border-bottom: 1px solid #eee; /* 구분선 추가 */
-  width: 100%; /* 너비 100%로 설정 */
-  margin-bottom: 15px; /* 아래 여백 추가 */
+  align-items: center; /* 중앙 정렬 (필요하면 유지) */
 }
 /* h3 태그에 nowrap 적용 */
 .selected-colors-container h3 {
@@ -277,36 +271,4 @@
 
 .reset-btn:hover {
   background-color: #e04a4a;
-}
-
-/* 계절네컷 버튼 스타일 개선 */
-.season-photo-btn {
-  width: 80%; /* 버튼 너비 조정 */
-  padding: 12px 20px;
-  background-color: rgba(130, 220, 40, 0.40);
-  color: #333;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-top: 5px; /* 상단 여백 조정 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px; /* 텍스트와 화살표 사이 간격 */
-}
-
-.selected-colors-container h3 {
-  white-space: nowrap;
-  overflow: hidden;
-  margin: 0;
-  padding: 10px 0;
-  color: #333;
-  font-size: 1.2rem;
-  border-bottom: 2px solid #eee; /* 제목 아래 구분선 추가 */
-  width: 100%; /* 너비 100%로 설정 */
-  margin-bottom: 15px; /* 아래 여백 추가 */
 }

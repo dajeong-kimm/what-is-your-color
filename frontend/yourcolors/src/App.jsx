@@ -55,6 +55,7 @@ const App = () => {
         <Route path="/personaldefine" element={<PersonalDefine />} />
         <Route path="/photo" element={<PhotoCapturePage />} />
         <Route path="/select" element={<PhotoSelectionPage />} />
+      {/* (미서) 화장 적용 계절네컷 페이지 라우팅 설정 (/season-photo)*/}
       </Routes>
     </Router>
     </RecoilRoot>
