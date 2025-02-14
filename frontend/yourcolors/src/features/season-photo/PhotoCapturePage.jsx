@@ -1,32 +1,29 @@
-// PhotoCapturePage.jsx
 import React, { useEffect, useState, useRef } from "react";
 import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import { useNavigate } from "react-router-dom";
-import useStore from "../../store/UseStore"; // Zustand 상태관리 사용 (필요시 활용)
+import useStore from "../../store/UseStore";
 import { Camera } from "@mediapipe/camera_utils";
+import "./PhotoCapturePage.css";
 
 const PhotoCapturePage = () => {
   const videoRef = useRef(null);
   const [photos, setPhotos] = useState([]);
   const [started, setStarted] = useState(false);
+  const [countdown, setCountdown] = useState(null);
   const navigate = useNavigate();
   const timerRef = useRef(null);
 
-  // MediaPipe Camera를 초기화하여 video 요소에 스트림 연결
   useEffect(() => {
     if (videoRef.current) {
       const camera = new Camera(videoRef.current, {
-        onFrame: async () => {
-          // 별도의 처리 없이 매 프레임 호출됨
-        },
+        onFrame: async () => {},
         width: 1280,
         height: 720,
       });
       camera.start();
       return () => {
-        // camera 객체에 stop 메서드가 있다면 호출하여 정리
         if (camera.stop) {
           camera.stop();
         }
@@ -34,7 +31,6 @@ const PhotoCapturePage = () => {
     }
   }, []);
 
-  // video에서 현재 프레임을 캡쳐하는 함수
   const capturePhoto = () => {
     if (videoRef.current) {
       const video = videoRef.current;
@@ -48,23 +44,30 @@ const PhotoCapturePage = () => {
     }
   };
 
-  // 사진이 8장이 되면 사진 선택 페이지로 이동
   useEffect(() => {
     if (photos.length === 8) {
-      // 필요시 Zustand에 저장할 수도 있음
       navigate("/select", { state: { photos } });
       clearInterval(timerRef.current);
     }
   }, [photos, navigate]);
 
-  // 시작하기 버튼 클릭 시 타이머 시작 (한 번만 클릭)
   const handleStart = () => {
     if (!started) {
       setStarted(true);
-      capturePhoto(); // 즉시 1장 캡쳐
-      timerRef.current = setInterval(() => {
-        capturePhoto();
-      }, 5000); // 5초마다 캡쳐
+      let count = 3;
+      setCountdown(count);
+      const countdownInterval = setInterval(() => {
+        count -= 1;
+        setCountdown(count);
+        if (count === 0) {
+          clearInterval(countdownInterval);
+          setCountdown(null);
+          capturePhoto();
+          timerRef.current = setInterval(() => {
+            capturePhoto();
+          }, 5000);
+        }
+      }, 1000);
     }
   };
 
@@ -72,30 +75,15 @@ const PhotoCapturePage = () => {
     <Background>
       <Topbar />
       <Largemain>
-        {/* Largemain 내부에 video 요소가 꽉 차도록 배치 */}
-        <div style={{ position: "relative", width: "100%", height: "100%" }}>
-          <video
-            ref={videoRef}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            autoPlay
-            muted
-            playsInline
-          ></video>
-          {/* 시작하기 버튼 (한 번만 보임) */}
+        <div className="photo-header-bar">
+          <span className="photo-title">계절네컷</span>
+          <span className="photo-countdown">{countdown !== null ? countdown : ""}</span>
+          <span className="photo-count">{photos.length}/8</span>
+        </div>
+        <div className="photo-video-container">
+          <video ref={videoRef} className="photo-video" autoPlay muted playsInline></video>
           {!started && (
-            <button
-              onClick={handleStart}
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                padding: "12px 24px",
-                fontSize: "18px",
-                zIndex: 1,
-                cursor: "pointer",
-              }}
-            >
+            <button onClick={handleStart} className="photo-start-button">
               시작하기
             </button>
           )}

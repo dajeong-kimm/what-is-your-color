@@ -1,0 +1,76 @@
+.photo-video-container {
+    /* position: relative; */
+    width: 100%;
+    height: 80%;
+    border-radius: 0;
+    margin-top: 60px;
+  }
+  
+  .photo-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .photo-start-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 12px 24px;
+    font-size: 18px;
+    z-index: 1;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    opacity: 0.5;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .photo-start-button:hover {
+    background-color: #f5f5f5;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  
+  .photo-start-button:active {
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+
+  .photo-header-bar {
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    z-index: 10;
+  }
+  
+  .photo-title {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .photo-countdown {
+    flex: 1;
+    text-align: center;
+    font-size: 24px;
+    color: red;
+  }
+  
+  .photo-count {
+    flex: 1;
+    text-align: right;
+  }
+  
