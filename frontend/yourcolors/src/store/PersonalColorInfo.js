@@ -6,6 +6,8 @@ const personalColorInfo = {
     colorClass: "spring-light",
     imageUrl: "/색상표/봄 라이트 색상표.jpg", // 퍼스널컬러별 특징에 나오는 색상표
     characterUrl: "/character/spring-light.png", // 진단 결과에 나오는 캐릭터이미지
+    characterWomanUrl:"/character/woman/spring-light.png",
+    characterManUrl:"/character/man/spring-light2.png",
     description: `맑고 투명한 피부 톤을 가진 라이트톤! 밝은 카라멜 컬러의 눈동자가 많아요. 전반적으로 피부와 눈,
                   모발의 색이 밝아 부드러운 이미지가 돋보입니다. 따뜻하고 파스텔톤의 컬러가 잘 어울려요. 
                   메이크업은 과하지 않게 맑고 산뜻하게 연출하는 것이 좋아요. 살구, 연한 코랄, 크리미한 아이보리 컬러를 활용해보세요.`,
@@ -15,6 +17,8 @@ const personalColorInfo = {
     path: "/spring-vivid",
     colorClass: "spring-vivid",
     characterUrl: "character/spring-vivid.png",
+    characterWomanUrl:"/character/woman/spring-vivid.png",
+    characterManUrl:"/character/man/spring-vivid2.png",
     imageUrl: "/색상표/봄 비비드 색상표.jpg",
     description: `쨍한 원색이 잘 어울리는 생기 넘치는 타입!
                   전반적으로 따뜻한 느낌의 피부에 또렷한 눈동자를 가지고 있어요.
@@ -28,6 +32,8 @@ const personalColorInfo = {
     path: "/spring-bright",
     colorClass: "spring-bright",
     characterUrl: "character/spring-bright.png",
+    characterWomanUrl:"/character/woman/spring-bright.png",
+    characterManUrl:"/character/man/spring-bright2.png",
     imageUrl: "/색상표/봄 브라이트 색상표.jpg",
     description: `화사하고 생기 있는 피부 톤을 가진 브라이트톤!
                   피부가 맑고 투명하며, 눈동자 색이 밝고 반짝이는 느낌이에요.
@@ -41,6 +47,8 @@ const personalColorInfo = {
     path: "/summer-light",
     colorClass: "summer-light",
     characterUrl: "character/summer-light.png",
+    characterWomanUrl:"/character/woman/summer-light.png",
+    characterManUrl:"/character/man/summer-light2.png",
     imageUrl: "/색상표/여름 라이트 색상표.jpg",
     description: `맑고 차분한 분위기를 가진 소프트한 타입!
                 피부 톤이 비교적 밝고, 눈동자가 투명한 느낌을 줍니다.
@@ -54,6 +62,8 @@ const personalColorInfo = {
     path: "/summer-bright",
     colorClass: "summer-bright",
     characterUrl: "character/summer-bright.png",
+    characterWomanUrl:"/character/woman/summer-bright.png",
+    characterManUrl:"/character/man/summer-bright2.png",
     imageUrl: "/색상표/여름 브라이트 색상표.jpg",
     description: `맑고 청량한 색감이 잘 어울리는 타입!
                 피부 톤이 하얗고 깨끗한 느낌을 주며, 푸른 기운이 도는 경우가 많아요.
@@ -67,6 +77,8 @@ const personalColorInfo = {
     path: "/summer-mute",
     colorClass: "summer-mute",
     characterUrl: "character/summer-mute.png",
+    characterWomanUrl:"/character/woman/summer-mute.png",
+    characterManUrl:"/character/man/summer-mute2.png",
     imageUrl: "/색상표/여름 뮤트 색상표.jpg",
     description: `장밋빛 피부를 가지고 있는 뮤트톤!
                 중간 밝기에서 어두운색의 스킨톤에 블랙이나 다크 브라운 계열의 눈동자 색을 가지고 있어 대비감은 약합니다.
@@ -78,6 +90,8 @@ const personalColorInfo = {
     path: "/autumn-mute",
     colorClass: "autumn-mute",
     characterUrl: "character/autumn-mute.png",
+    characterWomanUrl:"/character/woman/autumn-mute.png",
+    characterManUrl:"/character/man/autumn-mute2.png",
     imageUrl: "/색상표/가을 뮤트 색상표.jpg",
     description: `고급스럽고 차분한 분위기를 가진 소프트한 타입!
                   노란 기가 도는 피부에 따뜻한 갈색 계열의 눈동자가 많아요.
@@ -91,6 +105,8 @@ const personalColorInfo = {
     path: "/autumn-strong",
     colorClass: "autumn-strong",
     characterUrl: "character/autumn-strong.png",
+    characterWomanUrl:"/character/woman/autumn-strong.png",
+    characterManUrl:"/character/man/autumn-strong2.png",
     imageUrl: "/색상표/가을 스트롱 색상표.jpg",
     description: `깊고 풍부한 색감이 잘 어울리는 강렬한 타입!
                   대체로 피부가 따뜻한 느낌이며, 눈동자가 진하고 깊은 색을 띕니다.
@@ -105,6 +121,8 @@ const personalColorInfo = {
     path: "/autumn-dark",
     colorClass: "autumn-dark",
     characterUrl: "character/autumn-dark.png",
+    characterWomanUrl:"/character/woman/autumn-dark.png",
+    characterManUrl:"/character/man/autumn-dark2.png",
     imageUrl: "/색상표/가을 다크 색상표.jpg",
     description: `진하고 무게감 있는 색상이 어울리는 타입!
                   대체로 피부가 따뜻한 톤이며, 눈동자가 어두운 브라운이나 블랙 계열이에요.
@@ -118,6 +136,8 @@ const personalColorInfo = {
     path: "/winter-vivid",
     colorClass: "winter-vivid",
     characterUrl: "character/winter-vivid.png",
+    characterWomanUrl:"/character/woman/winter-vivid.png",
+    characterManUrl:"/character/man/winter-vivid2.png",
     imageUrl: "/색상표/겨울 비비드 색상표.jpg",
     description: `선명하고 강렬한 원색이 잘 어울리는 타입!
                   대체로 피부가 희거나 쿨한 느낌을 가지고 있으며, 눈동자는 검은색에 가까워요.
@@ -132,6 +152,8 @@ const personalColorInfo = {
     path: "/winter-strong",
     colorClass: "winter-strong",
     characterUrl: "character/winter-strong.png",
+    characterWomanUrl:"/character/woman/winter-strong.png",
+    characterManUrl:"/character/man/winter-strong2.png",
     imageUrl: "/색상표/겨울 스트롱 색상표.jpg",
     description: `차가운 톤의 강렬한 색이 어울리는 타입!
                   피부 톤이 쿨한 편이며, 눈동자는 깊고 진한 다크 브라운이나 블랙이에요.
@@ -145,6 +167,8 @@ const personalColorInfo = {
     path: "/winter-dark",
     colorClass: "winter-dark",
     characterUrl: "character/winter-dark.png",
+    characterWomanUrl:"/character/woman/winter-dark.png",
+    characterManUrl:"/character/man/winter-dark2.png",
     imageUrl: "/색상표/겨울 다크 색상표.jpg",
     description: `강렬하고 시크한 분위기를 가진 타입!
                   피부가 밝거나 차가운 느낌이며, 눈동자는 블랙이나 딥 브라운입니다.
