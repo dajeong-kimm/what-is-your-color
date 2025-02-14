@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
@@ -10,6 +10,16 @@ import useStore from "../../store/UseStore"; // Zustand 상태관리 사용 (필
 
 const PhotoFrame = ({ selectedPhotos = [] }) => {
   const { userPersonalId } = useStore();
+  const [num, setNum] = useState(userPersonalId); // 현재 표시할 콘텐츠 상태
+  
+    // 콘텐츠 변경 로직 (좌우 버튼)
+    const nextNum = () => {
+      setNum((num) => (num + 1 + 12) % 12);
+    };
+  
+    const prevNum = () => {
+      setNum((num) => (num - 1 + 12) % 12);
+    };
 
   console.log(PersonalColorInfo[userPersonalId].colorClass);
   return (
@@ -37,7 +47,7 @@ const PhotoFrame = ({ selectedPhotos = [] }) => {
           </div>
         ))}
         <div className="photo-booth-footer" style={{ textAlign: "center", marginTop: "20px", color: "white", width: "100%", padding: "10px 0" }}>
-          <div className="photo-booth-text" style={{ fontSize: "15px", fontWeight: "bold", fontFamily: "cursive", fontStyle: "italic", marginTop: "-30px" }}>{PersonalColorInfo[userPersonalId].colorClass}</div>
+          <div className="photo-booth-text" style={{ fontSize: "15px", fontWeight: "bold", fontFamily: "cursive", fontStyle: "italic", marginTop: "-30px" }}>{PersonalColorInfo[num].colorClass}</div>
           <div className="photo-booth-text" style={{ fontSize: "23px", fontWeight: "bold" }}>계절네컷</div>
         </div>
       </div>
