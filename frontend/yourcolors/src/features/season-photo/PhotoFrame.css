@@ -5,6 +5,7 @@
     padding: 30px;
   }
   
+ 
   .choice-card {
     width: 450px; /* ✅ 기존 400px → 450px로 확장 */
     height: 520px; /* ✅ 기존 480px → 520px로 확장 */
@@ -18,20 +19,31 @@
     position: relative;
     box-sizing: border-box; /* 패딩 포함 크기 조정 */
   }
-  
+  .frame-image{
+    margin-top : 20px;
+    margin-right : -20px;
+    width : 100px;
+    height: 200px;
+  }
+  .frame-image2{
+    margin-top : 70px;
+    margin-right : -20px;
+    width : 100px;
+    height: 100px;
+  }
   
   .choice-card:hover {
     transform: translateY(-8px);
   }
   
-  .choice-ai-image-wrapper {
+  .qrchoice-ai-image-wrapper {
     background-color: #e3f2fd;
     padding: 30px;
     display: flex;
     justify-content: center;
   }
   
-  .choice-color-image-wrapper {
+  .qrchoice-color-image-wrapper {
     background-color: #ffe0e0;
     padding: 30px;
     display: flex;
@@ -41,7 +53,7 @@
   .choice-image {
     width: 150px;
     height: auto;
-    border-radius: 50%;
+    border-radius: 0%;
   }
   
   .choice-content {
@@ -50,10 +62,10 @@
   }
   
   /* 하단 영역 스타일 */
-  .choice-footer {
+  .qrchoice-footer {
     width: 100%;
     padding: 15px 0; /* 좌우 패딩 제거 */
-    font-size: 18px;
+    font-size: 30px;
     font-weight: bold;
     text-align: center;
     position: absolute;
@@ -92,4 +104,22 @@
       height: auto;
     }
   }
-  
+  qrstrong{
+    font-size :20px;
+    font-weight: bold;
+  }
+
+  .qrchoice-description{
+    margin-left:-30px;
+  }
+  .qrchoice-description2{
+    margin-left:-30px;
+    margin-top : 60px;
+  }
+  .frame-logo {
+    width: 100px;
+    height: 200px;
+  }
+  .side-text{
+    right : 100px;
+}
