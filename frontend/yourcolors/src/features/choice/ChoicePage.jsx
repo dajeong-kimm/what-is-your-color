@@ -34,7 +34,7 @@ const ChoicePage = () => {
           </div>
 
           {/* 컬러 큐레이터 추천 버튼 */}
-          <div className="choice-card red-bg" onClick={() => navigate("/paperyesnopage")}>
+          <div className="choice-card red-bg" onClick={() => navigate("/diagcapturex")}>
             <div className="choice-color-image-wrapper">
               <img src={Curator} alt="컬러 큐레이터" className="choice-image" />
             </div>

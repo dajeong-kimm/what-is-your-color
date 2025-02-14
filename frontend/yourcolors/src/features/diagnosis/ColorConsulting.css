@@ -1,86 +1,80 @@
-.personal-detail-container-left {
-  /* flex: 1; */
-  padding: 20px;
-  display: flex;
-  height: 400px;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  gap: 20px;
-}
-
-.personal-detail-title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #000000;
-  margin-top:0;
-}
-
-.personal-detail-description {
-  font-size: 1.5rem;
-  color: #666;
-  width: 80%;
-  text-align: center;
-}
-
-.personal-detail-container-right {
-  flex: 1;
-  padding: 20px;
+.full-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  padding: 20px;
+  max-width: 100%;  /* SmallMain 너비를 넘지 않도록 설정 */
+  height: 100%;
+  overflow: hidden;  /* 자식 요소들이 부모 영역을 넘지 않도록 제한 */
 }
 
-.personal-detail-section {
+.top-container {
   width: 100%;
+  text-align: center;
+}
 
+.consulting-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #FF6F61; /* 🔹 강조 색상 */
+  margin-bottom: 8px; /* 🔹 간격 줄이기 */
+  text-align: center; /* 제목을 가운데 정렬 */
+}
+
+.bottom-container {
+  width: 100%;
+  flex-grow: 1;  /* 남은 공간을 차지하도록 설정 */
+  /* overflow-y: auto;   */
+}
+
+.GPT-consulting {
+  padding: 15px; /* 🔹 내부 여백 조정 */
   border-radius: 10px;
-  margin-right: 20px;
+  font-size: 16px; /* 🔹 글자 크기 조정 */
+  line-height: 1.1; /* 🔹 줄 간격 최적화 */
+  color: #333;
+  background-color: transparent !important; /* 🔹 배경 완전 제거 */
+  box-shadow: none; /* 🔹 그림자 제거 */
+  border: none; /* 🔹 테두리 제거 */
 }
 
-.section-title {
-  font-size: 2rem;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 0;
-  align-self: flex-start; /* 🌟 Left 컨테이너 Title과 같은 높이에 정렬 */
+/* 나머지 CSS는 기존 내용을 유지 */
+.GPT-consulting ul {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: -10px; /* 🔹 간격 조정 */
+  margin-top : -10px;
+  line-height: 1.0; /* 🔹 줄 간격 최적화 */
+
+
 }
 
-.color-palette {
-  display: flex;
-  flex-wrap: wrap; /* 🌟 컬러가 공간에 맞게 조정되도록 설정 */
-  justify-content: center;
-  gap: 10px;
-  flex-grow: 1; /* 🌟 Right 컨테이너에서 남은 공간을 가득 채움 */
+.GPT-consulting h2 {
+  font-size: 20px;
+  color: #007BFF;
+  margin-top: 8px; /* 🔹 제목과 내용 간격 줄이기 */
 }
 
-.color-group {
-  text-align: center;
-  flex: 1;
+.GPT-consulting li {
+  font-size: 16px;
+  margin: 4px 0; /* 🔹 리스트 간격 줄이기 */
 }
 
-.color-group h3 {
-  font-size: 1.3rem;
-  font-weight: bold;
+.GPT-consulting strong {
+  color: #FF6F61;
+  font-weight: bolder;
 }
 
-.color-list {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap; /* 🌟 반응형 레이아웃 조정 */
-  gap: 10px;
+.GPT-consulting p {
+  margin-top : 0px;
+  margin-bottom: -15px; /* 원하는 값으로 조정 (예: 4px) */
 }
 
-.color-box {
-  width: 60px; /* 기존보다 조금 키움 */
-  height: 60px;
-  border-radius: 8px;
-  border: 2px solid #ddd;
-  transition: transform 0.2s ease-in-out;
+.GPT-consulting ul li {
+  line-height: 1.0;   /* 줄 간격을 1.0으로 줄임 */
+  margin-top: 2px;    /* 위쪽 여백을 2px로 설정 */
+  margin-bottom: 2px; /* 아래쪽 여백을 2px로 설정 */
 }
-
-.color-box:hover {
-  transform: scale(1.1);
+.consulting-title{
+  margin-bottom : -25px;
 }

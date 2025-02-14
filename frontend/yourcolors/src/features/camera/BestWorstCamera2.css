@@ -1,0 +1,69 @@
+/* 전체 컨테이너 */
+/* .container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1a202c; 
+  } */
+  
+  /* 중앙 정렬된 원형 UI */
+  .wrapper {
+    width: 100%; /* 부모 크기에 맞춤 */
+    max-width: 300px; /* 최대 크기 제한 */
+    aspect-ratio: 1 / 1; /* 정사각형 유지 */
+    position: relative;
+  }
+  
+  /* 배경 원형 분할 SVG */
+  .svg-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* SVG 내 색상 세그먼트 */
+  .segment {
+    transition: all 0.3s;
+  }
+  .segment:hover {
+    opacity: 0.8;
+  }
+  
+  /* 웹캠 비디오 */
+  .video-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    height: 60%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    border-radius: 50%;
+  }
+  
+  .webcam-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(2.6) scaleX(-1); /* 좌우 반전 + 확대 */
+    clip-path: url(#circleClip); /* SVG 마스크 적용 */
+  }
+  
+  /* 가이드 원 (점선) */
+  .guide-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    height: 60%;
+    transform: translate(-50%, -50%);
+    border: 4px dashed yellow;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  
