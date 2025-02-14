@@ -5,7 +5,6 @@ import useStore from "../../store/UseStore"; // Zustand 스토어
 import LoadingSpinner from "../loading-spinner/LoadingSpinnerS"; // LoadingSpinner 컴포넌트 (경로는 실제 프로젝트 구조에 맞게 수정)
 import "./SendButton.css";
 import { image } from "framer-motion/client";
-import QRTestButton from "../../features/photo/QRTestButton";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -164,10 +163,6 @@ const SendButton = () => {
       <button className="send-button" onClick={handleOpenModal}>
         이메일로 결과표 받기
       </button>
-
-      <div className="App">
-        <QRTestButton />
-      </div>
 
       {isModalOpen && (
         <div className="send-modal-overlay">

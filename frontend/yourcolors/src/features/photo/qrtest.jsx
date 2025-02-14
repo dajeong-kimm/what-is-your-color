@@ -52,7 +52,7 @@ const QRTest = () => {
 
     try {
       // 백엔드 API 엔드포인트 URL을 실제 주소로 수정하세요.
-      const response = await axios.post("http://localhost:9000/api/photos/upload", formData, {
+      const response = await axios.post("http://3.35.236.198:9000/api/photos/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
