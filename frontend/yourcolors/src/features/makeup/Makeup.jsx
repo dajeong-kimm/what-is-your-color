@@ -55,6 +55,14 @@ const Makeup = () => {
     cheek: { hex: "transparent" },
   });
 
+  const [showSeasonPhoto, setShowSeasonPhoto] = useState(false);
+
+  
+  const handleSeasonPhotoClick = () => {
+    // 현재 선택된 색상들을 가지고 계절네컷 페이지로 이동하거나 모달을 띄움
+    setShowSeasonPhoto(true);
+  };
+
   // 선택한 카테고리의 화장품 리스트 가져오기
   const categoryMap = {
     lip: cosmetics.lip || [],
@@ -203,6 +211,25 @@ const Makeup = () => {
                     </div>
                   ))}
                 </div>
+                {/* 계절네컷 버튼 추가 */}
+                <button
+                  className="season-photo-btn"
+                  onClick={handleSeasonPhotoClick}
+                  style={{
+                    marginTop: '15px',
+                    padding: '10px 20px',
+                    backgroundColor: 'rgba(130, 220, 40, 0.40)',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    transition: 'background-color 0.3s ease',
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#82DC28'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(130, 220, 40, 0.40)'}
+                >
+                  계절네컷 🡺
+                </button>
               </div>
             </div>
           </div>
