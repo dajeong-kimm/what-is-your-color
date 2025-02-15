@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
-import { useLocation } from "react-router-dom";
 import PhotoFrame from "./PhotoFrame";
 import useStore from "../../store/UseStore"; // Zustand 상태관리 사용 (필요시 활용)
 
@@ -146,17 +145,20 @@ const PhotoSelectionPage = () => {
             </div>
           </div>
           {/* 오른쪽 구역: 인생네컷 프레임 (세로 4 슬롯) */}
-          <div
-            style={{
-              marginTop: "20px",
-              padding: "10px 20px",
-              fontSize: "16px",
-              cursor: "pointer",
-            }}
-          >
-            인쇄하기
-          </button>
-        )} */}
+          <div>
+            <button
+              onClick={handlePrint}
+              style={{
+                marginTop: "20px",
+                padding: "10px 20px",
+                fontSize: "16px",
+                cursor: "pointer",
+              }}
+            >
+              인쇄하기
+            </button>
+          </div>
+        </div>
       </Largemain>
     </Background>
   );
