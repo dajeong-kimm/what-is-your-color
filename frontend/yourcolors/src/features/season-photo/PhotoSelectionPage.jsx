@@ -1,42 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import PhotoFrame from "./PhotoFrame";
-import useStore from "../../store/UseStore"; // Zustand 상태관리 사용 (필요시 활용)
+import html2canvas from "html2canvas";
+import useStore from "../../store/UseStore";
 
 const PhotoSelectionPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { photos } = location.state || { photos: [] };
-  const [selectedPhotos, setSelectedPhotos] = useState([]);
-  const [num, setNum] = useState(0); // 현재 표시할 퍼스널 컬러 인덱스
+  const [selectedPhotoIndices, setSelectedPhotoIndices] = useState([]);
+  // 인터랙티브 뷰에서 캡쳐 시에는 captureMode 상태로 hideArrows 여부를 제어합니다.
+  const [captureMode, setCaptureMode] = useState(false);
+  const frameRef = useRef(null);
 
-  // 사진 클릭 시 선택/해제 토글 (최대 4장 선택)
-  const toggleSelectPhoto = (photo) => {
-    if (selectedPhotos.includes(photo)) {
-      setSelectedPhotos(selectedPhotos.filter((p) => p !== photo));
+  // 사진 클릭 시 선택/해제 (최대 4장 선택)
+  const toggleSelectPhoto = (idx) => {
+    const photo = photos[idx];
+    if (!photo) return;
+    if (selectedPhotoIndices.includes(idx)) {
+      setSelectedPhotoIndices(selectedPhotoIndices.filter((i) => i !== idx));
     } else {
-      if (selectedPhotos.length < 4) {
-        setSelectedPhotos([...selectedPhotos, photo]);
+      if (selectedPhotoIndices.length < 4) {
+        setSelectedPhotoIndices([...selectedPhotoIndices, idx]);
       }
     }
   };
 
-  // 인쇄하기 버튼 클릭 시: 선택된 사진을 업로드 후 QR 코드 페이지로 이동
+  // 인쇄 버튼 클릭 시 QR 코드용 이미지를 캡쳐
   const handlePrint = async () => {
-    if (selectedPhotos.length < 1) {
+    if (selectedPhotoIndices.length < 1) {
       alert("적어도 한 장의 사진을 선택해주세요.");
       return;
     }
+    // 캡쳐 전에 hideArrows를 true로 설정 (즉, 캡쳐용 뷰로 전환)
+    setCaptureMode(true);
+
+    // 리렌더링 대기 (필요 시 setTimeout이나 requestAnimationFrame 사용)
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     try {
-      const fileUrl = selectedPhotos[0];
-      const response = await fetch(fileUrl);
-      const blob = await response.blob();
-      const file = new File([blob], "photo.jpg", { type: blob.type });
+      const canvas = await html2canvas(frameRef.current, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+      });
+      const dataUrl = canvas.toDataURL("image/jpeg");
+      const responseFetch = await fetch(dataUrl);
+      const blob = await responseFetch.blob();
 
+      const file = new File([blob], "photo-frame.jpg", { type: blob.type });
       const formData = new FormData();
       formData.append("file", file);
 
@@ -55,15 +70,10 @@ const PhotoSelectionPage = () => {
     } catch (error) {
       console.error(error);
       alert("인쇄 처리 중 오류가 발생했습니다.");
+    } finally {
+      // 캡쳐 후 원래 상태로 복원 (인터랙티브 뷰에서는 화살표 표시)
+      setCaptureMode(false);
     }
-  };
-
-  // 모달에서 이전/다음 디자인 선택
-  const nextNum = () => {
-    setNum((num) => (num + 1 + 12) % 12);
-  };
-  const prevNum = () => {
-    setNum((num) => (num - 1 + 12) % 12);
   };
 
   return (
@@ -71,13 +81,19 @@ const PhotoSelectionPage = () => {
       <Topbar />
       <Largemain>
         <div style={{ display: "flex", width: "100%", height: "100%" }}>
-          <div style={{ flex: 1, padding: "10px", overflowY: "auto" }}>
+          <div
+            style={{
+              flex: 1,
+              padding: "10px",
+              overflowY: "auto",
+            }}
+          >
             <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(3, 1fr)",
                 gridTemplateRows: "repeat(3, 1fr)",
-                gap: "5px", // 간격 줄이기
+                gap: "5px",
               }}
             >
               {Array.from({ length: 9 }).map((_, idx) => {
@@ -92,11 +108,11 @@ const PhotoSelectionPage = () => {
                         border: "1px solid #aaa",
                         fontSize: "18px",
                         backgroundColor: "#f0f0f0",
-                        width: "90%", // 크기 줄이기
+                        width: "90%",
                         height: "90%",
                       }}
                     >
-                      {`${selectedPhotos.length} / 4`}
+                      {`${selectedPhotoIndices.length} / 4`}
                     </div>
                   );
                 }
@@ -104,18 +120,16 @@ const PhotoSelectionPage = () => {
                 return (
                   <div
                     key={idx}
-                    onClick={() => photo && toggleSelectPhoto(photo)}
+                    onClick={() => toggleSelectPhoto(idx)}
                     style={{
                       position: "relative",
                       cursor: photo ? "pointer" : "default",
-                      border: photo && selectedPhotos.includes(photo)
-                        ? "2px solid blue"
-                        : "1px solid #aaa",
+                      border: photo && selectedPhotoIndices.includes(idx) ? "2px solid blue" : "1px solid #aaa",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       backgroundColor: "#fff",
-                      width: "90%", // 크기 줄이기
+                      width: "90%",
                       height: "90%",
                     }}
                   >
@@ -123,6 +137,7 @@ const PhotoSelectionPage = () => {
                       <img
                         src={photo}
                         alt={`사진 ${idx + 1}`}
+                        crossOrigin="anonymous"
                         style={{
                           width: "100%",
                           height: "100%",
@@ -132,7 +147,7 @@ const PhotoSelectionPage = () => {
                     ) : (
                       <span>빈 사진</span>
                     )}
-                    {photo && selectedPhotos.includes(photo) && (
+                    {photo && selectedPhotoIndices.includes(idx) && (
                       <div
                         style={{
                           position: "absolute",
@@ -149,9 +164,15 @@ const PhotoSelectionPage = () => {
               })}
             </div>
           </div>
-          <PhotoFrame selectedPhotos={selectedPhotos} num={num} />
+          {/* 인터랙티브 뷰에서는 화살표 보이도록 hideArrows는 captureMode 상태에 따라 결정 */}
+          <PhotoFrame
+            ref={frameRef}
+            selectedPhotos={selectedPhotoIndices.map((i) => photos[i])}
+            hideArrows={captureMode} // 캡쳐 중일 때는 true, 아닐 때는 false
+            captureMode={captureMode}
+          />
         </div>
-        {selectedPhotos.length === 4 && (
+        {selectedPhotoIndices.length === 4 && (
           <button
             onClick={handlePrint}
             style={{
@@ -164,7 +185,6 @@ const PhotoSelectionPage = () => {
             인쇄하기
           </button>
         )}
-
       </Largemain>
     </Background>
   );
