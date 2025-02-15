@@ -5,6 +5,9 @@ const personalColorInfo = {
     path: "/spring-light",
     colorClass: "spring-light",
     characterUrl: "/character/spring-light.png", // 진단 결과에 나오는 캐릭터이미지
+    characterWomanUrl:"/character/woman/spring-light1.png",
+    characterManUrl:"/character/man/spring-light2.png",
+    background_color: "#ffd1dc",
     description: `🔹 화사하고 부드러운 색감이 찰떡!
 🔹 피부가 맑고 환한 느낌, 복숭아빛이 감돌아요 🍑
 🔹 따뜻한 파스텔 컬러와 연한 색상이 잘 어울려요! 💛
@@ -19,6 +22,9 @@ bestColors: ["#FFB6C1", "#FFD700", "#FFA07A", "#FFE4B5", "#FFDAB9"],
     path: "/spring-vivid",
     colorClass: "spring-vivid",
     characterUrl: "character/spring-vivid.png",
+    characterWomanUrl:"/character/woman/spring-vivid1.png",
+    characterManUrl:"/character/man/spring-vivid2.png",
+    background_color: "#ffa07a",
     description: `🔹 선명하고 생기 넘치는 컬러가 찰떡!
 🔹 피부가 따뜻하고 밝은 느낌, 윤기가 있어 보여요 ☀️
 🔹 원색에 가까운 맑고 쨍한 컬러가 얼굴을 돋보이게 해줘요! 🎨
@@ -33,6 +39,9 @@ bestColors: ["#FF6347", "#FF4500", "#FF8C00", "#FFD700", "#FF69B4"],
     path: "/spring-bright",
     colorClass: "spring-bright",
     characterUrl: "character/spring-bright.png",
+    characterWomanUrl:"/character/woman/spring-bright1.png",
+    characterManUrl:"/character/man/spring-bright2.png",
+    background_color: "#ffd700",
     description: `🔹 맑고 밝은 컬러가 얼굴을 환하게!
 🔹 피부에 생기를 더해주는 따뜻한 느낌 🌷
 🔹 비비드 컬러보다는 살짝 연한 생동감 있는 색상이 좋아요! 💕
@@ -47,6 +56,9 @@ bestColors: ["#FFA500", "#FFD700", "#FFFF00", "#FF69B4", "#ADFF2F"],
     path: "/summer-light",
     colorClass: "summer-light",
     characterUrl: "character/summer-light.png",
+    characterWomanUrl:"/character/woman/summer-light1.png",
+    characterManUrl:"/character/man/summer-light2.png",
+    background_color: "#aee8e6",
     description: `🔹 부드럽고 우아한 색감이 찰떡!
 🔹 피부는 뽀얀 느낌, 핑크빛이 살짝 돌아요 🌸
 🔹 파스텔톤과 은은한 컬러가 얼굴을 맑게 💕
@@ -61,6 +73,9 @@ bestColors: ["#B0E0E6", "#AFEEEE", "#ADD8E6", "#E6E6FA", "#FFC0CB"],
     path: "/summer-bright",
     colorClass: "summer-bright",
     characterUrl: "character/summer-bright.png",
+    characterWomanUrl:"/character/woman/summer-bright1.png",
+    characterManUrl:"/character/man/summer-bright2.png",
+    background_color: "#87ceeb",
     description: `🔹 선명하면서도 청량한 색감이 찰떡!
 🔹 피부는 투명하고 맑은 느낌, 푸른빛이 감돌아요 💙
 🔹 시원하고 깨끗한 컬러가 얼굴을 환하게! ✨
@@ -75,6 +90,9 @@ bestColors: ["#00CED1", "#4682B4", "#4169E1", "#C71585", "#FF69B4"],
     path: "/summer-mute",
     colorClass: "summer-mute",
     characterUrl: "character/summer-mute.png",
+    characterWomanUrl:"/character/woman/summer-mute1.png",
+    characterManUrl:"/character/man/summer-mute2.png",
+    background_color: "#d6cadd",
     description: `🔹 차분하고 우아한 색감이 찰떡!
 🔹 피부는 뽀얗고 은은한 느낌, 자연스러운 색감 💕
 🔹 너무 강한 색보다 살짝 흐린 듯한 컬러가 더 잘 어울려요 ✨
@@ -89,6 +107,9 @@ bestColors: ["#C0C0C0", "#D3D3D3", "#B0C4DE", "#AFEEEE", "#E6E6FA"],
     path: "/autumn-mute",
     colorClass: "autumn-mute",
     characterUrl: "character/autumn-mute.png",
+    characterWomanUrl:"/character/woman/autumn-mute1.png",
+    characterManUrl:"/character/man/autumn-mute2.png",
+    background_color: "#ffcba4",
     description: `🔹 부드럽고 자연스러운 색감이 찰떡!
 🔹 피부는 따뜻한 느낌, 살구빛이 감돌아요 🍑
 🔹 은은하고 고급스러운 컬러가 얼굴을 부드럽게! ✨
@@ -103,6 +124,9 @@ bestColors: ["#D2B48C", "#8B4513", "#A0522D", "#CD853F", "#BC8F8F"],
     path: "/autumn-strong",
     colorClass: "autumn-strong",
     characterUrl: "character/autumn-strong.png",
+    characterWomanUrl:"/character/woman/autumn-strong1.png",
+    characterManUrl:"/character/man/autumn-strong2.png",
+    background_color: "#e07a5f",
     description: `🔹 깊고 선명한 색감이 찰떡!
 🔹 피부는 건강하고 따뜻한 느낌, 황금빛이 돌아요 ☀️
 🔹 강렬하면서도 자연스러운 컬러가 조화를 이뤄요! 🎨
@@ -118,6 +142,9 @@ bestColors: ["#8B0000", "#B22222", "#A52A2A", "#D2691E", "#8B4513"],
     path: "/autumn-dark",
     colorClass: "autumn-dark",
     characterUrl: "character/autumn-dark.png",
+    characterWomanUrl:"/character/woman/autumn-dark1.png",
+    characterManUrl:"/character/man/autumn-dark2.png",
+    background_color: "#d9a067",
     description: `🔹 깊고 무게감 있는 색감이 찰떡!
 🔹 피부는 따뜻하고 풍부한 느낌, 브론즈빛이 감돌아요 🍂
 🔹 짙은 톤과 고급스러운 컬러가 얼굴을 돋보이게 해줘요! 🎩
@@ -133,6 +160,9 @@ bestColors: ["#5B3A29", "#8B4513", "#6B4226", "#4E342E", "#3D2B1F"],
     path: "/winter-vivid",
     colorClass: "winter-vivid",
     characterUrl: "character/winter-vivid.png",
+    characterWomanUrl:"/character/woman/winter-vivid1.png",
+    characterManUrl:"/character/man/winter-vivid2.png",
+    background_color: "#a093ff",
     description: `🔹 강렬하고 선명한 색감이 찰떡!
 🔹 피부는 맑고 깨끗한 느낌, 푸른빛이 돌아요 ❄️
 🔹 원색 계열의 강한 컬러가 얼굴을 더욱 화사하게! 🎨
@@ -148,6 +178,9 @@ bestColors: ["#FF0000", "#0000FF", "#8A2BE2", "#FF1493", "#00FFFF"],
     path: "/winter-strong",
     colorClass: "winter-strong",
     characterUrl: "character/winter-strong.png",
+    characterWomanUrl:"/character/woman/winter-strong1.png",
+    characterManUrl:"/character/man/winter-strong2.png",
+    background_color: "#785ef0",
     description: `🔹 깊고 강렬한 색감이 찰떡!
 🔹 피부는 차갑고 선명한 느낌, 대비가 뚜렷해요 ⛄
 🔹 다크한 컬러와 비비드한 컬러가 모두 잘 어울려요! 🎨
@@ -161,7 +194,10 @@ bestColors: ["#00008B", "#8B0000", "#4B0082", "#483D8B", "#DC143C"],
     name: "🏔️ 겨울 쿨 다크 🍇",
     path: "/winter-dark",
     colorClass: "winter-dark",
-    imageUrl: "/색상표/겨울 다크 색상표.jpg",
+    characterUrl: "character/winter-dark.png",
+    characterWomanUrl:"/character/woman/winter-dark1.png",
+    characterManUrl:"/character/man/winter-dark2.png",
+    background_color: "#4682b4",
     description: `🔹 차갑고 깊은 색감이 찰떡!
 🔹 피부는 창백하면서도 선명한 느낌, 푸른빛이 감돌아요 ❄️
 🔹 어두운 톤과 강한 컬러가 얼굴을 돋보이게 해줘요! 🎩

@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
-import { useLocation } from "react-router-dom";
 import PhotoFrame from "./PhotoFrame";
 import useStore from "../../store/UseStore"; // Zustand 상태관리 사용 (필요시 활용)
 
@@ -12,6 +11,7 @@ const PhotoSelectionPage = () => {
   const navigate = useNavigate();
   const { photos } = location.state || { photos: [] };
   const [selectedPhotos, setSelectedPhotos] = useState([]);
+  const [num, setNum] = useState(0); // 현재 표시할 퍼스널 컬러 인덱스
 
   // 사진 클릭 시 선택/해제 토글 (최대 4장 선택)
   const toggleSelectPhoto = (photo) => {
@@ -32,9 +32,7 @@ const PhotoSelectionPage = () => {
     }
 
     try {
-      // 여기서는 selectedPhotos의 첫 번째 사진을 업로드 대상으로 사용합니다.
       const fileUrl = selectedPhotos[0];
-      // URL을 통해 blob을 가져와서 File 객체로 변환
       const response = await fetch(fileUrl);
       const blob = await response.blob();
       const file = new File([blob], "photo.jpg", { type: blob.type });
@@ -53,8 +51,6 @@ const PhotoSelectionPage = () => {
       }
   
       const data = await uploadResponse.json();
-      // data 예시: { "qr_code_url": "http://.../api/photos/qrcode/photo.jpg", "file_url": "http://.../api/photos/download/photo.jpg" }
-      // QR 코드 URL을 다음 페이지에 전달
       navigate("/qr-code", { state: { qrCodeUrl: data.qr_code_url } });
     } catch (error) {
       console.error(error);
@@ -62,24 +58,29 @@ const PhotoSelectionPage = () => {
     }
   };
 
+  // 모달에서 이전/다음 디자인 선택
+  const nextNum = () => {
+    setNum((num) => (num + 1 + 12) % 12);
+  };
+  const prevNum = () => {
+    setNum((num) => (num - 1 + 12) % 12);
+  };
+
   return (
     <Background>
       <Topbar />
       <Largemain>
-        {/* Largemain 내부를 좌우 구역으로 분할 */}
         <div style={{ display: "flex", width: "100%", height: "100%" }}>
-          {/* 왼쪽 구역: 촬영한 사진 그리드 (3 x 3) - 마지막 칸은 선택된 사진 수 표시 */}
           <div style={{ flex: 1, padding: "10px", overflowY: "auto" }}>
             <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(3, 1fr)",
                 gridTemplateRows: "repeat(3, 1fr)",
-                gap: "10px",
+                gap: "5px", // 간격 줄이기
               }}
             >
               {Array.from({ length: 9 }).map((_, idx) => {
-                // 마지막 칸: 선택한 사진 개수 표시
                 if (idx === 8) {
                   return (
                     <div
@@ -89,15 +90,16 @@ const PhotoSelectionPage = () => {
                         alignItems: "center",
                         justifyContent: "center",
                         border: "1px solid #aaa",
-                        fontSize: "20px",
+                        fontSize: "18px",
                         backgroundColor: "#f0f0f0",
+                        width: "90%", // 크기 줄이기
+                        height: "90%",
                       }}
                     >
                       {`${selectedPhotos.length} / 4`}
                     </div>
                   );
                 }
-                // 나머지 칸: 사진 출력 (photos 배열의 인덱스와 매핑)
                 const photo = photos[idx];
                 return (
                   <div
@@ -113,6 +115,8 @@ const PhotoSelectionPage = () => {
                       alignItems: "center",
                       justifyContent: "center",
                       backgroundColor: "#fff",
+                      width: "90%", // 크기 줄이기
+                      height: "90%",
                     }}
                   >
                     {photo ? (
@@ -145,8 +149,11 @@ const PhotoSelectionPage = () => {
               })}
             </div>
           </div>
-          {/* 오른쪽 구역: 인생네컷 프레임 (세로 4 슬롯) */}
-          <div
+          <PhotoFrame selectedPhotos={selectedPhotos} num={num} />
+        </div>
+        {selectedPhotos.length === 4 && (
+          <button
+            onClick={handlePrint}
             style={{
               marginTop: "20px",
               padding: "10px 20px",
@@ -156,7 +163,7 @@ const PhotoSelectionPage = () => {
           >
             인쇄하기
           </button>
-        )} */}
+        )}
       </Largemain>
     </Background>
   );
