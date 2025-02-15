@@ -153,7 +153,7 @@ const SendButton = () => {
   };
 
   // 커스텀 키보드에 사용할 키 배열
-  const row1 = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+  const row1 = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ".com"];
   const row2 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "⌫"];
   const row3 = ["a", "s", "d", "f", "g", "h", "j", "k", "l", "@"];
   const row4 = ["z", "x", "c", "v", "b", "n", "m", ".", "_"];
@@ -172,14 +172,20 @@ const SendButton = () => {
             </button>
             <h2>이메일을 입력하세요</h2>
             <div className="email-input-wrapper" onClick={() => setIsKeyboardOpen(true)}>
-              <input
-                type="text"
-                className="email-input"
-                value={email}
-                readOnly
-                placeholder="이메일 입력"
-                onClick={() => setIsKeyboardOpen(true)}
-              />
+            <input
+              type="text"
+              className="email-input"
+              value={email}
+              placeholder="이메일 입력"
+              onChange={(e) => setEmail(e.target.value)}  // 키보드 입력 허용
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSubmitWrapper(); // Enter 키로 제출
+                }
+              }}
+              onClick={() => setIsKeyboardOpen(true)}
+            />
+
             </div>
             <div className="send-modal-buttons">
               {isLoading ? (

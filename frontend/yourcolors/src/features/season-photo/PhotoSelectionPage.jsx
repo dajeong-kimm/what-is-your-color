@@ -36,20 +36,20 @@ const PhotoSelectionPage = () => {
       const response = await fetch(fileUrl);
       const blob = await response.blob();
       const file = new File([blob], "photo.jpg", { type: blob.type });
-  
+
       const formData = new FormData();
       formData.append("file", file);
-  
+
       const uploadResponse = await fetch("http://3.35.236.198:9000/api/photos/upload", {
         method: "POST",
         body: formData,
       });
-  
+
       if (!uploadResponse.ok) {
         alert("파일 업로드에 실패했습니다.");
         return;
       }
-  
+
       const data = await uploadResponse.json();
       navigate("/qr-code", { state: { qrCodeUrl: data.qr_code_url } });
     } catch (error) {

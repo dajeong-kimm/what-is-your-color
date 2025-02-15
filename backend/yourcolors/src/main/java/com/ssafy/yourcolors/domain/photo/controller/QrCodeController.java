@@ -79,4 +79,14 @@ public class QrCodeController {
         }
     }
 
+
+    // 13. 인생네컷 이메일 전송 API
+    @PostMapping(value = "/mail", consumes = "multipart/form-data")
+    public String sendEmail(
+            @RequestParam("email") String email,
+            @RequestParam("image") MultipartFile image
+    ) throws IOException {
+        return qrCodeService.sendEmail(email, image);
+    }
+
 }
