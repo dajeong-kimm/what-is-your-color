@@ -10,4 +10,8 @@ public interface QrCodeService {
     byte[] generateQrCode(String fileName) throws IOException, WriterException;
     byte[] downloadFile(String fileName) throws IOException;
     void cleanOldFiles();
+
+    // 13. 인생네컷 이메일 전송 API
+    String sendEmail(String email, MultipartFile image) throws IOException;
+
 }
