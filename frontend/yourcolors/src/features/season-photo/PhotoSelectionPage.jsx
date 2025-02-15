@@ -136,6 +136,7 @@ const PhotoSelectionPage = () => {
               })}
             </div>
           </div>
+          {/* 오른쪽 구역: 인생네컷 프레임 (세로 4 슬롯) */}
           <div>
             <button
               onClick={handlePrint}
