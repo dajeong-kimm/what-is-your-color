@@ -58,9 +58,10 @@ const App = () => {
           {/* <Route path="/:personalColor/recommend" element={<PersonalRecommend />} /> */}
           <Route path="/qrtestbutton" element={<QRTestButton />} />
           <Route path="/qrtest" element={<QRTest />} />
-        <Route path="/photo" element={<PhotoCapturePage />} />
+        <Route path="/season-photo" element={<PhotoCapturePage />} />
         <Route path="/select" element={<PhotoSelectionPage />} />
         <Route path="/qr-code" element={<QrCodePage />} />
+        <Route path="/personaldefine" element={<PersonalDefine />} />
       </Routes>
     </Router>
 

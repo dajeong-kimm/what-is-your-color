@@ -31,29 +31,25 @@ const PhotoSelectionPage = () => {
     }
 
     try {
-      // 여기서는 selectedPhotos의 첫 번째 사진을 업로드 대상으로 사용합니다.
       const fileUrl = selectedPhotos[0];
-      // URL을 통해 blob을 가져와서 File 객체로 변환
       const response = await fetch(fileUrl);
       const blob = await response.blob();
       const file = new File([blob], "photo.jpg", { type: blob.type });
-  
+
       const formData = new FormData();
       formData.append("file", file);
-  
+
       const uploadResponse = await fetch("http://3.35.236.198:9000/api/photos/upload", {
         method: "POST",
         body: formData,
       });
-  
+
       if (!uploadResponse.ok) {
         alert("파일 업로드에 실패했습니다.");
         return;
       }
-  
+
       const data = await uploadResponse.json();
-      // data 예시: { "qr_code_url": "http://.../api/photos/qrcode/photo.jpg", "file_url": "http://.../api/photos/download/photo.jpg" }
-      // QR 코드 URL을 다음 페이지에 전달
       navigate("/qr-code", { state: { qrCodeUrl: data.qr_code_url } });
     } catch (error) {
       console.error(error);
@@ -65,9 +61,7 @@ const PhotoSelectionPage = () => {
     <Background>
       <Topbar />
       <Largemain>
-        {/* Largemain 내부를 좌우 구역으로 분할 */}
         <div style={{ display: "flex", width: "100%", height: "100%" }}>
-          {/* 왼쪽 구역: 촬영한 사진 그리드 (3 x 3) - 마지막 칸은 선택된 사진 수 표시 */}
           <div style={{ flex: 1, padding: "10px", overflowY: "auto" }}>
             <div
               style={{
@@ -78,7 +72,6 @@ const PhotoSelectionPage = () => {
               }}
             >
               {Array.from({ length: 9 }).map((_, idx) => {
-                // 마지막 칸: 선택한 사진 개수 표시
                 if (idx === 8) {
                   return (
                     <div
@@ -96,7 +89,6 @@ const PhotoSelectionPage = () => {
                     </div>
                   );
                 }
-                // 나머지 칸: 사진 출력 (photos 배열의 인덱스와 매핑)
                 const photo = photos[idx];
                 return (
                   <div
