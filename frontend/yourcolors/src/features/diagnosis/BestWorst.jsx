@@ -26,12 +26,12 @@ const BestWorst = () => {
 
    return (
      <SmallMain>
-        <div className="full-container">
-          <div className="top-container">
+        {/* <div className="full-container"> */}
+          <div className="bs-container">
             {/* Best Color Section */}
            <div className="container-best">
                {/* <BestWorstCamera2/> */}
-             <h1 className="title">Best Color</h1>
+             <h1 className="title"><i class="fa-regular fa-face-kiss-wink-heart"></i> Best Color <i class="fa-regular fa-face-kiss-wink-heart"></i></h1>
               <div className="color-boxes">
                 {/* Best Color 목록에서 색상값을 렌더링 */}
                 {personalColorDetails.bestcolor.map((color, index) => (
@@ -56,27 +56,18 @@ const BestWorst = () => {
 
               {/* Worst Color Section */}
             <div className="container-worst">
-              <h1 className="title">Worst Color</h1>
+            
+              <h1 className="title"><i class="fa-regular fa-face-sad-tear"></i> Worst Color <i class="fa-regular fa-face-sad-tear"></i></h1>
               <div className="color-boxes">
                 {personalColorDetails.worstcolor.map((color, index) => (
                     <div key={index} className="color-box" 
                     style={{ backgroundColor: color }}></div> ))}
               </div>
               <BestWorstCamera2 colorData={personalColorDetails.worstcolor} />
-                {/* <ul>
-                  {personalColorDetails.worstcolor_name?.map((color, index) => (
-                    <li key={index}>{color}</li>
-                  ))}
-                </ul> */}
-                  {/* 워스트 컬러 색을 입힌 카메라 넣기 */}
 
             </div>
          </div>
         
-          {/* <div className="bottom-container">
-            <div className="GPT-consulting">{gptSummary}</div>
-          </div> */}
-        </div>
       
 </SmallMain>
 
