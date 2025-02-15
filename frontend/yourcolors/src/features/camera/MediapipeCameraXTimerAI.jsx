@@ -25,7 +25,7 @@ const MediapipeCameraXTimerAI = () => {
 
   const navigate = useNavigate();
   const { setUserPersonalId, userImageFile, setUserImageFile, setResults, setGptSummary } = useStore(); //Zustand 상태관리 데이터
-  const { isOpen, openModal, closeModal } = useModalStore(); // 모달 상태
+  const { openModal } = useModalStore(); // 모달 상태
 
   useEffect(() => {
     console.log("[useEffect] Component mounted -> Initialize camera");

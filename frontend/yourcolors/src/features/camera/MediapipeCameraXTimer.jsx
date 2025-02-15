@@ -4,6 +4,9 @@ import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useStore from "../../store/UseStore"; // Zustand 상태관리 데이터
+import { useModalStore } from "../../store/useModalStore"; // Zustand 모달 상태 가져오기
+import DiagFailModalComponent from "../diagnosis/DiagFailModalComponent"; //진단 실패 시 실패 모달
+
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)
@@ -21,6 +24,7 @@ const MediapipeCameraXTimer = () => {
 
   const navigate = useNavigate();
   const { setUserPersonalId, userImageFile, setUserImageFile, setResults, setGptSummary } = useStore();
+  const { openModal } = useModalStore(); // 모달 상태
 
   useEffect(() => {
     console.log("[useEffect] Component mounted -> Initialize camera");
@@ -227,8 +231,11 @@ const MediapipeCameraXTimer = () => {
       })
       .catch((error) => {
         console.error("Error sending images to server:", error);
-        alert("퍼스널컬러 진단에 실패했습니다. 화면에 맞춰서 다시 시도해주세요.");
-        navigate(-1);
+
+        // 🔴 모달 메시지 상태 업데이트
+        openModal("퍼스널컬러 진단에 실패했습니다. 다시 시도해주세요.");
+        
+        navigate(-1); // 🔴 이전 페이지로 이동
       });
   };
 
@@ -245,6 +252,7 @@ const MediapipeCameraXTimer = () => {
         overflow: "hidden",
       }}
     >
+      <DiagFailModalComponent /> {/* 진단실패 모달 추가 */}
       {/* 촬영 시 화면 깜빡임 */}
       {isFlashing && (
         <div
