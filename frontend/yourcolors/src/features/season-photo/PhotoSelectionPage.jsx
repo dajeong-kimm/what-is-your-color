@@ -149,21 +149,22 @@ const PhotoSelectionPage = () => {
               })}
             </div>
           </div>
-          {/* 오른쪽 구역: 인생네컷 프레임 (세로 4 슬롯) */}
-          <div>
-            <button
-              onClick={handlePrint}
-              style={{
-                marginTop: "20px",
-                padding: "10px 20px",
-                fontSize: "16px",
-                cursor: "pointer",
-              }}
-            >
-              인쇄하기
-            </button>
-          </div>
+          <PhotoFrame selectedPhotos={selectedPhotos} num={num} />
         </div>
+        {selectedPhotos.length === 4 && (
+          <button
+            onClick={handlePrint}
+            style={{
+              marginTop: "20px",
+              padding: "10px 20px",
+              fontSize: "16px",
+              cursor: "pointer",
+            }}
+          >
+            인쇄하기
+          </button>
+        )}
+
       </Largemain>
     </Background>
   );
