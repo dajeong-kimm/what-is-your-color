@@ -25,6 +25,7 @@ import { RecoilRoot } from "recoil";
 import PersonalDefine from "./features/personal-colors/PersonalDefine.jsx";
 import PhotoCapturePage from "./features/season-photo/PhotoCapturePage.jsx";
 import PhotoSelectionPage from "./features/season-photo/PhotoSelectionPage.jsx";
+import PhotoSelectionPageTwo from "./features/season-photo/PhotoSelectionPageTwo.jsx";
 import QrCodePage from "./button/print/QRCodePage.jsx";
 
 const App = () => {
@@ -60,6 +61,7 @@ const App = () => {
           <Route path="/qrtest" element={<QRTest />} />
         <Route path="/season-photo" element={<PhotoCapturePage />} />
         <Route path="/select" element={<PhotoSelectionPage />} />
+        <Route path="/selecttwo" element={<PhotoSelectionPageTwo />} />
         <Route path="/qr-code" element={<QrCodePage />} />
         <Route path="/personaldefine" element={<PersonalDefine />} />
       </Routes>

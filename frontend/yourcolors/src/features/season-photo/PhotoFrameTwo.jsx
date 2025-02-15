@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import personalColorInfo from "../../store/PersonalColorInfo"; 
 import useStore from "../../store/UseStore"; // Zustand 상태관리 사용 (필요시 활용)
 
-const PhotoFrame = ({ selectedPhotos = [] }) => {
+const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
   const totalDesigns = 12; // 총 프레임 수 (1~12)
   const { userPersonalId } = useStore();
   const initialIndex =
@@ -22,7 +22,7 @@ const PhotoFrame = ({ selectedPhotos = [] }) => {
   return (
     <div
       className="photo-booth-container"
-      style={{ display: "flex", top : "1%",justifyContent: "center", position: "relative" }}
+      style={{ display: "flex", top : "20%",justifyContent: "center", position: "relative" }}
     >
       {/* 왼쪽 화살표 버튼 */}
       <button
@@ -30,7 +30,7 @@ const PhotoFrame = ({ selectedPhotos = [] }) => {
         style={{
           position: "absolute",
           left: "-30px",
-          top: "50%",
+          top: "30%",
           transform: "translateY(-50%)",
           background: "transparent",
           border: "none",
@@ -46,6 +46,7 @@ const PhotoFrame = ({ selectedPhotos = [] }) => {
       <div
         className="photo-booth"
         style={{
+          aspectRatio: "16/9",
           border: `8px solid ${personalColorInfo[num].background_color}`,
           padding: "8px",
           backgroundColor: personalColorInfo[num].background_color,
@@ -56,7 +57,7 @@ const PhotoFrame = ({ selectedPhotos = [] }) => {
           gap: "10px",
           width: "9.5rem",
           position: "relative",
-          height: "75%",
+          height: "40%",
           zIndex: 2,
         }}
       >
@@ -66,7 +67,7 @@ const PhotoFrame = ({ selectedPhotos = [] }) => {
           style={{
             position: "absolute",
             left: "-8px",
-            top: "25%",
+            top: "40%",
             transform: "translateY(-50%)",
             writingMode: "sideways-lr",
             color: "white",
@@ -81,37 +82,7 @@ const PhotoFrame = ({ selectedPhotos = [] }) => {
           style={{
             position: "absolute",
             right: "-8px",
-            top: "25%",
-            transform: "translateY(-50%)",
-            writingMode: "sideways-rl",
-            color: "white",
-            fontSize: "9px",
-            fontWeight: "bold",
-          }}
-        >
-          your colors
-        </div>
-        <div
-          className="side-text"
-          style={{
-            position: "absolute",
-            left: "-8px",
-            bottom: "35%",
-            transform: "translateY(-50%)",
-            writingMode: "sideways-lr",
-            color: "white",
-            fontSize: "9px",
-            fontWeight: "bold",
-          }}
-        >
-          your colors
-        </div>
-        <div
-          className="side-text"
-          style={{
-            position: "absolute",
-            right: "-8px",
-            bottom: "35%",
+            top: "40%",
             transform: "translateY(-50%)",
             writingMode: "sideways-rl",
             color: "white",
@@ -122,7 +93,7 @@ const PhotoFrame = ({ selectedPhotos = [] }) => {
           your colors
         </div>
         
-        {Array.from({ length: 4 }).map((_, idx) => (
+        {Array.from({ length: 2 }).map((_, idx) => (
           <div
             key={idx}
             className="photo-slot"
@@ -135,7 +106,7 @@ const PhotoFrame = ({ selectedPhotos = [] }) => {
               alignItems: "center",
               justifyContent: "center",
               minHeight: "40px",
-              height : "20%",
+              height : "40%",
               position: "relative",
               zIndex: 5,
             }}
@@ -154,13 +125,6 @@ const PhotoFrame = ({ selectedPhotos = [] }) => {
                 src={personalColorInfo[num].characterWomanUrl}
                 alt="Character Woman"
                 style={{ position: "absolute", left: "0px", height: "60%" ,top:"40%", zIndex: 5 }}
-              />
-            )}
-            {idx === 3 && (
-              <img
-                src={personalColorInfo[num].characterManUrl}
-                alt="Character Man"
-                style={{ position: "absolute", right: "0px", height: "60%",top:"40%", zIndex: 4 }}
               />
             )}
           </div>
@@ -192,7 +156,7 @@ const PhotoFrame = ({ selectedPhotos = [] }) => {
         style={{
           position: "absolute",
           right: "-30px",
-          top: "50%",
+          top: "30%",
           transform: "translateY(-50%)",
           background: "transparent",
           border: "none",
@@ -207,4 +171,4 @@ const PhotoFrame = ({ selectedPhotos = [] }) => {
   );
 };
 
-export default PhotoFrame;
+export default PhotoFrameTwo;
