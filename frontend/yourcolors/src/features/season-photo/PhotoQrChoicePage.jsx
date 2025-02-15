@@ -19,7 +19,7 @@ const PhotoQrChoicePage = () => {
       <Largemain>
         <div className="choice-container">
           {/* QR코드 촬영 버튼 */}
-          <div className="choice-card blue-bg" onClick={() => navigate("/fourphoto")}> 
+          <div className="choice-card blue-bg" onClick={() => navigate("/select")}> 
             <div className="qrchoice-ai-image-wrapper">
               <img src={QrImage} alt="QR 코드" className="choice-image" />
             </div>
@@ -39,7 +39,7 @@ const PhotoQrChoicePage = () => {
           </div>
           
           {/* 실물 사진 촬영 버튼 */}
-          <div className="choice-card red-bg" onClick={() => navigate("/twophoto")}> 
+          <div className="choice-card red-bg" onClick={() => navigate("/selecttwo")}> 
             <div className="qrchoice-color-image-wrapper">
               <img src={PhotoBoothImage} alt="실물 사진" className="choice-image" />
             </div>
