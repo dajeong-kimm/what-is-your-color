@@ -1,50 +1,78 @@
-/* SmallMain 내에서 container-left와 image-container가 꽉 차게 위치하도록 설정 */
 .container-left {
   min-width: 500px;
   min-height: 400px;
-  padding: 10px;
+  padding: 20px;
   flex-basis: 33%;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 30px;
   left: -50px;
-  position: relative; /* 상대 위치 지정 */
+  position: relative;
+
+  /* border-radius: 20px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1); */
 }
 
 .container-up,
 .container-center {
   display: flex;
-  flex-direction: column; /* 세로로 배치 */
-  gap: 10px; /* 항목들 사이의 간격 */
-  min-width: 400px; /* 최소 너비 설정 */
-}
-
-.container-center {
-  font-size: 1.5rem;
-  color: #000000;
-  line-height: 1.5;
+  flex-direction: column;
+  gap: 15px;
   text-align: center;
-  align-items: flex-start; /* 왼쪽 정렬 */
 }
 
+/* 타이틀 스타일 */
 .title-main {
-  font-size: 30px;
-  font-weight: normal;
-  color: #333;
-  top: 0;
+  font-size: 36px;
   font-weight: bold;
+
   padding-bottom: 10px;
 }
 
-.container-down {
-  display: flex;
-  flex-direction: row; /* 세로로 배치 */
-  gap: 10px; /* 항목들 사이의 간격 */
-  min-width: 400px; /* 최소 너비 설정 */
-  align-items: flex-start; /* 세로 중앙 정렬 */
+/* 메인 컬러 텍스트 스타일 */
+.main-color {
+  font-size: 50px;
+  font-weight: bolder;
+  color: #000000;
+  /* text-shadow: 2px 2px 5px rgba(255, 105, 180, 0.4);
+  animation: glow 1.5s infinite alternate; */
 }
 
+/* 메인 컬러 반짝이는 애니메이션 */
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px rgba(255, 105, 180, 0.6);
+  }
+  to {
+    text-shadow: 0 0 20px rgba(255, 105, 180, 1);
+  }
+}
+
+/* 요약 설명 */
+.summary {
+  font-size: 1.5rem;
+  color: #333;
+  line-height: 1.5;
+  padding: 10px;
+}
+
+/* 해시태그 스타일 */
+.result-hashtag {
+  font-size: 1.2rem;
+  color: #305f2aad;
+  font-weight: bold;
+}
+
+/* 서브 컬러 텍스트 */
+.sub-color {
+  font-size: 25px;
+  font-weight: bold;
+  color: #ff8c00;
+  padding: 8px 12px;
+  border-radius: 15px;
+  display: inline-block;
+}
 
 /* 이미지 컨테이너 */
 .image-container {
@@ -52,50 +80,10 @@
   justify-content: center;
   align-items: center;
   width: 40%;
-  margin-right: 0;
 }
 
-
-/* 메인 컬러 텍스트 스타일 */
-.main-color {
-  font-size: 50px;
-  font-weight: bolder;
-  color: #333;
-  align-self: flex-start; /* 왼쪽 정렬 */
-  margin: 5px 0; /* 항목들 간의 마진 설정 */
-  display: inline;
-}
-
-/* 서브 컬러 텍스트는 한 줄로 나열되도록 */
-.sub-color {
-  font-size: 35px;
-  font-weight: bold;
-  display: inline-flex; /* 한 줄로 나열되도록 수정 */
-  gap: 1px; /* '&' 기호와 간격을 띄워줌 */
-  white-space: nowrap; /* 줄 바꿈 방지 */
-  margin: 5px 0; /* 항목들 간의 마진 설정 */
-}
-
-/* 서브 컬러 타이틀은 한 줄로 나열되도록 */
-.title-sub {
-  font-size: 30px;
-  font-weight: bold;
-  color: #333;
-  display: inline-flex; /* 한 줄로 나열되도록 수정 */
-  white-space: nowrap; /* 줄 바꿈 방지 */
-  align-items: flex-start; /* 왼쪽 정렬 */
-
-}
-
-/* 이미지 컨테이너의 퍼스널 캐릭터 이미지 스타일 */
 .personal-character-image img {
   width: 100%;
   max-height: 400px;
-  border-radius: 10px; /* 이미지의 둥근 모서리 */
-}
-
-/* 이미지 컨테이너의 퍼스널 캐릭터 이미지 스타일 */
-.personal-character-image {
-  position: relative; /* 상대 위치 지정 */
-  right: -50px; /* 원하는 만큼 오른쪽으로 밀기 */
+  border-radius: 15px;
 }

@@ -46,42 +46,37 @@ const Result = () => {
   const imageUrl = personalColorInfo[userPersonalId].characterUrl // 일단 1번 봄라이트 이미지로...
   
   return (
-      <SmallMain>
-        <div className="container-left">
-          <div className="container-up">
-            <div className="title-main">🌈 당신의 퍼스널컬러는 🔍</div>
-            <strong className="main-color">🌟{personalColorDetails.name}✨</strong>
+    <SmallMain>
+      <div className="container-left">
+        <div className="container-up">
+          <div className="title-main">🌈 당신의 퍼스널컬러는 🔍</div>
+          <strong className="main-color">🌟{personalColorDetails.name}✨</strong>
+        </div>
+  
+        <div className="container-center">
+          <div className="summary">
+            <strong>{personalColorDetails.description}</strong>
           </div>
-
-          <div className="container-center">
-            <div className="summary">
-              <strong>{personalColorDetails.description}</strong>
-            </div>
-            <div className="result-hashtag">
+          <div className="result-hashtag">
             {Array.isArray(personalColorDetails.hashtag) ? personalColorDetails.hashtag.join(" ") : " "}
-            </div>
-          </div>
-
-
-          <div className="container-down">
-            
-          <strong className="sub-color">{Results[1].personal_color} & {Results[2].personal_color} 도 어울려요!</strong>
-          {/* <div className="title-sub">도 어울려요!</div> */}
-          </div>
-        
-        </div>
-
-        {/* 이미지 컨테이너 (우측 정렬) */}
-        <div className="image-container">
-          <div className="personal-character-image">
-            <img src={imageUrl} alt={mainColor} />
           </div>
         </div>
-
-      </SmallMain>
-
-
+  
+        <div className="container-down">
+          <strong className="sub-color">
+            Sub color {Results[1].personal_color} & {Results[2].personal_color}
+          </strong>
+        </div>
+      </div>
+  
+      {/* 이미지 컨테이너 (우측 정렬) */}
+      <div className="image-container">
+        <div className="personal-character-image">
+          <img src={imageUrl} alt={personalColorDetails.name} />
+        </div>
+      </div>
+    </SmallMain>
   );
-};
-
-export default Result;
+}
+  export default Result;
+  
