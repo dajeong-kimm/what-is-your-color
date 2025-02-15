@@ -5,6 +5,9 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.ssafy.yourcolors.domain.photo.util.PhotoMailManager;
+import jakarta.mail.MessagingException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 @Service
+@RequiredArgsConstructor
 public class QrCodeServiceImpl implements QrCodeService {
 
     @Value("${file.upload-dir}")
@@ -29,6 +33,8 @@ public class QrCodeServiceImpl implements QrCodeService {
 
     @Value("${custom.server.ip}")
     private String serverIp;
+
+    private final PhotoMailManager photoMailManager;
 
     @Override
     public String uploadFile(MultipartFile file) throws IOException {
@@ -86,5 +92,30 @@ public class QrCodeServiceImpl implements QrCodeService {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
         return MatrixToImageWriter.toBufferedImage(bitMatrix);
+    }
+
+
+    @Override
+    public String sendEmail(String email, MultipartFile image) throws IOException {
+        String subject = "너의 색깔은? 인생네컷 사진 결과";
+
+        String content = String.format(
+                """
+                <html>
+                    <body>
+                        <h2>당신의 계절네컷</h2>
+                        <br>
+                        <p>더 자세한 내용은 <a href="https://yourwebsite.com/result">여기</a>에서 확인하세요.</p>
+                    </body>
+                </html>
+                """
+        );
+
+        try {
+            photoMailManager.send(email, subject, content, image);
+            return "이메일이 성공적으로 전송되었습니다.";
+        } catch (MessagingException e) {
+            return "이메일 전송 실패: " + e.getMessage();
+        }
     }
 }
