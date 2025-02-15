@@ -18,8 +18,6 @@ import PersonalColorMain from "./features/personal-colors/PersonalColorMain.jsx"
 import PersonalColorDetail from "./features/personal-colors/PersonalColorDetail.jsx";
 import MakeupByColor from "./features/makeup/MakeupByColor";
 import Makeup from "./features/makeup/Makeup";
-import MediapipeCameraX from "./features/camera/MediapipeCameraX.jsx";
-import PersonalRecommend from "./features/recommend/PersonalRecommend";
 import ChoicePage from "./features/choice/ChoicePage.jsx";
 import QRTest from "./features/photo/QRTest.jsx";
 import QRTestButton from "./features/photo/QRTestButton.jsx";
@@ -61,10 +59,11 @@ const App = () => {
           {/* <Route path="/:personalColor/recommend" element={<PersonalRecommend />} /> */}
           <Route path="/qrtestbutton" element={<QRTestButton />} />
           <Route path="/qrtest" element={<QRTest />} />
-        <Route path="/photo" element={<PhotoCapturePage />} />
+        <Route path="/season-photo" element={<PhotoCapturePage />} />
         <Route path="/select" element={<PhotoSelectionPage />} />
         <Route path="/selecttwo" element={<PhotoSelectionPageTwo />} />
         <Route path="/qr-code" element={<QrCodePage />} />
+        <Route path="/personaldefine" element={<PersonalDefine />} />
       </Routes>
     </Router>
 

@@ -5,6 +5,9 @@ import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useStore from "../../store/UseStore"; //Zustand 상태관리 데이터
+import { useModalStore } from "../../store/useModalStore"; // Zustand 모달 상태 가져오기
+import DiagFailModalComponent from "../diagnosis/DiagFailModalComponent"; //진단 실패 시 실패 모달
+
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)
@@ -12,6 +15,7 @@ let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)
 const MediapipeCameraXTimerAI = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const holisticRef = useRef(null); // Holistic 인스턴스 저장용
 
   const [countdown, setCountdown] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
@@ -21,16 +25,31 @@ const MediapipeCameraXTimerAI = () => {
 
   const navigate = useNavigate();
   const { setUserPersonalId, userImageFile, setUserImageFile, setResults, setGptSummary } = useStore(); //Zustand 상태관리 데이터
+  const { openModal } = useModalStore(); // 모달 상태
 
   useEffect(() => {
     console.log("[useEffect] Component mounted -> Initialize camera");
     initializeCamera();
     // cleanup: 컴포넌트 언마운트 시 카메라 정리
     return () => {
-      if (cameraInstance) {
-        // cameraInstance.stop() 가 제공되는지 여부는 카메라 라이브러리에 따라 다릅니다.
-        // Mediapipe CameraUtils에 stop()이 없다면 생략 가능합니다.
-        console.log("[useEffect cleanup] Camera stopped");
+      console.log("[useEffect cleanup] Stopping camera and releasing instances");
+
+      // Camera 인스턴스 종료 (stop() 메서드가 있으면 호출)
+      if (cameraInstance && typeof cameraInstance.stop === "function") {
+        cameraInstance.stop();
+      }
+      cameraInstance = null;
+
+      // video 스트림 정리: srcObject에 있는 모든 트랙 종료
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+        videoRef.current.srcObject = null;
+      }
+
+      // Holistic 인스턴스 종료
+      if (holisticRef.current && typeof holisticRef.current.close === "function") {
+        holisticRef.current.close();
+        holisticRef.current = null;
       }
     };
   }, []);
@@ -208,7 +227,10 @@ const MediapipeCameraXTimerAI = () => {
       })
       .catch((error) => {
         console.error("Error sending images to server:", error);
-        alert("퍼스널컬러 진단에 실패했습니다. 화면에 맞춰서 다시 시도해주세요.");
+        
+        // 🔴 모달 메시지 상태 업데이트
+        openModal("퍼스널컬러 진단에 실패했습니다. 다시 시도해주세요.");
+
         navigate(-1); // 🔴 이전 페이지로 이동
       });
   };
@@ -226,6 +248,7 @@ const MediapipeCameraXTimerAI = () => {
         overflow: "hidden",
       }}
     >
+      <DiagFailModalComponent /> {/* 진단실패 모달 추가 */}
       {/* 촬영 시 화면 깜빡임 */}
       {isFlashing && (
         <div
@@ -335,8 +358,10 @@ const MediapipeCameraXTimerAI = () => {
               objectFit: "cover",
               transform: "scaleX(-1)",
             }}
-          />
-          <canvas ref={canvasRef} style={{ display: "none" }} willreadfrequently="true" />
+            />
+            
+            <canvas ref={canvasRef} style={{ display: "none" }} willreadfrequently="true" />
+            
           {/* 얼굴 인식 가이드 영역 */}
           <div
             style={{
@@ -366,7 +391,8 @@ const MediapipeCameraXTimerAI = () => {
             얼굴을 가이드라인에 맞게 위치시켜 주세요.
           </div>
 
-          {showCaptureButton && (
+            {showCaptureButton && (
+              
             <div
               style={{
                 position: "absolute",
@@ -374,7 +400,7 @@ const MediapipeCameraXTimerAI = () => {
                 left: "50%",
                 transform: "translateX(-50%)",
               }}
-            >
+              >
               <button
                 onClick={handleCapture}
                 style={{
