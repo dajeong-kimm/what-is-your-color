@@ -48,24 +48,16 @@ const PersonalRecommend = () => {
   const products = categoryMap[selectedCategory] || [];
   
   const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
-  
-  const handleRightClick = () => {
-    console.log("오른쪽으로 이동 불가 ㅡㅡ");
-  };
-  
-  const handleLeftClick = () => {
-    navigate("/bestworst");
-  };
-  
+
 
   return (
     <SmallMain>
 
-        <div className="full-container">
-          <div className="top">
+        <div className="recommend-container">
+          <div className="recommend-top">
             {/* 퍼스널컬러 이름 + "Pick!" 형태로 출력 */}
-            <div className="color-pick">{personalColorDetails.name} Pick!</div>
-            <div className="button-container">
+            <div className="recommend-color-pick">{personalColorDetails.name} Pick!</div>
+            <div className="recommend-button-container">
              {["lip", "eye", "cheek"].map((category) => (
                 <ProductButton
                   key={category}
@@ -75,22 +67,23 @@ const PersonalRecommend = () => {
               ))}
             </div>
           </div>
-          <div className="product-container">
+          <div className="recommend-product-container">
             {loading ? (
               <p className="loading-text">로딩 중...</p>
             ) :products.length > 0 ? (
-              <div className="product-grid">
+              <div className="recommend-product-grid">
                 {products.map((product) => (
-                  <div key={product.product_id} className="product-card">
+                  <div key={product.product_id} className="recommend-product-card">
                     <img src={product.image} alt={product.product_name} />
-                    <p>{product.brand}</p>
-                    <p>{product.product_name}</p>
-                    <p>{product.price}</p>
+                    <p className="brand-name">{product.brand}</p>
+                    <p className="product-name" >{product.product_name}</p>
+                    <p className="color-name">{product.color_name}</p>
+                    <p className="price">{product.price}원</p>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="no-products">상품이 없습니다.</p>
+              <p className="recommend-no-products">상품이 없습니다.</p>
             )}
           </div>
         </div>
