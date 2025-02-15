@@ -164,6 +164,7 @@ const PhotoSelectionPage = () => {
             인쇄하기
           </button>
         )}
+
       </Largemain>
     </Background>
   );
