@@ -60,10 +60,12 @@
     padding: 0.8rem;
     font-size: 1rem;
     width: 100%;
+    max-width: 100%;  /* 부모 요소 너비를 넘지 않도록 설정 */
     border: 2px solid #82dc28;
     border-radius: 8px;
     text-align: center;
     margin-top: 1rem;
+    box-sizing: border-box; /* 패딩 포함하여 크기 조정 */
     /* pointer-events: none; 클릭은 부모 컨테이너가 처리 */
   }
   
