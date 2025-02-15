@@ -1,7 +1,7 @@
 import React from "react";
 import { useModalStore } from "../../store/useModalStore";
 
-const ModalComponent = () => {
+const DiagFailModalComponent = () => {
     const { isOpen, message, closeModal } = useModalStore(); // Zustand 상태 가져오기
 
   if (!isOpen) return null;
@@ -49,4 +49,4 @@ const ModalComponent = () => {
   );
 };
 
-export default ModalComponent;
+export default DiagFailModalComponent;

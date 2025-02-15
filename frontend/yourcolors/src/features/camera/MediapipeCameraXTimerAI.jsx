@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useStore from "../../store/UseStore"; //Zustand 상태관리 데이터
 import { useModalStore } from "../../store/useModalStore"; // Zustand 모달 상태 가져오기
-import ModalComponent from "../diagnosis/ModalComponent"; //진단 실패 시 실패 모달
+import DiagFailModalComponent from "../diagnosis/DiagFailModalComponent"; //진단 실패 시 실패 모달
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -248,7 +248,7 @@ const MediapipeCameraXTimerAI = () => {
         overflow: "hidden",
       }}
     >
-      <ModalComponent /> {/* 모달 추가 */}
+      <DiagFailModalComponent /> {/* 진단실패 모달 추가 */}
       {/* 촬영 시 화면 깜빡임 */}
       {isFlashing && (
         <div
