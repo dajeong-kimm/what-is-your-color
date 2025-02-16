@@ -65,6 +65,7 @@ const App = () => {
         <Route path="/selecttwo" element={<PhotoSelectionPageTwo />} />
         <Route path="/qr-code" element={<QrCodePage />} />
         <Route path="/personaldefine" element={<PersonalDefine />} />
+        <Route path="/photoqrchoice" element={<PhotoQrChoicePage />} />
         <Route path="qna" element={<Qna />} />
       </Routes>
     </Router>

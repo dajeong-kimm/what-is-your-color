@@ -22,7 +22,7 @@ const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
   return (
     <div
       className="photo-booth-container"
-      style={{ display: "flex", top : "20%",justifyContent: "center", position: "relative" }}
+      style={{ display: "flex", top: "20%", justifyContent: "center", position: "relative" }}
     >
       {/* 왼쪽 화살표 버튼 */}
       <button
@@ -92,7 +92,7 @@ const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
         >
           your colors
         </div>
-        
+
         {Array.from({ length: 2 }).map((_, idx) => (
           <div
             key={idx}
@@ -106,7 +106,7 @@ const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
               alignItems: "center",
               justifyContent: "center",
               minHeight: "40px",
-              height : "40%",
+              height: "40%",
               position: "relative",
               zIndex: 5,
             }}
@@ -120,11 +120,30 @@ const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
             ) : (
               <span style={{ fontSize: "10px", visibility: "hidden" }}>빈 슬롯</span>
             )}
+            {idx === 0 && (
+              <img
+                src={personalColorInfo[num].characterManUrl}
+                alt="Character Man"
+                style={{
+                  position: "absolute",
+                  right: "0px",
+                  height: "40%",
+                  top: "60%",
+                  zIndex: 4,
+                }}
+              />
+            )}
             {idx === 1 && (
               <img
                 src={personalColorInfo[num].characterWomanUrl}
                 alt="Character Woman"
-                style={{ position: "absolute", left: "0px", height: "60%" ,top:"40%", zIndex: 5 }}
+                style={{
+                  position: "absolute",
+                  left: "0px",
+                  height: "40%",
+                  top: "60%",
+                  zIndex: 5,
+                }}
               />
             )}
           </div>
@@ -145,7 +164,7 @@ const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
           >
             {personalColorInfo[num].colorClass}
           </div>
-          <div className="photo-booth-text" style={{ fontSize: "23px", fontWeight: "bold" ,marginBottom:"-20px"}}>
+          <div className="photo-booth-text" style={{ fontSize: "23px", fontWeight: "bold", marginBottom: "-20px" }}>
             계절네컷
           </div>
         </div>
