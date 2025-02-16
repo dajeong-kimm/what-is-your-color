@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import personalColorInfo from "../../store/PersonalColorInfo"; 
+import personalColorInfo from "../../store/PersonalColorInfo";
 import useStore from "../../store/UseStore"; // Zustand 상태관리 사용 (필요시 활용)
 
 const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
   const totalDesigns = 12; // 총 프레임 수 (1~12)
   const { userPersonalId } = useStore();
   const initialIndex =
-    Number(userPersonalId) >= 1 && Number(userPersonalId) <= totalDesigns
-      ? Number(userPersonalId)
-      : 1;
+    Number(userPersonalId) >= 1 && Number(userPersonalId) <= totalDesigns ? Number(userPersonalId) : 1;
   const [num, setNum] = useState(initialIndex); // 현재 표시할 퍼스널 컬러 디자인 번호 (1~12)
 
   const nextNum = () => {
@@ -22,7 +20,7 @@ const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
   return (
     <div
       className="photo-booth-container"
-      style={{ display: "flex", top : "20%",justifyContent: "center", position: "relative" }}
+      style={{ display: "flex", top: "20%", justifyContent: "center", position: "relative" }}
     >
       {/* 왼쪽 화살표 버튼 */}
       <button
@@ -92,7 +90,7 @@ const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
         >
           your colors
         </div>
-        
+
         {Array.from({ length: 2 }).map((_, idx) => (
           <div
             key={idx}
@@ -106,7 +104,7 @@ const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
               alignItems: "center",
               justifyContent: "center",
               minHeight: "40px",
-              height : "40%",
+              height: "40%",
               position: "relative",
               zIndex: 5,
             }}
@@ -124,7 +122,7 @@ const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
               <img
                 src={personalColorInfo[num].characterWomanUrl}
                 alt="Character Woman"
-                style={{ position: "absolute", left: "0px", height: "60%" ,top:"40%", zIndex: 5 }}
+                style={{ position: "absolute", left: "0px", height: "40%", top: "60%", zIndex: 5 }}
               />
             )}
           </div>
@@ -145,7 +143,7 @@ const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
           >
             {personalColorInfo[num].colorClass}
           </div>
-          <div className="photo-booth-text" style={{ fontSize: "23px", fontWeight: "bold" ,marginBottom:"-20px"}}>
+          <div className="photo-booth-text" style={{ fontSize: "23px", fontWeight: "bold", marginBottom: "-20px" }}>
             계절네컷
           </div>
         </div>

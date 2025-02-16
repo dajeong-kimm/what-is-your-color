@@ -185,8 +185,8 @@ const PhotoFrame = React.forwardRef(({ selectedPhotos = [], hideArrows = false }
                 style={{
                   position: "absolute",
                   left: "0px",
-                  height: "60%",
-                  top: "40%",
+                  height: "40%",
+                  top: "60%",
                   zIndex: 5,
                 }}
               />
@@ -200,8 +200,8 @@ const PhotoFrame = React.forwardRef(({ selectedPhotos = [], hideArrows = false }
                 style={{
                   position: "absolute",
                   right: "0px",
-                  height: "60%",
-                  top: "40%",
+                  height: "40%",
+                  top: "60%",
                   zIndex: 4,
                 }}
               />
