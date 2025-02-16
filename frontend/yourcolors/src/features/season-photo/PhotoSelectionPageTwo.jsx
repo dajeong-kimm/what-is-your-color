@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
-import PhotoFrame from "./PhotoFrame";
+import PhotoFrameTwo from "./PhotoFrameTwo";
 import useStore from "../../store/UseStore"; // Zustand 상태관리 사용 (필요시 활용)
 
 const PhotoSelectionPage = () => {
@@ -36,20 +36,20 @@ const PhotoSelectionPage = () => {
       const response = await fetch(fileUrl);
       const blob = await response.blob();
       const file = new File([blob], "photo.jpg", { type: blob.type });
-
+  
       const formData = new FormData();
       formData.append("file", file);
-
+  
       const uploadResponse = await fetch("http://3.35.236.198:9000/api/photos/upload", {
         method: "POST",
         body: formData,
       });
-
+  
       if (!uploadResponse.ok) {
         alert("파일 업로드에 실패했습니다.");
         return;
       }
-
+  
       const data = await uploadResponse.json();
       navigate("/qr-code", { state: { qrCodeUrl: data.qr_code_url } });
     } catch (error) {
@@ -149,7 +149,7 @@ const PhotoSelectionPage = () => {
               })}
             </div>
           </div>
-          <PhotoFrame selectedPhotos={selectedPhotos} num={num} />
+          <PhotoFrameTwo selectedPhotos={selectedPhotos} num={num} />
         </div>
         {selectedPhotos.length === 4 && (
           <button
@@ -164,7 +164,6 @@ const PhotoSelectionPage = () => {
             인쇄하기
           </button>
         )}
-
       </Largemain>
     </Background>
   );
