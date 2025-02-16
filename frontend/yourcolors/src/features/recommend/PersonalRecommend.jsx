@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // URL에서 퍼스널컬러 가져오기
 import ProductButton from "../../button/product-button/ProductButton";
 import SmallMain from '../../background/background/SmallMain';
-import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
 import "./PersonalColorRecommend.css";
 
 import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터

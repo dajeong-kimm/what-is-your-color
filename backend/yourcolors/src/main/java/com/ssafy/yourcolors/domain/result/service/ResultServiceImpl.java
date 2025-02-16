@@ -10,6 +10,7 @@ import com.ssafy.yourcolors.domain.result.dto.QrResponseDto;
 import com.ssafy.yourcolors.domain.result.util.MailManager;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,10 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ResultServiceImpl implements ResultService {
+
+    @Value("${custom.server.ip}")
+    private String serverIp;
+
     private final MailManager mailManager;
 
     private final Map<String, Map<String, String>> qrStorage = new HashMap<>();
@@ -63,7 +68,7 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public QrResponseDto generateQrCode(MultipartFile image, String bestColor, String subColor1, String subColor2, String message) throws IOException {
         String qrId = UUID.randomUUID().toString();
-        String resultUrl = "http://localhost:9000/api/result/view/" + qrId;
+        String resultUrl = serverIp + "/api/result/view/" + qrId;
 
         // 진단 데이터 저장
         Map<String, String> resultData = new HashMap<>();

@@ -66,7 +66,8 @@
   flex-direction: row; /* ✅ 가로 방향 정렬 */
   justify-content: center; /* ✅ 중앙 정렬 */
   flex-wrap: wrap; /* ✅ 줄 바꿈 허용 */
-  gap: 40px; /* ✅ 그룹 간 간격 */
+  align-items: stretch; /* 높이를 부모 높이에 맞춤 */
+  gap: 10px; /* ✅ 그룹 간 간격 */
   margin-top: 10px; /* ✅ LargeMain과의 간격 */
   margin-bottom: 30px; /* ✅ 하단 여백 */
   top: 0;
@@ -78,11 +79,13 @@
   display: flex;
   flex-direction: column; /* ✅ 그룹 내 세로 정렬 */
   align-items: center; /* ✅ 그룹 내 중앙 정렬 */
-  gap: 20px; /* ✅ 버튼 간 간격 */
+  gap: 20px; /* 버튼 간 간격 */
+  flex-grow: 1; /* 그룹이 container의 남은 공간을 차지하도록 설정 */
+  justify-content: space-around; /* 버튼 간 간격을 일정하게 */
 }
 
 .color-group-title {
-  font-size: 1.5rem;
+  margin-top:30px;
   font-weight: bold;
   font-family: "Noto Sans KR", sans-serif;
   margin-bottom: 10px;

@@ -1,19 +1,22 @@
-import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import SmallMain from "../../background/background/SmallMain";
-import LargeMain from "../../background/background/LargeMain";
-import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 🔹 추가
-import "./Result.css";
-
 import personalColorInfo from "../../store/PersonalColorInfo"; // 정적 객체 데이터
-import useStore from '../../store/UseStore'; //Zustand 상태관리 데이터
-import Largemain from '../../background/background/LargeMain';
+import useStore from "../../store/UseStore"; //Zustand 상태관리 데이터
+import "./Result.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const Result = () => {
-  const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
+  const [showPopup, setShowPopup] = useState(false);
+  const togglePopup = () => {
+    setShowPopup(true);
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 5000); // 5초 동안 팝업 표시
+  };
+
   // const personalId = 1;
   const { userPersonalId, personalColorDetails, Results } = useStore();
-  
+
   console.log("본인 결과 확인 => ", Results);
   // console.log("확인 작업2 ㅡㅡ", personalColorDetails);
 
@@ -24,64 +27,150 @@ const Result = () => {
 
   // const location = useLocation();
 
-
-  // 🔹 백엔드 연동 시 사용 (현재 주석 처리)
-  // const { mainColor, subColors } = location.state || {};
-
-  // 🔹 임시 예시 데이터
-  const exampleData = {
-    mainColor: "겨울 다크",
-    subColors: ["가을 다크", "겨울 스트롱"],
-    summary: "모던함의 인간화",
-    hashtags: ["#차가운", "#시크한","#카리스마"],
-  };
-
-  // 백엔드 연결 후 exampleData 부분 삭제 가능
-  const mainColor = exampleData.mainColor; // location.state?.mainColor || exampleData.mainColor
-  const subColors = exampleData.subColors; // location.state?.subColors || exampleData.subColors
-  const summary = exampleData.summary;
-  const hashtags = exampleData.hashtags;
-
   // mainColor에 해당하는 이미지 URL 가져오기
-  const imageUrl = personalColorInfo[userPersonalId].characterUrl // 일단 1번 봄라이트 이미지로...
-  
+  const imageUrl = personalColorInfo[userPersonalId].characterUrl;
+  console.log(personalColorDetails.hashtag);
+  console.log(Results[1]);
   return (
-      <SmallMain>
-        <div className="container-left">
-          <div className="container-up">
-            <div className="title-main">🌈 당신의 퍼스널컬러는 🔍</div>
-            <strong className="main-color">🌟{personalColorDetails.name}✨</strong>
-          </div>
-
-          <div className="container-center">
-            <div className="summary">
-              <strong>{personalColorDetails.description}</strong>
-            </div>
-            <div className="result-hashtag">
-            {Array.isArray(personalColorDetails.hashtag) ? personalColorDetails.hashtag.join(" ") : " "}
-            </div>
-          </div>
-
-
-          <div className="container-down">
-            
-          <strong className="sub-color">{Results[1].personal_color} & {Results[2].personal_color} 도 어울려요!</strong>
-          {/* <div className="title-sub">도 어울려요!</div> */}
-          </div>
-        
+    <SmallMain>
+      <div className="container-left">
+        <div className="container-up">
+          <div className="title-main">🌈 당신의 퍼스널컬러는 ?🔍</div>
+          <strong className="main-color">{personalColorDetails.name}</strong>
         </div>
 
-        {/* 이미지 컨테이너 (우측 정렬) */}
-        <div className="image-container">
-          <div className="personal-character-image">
-            <img src={imageUrl} alt={mainColor} />
+        <div className="container-center">
+          <div className="summary">
+            <strong>{personalColorDetails.description}</strong>
+          </div>
+          <div className="result-hashtag">
+            {Array.isArray(personalColorDetails.hashtag)
+              ? personalColorDetails.hashtag.join(" ")
+              : " "}
           </div>
         </div>
 
-      </SmallMain>
+        {/* 원래 코드 <div className="container-down">
+          <strong className="sub-color">
+            Sub color {Results[1].personal_color} & {Results[2].personal_color}
+          </strong>
+        </div> */}
+
+        {/* 방법 1. 색상 카드로 <div className="container-down">
+            <div className="sub-color-title">Sub Colors</div>
+  <div className="sub-color-card">
+    <strong>{Results[1].personal_color}</strong>
+  </div>
+  <div className="sub-color-card">
+    <strong>{Results[2].personal_color}</strong>
+  </div>
+</div> */}
+
+        {/* <div className="container-down">
+  <div className="sub-color-card tooltip">
+    <strong>{Results[1].personal_color}</strong>
+    <span className="tooltiptext">Sub Color</span>
+  </div>
+  <div className="sub-color-card tooltip">
+    <strong>{Results[2].personal_color}</strong>
+    <span className="tooltiptext">Sub Color</span>
+  </div>
+</div> */}
+        {/* 방법 3. i 아이콘 누르면 뜨게 <div className="container-down">
+  <div className="sub-color-section">
+    <div className="sub-color-card" >
+      <strong>{Results[1].personal_color}</strong>
+    </div>
+    <i className="fa fa-info-circle" onClick={() => alert('Sub Color: ' + Results[1].personal_color)}></i>
+  </div>
+  <div className="sub-color-section">
+    <div className="sub-color-card">
+      <strong>{Results[2].personal_color}</strong>
+    </div>
+    <i className="fa fa-info-circle" onClick={() => alert('Sub Color: ' + Results[2].personal_color)}></i>
+  </div>
+</div> */}
+
+<div class="container-down">
+  <div class="sub-color-section">
+    <div class="icon-text" onClick={togglePopup}>
+      <i class="fa fa-palette" id="tooltip-icon"></i>
+      <span>나의 서브컬러는?</span>
+    </div>
+  </div>
+  <div class="sub-color-cards">
+    <div class="sub-color-card">
+      <strong>{Results[1].personal_color}</strong>
+    </div>
+    <div class="sub-color-card">
+      <strong>{Results[2].personal_color}</strong>
+    </div>
+  </div>
+
+  {showPopup && (
+          <div className="popup" id="popup-message">
+            실물이 아닌 이미지 기반 진단이기에 개인마다 색상 인식에 차이가 있을 수 있습니다. 때문에 1순위 메인 컬러 외에도 2순위와 3순위의 서브 컬러를 함께 알려드립니다.<br /> 이를 통해 보다 정확하고 다양한 색상 조합을 활용할 수 있습니다. 😊
+          </div>
+        )}
+        </div>
 
 
+
+        {/* <div className="container-down">
+          <div className="sub-color-section" onClick={toggleExpand}>
+            <i className="fa fa-info-circle"></i>
+            <span>나의 서브컬러는?</span>
+          </div>
+          {expanded && (
+            <div className="sub-colors-container">
+              <div className="sub-color-card">
+                <strong>{Results[1].personal_color}</strong>
+              </div>
+              <div className="sub-color-card">
+                <strong>{Results[2].personal_color}</strong>
+
+              </div>
+            </div>
+          )}
+        </div> */}
+
+        {/* <div className="container-down">
+  <div className="sub-color">
+    <i className="fa fa-paint-brush"></i>
+    {Results[1].personal_color}
+  </div>
+  <div className="sub-color">
+    <i className="fa fa-paint-brush"></i>
+     {Results[2].personal_color}
+  </div>
+</div> */}
+
+        {/* <div className="container-down">
+          <div className="sub-color-section" onClick={toggleExpand}>
+            <i className="fa fa-info-circle"></i>
+            <span>나의 서브컬러는?</span>
+          </div>
+          {expanded && (
+            <div className="sub-colors-container">
+              <div className="sub-color-card">
+                <strong>{Results[1].personal_color}</strong>
+              </div>
+              <div className="sub-color-card">
+                <strong>{Results[2].personal_color}</strong>
+
+              </div>
+            </div>
+          )}
+        </div> */}
+      </div>
+
+      {/* 이미지 컨테이너 (우측 정렬) */}
+      <div className="character-container">
+        <div className="personal-character-image">
+          <img src={imageUrl} alt={personalColorDetails.name} />
+        </div>
+      </div>
+    </SmallMain>
   );
 };
-
 export default Result;
