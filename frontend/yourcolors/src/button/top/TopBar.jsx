@@ -23,14 +23,18 @@ const Topbar = () => {
     activeButton = 'diagnosis';
   } else if (location.pathname === '/makeup') {
     activeButton = 'makeup';
+  } else if (location.pathname === '/qna') {
+    activeButton = 'qna'; // QnA 페이지 active 처리
   }
 
   // 버튼 정보 배열
   const buttons = [
     { to: '/personaldefine', label: '퍼스널컬러란?', name: 'define' },
     { to: '/personalcolors', label: '퍼스널컬러 종류', name: 'personalcolor' },
+    { to: '/qna', label: 'QnA', name: 'qna' }, // QnA 버튼 추가
     { to: '/mainpage', label: '메인페이지', name: 'main' },
     { to: '/', label: '처음으로', name: 'start' },
+    
   ];
 
   return (

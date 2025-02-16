@@ -118,11 +118,30 @@ const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
             ) : (
               <span style={{ fontSize: "10px", visibility: "hidden" }}>빈 슬롯</span>
             )}
+            {idx === 0 && (
+              <img
+                src={personalColorInfo[num].characterManUrl}
+                alt="Character Man"
+                style={{
+                  position: "absolute",
+                  right: "0px",
+                  height: "40%",
+                  top: "60%",
+                  zIndex: 4,
+                }}
+              />
+            )}
             {idx === 1 && (
               <img
                 src={personalColorInfo[num].characterWomanUrl}
                 alt="Character Woman"
-                style={{ position: "absolute", left: "0px", height: "40%", top: "60%", zIndex: 5 }}
+                style={{
+                  position: "absolute",
+                  left: "0px",
+                  height: "40%",
+                  top: "60%",
+                  zIndex: 5,
+                }}
               />
             )}
           </div>

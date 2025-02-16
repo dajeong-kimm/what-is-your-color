@@ -13,8 +13,8 @@
 
 /* 퍼스널 컬러 설명 스타일 */
 .description {
-    font-size: 18px;
-    line-height: 1.5;
+    font-size: 20px;
+    line-height: 2;
     margin-bottom: 20px; /* 이미지와 간격 조정 */
     text-align: left;
 }

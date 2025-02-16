@@ -27,12 +27,13 @@ import PhotoCapturePage from "./features/season-photo/PhotoCapturePage.jsx";
 import PhotoSelectionPage from "./features/season-photo/PhotoSelectionPage.jsx";
 import PhotoSelectionPageTwo from "./features/season-photo/PhotoSelectionPageTwo.jsx";
 import QrCodePage from "./button/print/QRCodePage.jsx";
+import Qna from "./features/qna/Qna.jsx";
+import PhotoQrChoicePage from "./features/season-photo/PhotoQrChoicePage.jsx";
 
 const App = () => {
   return (
     <RecoilRoot>
       <Router>
-
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/endpage" element={<EndPage />} />
@@ -59,14 +60,15 @@ const App = () => {
           {/* <Route path="/:personalColor/recommend" element={<PersonalRecommend />} /> */}
           <Route path="/qrtestbutton" element={<QRTestButton />} />
           <Route path="/qrtest" element={<QRTest />} />
-        <Route path="/season-photo" element={<PhotoCapturePage />} />
-        <Route path="/select" element={<PhotoSelectionPage />} />
-        <Route path="/selecttwo" element={<PhotoSelectionPageTwo />} />
-        <Route path="/qr-code" element={<QrCodePage />} />
-        <Route path="/personaldefine" element={<PersonalDefine />} />
-      </Routes>
-    </Router>
-
+          <Route path="/season-photo" element={<PhotoCapturePage />} />
+          <Route path="/select" element={<PhotoSelectionPage />} />
+          <Route path="/selecttwo" element={<PhotoSelectionPageTwo />} />
+          <Route path="/qr-code" element={<QrCodePage />} />
+          <Route path="/personaldefine" element={<PersonalDefine />} />
+          <Route path="/photoqrchoice" element={<PhotoQrChoicePage />} />
+          <Route path="qna" element={<Qna />} />
+        </Routes>
+      </Router>
     </RecoilRoot>
   );
 };
