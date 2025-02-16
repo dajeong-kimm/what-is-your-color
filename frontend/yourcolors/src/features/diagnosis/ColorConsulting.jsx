@@ -46,7 +46,7 @@ const ColorConsulting = () => {
 
   return (
     <SmallMain>
-      <div className="full-container">
+      <div className="consulting-container">
         <div className="top-container">
           {/* 🔹 제목을 별도 태그로 표시 (CSS에서 가운데 정렬) */}
           <h2 className="consulting-title">🌸 퍼스널 컬러 컨설팅 결과 🌸</h2>

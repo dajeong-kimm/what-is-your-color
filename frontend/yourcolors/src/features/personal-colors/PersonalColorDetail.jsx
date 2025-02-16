@@ -55,7 +55,7 @@ const PersonalColorDetail = () => {
         <div className="detail-container-right">
           {/* 추천 컬러 팔레트 */}
           <div className="detail-section">
-            <h2 className="section-title">🎨 추천 컬러 팔레트</h2>
+            <h1 className="section-title">🎨 추천 컬러 팔레트</h1>
             <div className="color-palette">
               <div className="color-group">
                 <h3>Best</h3>

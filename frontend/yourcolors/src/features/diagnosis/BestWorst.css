@@ -1,12 +1,3 @@
-.full-container {
-  display: flex;
-  flex-direction: column; /* 세로 배치 */
-  justify-content: center;
-  align-items: center;
-  gap: 4rem; 
-  height: 500px;
-}
-
 /* 상단 컨테이너를 전체 너비로 잡고 내부 요소를 중앙 정렬 */
 .bs-container {
   display: flex;
@@ -32,6 +23,7 @@
 
 /* Best 영역: 오른쪽 패딩과 구분선 추가 */
 .container-best {
+  
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -50,6 +42,17 @@
   position: relative; /* 추가 */
 }
 
+.divider {
+  position: absolute;
+  height: 95%;
+  width: 2px;
+  border-left: 2px d #ccc;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+
+}
+
 .color-boxes {
   display: flex;
   gap: 15px; /* 기존 간격 유지 */
@@ -62,28 +65,11 @@
 
 /* 제목의 글자 크기를 2.5rem으로, 중앙 정렬 */
 .title {
+
   font-size: 2.5rem; 
   font-weight: bold;
   margin-bottom: 1rem;
   margin-top: 1rem;
   text-align: center;
-}
-
-.bottom-container {
-  text-align: center;
-}
-
-.GPT-consulting {
-  margin-top: 30px;           /* 위 내용과의 간격 (필요에 따라 조정) */
-  padding: 20px;              /* 내부 여백 */
-  background-color: #fff;     /* 배경색 (가독성을 위한 흰색) */
-  border: 2px solid #ccc;     /* 테두리 (원하는 경우) */
-  border-radius: 20px;        /* 둥근 모서리 */
-  font-size: 1.2rem;          /* 텍스트 크기 (필요에 따라 조정) */
-  line-height: 1.5;           /* 줄 간격 */
-  text-align: center;         /* 텍스트 중앙 정렬 (원하는 경우 left나 justify도 가능) */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* 약한 그림자 효과 */
-  max-width: 90%;             /* 부모 너비의 90%로 제한 */
-  margin-left: auto;
-  margin-right: auto;
+  color:black;
 }

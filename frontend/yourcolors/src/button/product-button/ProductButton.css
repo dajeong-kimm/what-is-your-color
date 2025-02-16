@@ -1,16 +1,16 @@
 .product-button {
-    padding: 10px 20px;
-    font-size: 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    background-color: #82dc28;
-    color: white;
-    border: none;
-    opacity: 0.4; /* 기본 상태 (클릭 X) */
-    transition: opacity 0.2s ease-in-out;
-  }
-  
-  .product-button.active {
-    opacity: 0.7; /* 클릭 시 투명도 70% */
-  }
-  
+  padding: 10px 20px;
+  font-size: 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  background-color: #82dc28; /* 기본 색상 */
+  color: white;
+  border: none;
+  transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.product-button.active {
+  background-color: #ecf1e7; /* 클릭 시 색상 진하게 변경 */
+  opacity: 0.8; /* 클릭 시 투명도 약간 조정 */
+}
