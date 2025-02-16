@@ -153,14 +153,14 @@ const PhotoFrame = ({ selectedPhotos = [] }) => {
               <img
                 src={personalColorInfo[num].characterWomanUrl}
                 alt="Character Woman"
-                style={{ position: "absolute", left: "0px", height: "60%" ,top:"40%", zIndex: 5 }}
+                style={{ position: "absolute", left: "0px", height: "40%" ,top:"60%", zIndex: 5 }}
               />
             )}
             {idx === 3 && (
               <img
                 src={personalColorInfo[num].characterManUrl}
                 alt="Character Man"
-                style={{ position: "absolute", right: "0px", height: "60%",top:"40%", zIndex: 4 }}
+                style={{ position: "absolute", right: "0px", height: "40%",top:"60%", zIndex: 4 }}
               />
             )}
           </div>
