@@ -33,7 +33,6 @@ const App = () => {
   return (
     <RecoilRoot>
       <Router>
-
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/endpage" element={<EndPage />} />
@@ -68,7 +67,6 @@ const App = () => {
         <Route path="qna" element={<Qna />} />
       </Routes>
     </Router>
-
     </RecoilRoot>
   );
 };
