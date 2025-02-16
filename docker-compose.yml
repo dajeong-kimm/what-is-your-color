@@ -7,6 +7,7 @@ services:
     environment:
       - APP_NAME=yourcolors
       - APP_VERSION=1.0.0
+      - SERVER_IP=https://i12e106.p.ssafy.io
     network_mode: host  # 백엔드는 host 네트워크 사용
     volumes:
       - /home/ubuntu/uploads:/app/uploads  # 📌 파일 저장 경로 추가
