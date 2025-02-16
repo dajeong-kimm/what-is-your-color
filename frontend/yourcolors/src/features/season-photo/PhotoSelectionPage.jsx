@@ -5,6 +5,7 @@ import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import PhotoFrame from "./PhotoFrame";
 import useStore from "../../store/UseStore"; // Zustand 상태관리 사용 (필요시 활용)
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const PhotoSelectionPage = () => {
   const location = useLocation();
@@ -40,7 +41,7 @@ const PhotoSelectionPage = () => {
       const formData = new FormData();
       formData.append("file", file);
 
-      const uploadResponse = await fetch("http://3.35.236.198:9000/api/photos/upload", {
+      const uploadResponse = await fetch(`${apiBaseUrl}/api/photos/upload`, {
         method: "POST",
         body: formData,
       });
@@ -108,9 +109,10 @@ const PhotoSelectionPage = () => {
                     style={{
                       position: "relative",
                       cursor: photo ? "pointer" : "default",
-                      border: photo && selectedPhotos.includes(photo)
-                        ? "2px solid blue"
-                        : "1px solid #aaa",
+                      border:
+                        photo && selectedPhotos.includes(photo)
+                          ? "2px solid blue"
+                          : "1px solid #aaa",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -164,7 +166,6 @@ const PhotoSelectionPage = () => {
             인쇄하기
           </button>
         )}
-
       </Largemain>
     </Background>
   );
