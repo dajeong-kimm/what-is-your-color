@@ -34,7 +34,6 @@ const App = () => {
   return (
     <RecoilRoot>
       <Router>
-
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/endpage" element={<EndPage />} />
