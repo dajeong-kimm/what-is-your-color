@@ -96,7 +96,7 @@ const PhotoSelectionPage = () => {
                         height: "90%",
                       }}
                     >
-                      {`${selectedPhotos.length} / 4`}
+                      {`${selectedPhotos.length} / 2`}
                     </div>
                   );
                 }
@@ -151,7 +151,7 @@ const PhotoSelectionPage = () => {
           </div>
           <PhotoFrameTwo selectedPhotos={selectedPhotos} num={num} />
         </div>
-        {selectedPhotos.length === 4 && (
+        {selectedPhotos.length === 2 && (
           <button
             onClick={handlePrint}
             style={{
