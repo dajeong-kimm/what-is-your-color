@@ -52,13 +52,20 @@ const QRTest = () => {
 
     try {
       // 백엔드 API 엔드포인트 URL을 실제 주소로 수정하세요.
-      const response = await axios.post("http://3.35.236.198:9000/api/photos/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "http://3.35.236.198:9000/api/photos/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-      const data = typeof response.data === "string" ? JSON.parse(response.data) : response.data;
+      const data =
+        typeof response.data === "string"
+          ? JSON.parse(response.data)
+          : response.data;
       console.log("Upload response data:", data);
       setQrCodeUrl(data.qr_code_url);
       setFileUrl(data.file_url);
@@ -76,7 +83,11 @@ const QRTest = () => {
       {imageBlob ? (
         <div>
           <h2>등록된 사진 미리보기</h2>
-          <img src={previewUrl} alt="등록된 사진" style={{ width: "200px", height: "200px" }} />
+          <img
+            src={previewUrl}
+            alt="등록된 사진"
+            style={{ width: "200px", height: "200px" }}
+          />
         </div>
       ) : (
         <p>Zustand 스토어에 사진이 등록되어 있지 않습니다.</p>
@@ -93,7 +104,11 @@ const QRTest = () => {
       {qrCodeUrl && (
         <div>
           <h2>생성된 QR 코드</h2>
-          <img src={qrCodeUrl} alt="QR 코드" style={{ width: "200px", height: "200px" }} />
+          <img
+            src={qrCodeUrl}
+            alt="QR 코드"
+            style={{ width: "200px", height: "200px" }}
+          />
         </div>
       )}
 
@@ -108,5 +123,4 @@ const QRTest = () => {
     </div>
   );
 };
-
 export default QRTest;
