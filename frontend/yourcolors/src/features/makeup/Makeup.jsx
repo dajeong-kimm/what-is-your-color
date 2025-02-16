@@ -6,6 +6,7 @@ import MakeupCamera from "./MakeupCamera";
 import ProductButton from "../../button/product-button/ProductButton";
 import "./Makeup.css";
 import useStore from "../../store/UseStore"; // Zustand 상태관리 데이터
+import { useNavigate } from "react-router-dom"; // react-router-dom import
 
 const Modal = ({ children, onClose }) => {
   return (
@@ -36,6 +37,16 @@ const personalColors = [
 ];
 
 const Makeup = () => {
+  
+  const navigate = useNavigate(); // useNavigate 훅 사용
+
+  // handleSeasonPhotoClick에서 selectedColors 전달
+  const handleSeasonPhotoClick = () => {
+    navigate("/season-photo", {
+      state: { selectedColors }, // selectedColors 상태 전달
+    });
+  };
+
   const {
     cosmetics,
     loading,
@@ -43,7 +54,7 @@ const Makeup = () => {
     fetchProductDetails,
     productDetails,
   } = useStore();
-  const [selectedPersonalColor, setSelectedPersonalColor] = useState(null);
+  const [selectedPersonalColor, setSelectedPersonalColor] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("lip");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -203,6 +214,25 @@ const Makeup = () => {
                     </div>
                   ))}
                 </div>
+                {/* 계절네컷 버튼 추가 */}
+                <button
+                  className="season-photo-btn"
+                  onClick={handleSeasonPhotoClick} //클릭시 이동
+                  style={{
+                    marginTop: '15px',
+                    padding: '10px 20px',
+                    backgroundColor: 'rgba(130, 220, 40, 0.40)',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    transition: 'background-color 0.3s ease',
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#82DC28'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(130, 220, 40, 0.40)'}
+                >
+                  계절네컷 🡺
+                </button>
               </div>
             </div>
           </div>

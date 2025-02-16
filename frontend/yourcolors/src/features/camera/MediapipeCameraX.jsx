@@ -48,9 +48,9 @@ const MediapipeCamera = () => {
         triggerFlashAndCapture();
       }
     });
-
+    let camera;
     if (videoRef.current) {
-      const camera = new Camera(videoRef.current, {
+      camera = new Camera(videoRef.current, {
         onFrame: async () => {
           await holistic.send({ image: videoRef.current });
         },
@@ -59,6 +59,22 @@ const MediapipeCamera = () => {
       });
       camera.start();
     }
+
+    return () => {
+      // 카메라 인스턴스 종료 (stop() 메서드가 있다면 호출)
+      if (camera && typeof camera.stop === "function") {
+        camera.stop();
+      }
+      // video 스트림 종료: srcObject에 있는 모든 트랙 정지
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+        videoRef.current.srcObject = null;
+      }
+      // Holistic 인스턴스 종료
+      if (holistic && typeof holistic.close === "function") {
+        holistic.close();
+      }
+    };
   }, [captured]);
 
   const detectFace = (results) => {

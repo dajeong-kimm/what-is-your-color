@@ -84,11 +84,6 @@ const useStore = create((set) => {
     },
   };
 
-  // ✅ Zustand 상태를 window.store에 등록
-  if (typeof window !== "undefined") {
-    window.store = store;
-    console.log("✅ Zustand 상태가 window.store에 저장되었습니다.");
-  }
 
   return store;
 });
@@ -96,6 +91,7 @@ const useStore = create((set) => {
 // 🔹 상태를 window 객체에 등록 (개발용)
 if (typeof window !== "undefined") {
   window.store = useStore;
+  console.log("✅ Zustand 상태가 window.store에 저장되었습니다.");
 }
 
 export default useStore;

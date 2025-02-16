@@ -5,7 +5,6 @@ import Background from "../../background/background/Background";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar"; // Bottombar: currentStep prop 전달
 import Result from "./Result";
-import PersonalColorDetailContent from "../personal-colors/PersonalColorDetailContent";
 import BestWorst from "./BestWorst";
 import PersonalRecommend from "../recommend/PersonalRecommend";
 import LeftRightButton from "../../button/left-right-button/LeftRightButton"; // 좌우 이동 버튼

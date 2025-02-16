@@ -6,18 +6,18 @@ import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import Bottombar from "../../button/bottom/BottomBar";
 import MediapipeCameraXTimer from '../camera/MediapipeCameraXTimer';
+
 const DiagCaptureX = () => {
   return (
     
       <div className="camera-container">
-        
-      <Background>
-      <Largemain>
-			<MediapipeCameraXTimer/>
-			</Largemain>
-      <Topbar />
-      {/* <Bottombar /> */}
-    </Background>
+        <Background>
+          <Largemain>
+            <MediapipeCameraXTimer/>
+          </Largemain>
+          <Topbar />
+          {/* <Bottombar /> */}
+        </Background>
       </div>
     
   );
