@@ -7,9 +7,9 @@ import axios from "axios";
 import useStore from "../../store/UseStore"; //Zustand 상태관리 데이터
 import { useModalStore } from "../../store/useModalStore"; // Zustand 모달 상태 가져오기
 import DiagFailModalComponent from "../diagnosis/DiagFailModalComponent"; //진단 실패 시 실패 모달
+import useWebcamStore from "../../store/useWebcamStore"; // Zustand 카메라 상태 관리
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-
 let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)
 
 const MediapipeCameraXTimerAI = () => {
@@ -26,67 +26,43 @@ const MediapipeCameraXTimerAI = () => {
   const navigate = useNavigate();
   const { setUserPersonalId, userImageFile, setUserImageFile, setResults, setGptSummary } = useStore(); //Zustand 상태관리 데이터
   const { openModal } = useModalStore(); // 모달 상태
+  const { stream, startCamera, stopCamera } = useWebcamStore();
 
   useEffect(() => {
-    console.log("[useEffect] Component mounted -> Initialize camera");
-    initializeCamera();
-    // cleanup: 컴포넌트 언마운트 시 카메라 정리
-    return () => {
-      console.log("[useEffect cleanup] Stopping camera and releasing instances");
+    if (stream && videoRef.current) {
+      videoRef.current.srcObject = stream;
+      videoRef.current.play().catch((error) => console.error("Play 오류:", error));
+    }
+  }, [stream]);
 
-      // Camera 인스턴스 종료 (stop() 메서드가 있으면 호출)
-      if (cameraInstance && typeof cameraInstance.stop === "function") {
-        cameraInstance.stop();
-      }
-      cameraInstance = null;
+  useEffect(() => {
+    startCamera();
+    return () => stopCamera(); // 컴포넌트 언마운트 시 카메라 정지
+  }, [startCamera, stopCamera]);
 
-      // video 스트림 정리: srcObject에 있는 모든 트랙 종료
-      if (videoRef.current && videoRef.current.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-        videoRef.current.srcObject = null;
-      }
-
-      // Holistic 인스턴스 종료
-      if (holisticRef.current && typeof holisticRef.current.close === "function") {
-        holisticRef.current.close();
-        holisticRef.current = null;
-      }
+  useEffect(() => {
+    const setupHolistic = async () => {
+      const holistic = new Holistic({
+        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
+      });
+      holistic.setOptions({
+        modelComplexity: 1,
+        smoothLandmarks: true,
+        refineFaceLandmarks: true,
+      });
+      holistic.onResults(() => {
+        if (!canvasRef.current || !videoRef.current) return;
+        const ctx = canvasRef.current.getContext("2d");
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        ctx.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+      });
+      holisticRef.current = holistic;
     };
+
+    setupHolistic();
   }, []);
 
-  const initializeCamera = () => {
-    console.log("[initializeCamera] called");
-    const holistic = new Holistic({
-      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
-    });
-    holistic.setOptions({
-      modelComplexity: 1,
-      smoothLandmarks: true,
-      refineFaceLandmarks: true,
-    });
 
-    holistic.onResults(() => {
-      if (!canvasRef.current || !videoRef.current) return;
-      const ctx = canvasRef.current.getContext("2d");
-      if (!ctx) return;
-
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      ctx.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
-    });
-
-    if (videoRef.current) {
-      // 카메라가 이미 한 번 세팅되었다면 중복 세팅 방지
-      console.log("[initializeCamera] Setup camera instance");
-      cameraInstance = new Camera(videoRef.current, {
-        onFrame: async () => {
-          await holistic.send({ image: videoRef.current });
-        },
-        width: 640,
-        height: 480,
-      });
-      cameraInstance.start();
-    }
-  };
 
   const handleCapture = async () => {
     // 버튼 클릭 시 중복 클릭 방지

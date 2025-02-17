@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Background from "../../background/background/Background";
 import StartImage from "../../assets/Start.png"; // 이미지 파일 불러오기
 import StartButton from "./StartButton";
 import "./Home.css";
+import useWebcamStore from "../../store/useWebcamStore"; // Zustand 불러오기
 
 const Home = () => {
+  const { startCamera, isCameraOn } = useWebcamStore();
+
+  useEffect(() => {
+    if (!isCameraOn) {
+      startCamera(); // 홈 화면에서 웹캠 시작
+    }
+  }, [isCameraOn, startCamera]);
+
+
   return (
     <Background>
       <div className="home-container">
