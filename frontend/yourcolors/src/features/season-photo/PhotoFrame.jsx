@@ -86,7 +86,7 @@ const PhotoFrame = React.forwardRef(({ selectedPhotos = [], hideArrows = false }
           alignItems: "center",
           gap: "11px",
           width: "10rem", // 기존보다 약간 줄임
-          height: "600px",
+          height: "590px",
           position: "relative",
           zIndex: 2,
         }}

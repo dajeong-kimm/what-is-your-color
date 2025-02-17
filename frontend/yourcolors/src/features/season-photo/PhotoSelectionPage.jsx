@@ -113,7 +113,7 @@ const PhotoSelectionPage = () => {
                         onClick={handlePrint}
                         className="print-button"
                         style={{
-                          fontSize: "3rem",
+                          fontSize: "2rem",
                           color:"#000000",
                           background: "none",
                           border: "none",
@@ -121,7 +121,7 @@ const PhotoSelectionPage = () => {
                         }}
                       >
                         <span role="img" aria-label="print">
-                          🖨️
+                          🖨️<br/>
                           인쇄하기
                         </span>
                         
