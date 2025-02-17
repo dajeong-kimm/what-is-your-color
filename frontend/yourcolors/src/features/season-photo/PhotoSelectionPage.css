@@ -72,7 +72,7 @@
   cursor: default;
 }
 
-/* 오른쪽 전체 컨테이너 (프레임 + 버튼) */
+/* 오른쪽 전체 컨테이너 (프레임) */
 .photo-frame-container {
   width: 300px; /* 필요에 따라 조정 */
   height: 100%; /* 컨테이너 전체 높이를 사용 */
@@ -83,10 +83,10 @@
   box-sizing: border-box;
   padding: 0px;
   gap: 10px;
-  position: relative; /* 내부 절대 위치 요소(print-button-area)를 위해 */
+  position: relative; /* PhotoFrame 배치용 */
 }
 
-/* 프레임을 감싸는 래퍼 (왼쪽 영역) */
+/* 프레임을 감싸는 래퍼 */
 .photo-frame-wrapper {
   flex: 1;
   width: 100%;
@@ -96,24 +96,24 @@
   box-sizing: border-box;
 }
 
-/* 인쇄 버튼 영역: photo-selection-container 내부, 오른쪽 하단에 고정 */
+/* 인쇄 버튼 영역: .photo-selection-container 기준 가운데 배치 */
 .print-button-area {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
 }
 
 /* 인쇄하기 버튼 */
 .print-button {
   padding: 10px 20px;
-  font-size: 20px;
+  font-size:25px;
   cursor: pointer;
   border: none;
-  background-color: #008cba;
-  color: #fff;
+  font-weight: bold;
+  background-color: #046218;
+  color: #ffffff;
   border-radius: 4px;
   transition: background-color 0.2s;
 }
