@@ -6,6 +6,7 @@ import Topbar from "../../button/top/TopBar";
 import PhotoFrame from "./PhotoFrame";
 import html2canvas from "html2canvas";
 import "./PhotoSelectionPage.css";
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const PhotoSelectionPage = () => {
   const location = useLocation();
@@ -47,7 +48,7 @@ const PhotoSelectionPage = () => {
       const file = new File([blob], "photo-frame.jpg", { type: blob.type });
       const formData = new FormData();
       formData.append("file", file);
-      const uploadResponse = await fetch("http://3.35.236.198:9000/api/photos/upload", {
+      const uploadResponse = await fetch(`${apiBaseUrl}/api/photos/upload`, {
         method: "POST",
         body: formData,
       });
