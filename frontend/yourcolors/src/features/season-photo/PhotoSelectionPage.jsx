@@ -5,6 +5,7 @@ import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import PhotoFrame from "./PhotoFrame";
 import html2canvas from "html2canvas";
+import useStore from "../../store/UseStore"; // 추가: 사용자 정보를 가져오기 위해
 import "./PhotoSelectionPage.css";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -16,9 +17,18 @@ const PhotoSelectionPage = () => {
   const [selectedPhotoIndices, setSelectedPhotoIndices] = useState([]);
   const [captureMode, setCaptureMode] = useState(false);
 
-  // 실제 화면에 보이는 단일 프레임
+  // 디자인(색상) 상태를 부모에서 관리 (전체 디자인 개수: 12)
+  const totalDesigns = 12;
+  const { userPersonalId } = useStore();
+  const initialDesign =
+    Number(userPersonalId) >= 1 && Number(userPersonalId) <= totalDesigns
+      ? Number(userPersonalId)
+      : 1;
+  const [designNum, setDesignNum] = useState(initialDesign);
+
+  // 실제 화면에 보이는 프레임의 ref
   const displayFrameRef = useRef(null);
-  // 숨겨진(캡처용) 프레임 2개 컨테이너
+  // 캡처용 숨겨진 프레임의 ref
   const captureRef = useRef(null);
 
   // 사진 선택/해제 (최대 4장)
@@ -41,9 +51,7 @@ const PhotoSelectionPage = () => {
       return;
     }
     setCaptureMode(true);
-
     await new Promise((resolve) => setTimeout(resolve, 100)); // UI 갱신 대기
-
     try {
       // 숨겨진 영역 캡처
       const canvas = await html2canvas(captureRef.current, {
@@ -56,20 +64,16 @@ const PhotoSelectionPage = () => {
       const responseFetch = await fetch(dataUrl);
       const blob = await responseFetch.blob();
       const file = new File([blob], "photo-frame.jpg", { type: blob.type });
-
       const formData = new FormData();
       formData.append("file", file);
-
       const uploadResponse = await fetch(`${apiBaseUrl}/api/photos/upload`, {
         method: "POST",
         body: formData,
       });
-
       if (!uploadResponse.ok) {
         alert("파일 업로드에 실패했습니다.");
         return;
       }
-
       const data = await uploadResponse.json();
       navigate("/qr-code", {
         state: {
@@ -96,7 +100,6 @@ const PhotoSelectionPage = () => {
           {/* 왼쪽 3x3 그리드 */}
           <div className="photo-grid">
             {Array.from({ length: 9 }).map((_, idx) => {
-              // 마지막 칸(9번째, 인덱스 8)
               if (idx === 8) {
                 return (
                   <div
@@ -114,17 +117,18 @@ const PhotoSelectionPage = () => {
                         className="print-button"
                         style={{
                           fontSize: "2rem",
-                          color:"#000000",
+                          color: "#000000",
                           background: "none",
                           border: "none",
                           cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.3rem",
                         }}
                       >
                         <span role="img" aria-label="print">
-                          🖨️<br/>
-                          인쇄하기
+                          🖨️<br />인쇄하기
                         </span>
-                        
                       </button>
                     ) : (
                       `${selectedPhotoIndices.length} / 4`
@@ -132,20 +136,24 @@ const PhotoSelectionPage = () => {
                   </div>
                 );
               }
-
-              // 그 외 칸(0~7)
               const photo = photos[idx];
               const isSelected = selectedPhotoIndices.includes(idx);
               return (
                 <div
                   key={idx}
                   className={
-                    photo ? `photo-cell ${isSelected ? "selected" : ""}` : "photo-cell empty"
+                    photo
+                      ? `photo-cell ${isSelected ? "selected" : ""}`
+                      : "photo-cell empty"
                   }
                   onClick={() => photo && toggleSelectPhoto(idx)}
                 >
                   {photo ? (
-                    <img src={photo} alt={`사진 ${idx + 1}`} crossOrigin="anonymous" />
+                    <img
+                      src={photo}
+                      alt={`사진 ${idx + 1}`}
+                      crossOrigin="anonymous"
+                    />
                   ) : (
                     <span>빈 사진</span>
                   )}
@@ -162,6 +170,13 @@ const PhotoSelectionPage = () => {
                 ref={displayFrameRef}
                 selectedPhotos={selectedPhotoUrls}
                 hideArrows={captureMode}
+                designNum={designNum}
+                onNextDesign={() =>
+                  setDesignNum((prev) => (prev === totalDesigns ? 1 : prev + 1))
+                }
+                onPrevDesign={() =>
+                  setDesignNum((prev) => (prev === 1 ? totalDesigns : prev - 1))
+                }
               />
             </div>
           </div>
@@ -177,15 +192,15 @@ const PhotoSelectionPage = () => {
           ref={captureRef}
         >
           <div style={{ display: "flex" }}>
-            {/* 첫 번째 프레임 */}
             <PhotoFrame
               selectedPhotos={selectedPhotoUrls}
               hideArrows={true}
+              designNum={designNum}
             />
-            {/* 두 번째 프레임 */}
             <PhotoFrame
               selectedPhotos={selectedPhotoUrls}
               hideArrows={true}
+              designNum={designNum}
             />
           </div>
         </div>
