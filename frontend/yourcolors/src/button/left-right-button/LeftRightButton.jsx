@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LeftRightButton.css';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 const LeftRightButton = ({ currentStep, onLeftClick, onRightClick }) => {
   const navigate = useNavigate();
@@ -21,14 +22,14 @@ const LeftRightButton = ({ currentStep, onLeftClick, onRightClick }) => {
         onClick={onLeftClick}
         style={{ visibility: currentStep === 0 ? 'hidden' : 'visible' }}
       >
-        <span className="nav-arrow">&#10094;</span>
+        <FaArrowLeft className="nav-arrow" />
       </button>
       
       <button 
         className="nav-button"
         onClick={handleRightClick}
       >
-        <span className="nav-arrow">&#10095;</span>
+         <FaArrowRight className="nav-arrow" />
       </button>
     </div>
   );

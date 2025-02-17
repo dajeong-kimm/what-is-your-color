@@ -36,6 +36,11 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
   useEffect(() => { blushBlurRef.current = blushBlur; }, [blushBlur]);
   useEffect(() => { blushIntensityRef.current = blushIntensity; }, [blushIntensity]);
 
+  // "원본" 버튼 상태: true이면 메이크업 효과를 숨김 (원본 영상 표시)
+  const [isOriginal, setIsOriginal] = useState(false);
+  const isOriginalRef = useRef(isOriginal);
+  useEffect(() => { isOriginalRef.current = isOriginal; }, [isOriginal]);
+
   // 디버그용 콘솔 출력
   console.log("eyeShadowColor:", eyeShadowColor);
   console.log("category:", category);
@@ -250,13 +255,14 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     ctx.restore();
 
-    if (results.faceLandmarks.length > 0) {
+    // 메이크업 효과는 isOriginal 상태가 false일 때만 적용
+    if (results.faceLandmarks.length > 0 && !isOriginalRef.current) {
       const landmarks = results.faceLandmarks[0];
 
-      // 입술은 새 함수 drawLipRegion로 처리하여 클리핑 영역 내에서 블러 효과 적용
+      // 입술 영역에 메이크업 효과 적용
       drawLipRegion(ctx, landmarks, lipColor || "rgba(0,0,0,0)", lipBlurRef.current, lipIntensityRef.current);
 
-      // 나머지 부위는 기존 함수 사용
+      // 눈섀도우 및 블러시 영역 처리
       const LEFT_EYE_SHADOW = [
         33, 130, 226, 247, 30, 29, 27, 28, 56,
         190, 243, 133, 173, 157, 158, 159, 160, 161, 246
@@ -265,7 +271,7 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
         263, 359, 446, 467, 260, 259, 257, 258, 286,
         414, 463, 353, 383, 362, 398, 384, 385, 386, 466
       ];
-      const LEFT_BLUSH = [117,101,205,187,123,116,117];
+      const LEFT_BLUSH = [117, 101, 205, 187, 123, 116, 117];
       const RIGHT_BLUSH = [411, 352, 346, 347, 330, 425, 411];
 
       drawSmoothRegion(ctx, landmarks, LEFT_EYE_SHADOW, eyeShadowColor || "rgba(0,0,0,0)", eyeBlurRef.current, eyeIntensityRef.current);
@@ -311,6 +317,34 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
         onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(130, 220, 40, 0.40)'}
       >
         {showControls ? '숨기기' : '색상미세조정'}
+      </button>
+
+      {/* 원본 버튼: 누르고 있는 동안 메이크업 효과 제거 (스타일을 색상미세조정 버튼과 동일하게, 카메라 하단 오른쪽 배치) */}
+      <button
+        onMouseDown={() => setIsOriginal(true)}
+        onMouseUp={() => setIsOriginal(false)}
+        onMouseLeave={() => setIsOriginal(false)}
+        onTouchStart={() => setIsOriginal(true)}
+        onTouchEnd={() => setIsOriginal(false)}
+        style={{
+          position: 'absolute',
+          bottom: '20px',
+          right: '20px',
+          zIndex: 1001,
+          padding: '10px 16px',
+          background: 'rgba(130, 220, 40, 0.40)',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          fontSize: '1rem',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+          transition: 'background-color 0.3s ease'
+        }}
+        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#82DC28'}
+        onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(130, 220, 40, 0.40)'}
+      >
+        원본
       </button>
 
       {/* 컨트롤러 UI */}
