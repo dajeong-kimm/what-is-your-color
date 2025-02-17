@@ -7,6 +7,9 @@ import ProductButton from "../../button/product-button/ProductButton";
 import "./Makeup.css";
 import useStore from "../../store/UseStore"; // Zustand 상태관리 데이터
 import { useNavigate } from "react-router-dom"; // react-router-dom import
+import personalColorInfo from "../../store/PersonalColorInfo"; 
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
 
 const Modal = ({ children, onClose }) => {
   return (
@@ -129,6 +132,9 @@ const Makeup = () => {
                   selectedPersonalColor === color.id ? "selected" : ""
                 }`}
                 onClick={() => setSelectedPersonalColor(color.id)}
+                style={{
+                  backgroundColor: personalColorInfo[color.id].background_color, // 퍼스널컬러별로 배경색 설정
+                }}
               >
                 {color.name}
               </button>
@@ -164,7 +170,9 @@ const Makeup = () => {
                       onClick={() => handleProductClick(product)}
                     >
                       <img src={product.image} alt={product.product_name} />
-                      <p>{product.product_name}</p>
+                      <p className="brand-name">{product.brand}</p>
+                      <p className="product-name" >{product.product_name}</p>
+                      <p className="color-name">{product.color_name}</p>
                     </div>
                   ))
                 ) : (
@@ -181,7 +189,7 @@ const Makeup = () => {
                 blushColor={selectedColors.cheek?.hex}
               />
               <div className="selected-colors-container">
-                <h3>💄 현재 색상</h3>
+                <h3>💄 현재 색상 🖌️</h3>
                 <div className="selected-colors">
                   {["lip", "eye", "cheek"].map((category) => (
                     <div key={category} className="color-item">
@@ -201,9 +209,9 @@ const Makeup = () => {
                               : "2px solid #ccc",
                         }}
                       >
-                        {selectedColors[category]?.hex === "transparent"
-                          ? "❌"
-                          : ""}
+                         {selectedColors[category]?.hex === "transparent"
+            ? <i class="fa-solid fa-x"></i>
+            : ""}
                       </div>
                       <button
                         className="reset-btn"
@@ -222,7 +230,7 @@ const Makeup = () => {
                     marginTop: '15px',
                     padding: '10px 20px',
                     backgroundColor: 'rgba(130, 220, 40, 0.40)',
-                    border: 'none',
+                    border: 'normal',
                     borderRadius: '8px',
                     cursor: 'pointer',
                     fontSize: '1rem',
