@@ -24,12 +24,12 @@
 .detail-description {
   margin-left: 50px;
   text-align: left; /* 왼쪽 정렬 */
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 500;
   color: #666;
   max-width: 100%;
   justify-content: flex-start;
-  line-height: 1.8; /* 문장 간 간격 조정 */
+  line-height: 2.0; /* 문장 간 간격 조정 */
   white-space: pre-wrap; /* 문장이 끝날 때마다 줄바꿈 */
 }
 
@@ -41,6 +41,7 @@
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
+  right:20px;
 }
 
 .detail-section {
@@ -52,10 +53,11 @@
 }
 
 .section-title {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
   text-align: center;
-  top: 0;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .color-palette {
@@ -69,10 +71,10 @@
 }
 
 .color-group h3 {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: bold;
-  /* margin-bottom: 10px; */
-  padding: 0;
+  
+  padding-bottom: 10px;
   margin: 0;
 }
 
@@ -83,8 +85,8 @@
 }
 
 .color-box {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 56px;
   border-radius: 8px;
   border: 2px solid #ddd;
   transition: transform 0.2s ease-in-out;

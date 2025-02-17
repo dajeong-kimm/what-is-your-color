@@ -45,8 +45,6 @@ const PersonalRecommend = () => {
     cheek: cosmetics.cheek,
   };
   const products = categoryMap[selectedCategory] || [];
-  
-  const navigate = useNavigate(); // 🔹 네비게이션 훅 추가
 
 
   return (
