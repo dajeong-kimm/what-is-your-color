@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FilesetResolver, FaceLandmarker } from "@mediapipe/tasks-vision";
 import "../makeup/MakeupCamera.css";
+import useWebcamStore from "../../store/useWebcamStore"; // Zustand 상태 가져오기
 
 const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const faceLandmarkerRef = useRef(null);
   const animationFrameRef = useRef(null);
+
+  // Zustand에서 웹캠 상태 가져오기
+  const { stream, startCamera, stopCamera } = useWebcamStore();
 
   // 립 컨트롤 상태
   const [lipBlur, setLipBlur] = useState(10);
@@ -50,6 +54,16 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
   console.log("아이섀도우 - 블러:", eyeBlur, "강도:", eyeIntensity);
   console.log("블러시 - 블러:", blushBlur, "강도:", blushIntensity);
 
+  // Zustand 값이 변경될 때 영상 연결
+  useEffect(() => {
+    if (stream && videoRef.current) {
+      videoRef.current.srcObject = stream;
+      videoRef.current.play().catch((error) => console.error("Play 오류:", error));
+    }
+  }, [stream]);
+
+
+  // 얼굴 랜드마크 세팅
   useEffect(() => {
     const setupFaceLandmarker = async () => {
       const vision = await FilesetResolver.forVisionTasks(
@@ -69,64 +83,14 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
       faceLandmarkerRef.current = faceLandmarker;
     };
 
-    const startCamera = async () => {
-      try {
-        if (videoRef.current) {
-          // 기존 스트림 중지
-          const currentStream = videoRef.current.srcObject;
-          if (currentStream) {
-            currentStream.getTracks().forEach((track) => track.stop());
-          }
-
-          // const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-          // videoRef.current.srcObject = stream;
-
-          // videoRef.current.load();
-          // setTimeout(() => {
-          //   videoRef.current.play().catch((error) =>
-          //     console.error("Play 오류:", error)
-          //   );
-          // }, 500);
-
-          //변경코드
-          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-          videoRef.current.srcObject = stream;
-          videoRef.current.play().catch(error => console.error("Play 오류:", error));
-
-          detectFaces();
-        }
-      } catch (error) {
-        console.error("카메라 접근 오류:", error);
-      }
-    };
-
-    (async () => {
-      await setupFaceLandmarker();
-      await startCamera();
-    })();
-
-    return () => {
-      console.log("🎥 웹캠 종료 및 클린업 실행");
-
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
-      if (videoRef.current) {
-        const stream = videoRef.current.srcObject;
-        if (stream) {
-          stream.getTracks().forEach(track => track.stop());
-          videoRef.current.srcObject = null; // 🔥 추가된 코드
-        }
-      }
-
-
-      if (faceLandmarkerRef.current) {
-        faceLandmarkerRef.current.close();
-        faceLandmarkerRef.current = null;
-      }
-    };
+    setupFaceLandmarker();
   }, []);
+
+  // 카메라 시작
+  useEffect(() => {
+    startCamera();
+    // return () => stopCamera(); // 컴포넌트 언마운트 시 카메라 정지
+  }, [startCamera, stopCamera]);
 
   // 색상 변경 시 메이크업 다시 적용
   useEffect(() => {
