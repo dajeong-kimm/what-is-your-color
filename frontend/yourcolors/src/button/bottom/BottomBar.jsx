@@ -30,7 +30,7 @@ const Bottombar = ({ currentStep, setCurrentStep }) => {
               className={button.name}
             />
           ))}
-          <SendButton />
+          {/* <SendButton /> */}
           <CloseButton />
         </div>
       </div>

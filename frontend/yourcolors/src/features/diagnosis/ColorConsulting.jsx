@@ -6,9 +6,11 @@ import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
+import SendButton from "../../button/sendbutton/SendButton"; // SendButton 컴포넌트 임포트
 
 const ColorConsulting = () => {
-  const { gptSummary } = useStore();
+  // gptSummary와 qrImage를 Zustand에서 가져옵니다.
+  const { gptSummary, qrImage } = useStore();
 
   // 🛠 GPT 응답에서 제목과 본문을 분리하고 불필요한 부분 제거하는 함수
   const parseGPTSummary = (text) => {
@@ -16,8 +18,6 @@ const ColorConsulting = () => {
 
     let title = "";
     let filteredText = text;
-
-
 
     // 2️⃣ "사용자 정보"라는 글자가 등장하면, 그 부분부터 끝까지 제거
     const userInfoIndex = filteredText.indexOf("사용자 정보");
@@ -48,12 +48,17 @@ const ColorConsulting = () => {
     <SmallMain>
       <div className="consulting-container">
         <div className="top-container">
-          {/* 🔹 제목을 별도 태그로 표시 (CSS에서 가운데 정렬) */}
           <h2 className="consulting-title">🌸 퍼스널 컬러 컨설팅 결과 🌸</h2>
+          <div className="button-container">
+            <SendButton />
+            {/* QR 이미지가 SendButton 오른쪽에 위치 */}
+            {qrImage && (
+              <img src={qrImage} alt="QR Code" className="qr-image" />
+            )}
+          </div>
         </div>
         <div className="bottom-container">
           <div className="GPT-consulting">
-            {/* 🔹 본문 내용: GPT가 제공하는 띄어쓰기 및 줄바꿈 유지 */}
             <div
               style={{
                 textAlign: "left",
