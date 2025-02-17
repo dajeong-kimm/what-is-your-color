@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import personalColorInfo from "../../store/PersonalColorInfo"; 
+import personalColorInfo from "../../store/PersonalColorInfo";
 import useStore from "../../store/UseStore"; // Zustand 상태관리 사용 (필요시 활용)
 
 const PhotoFrameTwo = ({ selectedPhotos = [] }) => {
   const totalDesigns = 12; // 총 프레임 수 (1~12)
   const { userPersonalId } = useStore();
   const initialIndex =
-    Number(userPersonalId) >= 1 && Number(userPersonalId) <= totalDesigns
-      ? Number(userPersonalId)
-      : 1;
+    Number(userPersonalId) >= 1 && Number(userPersonalId) <= totalDesigns ? Number(userPersonalId) : 1;
   const [num, setNum] = useState(initialIndex); // 현재 표시할 퍼스널 컬러 디자인 번호 (1~12)
 
   const nextNum = () => {
