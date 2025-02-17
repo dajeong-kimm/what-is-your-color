@@ -2,7 +2,7 @@ import React from "react";
 import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import QrImage from "../../images/qr_code.png"; // QR 코드 이미지
 import PhotoBoothImage from "../../images/photo_booth.png"; // 인생네컷 사진 예시 이미지
 import TwoFrame from "../../images/twoframe.png"; // 인생네컷 사진 예시 이미지
@@ -11,7 +11,17 @@ import "../start/MainPage.css";
 import "./PhotoQrChoicePage.css";
 
 const PhotoQrChoicePage = () => {
+  const location = useLocation();
   const navigate = useNavigate();
+  const selectedColors = location.state?.selectedColors || null; // 전달받은 화장 정보
+
+  const handleNavigateToSeasonPhoto = () => {
+    navigate("/season-photo", { state: { selectedColors } });
+  };
+
+  const handleNavigateToSeasonPhotoTwo = () => {
+    navigate("/season-phototwo", { state: { selectedColors } });
+  };
 
   return (
     <Background>
@@ -19,7 +29,7 @@ const PhotoQrChoicePage = () => {
       <Largemain>
         <div className="choice-container">
           {/* QR코드 촬영 버튼 */}
-          <div className="choice-card blue-bg" onClick={() => navigate("/season-photo")}> 
+          <div className="choice-card blue-bg" onClick={handleNavigateToSeasonPhoto}> 
             <div className="qrchoice-ai-image-wrapper">
               <img src={QrImage} alt="QR 코드" className="choice-image" />
             </div>
@@ -39,7 +49,7 @@ const PhotoQrChoicePage = () => {
           </div>
           
           {/* 실물 사진 촬영 버튼 */}
-          <div className="choice-card red-bg" onClick={() => navigate("/season-phototwo")}> 
+          <div className="choice-card red-bg" onClick={handleNavigateToSeasonPhotoTwo}> 
             <div className="qrchoice-color-image-wrapper">
               <img src={PhotoBoothImage} alt="실물 사진" className="choice-image" />
             </div>

@@ -72,20 +72,26 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
     const startCamera = async () => {
       try {
         if (videoRef.current) {
+          // 기존 스트림 중지
           const currentStream = videoRef.current.srcObject;
           if (currentStream) {
             currentStream.getTracks().forEach((track) => track.stop());
           }
 
+          // const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          // videoRef.current.srcObject = stream;
+
+          // videoRef.current.load();
+          // setTimeout(() => {
+          //   videoRef.current.play().catch((error) =>
+          //     console.error("Play 오류:", error)
+          //   );
+          // }, 500);
+
+          //변경코드
           const stream = await navigator.mediaDevices.getUserMedia({ video: true });
           videoRef.current.srcObject = stream;
-
-          videoRef.current.load();
-          setTimeout(() => {
-            videoRef.current.play().catch((error) =>
-              console.error("Play 오류:", error)
-            );
-          }, 500);
+          videoRef.current.play().catch(error => console.error("Play 오류:", error));
 
           detectFaces();
         }
@@ -100,10 +106,21 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
     })();
 
     return () => {
-      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-      if (videoRef.current && videoRef.current.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+      console.log("🎥 웹캠 종료 및 클린업 실행");
+
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
       }
+      if (videoRef.current) {
+        const stream = videoRef.current.srcObject;
+        if (stream) {
+          stream.getTracks().forEach(track => track.stop());
+          videoRef.current.srcObject = null; // 🔥 추가된 코드
+        }
+      }
+
+
       if (faceLandmarkerRef.current) {
         faceLandmarkerRef.current.close();
         faceLandmarkerRef.current = null;
@@ -285,7 +302,7 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
           top: '20px',
           left: '50%',
           transform: 'translateX(-50%)',
-          zIndex: 1001,
+          zIndex: 500,
           padding: '10px 16px',
           background: 'rgba(130, 220, 40, 0.40)',
           color: '#fff',
