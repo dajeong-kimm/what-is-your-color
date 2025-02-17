@@ -84,18 +84,18 @@ const PhotoFrame = React.forwardRef(({ selectedPhotos = [], hideArrows = false }
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "10px",
-          width: "11rem", // 기존보다 약간 줄임
-          height: "100%",
+          gap: "11px",
+          width: "10rem", // 기존보다 약간 줄임
+          height: "600px",
           position: "relative",
           zIndex: 2,
         }}
       >
         {/* 옆으로 누운 텍스트들 */}
-        <div style={{ ...sideTextStyle, left: "-25px", top: "25%", transform: "rotate(-90deg)" }}>your colors</div>
-        <div style={{ ...sideTextStyle, right: "-25px", top: "25%", transform: "rotate(90deg)" }}>your colors</div>
-        <div style={{ ...sideTextStyle, left: "-25px", bottom: "35%", transform: "rotate(-90deg)" }}>your colors</div>
-        <div style={{ ...sideTextStyle, right: "-25px", bottom: "35%", transform: "rotate(90deg)" }}>your colors</div>
+        <div style={{ ...sideTextStyle, left: "-27px", top: "25%", transform: "rotate(-90deg)" }}>your colors</div>
+        <div style={{ ...sideTextStyle, right: "-27px", top: "25%", transform: "rotate(90deg)" }}>your colors</div>
+        <div style={{ ...sideTextStyle, left: "-27px", bottom: "35%", transform: "rotate(-90deg)" }}>your colors</div>
+        <div style={{ ...sideTextStyle, right: "-27px", bottom: "35%", transform: "rotate(90deg)" }}>your colors</div>
 
         {/* 사진 슬롯 4개 (flex: 1로 균등 분할) */}
         {Array.from({ length: 4 }).map((_, idx) => (
@@ -111,6 +111,7 @@ const PhotoFrame = React.forwardRef(({ selectedPhotos = [], hideArrows = false }
               justifyContent: "center",
               minHeight: "40px",
               position: "relative",
+              overflow: "hidden",
               zIndex: 5,
             }}
           >
@@ -121,7 +122,7 @@ const PhotoFrame = React.forwardRef(({ selectedPhotos = [], hideArrows = false }
                 crossOrigin="anonymous"
                 style={{
                   width: "100%",
-                  height: "10%",
+                  height: "100%",
                   objectFit: "contain", // 원본 비율 유지
                   zIndex: 3,
                 }}

@@ -22,17 +22,17 @@
     font-size: 1.25rem;
     font-weight: bold;
     font-family: 'Noto Sans KR', sans-serif;
-    background-color: rgba(85, 160, 35, 0.9); /* 더 깊은 녹색 */
+    background-color: #edadad;
     color: #fff;
     cursor: pointer;
-    text-align: center;
+    /* text-align: center; */
     transition: background-color 0.3s ease;
     border-radius: 12px 12px 0 0;
     letter-spacing: 0.5px;
 }
 
 .qna-question:hover {
-    background-color: #569e2d; /* 호버 시 더 진한 초록색 */
+    background-color: #db6652;/* 호버 시 더 진한 초록색 */
 }
 
 .qna-answer {
@@ -51,7 +51,7 @@
 }
 
 .qna-item.active {
-    border: 1px solid #569e2d; /* 활성화 시 초록 테두리 */
+    border: 1px solid #db6652; /* 활성화 시 초록 테두리 */
     box-shadow: 0px 6px 16px rgba(0, 128, 0, 0.15);
 }
 

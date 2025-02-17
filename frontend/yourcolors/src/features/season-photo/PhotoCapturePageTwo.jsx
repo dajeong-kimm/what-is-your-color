@@ -10,6 +10,7 @@ const PhotoCapturePage = () => {
   const [photos, setPhotos] = useState([]);
   const [started, setStarted] = useState(false);
   const [countdown, setCountdown] = useState(null);
+  const [flash, setFlash] = useState(false);
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -263,6 +264,11 @@ const PhotoCapturePage = () => {
         photoCountRef.current = newPhotos.length;
         return newPhotos;
       });
+       // 사진 캡처 시 flash 효과 적용
+       setFlash(true);
+       setTimeout(() => {
+         setFlash(false);
+       }, 300);
     }
   };
 
@@ -331,6 +337,10 @@ const PhotoCapturePage = () => {
             style={{ display: "none" }}
           ></video>
           <canvas ref={canvasRef} className="camera-overlay"></canvas>
+          
+           {/* flash 효과를 위한 오버레이 */}
+           {flash && <div className="flash-overlay"></div>}
+           
           <div className="makeup-colors-overlay">
             <div className="makeup-color-item">
               <div

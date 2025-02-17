@@ -31,11 +31,14 @@ const QrCodePage = () => {
   // 키보드 모달 외부 클릭 시 닫힘
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isKeyboardOpen && keyboardRef.current && !keyboardRef.current.contains(event.target)) {
+      if (
+        isKeyboardOpen &&
+        keyboardRef.current &&
+        !keyboardRef.current.contains(event.target)
+      ) {
         setIsKeyboardOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isKeyboardOpen]);
@@ -80,7 +83,7 @@ const QrCodePage = () => {
 
     setIsLoading(true);
 
-    // compositeImage URL을 통해 Blob 생성 (dataURI도 가능)
+    // compositeImage URL을 통해 Blob 생성
     let imageBlob;
     try {
       const response = await fetch(compositeImage);
@@ -147,83 +150,82 @@ const QrCodePage = () => {
   return (
     <Background>
       <Topbar />
+
+      {/* Largemain 내부에 전체 레이아웃 */}
       <Largemain>
-        {/* 컨테이너: 왼쪽 사진 영역 + 오른쪽 QR/버튼 영역 */}
-        <div
+      <div
           style={{
+            maxWidth: "1200px",
+            margin: "0 auto",
             display: "flex",
-            justifyContent: "center",
-            alignItems: "stretch", // 높이를 동일하게 맞추려면 stretch 사용
-            gap: "20px",
-            width: "100%",
-            // 아래 예시는 흰색 배경을 주고, 원하는 높이를 지정한 예시입니다.
-            // 높이는 프로젝트에 맞춰 적절히 변경하세요.
-            padding: "20px",
-            boxSizing: "border-box",
+            alignItems: "center",
+            // justifyContent: "center" 대신 space-between, etc.도 가능
           }}
         >
-          {/* 왼쪽 사진 영역 */}
-          {compositeImage && (
-            <div
-              style={{
-                flex: "0 0 auto", // 사진 영역은 필요한 만큼만 차지
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                marginLeft: "300px",
-              }}
-            >
-              {/* 사진 높이를 오른쪽과 동일하게 300px로 맞추고, 넘치면 contain으로 축소 */}
+          
+          {/* 왼쪽: 네컷 프레임 (오른쪽 여백 축소) */}
+          <div style={{ marginRight: "20px" }}>
+            {/* 
+              여기서 실제 네컷 프레임을 렌더링하시면 됩니다.
+              예시로 compositeImage로 대체:
+            */}
+            {compositeImage && (
               <img
                 src={compositeImage}
-                alt="합쳐진 사진"
+                alt="네컷 프레임"
                 style={{
-                  width: "auto",
-                  height: "700px",
+                  maxWidth: "70%",   // 부모 컨테이너 폭의 80% (원하면 100%로 조정)
+                  maxHeight: "80vh", // 브라우저 창 높이 80% 제한
                   objectFit: "contain",
+                  border: "1px solid #ccc",
+                  borderRadius: "8px",
+                  marginRight:"100px"
                 }}
               />
-            </div>
-          )}
+            )}
+          </div>
 
-          {/* 오른쪽 QR/버튼 영역 */}
-          <div
+
+           {/* 오른쪽: QR 코드 + 이메일 전송 버튼 (가운데 정렬) */}
+           <div
             style={{
-              flex: "1 1 auto", // 남는 공간을 자동으로 차지
               display: "flex",
               flexDirection: "column",
+              alignItems: "center", // 중앙 정렬
               justifyContent: "center",
-              alignItems: "center",
-              // 전체 높이 300px에 맞춰서 정렬
-              height: "100%",
+
             }}
           >
             {qrCodeUrl ? (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row", // QR 코드와 버튼을 한 줄에
-                  alignItems: "center",
-                  gap: "20px",
-                }}
-              >
-                <div style={{ textAlign: "center" }}>
-                  <h3 style={{ margin: "0 0 10px 0" }}>QR 코드</h3>
-                  <img
-                    src={qrCodeUrl}
-                    alt="QR Code"
-                    style={{
-                      width: "300px",
-                      height: "300px",
-                      objectFit: "contain",
-                    }}
-                  />
-                </div>
-
-                <button className="send-button" style={{ whiteSpace: "nowrap" }} onClick={handleOpenModal}>
+              <>
+                <h3 style={{ marginBottom: "10px" }}>QR 코드</h3>
+                <img
+                  src={qrCodeUrl}
+                  alt="QR Code"
+                  style={{
+                    width: "300px",
+                    height: "300px",
+                    objectFit: "contain",
+                    marginBottom: "20px",
+                  }}
+                />
+                {/* 이메일 전송 버튼도 가운데 */}
+                <button
+                  className="send-button"
+                  style={{
+                    marginTop: "10px",
+                    whiteSpace: "nowrap",
+                    padding: "10px 20px",
+                    fontSize: "1.5rem",
+                    cursor: "pointer",
+                    width: "300px",
+                    margin: "0 auto", // 혹은 alignSelf: "center"
+                  }}
+                  onClick={handleOpenModal}
+                >
                   이메일로 이미지 받기
                 </button>
-              </div>
+              </>
             ) : (
               <p>QR 코드가 생성되지 않았습니다.</p>
             )}
@@ -231,7 +233,7 @@ const QrCodePage = () => {
         </div>
       </Largemain>
 
-      {/* 모달 부분은 기존과 동일 */}
+      {/* 모달 부분 */}
       {isModalOpen && (
         <div className="send-modal-overlay">
           <div className={`send-modal-content ${isKeyboardOpen ? "modal-up" : ""}`}>
@@ -297,8 +299,12 @@ const QrCodePage = () => {
       {/* 커스텀 키보드 모달 */}
       {isKeyboardOpen && (
         <div className="keyboard-modal-overlay">
-          <div className="keyboard-modal-content" ref={keyboardRef} onClick={(e) => e.stopPropagation()}>
-            {/* 키보드 구현 부분은 동일 */}
+          <div
+            className="keyboard-modal-content"
+            ref={keyboardRef}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 키보드 행(열)들 */}
             <div className="keyboard-row">
               {row1.map((key) => (
                 <button key={key} className="keyboard-key" onClick={() => handleKeyClick(key)}>
@@ -338,7 +344,9 @@ const QrCodePage = () => {
               {row4.map((key) => (
                 <button
                   key={key}
-                  className={`keyboard-key ${key === "." || key === "_" ? "special-key" : ""}`}
+                  className={`keyboard-key ${
+                    key === "." || key === "_" ? "special-key" : ""
+                  }`}
                   onClick={() => handleKeyClick(key)}
                 >
                   {key}

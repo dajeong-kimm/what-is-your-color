@@ -4,17 +4,16 @@
   padding: 15px 20px;
   text-align: center;
   border-radius: 10px;
-  font-size: 25px;
+  font-size: 29px;
   font-weight: bold;
   font-family: "Noto Sans KR", sans-serif;
   transition: background-color 0.3s;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-  width: 170px;
-  height: 65px;
+  width: 180px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* ✅ 두 줄 방지 및 넘치는 글자 처리 */
   white-space: nowrap; /* 줄 바꿈 방지 */
   overflow: hidden; /* 넘치는 글자 숨김 */
   text-overflow: ellipsis; /* 넘치는 글자 "..." 처리 */
@@ -85,7 +84,7 @@
 }
 
 .color-group-title {
-  margin-top:30px;
+  margin-top: 10px;
   font-weight: bold;
   font-family: "Noto Sans KR", sans-serif;
   margin-bottom: 10px;
