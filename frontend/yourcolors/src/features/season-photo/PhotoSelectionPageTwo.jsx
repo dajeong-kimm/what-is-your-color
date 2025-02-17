@@ -165,7 +165,7 @@ const PhotoSelectionPageTwo = () => {
           </div>
 
           <div className="photo-frame-container">
-            <div lassName="photo-frame-wrapper">
+            <div className="photo-frame-wrapper">
               <PhotoFrameTwo
                 ref={displayFrameRef}
                 selectedPhotos={selectedPhotoUrls}
