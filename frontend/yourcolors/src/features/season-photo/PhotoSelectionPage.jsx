@@ -6,7 +6,6 @@ import Topbar from "../../button/top/TopBar";
 import PhotoFrame from "./PhotoFrame";
 import useStore from "../../store/UseStore"; // Zustand 상태관리 사용 (필요시 활용)
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-// const apiBaseUrl = "https://i12e106.p.ssafy.io";
 
 const PhotoSelectionPage = () => {
   const location = useLocation();
