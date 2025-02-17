@@ -4,7 +4,7 @@ import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
 import LoadingSpinner from "../loading-spinner/LoadingSpinnerS"; // 경로 확인 필요
-import "./QrCodePage.css"; // CSS 재사용 또는 별도 파일로 관리
+import "./QRCodePage.css"; // CSS 재사용 또는 별도 파일로 관리
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const QrCodePage = () => {
