@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./ProductButton.css";
 
-const ProductButton = ({ text, onClick }) => {
+const ProductButton = ({ text, onClick, isActive}) => {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleMouseDown = () => setIsClicked(true);
@@ -10,7 +10,7 @@ const ProductButton = ({ text, onClick }) => {
 
   return (
     <button
-      className={`product-button ${isClicked ? "active" : ""}`}
+      className={`product-button ${isActive ? "active" : ""}`}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}

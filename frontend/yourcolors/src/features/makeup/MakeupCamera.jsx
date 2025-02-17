@@ -285,7 +285,7 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
           top: '20px',
           left: '50%',
           transform: 'translateX(-50%)',
-          zIndex: 1001,
+          zIndex: 500,
           padding: '10px 16px',
           background: 'rgba(130, 220, 40, 0.40)',
           color: '#fff',

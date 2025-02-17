@@ -9,23 +9,16 @@ import Logo from "../../assets/yourcolor.png"; // 이미지 import
 const Topbar = () => {
   const location = useLocation();
 
+    
   // 현재 경로에 따라 activeButton 값을 결정합니다.
-  let activeButton = null;
-  if (location.pathname.startsWith('/personalcolors')) {
-    activeButton = 'personalcolor';
-  } else if (
-    location.pathname === '/choice' ||
-    location.pathname === '/diagcapturexai' ||
-    location.pathname === '/diagcapturex' ||
-    location.pathname === '/diagcapture' ||
-    location.pathname === '/diagresult'
-  ) {
-    activeButton = 'diagnosis';
-  } else if (location.pathname === '/makeup') {
-    activeButton = 'makeup';
-  } else if (location.pathname === '/qna') {
-    activeButton = 'qna'; // QnA 페이지 active 처리
-  }
+  const activeButton = (() => {
+    if (location.pathname === '/personaldefine') return 'define';
+    if (location.pathname === '/personalcolors') return 'personalcolor';
+    if (location.pathname === '/qna') return 'qna';
+    if (location.pathname === '/mainpage') return 'main';
+    if (location.pathname === '/') return 'start';
+    return '';
+  })();
 
   // 버튼 정보 배열
   const buttons = [
@@ -34,9 +27,7 @@ const Topbar = () => {
     { to: '/qna', label: 'QnA', name: 'qna' }, // QnA 버튼 추가
     { to: '/mainpage', label: '메인페이지', name: 'main' },
     { to: '/', label: '처음으로', name: 'start' },
-    
   ];
-
   return (
     <div className="Topbar">
       <div className="Topbar-container">
