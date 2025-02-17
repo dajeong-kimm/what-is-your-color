@@ -10,8 +10,15 @@
 }
 
 .top-container {
-  width: 100%;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
 }
 
 .consulting-title {
@@ -74,4 +81,12 @@
   line-height: 1.0;   /* 줄 간격을 1.0으로 줄임 */
   margin-top: 2px;    /* 위쪽 여백을 2px로 설정 */
   margin-bottom: 2px; /* 아래쪽 여백을 2px로 설정 */
+}
+
+/* qrImage 스타일 (원하는 크기와 여백 조정) */
+.qr-image {
+  width: 70px;
+  height: 70px;
+  margin-right:0px;
+  margin-left: 20px;
 }

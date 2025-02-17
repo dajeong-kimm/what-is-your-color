@@ -22,9 +22,11 @@ const MediapipeCameraXTimerAI = () => {
   const [showCaptureButton, setShowCaptureButton] = useState(true);
   const [isFlashing, setIsFlashing] = useState(false);
   const [hasCaptured, setHasCaptured] = useState(false); // 이미 촬영했는지 체크
+  const [faceBlob, setFaceBlob] = useState(null);
+
 
   const navigate = useNavigate();
-  const { setUserPersonalId, userImageFile, setUserImageFile, setResults, setGptSummary } = useStore(); //Zustand 상태관리 데이터
+  const { setUserPersonalId, userImageFile, setUserImageFile, setResults, setGptSummary, setQrImage } = useStore(); //Zustand 상태관리 데이터
   const { openModal } = useModalStore(); // 모달 상태
   const { stream, startCamera, stopCamera } = useWebcamStore();
 
@@ -91,58 +93,56 @@ const MediapipeCameraXTimerAI = () => {
       console.log("[capturePhoto] Already captured -> skip");
       return;
     }
-    setHasCaptured(true); // 이제부터는 중복 촬영 방지
-
+    setHasCaptured(true);
+  
     console.log("[capturePhoto] Capturing now...");
     setIsFlashing(true);
-
+  
     setTimeout(() => {
       setIsFlashing(false);
       const canvas = canvasRef.current;
       const video = videoRef.current;
-
+  
       if (canvas && video) {
         const context = canvas.getContext("2d");
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-
+  
         context.save();
         context.scale(-1, 1);
         context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
         context.restore();
-
-        // 전체 캡처한 이미지
+  
         const imageData = canvas.toDataURL("image/png");
         console.log("Captured Image (base64):", imageData);
-
         setCapturedImage(imageData);
         setCountdown(null);
-
+  
         // 얼굴 부분 추출
         const faceImage = extractFaceImage(canvas);
         console.log("Extracted Face Image (base64):", faceImage);
-
+  
         // Base64 → Blob 변환
         const blob = base64ToBlob(faceImage, "image/png");
-
-        // 🟢 상태 업데이트: 유저 이미지 파일 저장
-        // setUserImageFile(blob); // ✅ Zustand 상태 업데이트
-        // const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
-        // console.log("웃어봐요 활짝", imageUrl);
-
-        // FormData 객체 생성
+  
+        // faceBlob 상태 업데이트 (두 API에서 사용)
+        setFaceBlob(blob);
+  
+        // FormData 객체 생성하여 Zustand에 저장 (원래 사용하던 방식)
         const formData = new FormData();
-        formData.append("image", blob, "captured_face.png"); // 파일명 지정
-        setUserImageFile(formData); // ✅ Zustand 상태 업데이트
+        formData.append("image", blob, "captured_face.png");
+        setUserImageFile(formData);
         console.log("AI 진단 - 얼굴 이미지 form-data로 저장 완료!!!!");
         formData.forEach((value, key) => {
           console.log(`Key: ${key}, Value:`, value);
         });
-
-        // sendImagesToServer(faceImage); //여기서 실행하면 안된다
+  
+        // 여기서 sendImagesToServer 호출은 버튼 클릭 후 하도록 함
+        // sendImagesToServer(formData);
       }
     }, 300);
   };
+  
 
   const extractFaceImage = (canvas) => {
     console.log("[extractFaceImage] Called");
@@ -172,44 +172,50 @@ const MediapipeCameraXTimerAI = () => {
     return new Blob([byteArray], { type: mimeType });
   };
 
-  const sendImagesToServer = (formData) => {
-    console.log("[sendImagesToServer] Sending to server...");
-    console.log("10. AI 모델 사용 API");
-
-    // // Base64 → Blob 변환
-    // const blob = base64ToBlob(faceImageBase64, "image/png");
-
-    // // 🟢 상태 업데이트: 유저 이미지 파일 저장
-    // setUserImageFile(blob); // ✅ Zustand 상태 업데이트
-    // const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
-    // console.log("웃어봐요 활짝", imageUrl);
-
-    // // FormData 객체 생성
-    // const formData = new FormData();
-    // formData.append("image", faceImageBase64, "captured_face.png"); // 파일명 지정
-
-    axios
-      .post(`${apiBaseUrl}/api/consult/ai`, formData, {
+  const sendImagesToServer = async (formData) => {
+    try {
+      // 1. AI 진단 API 호출
+      const aiResponse = await axios.post(`${apiBaseUrl}/api/consult/ai`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더 설정
+          "Content-Type": "multipart/form-data",
         },
-      })
-      .then((response) => {
-        console.log("Server Response(AI 진단 결과):", response.data);
-        console.log("너의 색깔은?? : ", response.data.results[0].personal_id);
-        setUserPersonalId(response.data.results[0].personal_id);
-        setResults(response.data.results); // ✅ Zustand 상태 업데이트 - AI 분석 결과 저장
-        setGptSummary(response.data.gpt_summary); // ✅ Zustand 상태 업데이트 - GPT 요약 저장
-      })
-      .catch((error) => {
-        console.error("Error sending images to server:", error);
-        
-        // 🔴 모달 메시지 상태 업데이트
-        openModal("퍼스널컬러 진단에 실패했습니다. 다시 시도해주세요.");
-
-        navigate(-1); // 🔴 이전 페이지로 이동
       });
+      console.log("Server Response (AI 진단 결과):", aiResponse.data);
+  
+      // 상태 업데이트
+      setUserPersonalId(aiResponse.data.results[0].personal_id);
+      setResults(aiResponse.data.results);
+      setGptSummary(aiResponse.data.gpt_summary);
+  
+      // 2. QR 생성 API 호출을 위한 formData 구성
+      const qrFormData = new FormData();
+      // 촬영 시 저장한 faceBlob을 사용 (이미 저장해두어야 합니다)
+      qrFormData.append("imageUrl", faceBlob, "captured_face.png");
+  
+      // AI 결과에서 필요한 컬러 정보가 있다면 이를 사용하고, 없으면 기본값 지정
+      const result = aiResponse.data.results[0];
+      qrFormData.append("bestColor", result.bestColor || "여름 뮤트");
+      qrFormData.append("subColor1", result.subColor1 || "겨울 비비드");
+      qrFormData.append("subColor2", result.subColor2 || "겨울 다크");
+      qrFormData.append("message", "결과입니다.");
+  
+      // 3. QR API 호출
+      const qrResponse = await axios.post(`${apiBaseUrl}/api/result/qr`, qrFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("QR Response:", qrResponse.data);
+  
+      // QR 이미지를 Zustand에 저장
+      setQrImage(qrResponse.data.qr_url);
+    } catch (error) {
+      console.error("Error sending images to server:", error);
+      openModal("퍼스널컬러 진단에 실패했습니다. 다시 시도해주세요.");
+      navigate(-1);
+    }
   };
+  
 
   const handleRetake = () => {
     window.location.reload();
@@ -295,12 +301,11 @@ const MediapipeCameraXTimerAI = () => {
             </button>
             <button
               onClick={() => {
-                if (userImageFile) {
-                  setResults([]); // ✅ Zustand 상태 업데이트
-                  setGptSummary(""); // ✅ Zustand 상태 업데이트
-                  sendImagesToServer(userImageFile); // 서버로 이미지 전송
-                  // navigate("/LoadingPage"); // 전송 후 페이지 이동
-                  navigate("/LoadingPage", { state: { from: "MediapipeCameraXTimerAI" } }); //진단 실패시 되돌아가기 위해 주소 저장
+                if (userImageFile && faceBlob) {
+                  setResults([]); // 기존 AI 결과 초기화
+                  setGptSummary("");
+                  sendImagesToServer(userImageFile); // 두 API를 순차적으로 호출
+                  navigate("/LoadingPage", { state: { from: "MediapipeCameraXTimerAI" } });
                 }
               }}
               style={{

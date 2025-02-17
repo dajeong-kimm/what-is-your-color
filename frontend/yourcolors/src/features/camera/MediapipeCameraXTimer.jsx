@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useStore from "../../store/UseStore"; // Zustand 상태관리 데이터
 import { useModalStore } from "../../store/useModalStore"; // Zustand 모달 상태 가져오기
-import DiagFailModalComponent from "../diagnosis/DiagFailModalComponent"; //진단 실패 시 실패 모달
+import DiagFailModalComponent from "../diagnosis/DiagFailModalComponent"; // 진단 실패 시 실패 모달
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -21,9 +21,10 @@ const MediapipeCameraXTimer = () => {
   const [showCaptureButton, setShowCaptureButton] = useState(true);
   const [isFlashing, setIsFlashing] = useState(false);
   const [hasCaptured, setHasCaptured] = useState(false); // 중복 촬영 방지
+  const [faceBlob, setFaceBlob] = useState(null); // 얼굴 Blob 저장
 
   const navigate = useNavigate();
-  const { setUserPersonalId, userImageFile, setUserImageFile, setResults, setGptSummary } = useStore();
+  const { setUserPersonalId, userImageFile, setUserImageFile, setResults, setGptSummary, setQrImage } = useStore();
   const { openModal } = useModalStore(); // 모달 상태
 
   useEffect(() => {
@@ -157,6 +158,8 @@ const MediapipeCameraXTimer = () => {
 
         // Base64 → Blob 변환
         const blob = base64ToBlob(faceImage, "image/png");
+        // blob 저장
+        setFaceBlob(blob);
 
         // FormData 객체 생성
         const formData = new FormData();
@@ -168,8 +171,6 @@ const MediapipeCameraXTimer = () => {
         formData.forEach((value, key) => {
           console.log(`Key: ${key}, Value:`, value);
         });
-
-        // sendImagesToServer(faceImage); // 호출 시점 조정
       }
     }, 300);
   };
@@ -228,14 +229,38 @@ const MediapipeCameraXTimer = () => {
         setUserPersonalId(response.data.results[0].personal_id);
         setResults(response.data.results);
         setGptSummary(response.data.gpt_summary);
+
+        // QR 생성 API 호출 추가
+        if (faceBlob) {
+          const result = response.data.results[0];
+          const qrFormData = new FormData();
+          qrFormData.append("imageUrl", faceBlob, "captured_face.png");
+          qrFormData.append("bestColor", result.bestColor || "여름 뮤트");
+          qrFormData.append("subColor1", result.subColor1 || "겨울 비비드");
+          qrFormData.append("subColor2", result.subColor2 || "겨울 다크");
+          qrFormData.append("message", "결과입니다.");
+          axios
+            .post(`${apiBaseUrl}/api/result/qr`, qrFormData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((qrResponse) => {
+              console.log("QR Response:", qrResponse.data);
+              setQrImage(qrResponse.data.qr_url);
+            })
+            .catch((qrError) => {
+              console.error("Error sending QR API:", qrError);
+              openModal("QR 저장에 실패했습니다. 다시 시도해주세요.");
+            });
+        } else {
+          console.warn("faceBlob is not available for QR generation");
+        }
       })
       .catch((error) => {
         console.error("Error sending images to server:", error);
-
-        // 🔴 모달 메시지 상태 업데이트
         openModal("퍼스널컬러 진단에 실패했습니다. 다시 시도해주세요.");
-        
-        navigate(-1); // 🔴 이전 페이지로 이동
+        navigate(-1);
       });
   };
 

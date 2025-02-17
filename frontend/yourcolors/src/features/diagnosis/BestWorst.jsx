@@ -17,7 +17,8 @@ const BestWorst = () => {
         {/* Best Color Section */}
         <div className="container-best">
           <h1 className="title best-tit">
-            <i class="fa-regular fa-face-kiss-wink-heart"></i> Best Color{" "}
+          {" "}
+          Best Color <i class="fa-regular fa-face-kiss-wink-heart"></i>
           </h1>
           <div className="color-boxes">
             {/* Best Color 목록에서 색상값을 렌더링 */}

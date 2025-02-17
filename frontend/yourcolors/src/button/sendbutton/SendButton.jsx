@@ -161,7 +161,7 @@ const SendButton = () => {
   return (
     <div className="send-button-container">
       <button className="send-button" onClick={handleOpenModal}>
-        이메일로 결과표 받기
+        이메일 전송 📨
       </button>
 
       {isModalOpen && (
