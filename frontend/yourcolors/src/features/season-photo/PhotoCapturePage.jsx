@@ -322,7 +322,7 @@ const PhotoCapturePage = () => {
       <Topbar />
       <Largemain>
         <div className="photo-header-bar">
-          <span className="photo-title">계절네컷</span>
+          <span className="photo-title">계절네컷 사진관</span>
           <span className="photo-countdown">
             {countdown !== null ? countdown : ""}
           </span>
