@@ -10,8 +10,6 @@ const PhotoCapturePage = () => {
   const [photos, setPhotos] = useState([]);
   const [started, setStarted] = useState(false);
   const [countdown, setCountdown] = useState(null);
-  // flash 상태 추가 (플래시 효과를 제어)
-  const [flash, setFlash] = useState(false);
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -58,7 +56,7 @@ const PhotoCapturePage = () => {
     ctx.restore();
   };
 
-  // 입술 영역 클리핑 및 블러 효과 적용 함수
+  // 새로 추가된 함수: 입술 영역(UPPER_LIP + LOWER_LIP)을 클리핑 영역으로 사용하여 블러가 내부에만 적용되도록 함
   const drawLipRegion = (ctx, landmarks, color, blur, intensity) => {
     const UPPER_LIP = [
       61, 185, 40, 39, 37, 0, 267, 269, 270, 409,
@@ -265,23 +263,18 @@ const PhotoCapturePage = () => {
         photoCountRef.current = newPhotos.length;
         return newPhotos;
       });
-      // 사진 캡처 시 flash 효과 적용
-      setFlash(true);
-      setTimeout(() => {
-        setFlash(false);
-      }, 300);
     }
   };
 
   useEffect(() => {
     if (photos.length === 8) {
-      navigate("/select", { state: { photos } });
+      navigate("/selecttwo", { state: { photos } });
     }
   }, [photos, navigate]);
 
   // 5초 카운트다운 후 사진 캡처를 반복 (총 8회)
   const startCaptureCycle = () => {
-    let count = 1;
+    let count = 5;
     setCountdown(count);
     const intervalId = setInterval(() => {
       count--;
@@ -322,7 +315,7 @@ const PhotoCapturePage = () => {
       <Topbar />
       <Largemain>
         <div className="photo-header-bar">
-          <span className="photo-title">계절네컷 사진관</span>
+          <span className="photo-title">인생네컷 사진관</span>
           <span className="photo-countdown">
             {countdown !== null ? countdown : ""}
           </span>
@@ -338,10 +331,6 @@ const PhotoCapturePage = () => {
             style={{ display: "none" }}
           ></video>
           <canvas ref={canvasRef} className="camera-overlay"></canvas>
-
-          {/* flash 효과를 위한 오버레이 */}
-          {flash && <div className="flash-overlay"></div>}
-
           <div className="makeup-colors-overlay">
             <div className="makeup-color-item">
               <div

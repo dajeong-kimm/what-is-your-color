@@ -49,11 +49,19 @@
 
 
 .logo-img {
-  width: 130px;  /* 원하는 크기로 조정 */
+  width: 100%;
+  max-width: 130px; /* 최대 130px 크기로 제한 */
   height: auto;
-  margin-right: 0px;
+  margin-right: 0;
   margin-left: 80px;
   padding-bottom: 10px;
+  object-fit: contain;
+}
 
-
+/* 반응형: 화면이 768px 이하인 경우 로고 크기와 좌측 여백 축소 */
+@media (max-width: 768px) {
+  .logo-img {
+    max-width: 100px;
+    margin-left: 40px;
+  }
 }
