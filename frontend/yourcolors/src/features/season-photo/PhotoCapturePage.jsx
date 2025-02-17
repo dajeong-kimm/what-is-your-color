@@ -21,6 +21,7 @@ const PhotoCapturePage = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  
 
   // Makeup.jsx에서 전달한 선택된 색상 (없으면 기본값)
   const selectedColors = location.state?.selectedColors || {

@@ -44,8 +44,8 @@ const Makeup = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
 
   // handleSeasonPhotoClick에서 selectedColors 전달
-  const handleSeasonPhotoClick = () => {
-    navigate("/season-photo", {
+  const handleNavigateToPhotoQrChoice = () => {
+    navigate("/photoqrchoice", {
       state: { selectedColors }, // selectedColors 상태 전달
     });
   };
@@ -225,7 +225,7 @@ const Makeup = () => {
                 {/* 계절네컷 버튼 추가 */}
                 <button
                   className="season-photo-btn"
-                  onClick={handleSeasonPhotoClick} //클릭시 이동
+                  onClick={handleNavigateToPhotoQrChoice} //클릭시 이동
                   style={{
                     marginTop: '15px',
                     padding: '10px 20px',
