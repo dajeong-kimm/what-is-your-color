@@ -281,7 +281,7 @@ const PhotoCapturePage = () => {
 
   // 5초 카운트다운 후 사진 캡처를 반복 (총 8회)
   const startCaptureCycle = () => {
-    let count = 5;
+    let count = 1;
     setCountdown(count);
     const intervalId = setInterval(() => {
       count--;
