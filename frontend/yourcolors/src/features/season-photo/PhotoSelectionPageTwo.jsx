@@ -24,7 +24,7 @@ const PhotoSelectionPage = () => {
     }
   };
 
-  // 인쇄하기 버튼 클릭 시: 선택된 사진을 업로드 후 QR 코드 페이지로 이동
+  // 인쇄하기 버튼 클릭 시: 선택된 사진을 이메일로 전송
   const handlePrint = async () => {
     if (selectedPhotos.length < 1) {
       alert("적어도 한 장의 사진을 선택해주세요.");
@@ -32,29 +32,35 @@ const PhotoSelectionPage = () => {
     }
 
     try {
-      const fileUrl = selectedPhotos[0];
-      const response = await fetch(fileUrl);
-      const blob = await response.blob();
-      const file = new File([blob], "photo.jpg", { type: blob.type });
-  
       const formData = new FormData();
-      formData.append("file", file);
-  
-      const uploadResponse = await fetch("http://3.35.236.198:9000/api/photos/upload", {
+      
+      for (let i = 0; i < selectedPhotos.length; i++) {
+        const fileUrl = selectedPhotos[i];
+        const response = await fetch(fileUrl);
+        const blob = await response.blob();
+        const file = new File([blob], `photo_${i + 1}.jpg`, { type: blob.type });
+
+        formData.append(`file${i + 1}`, file);
+      }
+
+      // 수신 이메일 추가
+      formData.append("email", "poem1999515@naver.com");
+
+      // 이메일 전송 API 요청
+      const emailResponse = await fetch("http://3.35.236.198:9000/api/send-email", {
         method: "POST",
         body: formData,
       });
-  
-      if (!uploadResponse.ok) {
-        alert("파일 업로드에 실패했습니다.");
+
+      if (!emailResponse.ok) {
+        alert("이메일 전송에 실패했습니다.");
         return;
       }
-  
-      const data = await uploadResponse.json();
-      navigate("/qr-code", { state: { qrCodeUrl: data.qr_code_url } });
+
+      alert("이메일이 성공적으로 전송되었습니다!");
     } catch (error) {
       console.error(error);
-      alert("인쇄 처리 중 오류가 발생했습니다.");
+      alert("이메일 전송 중 오류가 발생했습니다.");
     }
   };
 
@@ -96,7 +102,7 @@ const PhotoSelectionPage = () => {
                         height: "90%",
                       }}
                     >
-                      {`${selectedPhotos.length} / 4`}
+                      {`${selectedPhotos.length} / 2`}
                     </div>
                   );
                 }
@@ -151,7 +157,7 @@ const PhotoSelectionPage = () => {
           </div>
           <PhotoFrameTwo selectedPhotos={selectedPhotos} num={num} />
         </div>
-        {selectedPhotos.length === 4 && (
+        {selectedPhotos.length === 2 && (
           <button
             onClick={handlePrint}
             style={{
