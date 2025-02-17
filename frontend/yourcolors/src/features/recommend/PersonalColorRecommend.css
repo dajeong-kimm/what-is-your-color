@@ -66,13 +66,14 @@
 .brand-name {
   color:#838383;
   margin:0;
-  font-weight:300px;
+  font-weight:300;
   text-align: center; /* 텍스트 중앙 정렬 */
 }
 .product-name {
   color:#000000;
   font-size:10px;
   text-align: center; /* 텍스트 중앙 정렬 */
+  font-weight:450;
   margin:0;
 }
 .price {
@@ -81,9 +82,9 @@
 }
 .color-name{
   color:#000000;
-  font-weight:500px;
   font-size:10px;
   text-align: center; /* 텍스트 중앙 정렬 */
+  font-weight:450;
   margin:0;
 }
 .recommend-product-card img {
