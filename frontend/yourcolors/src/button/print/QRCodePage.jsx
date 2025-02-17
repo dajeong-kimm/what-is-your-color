@@ -179,7 +179,7 @@ const QrCodePage = () => {
                 alt="합쳐진 사진"
                 style={{
                   width: "auto",
-                  height: "auto",
+                  height: "700px",
                   objectFit: "contain",
                 }}
               />
