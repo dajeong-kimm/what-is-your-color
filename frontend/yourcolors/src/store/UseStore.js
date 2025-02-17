@@ -19,6 +19,10 @@ const useStore = create((set) => {
     setResults: (data) => set({ Results: data }), // AI 진단 결과 저장
     setGptSummary: (summary) => set({ gptSummary: summary }), // GPT 요약 저장
 
+    // QR 이미지 상태 추가
+    qrImage: null,
+    setQrImage: (qrImage) => set({ qrImage }),
+
     // 3. 퍼스널 컬러 상세 정보 조회
     personalColorDetails: {}, // 퍼스널 컬러 상세 정보를 저장할 객체
     setPersonalColorDetails: (data) => set({ personalColorDetails: data }), // 퍼스널 컬러 상세 정보 상태 업데이트
