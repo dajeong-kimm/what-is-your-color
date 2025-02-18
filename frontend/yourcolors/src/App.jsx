@@ -49,6 +49,7 @@ const App = () => {
         {/* <Route path="/detail" element={<PersonalColorDetailContent />} /> */}
         <Route path="/makeupbycolor" element={<MakeupByColor />} />
         <Route path="/choice" element={<ChoicePage />} />
+        
         {/* <Route path="/bestworst" element={<BestWorst />} /> */}
         {/* <Route path="/:personalColor/recommend" element={<PersonalRecommend />} /> */}
 
