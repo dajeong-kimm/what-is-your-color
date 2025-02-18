@@ -179,8 +179,8 @@ const Makeup = () => {
                   <p>상품이 없습니다.</p>
                 )}
               </div>
+      
             </div>
-
             {/* 오른쪽 패널 - 카메라 및 색상 확인 */}
             <div className="right-panel">
               <MakeupCamera
