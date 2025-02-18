@@ -1,7 +1,7 @@
 // ai-model, 얼굴만 보내는 버전
 import React, { useRef, useEffect, useState } from "react";
 import { Holistic } from "@mediapipe/holistic";
-import { Camera } from "@mediapipe/camera_utils";
+// import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useStore from "../../store/UseStore"; //Zustand 상태관리 데이터
@@ -10,7 +10,6 @@ import DiagFailModalComponent from "../diagnosis/DiagFailModalComponent"; //진�
 import useWebcamStore from "../../store/useWebcamStore"; // Zustand 카메라 상태 관리
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)
 
 const MediapipeCameraXTimerAI = () => {
   const videoRef = useRef(null);
@@ -24,16 +23,24 @@ const MediapipeCameraXTimerAI = () => {
   const [hasCaptured, setHasCaptured] = useState(false); // 이미 촬영했는지 체크
   const [faceBlob, setFaceBlob] = useState(null);
 
-
   const navigate = useNavigate();
-  const { setUserPersonalId, userImageFile, setUserImageFile, setResults, setGptSummary, setQrImage } = useStore(); //Zustand 상태관리 데이터
+  const {
+    setUserPersonalId,
+    userImageFile,
+    setUserImageFile,
+    setResults,
+    setGptSummary,
+    setQrImage,
+  } = useStore(); //Zustand 상태관리 데이터
   const { openModal } = useModalStore(); // 모달 상태
   const { stream, startCamera, stopCamera } = useWebcamStore();
 
   useEffect(() => {
     if (stream && videoRef.current) {
       videoRef.current.srcObject = stream;
-      videoRef.current.play().catch((error) => console.error("Play 오류:", error));
+      // videoRef.current
+      //   .play()
+      //   .catch((error) => console.error("Play 오류:", error));
     }
   }, [stream]);
 
@@ -45,7 +52,8 @@ const MediapipeCameraXTimerAI = () => {
   useEffect(() => {
     const setupHolistic = async () => {
       const holistic = new Holistic({
-        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
+        locateFile: (file) =>
+          `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
       });
       holistic.setOptions({
         modelComplexity: 1,
@@ -56,15 +64,19 @@ const MediapipeCameraXTimerAI = () => {
         if (!canvasRef.current || !videoRef.current) return;
         const ctx = canvasRef.current.getContext("2d");
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        ctx.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+        ctx.drawImage(
+          videoRef.current,
+          0,
+          0,
+          canvasRef.current.width,
+          canvasRef.current.height
+        );
       });
       holisticRef.current = holistic;
     };
 
     setupHolistic();
   }, []);
-
-
 
   const handleCapture = async () => {
     // 버튼 클릭 시 중복 클릭 방지
@@ -94,55 +106,51 @@ const MediapipeCameraXTimerAI = () => {
       return;
     }
     setHasCaptured(true);
-  
+
     console.log("[capturePhoto] Capturing now...");
     setIsFlashing(true);
-  
+
     setTimeout(() => {
       setIsFlashing(false);
       const canvas = canvasRef.current;
       const video = videoRef.current;
-  
+
       if (canvas && video) {
         const context = canvas.getContext("2d");
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-  
+
         context.save();
         context.scale(-1, 1);
         context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
         context.restore();
-  
+
         const imageData = canvas.toDataURL("image/png");
         console.log("Captured Image (base64):", imageData);
         setCapturedImage(imageData);
         setCountdown(null);
-  
+
         // 얼굴 부분 추출
         const faceImage = extractFaceImage(canvas);
         console.log("Extracted Face Image (base64):", faceImage);
-  
+
         // Base64 → Blob 변환
         const blob = base64ToBlob(faceImage, "image/png");
-  
         // faceBlob 상태 업데이트 (두 API에서 사용)
         setFaceBlob(blob);
-  
+
         // FormData 객체 생성하여 Zustand에 저장 (원래 사용하던 방식)
         const formData = new FormData();
         formData.append("image", blob, "captured_face.png");
         setUserImageFile(formData);
+
         console.log("AI 진단 - 얼굴 이미지 form-data로 저장 완료!!!!");
         formData.forEach((value, key) => {
           console.log(`Key: ${key}, Value:`, value);
         });
-  
-        // 여기서 sendImagesToServer 호출은 버튼 클릭 후 하도록 함
-        // sendImagesToServer(formData);
       }
     }, 300);
   };
-  
 
   const extractFaceImage = (canvas) => {
     console.log("[extractFaceImage] Called");
@@ -157,7 +165,17 @@ const MediapipeCameraXTimerAI = () => {
     faceCanvas.width = faceWidth;
     faceCanvas.height = faceHeight;
 
-    context.drawImage(canvas, faceX, faceY, faceWidth, faceHeight, 0, 0, faceWidth, faceHeight);
+    context.drawImage(
+      canvas,
+      faceX,
+      faceY,
+      faceWidth,
+      faceHeight,
+      0,
+      0,
+      faceWidth,
+      faceHeight
+    );
     return faceCanvas.toDataURL("image/png");
   };
 
@@ -174,39 +192,47 @@ const MediapipeCameraXTimerAI = () => {
 
   const sendImagesToServer = async (formData) => {
     try {
-      // 1. AI 진단 API 호출
-      const aiResponse = await axios.post(`${apiBaseUrl}/api/consult/ai`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      // 10. AI 진단 API 호출
+      const aiResponse = await axios.post(
+        `${apiBaseUrl}/api/consult/ai`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       console.log("Server Response (AI 진단 결과):", aiResponse.data);
-  
+
       // 상태 업데이트
       setUserPersonalId(aiResponse.data.results[0].personal_id);
       setResults(aiResponse.data.results);
       setGptSummary(aiResponse.data.gpt_summary);
-  
+
       // 2. QR 생성 API 호출을 위한 formData 구성
       const qrFormData = new FormData();
       // 촬영 시 저장한 faceBlob을 사용 (이미 저장해두어야 합니다)
       qrFormData.append("imageUrl", faceBlob, "captured_face.png");
-  
+
       // AI 결과에서 필요한 컬러 정보가 있다면 이를 사용하고, 없으면 기본값 지정
       const result = aiResponse.data.results[0];
       qrFormData.append("bestColor", result.bestColor || "여름 뮤트");
       qrFormData.append("subColor1", result.subColor1 || "겨울 비비드");
       qrFormData.append("subColor2", result.subColor2 || "겨울 다크");
       qrFormData.append("message", "결과입니다.");
-  
+
       // 3. QR API 호출
-      const qrResponse = await axios.post(`${apiBaseUrl}/api/result/qr`, qrFormData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const qrResponse = await axios.post(
+        `${apiBaseUrl}/api/result/qr`,
+        qrFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       console.log("QR Response:", qrResponse.data);
-  
+
       // QR 이미지를 Zustand에 저장
       setQrImage(qrResponse.data.qr_url);
     } catch (error) {
@@ -215,7 +241,6 @@ const MediapipeCameraXTimerAI = () => {
       navigate(-1);
     }
   };
-  
 
   const handleRetake = () => {
     window.location.reload();
@@ -247,7 +272,6 @@ const MediapipeCameraXTimerAI = () => {
           }}
         />
       )}
-
       {/* 5초 카운트다운 */}
       {countdown !== null && (
         <div
@@ -268,10 +292,13 @@ const MediapipeCameraXTimerAI = () => {
           {countdown}
         </div>
       )}
-
       {capturedImage ? (
         <div style={{ width: "100%", height: "100%", position: "relative" }}>
-          <img src={capturedImage} alt="Captured" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img
+            src={capturedImage}
+            alt="Captured"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
           <div
             style={{
               position: "absolute",
@@ -305,7 +332,9 @@ const MediapipeCameraXTimerAI = () => {
                   setResults([]); // 기존 AI 결과 초기화
                   setGptSummary("");
                   sendImagesToServer(userImageFile); // 두 API를 순차적으로 호출
-                  navigate("/LoadingPage", { state: { from: "MediapipeCameraXTimerAI" } });
+                  navigate("/LoadingPage", {
+                    state: { from: "MediapipeCameraXTimerAI" },
+                  });
                 }
               }}
               style={{
@@ -339,10 +368,14 @@ const MediapipeCameraXTimerAI = () => {
               objectFit: "cover",
               transform: "scaleX(-1)",
             }}
-            />
-            
-            <canvas ref={canvasRef} style={{ display: "none" }} willreadfrequently="true" />
-            
+          />
+
+          <canvas
+            ref={canvasRef}
+            style={{ display: "none" }}
+            willreadfrequently="true"
+          />
+
           {/* 얼굴 인식 가이드 영역 */}
           <div
             style={{
@@ -372,8 +405,7 @@ const MediapipeCameraXTimerAI = () => {
             얼굴을 가이드라인에 맞게 위치시켜 주세요.
           </div>
 
-            {showCaptureButton && (
-              
+          {showCaptureButton && (
             <div
               style={{
                 position: "absolute",
@@ -381,7 +413,7 @@ const MediapipeCameraXTimerAI = () => {
                 left: "50%",
                 transform: "translateX(-50%)",
               }}
-              >
+            >
               <button
                 onClick={handleCapture}
                 style={{
