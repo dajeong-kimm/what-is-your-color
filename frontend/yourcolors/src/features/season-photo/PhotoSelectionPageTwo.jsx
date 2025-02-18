@@ -6,7 +6,9 @@ import Topbar from "../../button/top/TopBar";
 import PhotoFrameTwo from "./PhotoFrameTwo"; // PhotoFrameTwo 사용
 import html2canvas from "html2canvas";
 import useStore from "../../store/UseStore";
-// import "./PhotoSelectionPageTwo.css";
+import LoadingSpinner from "../../button/loading-spinner/LoadingSpinnerS"; // 경로 확인 필요
+import saleGif from "../../images/sale.gif";
+
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -16,6 +18,8 @@ const PhotoSelectionPageTwo = () => {
   const { photos } = location.state || { photos: [] };
   const [selectedPhotoIndices, setSelectedPhotoIndices] = useState([]);
   const [captureMode, setCaptureMode] = useState(false);
+  // 인쇄 진행 상태를 위한 상태 추가
+  const [isPrinting, setIsPrinting] = useState(false);
 
   // 디자인 상태 (전체 디자인 개수: 12)
   const totalDesigns = 12;
@@ -47,6 +51,7 @@ const PhotoSelectionPageTwo = () => {
       return;
     }
     setCaptureMode(true);
+    setIsPrinting(true); // 인쇄 시작 시 모달 표시
     // UI 갱신 대기
     await new Promise((resolve) => setTimeout(resolve, 100));
     try {
@@ -57,36 +62,37 @@ const PhotoSelectionPageTwo = () => {
       });
       const dataUrl = canvas.toDataURL("image/jpeg");
 
-      // const emailResponse = await fetch(`${apiBaseUrl}/api/photos/mail`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     image: dataUrl,
-      //     email: "hyunddoing@naver.com",
-      //   }),
-      // });
-      // if (!emailResponse.ok) {
-      //   alert("이메일 전송에 실패했습니다.");
-      // }
-
-      // 업로드 작업
+      // dataUrl을 blob 및 file 객체로 변환
       const responseFetch = await fetch(dataUrl);
       const blob = await responseFetch.blob();
       const file = new File([blob], "photo-frame.jpg", { type: blob.type });
-      const formData = new FormData();
-      formData.append("file", file);
+      
+      // 이메일 전송: FormData를 사용하여 데이터 전송
+      const emailFormData = new FormData();
+      emailFormData.append("email", "rong030304@naver.com");
+      emailFormData.append("image", file);
+
+      const emailResponse = await fetch(`${apiBaseUrl}/api/photos/mail`, {
+        method: "POST",
+        body: emailFormData,
+      });
+      if (!emailResponse.ok) {
+        alert("이메일 전송에 실패했습니다.");
+      }
+
+      // 업로드 작업
+      const uploadFormData  = new FormData();
+      uploadFormData.append("file", file);
       const uploadResponse = await fetch(`${apiBaseUrl}/api/photos/upload`, {
         method: "POST",
-        body: formData,
+        body: uploadFormData,
       });
       if (!uploadResponse.ok) {
         alert("파일 업로드에 실패했습니다.");
         return;
       }
       const data = await uploadResponse.json();
-      navigate("/qr-code", {
+      navigate("/qr-codetwo", {
         state: {
           qrCodeUrl: data.qr_code_url,
           compositeImage: dataUrl,
@@ -97,6 +103,7 @@ const PhotoSelectionPageTwo = () => {
       alert("인쇄 처리 중 오류가 발생했습니다.");
     } finally {
       setCaptureMode(false);
+      setIsPrinting(false); // 인쇄 완료 시 모달 숨김
     }
   };
 
@@ -178,6 +185,55 @@ const PhotoSelectionPageTwo = () => {
           </div>
         </div>
       </Largemain>
+      {/* 인쇄 중일 때 모달창 */}
+      {isPrinting && (
+        <div
+          className="printing-modal-overlay"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+          }}
+        >
+          <div
+            className="printing-modal-content"
+            style={{
+              background: "#fff",
+              padding: "20px",
+              borderRadius: "8px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            
+            {/* 예시로 페이지 상단에 배치 */}
+            <img src={saleGif} alt="Loading GIF" style={{ width: "300px" }} />
+
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0.5rem",
+              fontSize: "2rem",
+              fontWeight: "bold",
+              marginTop: "20px",
+            }}>
+              <span style={{ fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    color: "#0b7c3e", }}>인쇄 중</span>
+              <LoadingSpinner loading={true} size={50} />
+            </div>
+          </div>
+        </div>
+      )}
     </Background>
   );
 };

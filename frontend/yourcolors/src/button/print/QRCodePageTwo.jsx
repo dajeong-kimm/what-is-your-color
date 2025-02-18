@@ -7,7 +7,7 @@ import LoadingSpinner from "../loading-spinner/LoadingSpinnerS"; // 경로 확�
 import "./QRCodePage.css"; // CSS 재사용 또는 별도 파일로 관리
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
-const QrCodePage = () => {
+const QrCodePageTwo = () => {
   const location = useLocation();
   const { qrCodeUrl, compositeImage } = location.state || {};
 
@@ -199,7 +199,7 @@ const QrCodePage = () => {
             {qrCodeUrl ? (
               <>
                 <h3 style={{ marginBottom: "10px", fontWeight: "bold",
-                    fontSize: "2rem"  }}>QR 코드</h3>
+                    fontSize: "2rem" }}>QR 코드</h3>
                 <img
                   src={qrCodeUrl}
                   alt="QR Code"
@@ -210,22 +210,6 @@ const QrCodePage = () => {
                     marginBottom: "20px",
                   }}
                 />
-                {/* 이메일 전송 버튼도 가운데 */}
-                <button
-                  className="send-button"
-                  style={{
-                    marginTop: "10px",
-                    whiteSpace: "nowrap",
-                    padding: "10px 20px",
-                    fontSize: "1.5rem",
-                    cursor: "pointer",
-                    width: "300px",
-                    margin: "0 auto", // 혹은 alignSelf: "center"
-                  }}
-                  onClick={handleOpenModal}
-                >
-                  이메일로 이미지 받기
-                </button>
               </>
             ) : (
               <p>QR 코드가 생성되지 않았습니다.</p>
@@ -361,4 +345,4 @@ const QrCodePage = () => {
   );
 };
 
-export default QrCodePage;
+export default QrCodePageTwo;
