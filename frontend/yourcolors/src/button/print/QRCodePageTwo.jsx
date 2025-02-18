@@ -214,6 +214,16 @@ const QrCodePageTwo = () => {
             ) : (
               <p>QR 코드가 생성되지 않았습니다.</p>
             )}
+            <div style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center", // 중앙 정렬
+              fontSize : "1.2rem",
+
+            }} >
+                <p style={{ margin: "0.3rem 0" }}>사진은 24시간 동안만 저장됩니다.</p>
+                <p style={{ margin: "0.3rem 0" }}>24시간 안에 다운 받아주세요.</p>
+            </div>
           </div>
         </div>
       </Largemain>
