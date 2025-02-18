@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./BottomBar.css";
 import Bottombutton from "./BottomButton";
-import SendButton from "../sendbutton/SendButton"; 
 import CloseButton from "../closebutton/CloseButton";
 import ModalPortal from "../../background/background/ModalPortal";  // ModalPortal import
 

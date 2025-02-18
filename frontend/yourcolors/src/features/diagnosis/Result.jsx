@@ -94,8 +94,8 @@ const Result = () => {
 <div class="container-down">
   <div class="sub-color-section">
     <div class="icon-text" onClick={togglePopup}>
-      <i class="fa fa-palette" id="tooltip-icon"></i>
-      <span>나의 서브컬러는?</span>
+      
+      <span>🎨 나의 서브컬러는?</span>
     </div>
   </div>
   <div class="sub-color-cards">
