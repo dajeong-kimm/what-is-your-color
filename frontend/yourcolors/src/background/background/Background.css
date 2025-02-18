@@ -8,7 +8,7 @@
   height: 100vh;
   background-color: #D2F096;
   position: relative;
-  z-index: 0; /* 배경이 다른 요소들 아래로 가도록 설정 */
+  /* z-index: 0; 배경이 다른 요소들 아래로 가도록 설정 */
 }
 
 /* Main 화면의 중앙에 배치된 큰 박스 */

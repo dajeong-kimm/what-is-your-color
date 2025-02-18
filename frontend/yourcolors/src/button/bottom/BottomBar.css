@@ -1,3 +1,4 @@
+/* Bottombar 스타일 */
 .Bottombar {
   position: fixed;
   bottom: 0;
@@ -9,9 +10,11 @@
   padding: 35.699px 30.679px 36.257px 30.121px;
   justify-content: flex-start;
   align-items: center;
-  background-color: #D2F096;
 }
 
+
+
+/* Bottombar-container */
 .Bottombar-container {
   display: flex;
   justify-content: flex-start;
@@ -19,28 +22,22 @@
   width: 100%;
 }
 
+/* Bottombar-buttons */
 .Bottombar-buttons {
   display: flex;
-  flex-direction : row;
+  flex-direction: row;
   gap: 10px;
   align-items: center;
   margin-left: 75px;
-  margin-bottom :40px;
+  margin-bottom: 40px;
 }
 
-/* 기존 close-button 스타일은 closebutton.css에 정의되어 있으나, 여기서 Bottombar 내부에서의 위치를 재정의 */
+/* 기존 close-button 스타일 */
 .Bottombar .close-button {
-  margin-left: 470px; /* 기존 auto 대신 30px로 설정 (필요에 따라 값 조정) */
+  margin-left: 470px;
 }
 
-/* 또는, 래퍼에 대해 별도 스타일을 줄 수도 있음 */
-.close-button-wrapper {
-  /* 이 클래스가 있다면 margin-left를 여기서 지정할 수도 있습니다.
-     예: margin-left: 30px; */
-  margin-left: 30px;
-}
-
-/* 기존 Bottombutton 스타일은 그대로 유지 */
+/* Bottombutton 스타일 */
 .Bottombutton {
   background-color: #82dc28;
   color: white;
@@ -56,3 +53,67 @@
 .Bottombutton:hover {
   background-color: #76c825;
 }
+
+/* ========================= */
+/* ===== 모달 스타일 수정 ===== */
+/* ========================= */
+
+/* 전체 화면을 덮는 모달 오버레이 */
+.bottombar-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* 모든 요소 위에 배치 */
+}
+
+/* 모달 콘텐츠 */
+.bottombar-modal-content {
+  background-color: #f1ffe2;
+  padding: 2rem 3rem;
+  border-radius: 15px;
+  text-align: center;
+  max-width: 400px;
+  width: 80%;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* 모달 강조 효과 */
+  z-index: 10000; /* 다른 요소보다 위에 오도록 설정 */
+}
+
+/* 모달 내 버튼 컨테이너 */
+.bottombar-modal-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+/* 모달 내 예/아니오 버튼 */
+.bottombar-modal-yes,
+.bottombar-modal-no {
+  background-color: #82dc28;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.bottombar-modal-yes:hover,
+.bottombar-modal-no:hover {
+  background-color: #76c825;
+}
+
+.bottombar-modal-yes:active,
+.bottombar-modal-no:active {
+  transform: scale(0.98);
+}
+
+

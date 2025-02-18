@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { marked } from "marked";
 import { useNavigate } from "react-router-dom";
 import useStore from "../../store/UseStore"; // Zustand 스토어
-import LoadingSpinner from "../loading-spinner/LoadingSpinnerS"; // LoadingSpinner 컴포넌트 (경로는 실제 프로젝트 구조에 맞게 수정)
+import LoadingSpinner from "../loading-spinner/LoadingSpinnerS"; // LoadingSpinner 컴포넌트
+import ModalPortal from "../../background/background/ModalPortal"; // 모달포탈을 import
 import "./SendButton.css";
-import { image } from "framer-motion/client";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -25,7 +25,7 @@ const SendButton = () => {
   const subColor1 = Results[1] || "";
   const subColor2 = Results[2] || "";
 
-  // 모달 열리면 body에 특정 클래스를 추가
+  // 모달이 열리면 body에 클래스를 추가하여 다른 요소와의 클릭 문제를 방지
   useEffect(() => {
     if (isModalOpen) {
       document.body.classList.add("modal-open");
@@ -37,11 +37,14 @@ const SendButton = () => {
   // 키보드 모달 외부 클릭 시 닫힘 처리
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isKeyboardOpen && keyboardRef.current && !keyboardRef.current.contains(event.target)) {
+      if (
+        isKeyboardOpen &&
+        keyboardRef.current &&
+        !keyboardRef.current.contains(event.target)
+      ) {
         setIsKeyboardOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isKeyboardOpen]);
@@ -79,7 +82,7 @@ const SendButton = () => {
       return;
     }
 
-    setIsLoading(true); // 전송 시작
+    setIsLoading(true);
 
     // userImageFile이 FormData라면 내부에서 'image' 또는 'face_image' 키의 Blob 추출
     let imageBlob;
@@ -139,11 +142,10 @@ const SendButton = () => {
     }
   };
 
-  // 제출 버튼 클릭 시 키보드가 열려 있다면 먼저 닫고 바로 제출하는 래퍼 함수
+  // 제출 버튼 클릭 시, 키보드가 열려 있다면 먼저 닫고 제출
   const handleSubmitWrapper = () => {
     if (isKeyboardOpen) {
       setIsKeyboardOpen(false);
-      // 키보드가 닫힌 후, requestAnimationFrame을 사용해 바로 제출
       requestAnimationFrame(() => {
         handleSubmit();
       });
@@ -159,127 +161,146 @@ const SendButton = () => {
   const row4 = ["z", "x", "c", "v", "b", "n", "m", ".", "_"];
 
   return (
-    <div className="send-button-container">
-      <button className="send-button" onClick={handleOpenModal}>
-        이메일로 결과표 받기
-      </button>
+    <>
+      {/* SendButton 자체는 기존 컨테이너에 렌더링 */}
+      <div className="send-button-container">
+        <button className="send-button" onClick={handleOpenModal}>
+          이메일 전송 📨
+        </button>
+      </div>
 
+      {/* 모달 오버레이와 콘텐츠를 ModalPortal을 통해 document.body에 렌더링 */}
       {isModalOpen && (
-        <div className="send-modal-overlay">
-          <div className={`send-modal-content ${isKeyboardOpen ? "modal-up" : ""}`}>
-            <button className="modal-x-button" onClick={handleCloseModal}>
-              ✖
-            </button>
-            <h2>이메일을 입력하세요</h2>
-            <div className="email-input-wrapper" onClick={() => setIsKeyboardOpen(true)}>
-            <input
-              type="text"
-              className="email-input"
-              value={email}
-              placeholder="이메일 입력"
-              onChange={(e) => setEmail(e.target.value)}  // 키보드 입력 허용
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSubmitWrapper(); // Enter 키로 제출
-                }
-              }}
-              onClick={() => setIsKeyboardOpen(true)}
-            />
-
-            </div>
-            <div className="send-modal-buttons">
-              {isLoading ? (
-                <span
-                  className="sending-status"
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "1.2rem",
-                    color: "#0b7c3e",
-                    display: "inline-flex",
-                    alignItems: "center",
-                  }}
-                >
-                  전송중{" "}
-                  <span style={{ display: "inline-block", marginLeft: "5px" }}>
-                    <LoadingSpinner loading={true} size={20} />
-                  </span>
-                </span>
-              ) : sendStatus ? (
-                <span
-                  className="sending-status"
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "1.2rem",
-                    color: "#0b7c3e",
-                    display: "inline-flex",
-                    alignItems: "center",
-                  }}
-                >
-                  {sendStatus}
-                </span>
-              ) : (
-                <button className="send-modal-yes" onClick={handleSubmitWrapper}>
-                  제출하기
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {isKeyboardOpen && (
-        <div className="keyboard-modal-overlay">
-          <div className="keyboard-modal-content" ref={keyboardRef} onClick={(e) => e.stopPropagation()}>
-            <div className="keyboard-row">
-              {row1.map((key) => (
-                <button key={key} className="keyboard-key" onClick={() => handleKeyClick(key)}>
-                  {key}
-                </button>
-              ))}
-            </div>
-            <div className="keyboard-row">
-              {row2.map((key) => (
-                <button
-                  key={key}
-                  className={`keyboard-key ${key === "⌫" ? "special-key" : ""}`}
-                  onClick={() => {
-                    if (key === "⌫") {
-                      handleDelete();
-                    } else {
-                      handleKeyClick(key);
+        <ModalPortal>
+          <div className="send-modal-overlay">
+            <div className={`send-modal-content ${isKeyboardOpen ? "modal-up" : ""}`}>
+              <button className="modal-x-button" onClick={handleCloseModal}>
+                ✖
+              </button>
+              <h2>이메일을 입력하세요</h2>
+              <div
+                className="email-input-wrapper"
+                onClick={() => setIsKeyboardOpen(true)}
+              >
+                <input
+                  type="text"
+                  className="email-input"
+                  value={email}
+                  placeholder="이메일 입력"
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSubmitWrapper();
                     }
                   }}
-                >
-                  {key}
-                </button>
-              ))}
-            </div>
-            <div className="keyboard-row">
-              {row3.map((key) => (
-                <button
-                  key={key}
-                  className={`keyboard-key ${key === "@" ? "special-key" : ""}`}
-                  onClick={() => handleKeyClick(key)}
-                >
-                  {key}
-                </button>
-              ))}
-            </div>
-            <div className="keyboard-row">
-              {row4.map((key) => (
-                <button
-                  key={key}
-                  className={`keyboard-key ${key === "." || key === "_" ? "special-key" : ""}`}
-                  onClick={() => handleKeyClick(key)}
-                >
-                  {key}
-                </button>
-              ))}
+                  onClick={() => setIsKeyboardOpen(true)}
+                />
+              </div>
+              <div className="send-modal-buttons">
+                {isLoading ? (
+                  <span
+                    className="sending-status"
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "1.2rem",
+                      color: "#0b7c3e",
+                      display: "inline-flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    전송중{" "}
+                    <span style={{ display: "inline-block", marginLeft: "5px" }}>
+                      <LoadingSpinner loading={true} size={20} />
+                    </span>
+                  </span>
+                ) : sendStatus ? (
+                  <span
+                    className="sending-status"
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "1.2rem",
+                      color: "#0b7c3e",
+                      display: "inline-flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {sendStatus}
+                  </span>
+                ) : (
+                  <button className="send-modal-yes" onClick={handleSubmitWrapper}>
+                    제출하기
+                  </button>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        </ModalPortal>
       )}
-    </div>
+
+      {/* 커스텀 키보드 모달을 ModalPortal을 통해 렌더링 */}
+      {isKeyboardOpen && (
+        <ModalPortal>
+          <div className="keyboard-modal-overlay">
+            <div
+              className="keyboard-modal-content"
+              ref={keyboardRef}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="keyboard-row">
+                {row1.map((key) => (
+                  <button
+                    key={key}
+                    className="keyboard-key"
+                    onClick={() => handleKeyClick(key)}
+                  >
+                    {key}
+                  </button>
+                ))}
+              </div>
+              <div className="keyboard-row">
+                {row2.map((key) => (
+                  <button
+                    key={key}
+                    className={`keyboard-key ${key === "⌫" ? "special-key" : ""}`}
+                    onClick={() => {
+                      if (key === "⌫") {
+                        handleDelete();
+                      } else {
+                        handleKeyClick(key);
+                      }
+                    }}
+                  >
+                    {key}
+                  </button>
+                ))}
+              </div>
+              <div className="keyboard-row">
+                {row3.map((key) => (
+                  <button
+                    key={key}
+                    className={`keyboard-key ${key === "@" ? "special-key" : ""}`}
+                    onClick={() => handleKeyClick(key)}
+                  >
+                    {key}
+                  </button>
+                ))}
+              </div>
+              <div className="keyboard-row">
+                {row4.map((key) => (
+                  <button
+                    key={key}
+                    className={`keyboard-key ${(key === "." || key === "_") ? "special-key" : ""}`}
+                    onClick={() => handleKeyClick(key)}
+                  >
+                    {key}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </ModalPortal>
+      )}
+    </>
   );
 };
 
