@@ -20,7 +20,6 @@
   text-align: center;
   max-width: 400px;
   width: 80%;
-  position: relative;
   transition: transform 0.3s;
   z-index: 5001;
 }
@@ -33,17 +32,6 @@ button.modal-x-button {
   background: none;
   border: none;
   cursor: pointer;
-}
-.close-button {
-  background: none;
-  border: none;
-  font-size: 0.7rem; /* 기존보다 더 작게 조정 */
-  position: absolute;
-  cursor: pointer;
-}
-button.close-button {
-  right: 5px;
-  bottom: 53px;
 }
 
 /* 이메일 입력 영역 컨테이너 (전체 클릭 가능) */
