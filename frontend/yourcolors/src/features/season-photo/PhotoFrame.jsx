@@ -2,10 +2,7 @@ import React from "react";
 import personalColorInfo from "../../store/PersonalColorInfo";
 
 const PhotoFrame = React.forwardRef(
-  (
-    { selectedPhotos = [], hideArrows = false, designNum, onNextDesign, onPrevDesign },
-    ref
-  ) => {
+  ({ selectedPhotos = [], hideArrows = false, designNum, onNextDesign, onPrevDesign }, ref) => {
     // 부모에서 전달받은 designNum 사용 (없으면 기본값 1 사용)
     const num = designNum || 1;
 
@@ -156,9 +153,7 @@ const PhotoFrame = React.forwardRef(
                   }}
                 />
               ) : (
-                <span style={{ fontSize: "10px", visibility: "hidden" }}>
-                  빈 슬롯
-                </span>
+                <span style={{ fontSize: "10px", visibility: "hidden" }}>빈 슬롯</span>
               )}
               {/* 2번째 슬롯에 캐릭터(여) */}
               {idx === 1 && (
