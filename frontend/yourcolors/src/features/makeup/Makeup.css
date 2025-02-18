@@ -26,9 +26,23 @@
   -ms-overflow-style: none;
 }
 
-/* 크롬, 사파리에서 스크롤바 숨기기 */
-.personal-color-buttons::-webkit-scrollbar {
-  display: none;
+/* product-list 내부 스크롤 및 고정 높이 설정 */
+.product-list {
+  display: grid;
+  height: 400px;
+  width: 350px;
+  flex-grow: 1;
+  grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개씩 배치 */
+  gap: 6px; /* 카드 사이 간격 */
+  justify-content: center;
+  padding: 5px;
+  border-radius: 10px;
+  overflow-y: scroll; /* 내부 스크롤 활성화 */
+  overflow-x: hidden;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  scrollbar-width: thin;
+  scrollbar-color: #d7f4ca #ffffff;
 }
 
 .personal-color-buttons button {
@@ -83,22 +97,6 @@
   margin-bottom: 1rem;
 
 }
-
-/* product-list 내부 스크롤 및 고정 높이 설정 */
-.product-list {
-  display: grid;
-  height: 400px;
-  width: 350px;
-  flex-grow: 1;
-  grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개씩 배치 */
-  gap: 6px; /* 카드 사이 간격 */
-  justify-content: center;
-  padding: 5px;
-  border-radius: 10px;
-  overflow-y: auto; /* 내부 스크롤 활성화 */
-  overflow-x: hidden;
-}
-
 
 /* product-card 크기 고정 */
 .product-card {
