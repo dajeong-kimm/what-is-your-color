@@ -1,3 +1,4 @@
+/* 네비게이션 버튼 */
 .navigation-buttons {
   position: fixed;
   top: 50%;
@@ -6,10 +7,10 @@
   display: flex;
   justify-content: space-between;
   transform: translateY(-50%);
-  z-index: 1000;
   max-width: calc(100% - 40px);
 }
 
+/* 네비게이션 버튼 스타일 */
 .nav-button {
   background-color: #199652;
   color: white;
@@ -31,4 +32,66 @@
   font-weight: bold;
   line-height: 1;
   user-select: none;
+}
+
+/* ========================= */
+/* ===== 모달 스타일 수정 ===== */
+/* ========================= */
+
+/* 전체 화면을 덮는 모달 오버레이 */
+.leftright-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* 화면 전체 덮기 */
+}
+
+/* 모달 콘텐츠 */
+.leftright-modal-content {
+  background-color: #f1ffe2;
+  padding: 2rem 3rem;
+  border-radius: 15px;
+  text-align: center;
+  max-width: 400px;
+  width: 80%;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* 모달 강조 효과 */
+  z-index: 10000; /* 다른 요소보다 위에 오도록 설정 */
+}
+
+/* 모달 내 버튼 컨테이너 */
+.leftright-modal-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+/* 모달 내 예/아니오 버튼 */
+.leftright-modal-yes,
+.leftright-modal-no {
+  background-color: #82dc28;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.leftright-modal-yes:hover,
+.leftright-modal-no:hover {
+  background-color: #76c825;
+}
+
+.leftright-modal-yes:active,
+.leftright-modal-no:active {
+  transform: scale(0.98);
 }

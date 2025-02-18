@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CloseButton.css";
+import ModalPortal from "../../background/background/ModalPortal"; // ModalPortal import
 
 const CloseButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,22 +31,24 @@ const CloseButton = () => {
 
       {/* 모달 (isModalOpen이 true일 때만 보여줌) */}
       {isModalOpen && (
-        <div className="close-modal-overlay">
-          <div className="close-modal-content">
-            <h2>
-              “너의 색깔은 ?” <br />
-              체험을 종료하시겠습니까?
-            </h2>
-            <div className="close-modal-buttons">
-              <button className="close-modal-yes" onClick={handleYes}>
-                예
-              </button>
-              <button className="close-modal-no" onClick={handleNo}>
-                아니오
-              </button>
+        <ModalPortal>
+          <div className="close-modal-overlay">
+            <div className="close-modal-content">
+              <h2>
+                “너의 색깔은 ?” <br />
+                체험을 종료하시겠습니까?
+              </h2>
+              <div className="close-modal-buttons">
+                <button className="close-modal-yes" onClick={handleYes}>
+                  예
+                </button>
+                <button className="close-modal-no" onClick={handleNo}>
+                  아니오
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </ModalPortal>
       )}
     </div>
   );
