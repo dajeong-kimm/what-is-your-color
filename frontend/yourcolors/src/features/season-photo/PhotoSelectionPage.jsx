@@ -21,9 +21,7 @@ const PhotoSelectionPage = () => {
   const totalDesigns = 12;
   const { userPersonalId } = useStore();
   const initialDesign =
-    Number(userPersonalId) >= 1 && Number(userPersonalId) <= totalDesigns
-      ? Number(userPersonalId)
-      : 1;
+    Number(userPersonalId) >= 1 && Number(userPersonalId) <= totalDesigns ? Number(userPersonalId) : 1;
   const [designNum, setDesignNum] = useState(initialDesign);
 
   // 실제 화면에 보이는 프레임의 ref
@@ -127,7 +125,9 @@ const PhotoSelectionPage = () => {
                         }}
                       >
                         <span role="img" aria-label="print">
-                          🖨️<br />인쇄하기
+                          🖨️
+                          <br />
+                          인쇄하기
                         </span>
                       </button>
                     ) : (
@@ -141,22 +141,10 @@ const PhotoSelectionPage = () => {
               return (
                 <div
                   key={idx}
-                  className={
-                    photo
-                      ? `photo-cell ${isSelected ? "selected" : ""}`
-                      : "photo-cell empty"
-                  }
+                  className={photo ? `photo-cell ${isSelected ? "selected" : ""}` : "photo-cell empty"}
                   onClick={() => photo && toggleSelectPhoto(idx)}
                 >
-                  {photo ? (
-                    <img
-                      src={photo}
-                      alt={`사진 ${idx + 1}`}
-                      crossOrigin="anonymous"
-                    />
-                  ) : (
-                    <span>빈 사진</span>
-                  )}
+                  {photo ? <img src={photo} alt={`사진 ${idx + 1}`} crossOrigin="anonymous" /> : <span>빈 사진</span>}
                   {photo && isSelected && <div className="overlay" />}
                 </div>
               );
@@ -171,12 +159,8 @@ const PhotoSelectionPage = () => {
                 selectedPhotos={selectedPhotoUrls}
                 hideArrows={captureMode}
                 designNum={designNum}
-                onNextDesign={() =>
-                  setDesignNum((prev) => (prev === totalDesigns ? 1 : prev + 1))
-                }
-                onPrevDesign={() =>
-                  setDesignNum((prev) => (prev === 1 ? totalDesigns : prev - 1))
-                }
+                onNextDesign={() => setDesignNum((prev) => (prev === totalDesigns ? 1 : prev + 1))}
+                onPrevDesign={() => setDesignNum((prev) => (prev === 1 ? totalDesigns : prev - 1))}
               />
             </div>
           </div>
@@ -191,17 +175,16 @@ const PhotoSelectionPage = () => {
           }}
           ref={captureRef}
         >
-          <div style={{ display: "flex" }}>
-            <PhotoFrame
-              selectedPhotos={selectedPhotoUrls}
-              hideArrows={true}
-              designNum={designNum}
-            />
-            <PhotoFrame
-              selectedPhotos={selectedPhotoUrls}
-              hideArrows={true}
-              designNum={designNum}
-            />
+          <div
+            style={{
+              display: "flex",
+              width: "70%",
+              maxWidth: "500px",
+              height: "auto",
+            }}
+          >
+            <PhotoFrame selectedPhotos={selectedPhotoUrls} hideArrows={true} designNum={designNum} />
+            <PhotoFrame selectedPhotos={selectedPhotoUrls} hideArrows={true} designNum={designNum} />
           </div>
         </div>
       </Largemain>

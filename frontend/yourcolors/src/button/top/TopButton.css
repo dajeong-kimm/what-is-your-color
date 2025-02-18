@@ -22,3 +22,6 @@
     background: #82DC28;  /* 활성화된 버튼 색상 */
   }
   
+  .modal-active .top-button {
+    z-index: 5 !important; /* 모달보다 낮게 */
+  }

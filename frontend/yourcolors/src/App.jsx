@@ -28,6 +28,7 @@ import PhotoCapturePageTwo from "./features/season-photo/PhotoCapturePageTwo.jsx
 import PhotoSelectionPage from "./features/season-photo/PhotoSelectionPage.jsx";
 import PhotoSelectionPageTwo from "./features/season-photo/PhotoSelectionPageTwo.jsx";
 import QrCodePage from "./button/print/QRCodePage.jsx";
+import QrCodePageTwo from "./button/print/QRCodePageTwo.jsx";
 import Qna from "./features/qna/Qna.jsx"
 import PhotoQrChoicePage from "./features/season-photo/PhotoQrChoicePage.jsx";
 const App = () => {
@@ -65,9 +66,10 @@ const App = () => {
         <Route path="/select" element={<PhotoSelectionPage />} />
         <Route path="/selecttwo" element={<PhotoSelectionPageTwo />} />
         <Route path="/qr-code" element={<QrCodePage />} />
+        <Route path="/qr-codetwo" element={<QrCodePageTwo />} />
         <Route path="/personaldefine" element={<PersonalDefine />} />
         <Route path="/photoqrchoice" element={<PhotoQrChoicePage />} />
-        <Route path="qna" element={<Qna />} />
+        <Route path="/qna" element={<Qna />} />
       </Routes>
     </Router>
 
