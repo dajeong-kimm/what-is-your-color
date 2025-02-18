@@ -20,14 +20,4 @@
 .bottom-button:hover,
 .bottom-button.active {
   background-color: #36972d;
-  color: white;
-}
-
-/* 추가 스타일 (예시) */
-.bottom-button.recommend {
-  background-color: #E5F6FF;
-}
-
-.bottom-button.makeup {
-  background-color: #FFE5E5;
 }

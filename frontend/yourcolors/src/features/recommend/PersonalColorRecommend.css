@@ -1,6 +1,6 @@
 /* 모달 컨테이너 내부에 들어가는 내용의 CSS (예: personalrecommend 페이지용) */
 
-.full-container {
+.recommend-container {
   display: flex;
   flex-direction: column; /* 세로 배치 */
   gap: 20px;
@@ -10,65 +10,92 @@
   box-sizing: border-box;
 }
 
-.top {
+.recommend-top {
   display: flex;
   justify-content: space-between; /* 왼쪽에 텍스트, 오른쪽에 버튼 */
   align-items: center;
   padding: 10px 20px;
-  /* background-color: #f9f9f9; */
   border-radius: 10px;
-  width: 90%;  /* 가로 전체 사용 */
+  width: 95%;  /* 가로 전체 사용 */
 }
 
-.color-pick {
-  font-size: 24px;
-  font-weight: bold;
+.recommend-color-pick {
+  font-size: 45px;
+  font-weight: bolder;
   color: #333;
+  margin-left:30px;
 }
 
-.button-container {
+.recommend-button-container {
   display: flex;
   gap: 10px;
 }
 
-.product-container {
+.recommend-product-container {
   overflow-y: auto;
   flex: 1; /* 남은 영역 채우기 */
+  margin-bottom: 10px;
 }
 
-.product-grid {
-  display: flex;
-  flex-direction: row;      /* 가로 나열 */
-  flex-wrap: nowrap;        /* 한 줄에 모두 나열 (필요시 wrap 사용 가능) */
-  gap: 10px;                /* 아이템 간 간격 */
+.recommend-product-grid {
+  display: grid;
+  height: 100%; /* 고정 크기 설정 */
+  grid-template-columns: repeat(8, 1fr); 
+  gap: 10px; /* 카드 사이 간격 */
+  justify-content: center;
+  padding: 5px;
+  border-radius: 10px;
+  max-height: 100%; /* 고정된 높이 설정 */
+}
+.recommend-product-card {
+  width: 100px;
+  height: 80%; /* 높이 고정 */
+  text-align: flex-start;
+  justify-content: center;
+  font-size: 13px;
   padding: 10px;
-  overflow-x: auto;         /* 가로 스크롤 허용 (필요시) */
-  justify-content: flex-start; /* 왼쪽 정렬 */
-}
-
-.product-card {
+  border-radius: 8px;
+  transition: transform 0.2s;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 8px;
-  padding: 10px;
-  width: 100px;
-  height: 150px; 
-  background: #fff;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-}
-.product-card p {
-  margin: 2px 0; /* 각 텍스트 간의 간격 줄이기 */
-  text-align: center; /* 텍스트 중앙 정렬 */
-}
-.product-card img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 5px;
 }
 
-.no-products {
+.brand-name {
+  color:#838383;
+  margin:0;
+  font-weight:300;
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
+.product-name {
+  color:#000000;
+  font-size:10px;
+  text-align: center; /* 텍스트 중앙 정렬 */
+  font-weight:450;
+  margin:0;
+}
+.price {
+  text-align: center; /* 텍스트 중앙 정렬 */
+  margin:0;
+}
+.color-name{
+  color:#000000;
+  font-size:10px;
+  text-align: center; /* 텍스트 중앙 정렬 */
+  font-weight:450;
+  margin:0;
+}
+.recommend-product-card img {
+  width: 80px;
+  height: 60px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  object-fit: cover; /* 비율 유지하면서 크기 맞춤 */
+}
+
+.recommend-no-products {
   text-align: center;
   color: gray;
 }

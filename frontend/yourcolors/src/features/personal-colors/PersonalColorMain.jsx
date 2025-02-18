@@ -24,7 +24,6 @@ const PersonalColorMain = () => {
 
   const colorTitles = ["Spring", "Summer", "Autumn", "Winter"];
 
-
   return (
     <Background>
       <Topbar />

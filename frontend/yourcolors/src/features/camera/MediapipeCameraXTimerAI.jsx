@@ -1,73 +1,82 @@
 // ai-model, 얼굴만 보내는 버전
 import React, { useRef, useEffect, useState } from "react";
 import { Holistic } from "@mediapipe/holistic";
-import { Camera } from "@mediapipe/camera_utils";
+// import { Camera } from "@mediapipe/camera_utils";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useStore from "../../store/UseStore"; //Zustand 상태관리 데이터
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+import { useModalStore } from "../../store/useModalStore"; // Zustand 모달 상태 가져오기
+import DiagFailModalComponent from "../diagnosis/DiagFailModalComponent"; //진단 실패 시 실패 모달
+import useWebcamStore from "../../store/useWebcamStore"; // Zustand 카메라 상태 관리
 
-let cameraInstance = null; // 카메라 중복 실행 방지용 (전역 변수)
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const MediapipeCameraXTimerAI = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const holisticRef = useRef(null); // Holistic 인스턴스 저장용
 
   const [countdown, setCountdown] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [showCaptureButton, setShowCaptureButton] = useState(true);
   const [isFlashing, setIsFlashing] = useState(false);
   const [hasCaptured, setHasCaptured] = useState(false); // 이미 촬영했는지 체크
+  const [faceBlob, setFaceBlob] = useState(null);
 
   const navigate = useNavigate();
-  const { setUserPersonalId, userImageFile, setUserImageFile, setResults, setGptSummary } = useStore(); //Zustand 상태관리 데이터
+  const {
+    setUserPersonalId,
+    userImageFile,
+    setUserImageFile,
+    setResults,
+    setGptSummary,
+    setQrImage,
+  } = useStore(); //Zustand 상태관리 데이터
+  const { openModal } = useModalStore(); // 모달 상태
+  const { stream, startCamera, stopCamera } = useWebcamStore();
 
   useEffect(() => {
-    console.log("[useEffect] Component mounted -> Initialize camera");
-    initializeCamera();
-    // cleanup: 컴포넌트 언마운트 시 카메라 정리
-    return () => {
-      if (cameraInstance) {
-        // cameraInstance.stop() 가 제공되는지 여부는 카메라 라이브러리에 따라 다릅니다.
-        // Mediapipe CameraUtils에 stop()이 없다면 생략 가능합니다.
-        console.log("[useEffect cleanup] Camera stopped");
-      }
-    };
-  }, []);
-
-  const initializeCamera = () => {
-    console.log("[initializeCamera] called");
-    const holistic = new Holistic({
-      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
-    });
-    holistic.setOptions({
-      modelComplexity: 1,
-      smoothLandmarks: true,
-      refineFaceLandmarks: true,
-    });
-
-    holistic.onResults(() => {
-      if (!canvasRef.current || !videoRef.current) return;
-      const ctx = canvasRef.current.getContext("2d");
-      if (!ctx) return;
-
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      ctx.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
-    });
-
-    if (videoRef.current) {
-      // 카메라가 이미 한 번 세팅되었다면 중복 세팅 방지
-      console.log("[initializeCamera] Setup camera instance");
-      cameraInstance = new Camera(videoRef.current, {
-        onFrame: async () => {
-          await holistic.send({ image: videoRef.current });
-        },
-        width: 640,
-        height: 480,
-      });
-      cameraInstance.start();
+    if (stream && videoRef.current) {
+      videoRef.current.srcObject = stream;
+      // videoRef.current
+      //   .play()
+      //   .catch((error) => console.error("Play 오류:", error));
     }
-  };
+  }, [stream]);
+
+  useEffect(() => {
+    startCamera();
+    return () => stopCamera(); // 컴포넌트 언마운트 시 카메라 정지
+  }, [startCamera, stopCamera]);
+
+  useEffect(() => {
+    const setupHolistic = async () => {
+      const holistic = new Holistic({
+        locateFile: (file) =>
+          `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
+      });
+      holistic.setOptions({
+        modelComplexity: 1,
+        smoothLandmarks: true,
+        refineFaceLandmarks: true,
+      });
+      holistic.onResults(() => {
+        if (!canvasRef.current || !videoRef.current) return;
+        const ctx = canvasRef.current.getContext("2d");
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        ctx.drawImage(
+          videoRef.current,
+          0,
+          0,
+          canvasRef.current.width,
+          canvasRef.current.height
+        );
+      });
+      holisticRef.current = holistic;
+    };
+
+    setupHolistic();
+  }, []);
 
   const handleCapture = async () => {
     // 버튼 클릭 시 중복 클릭 방지
@@ -96,7 +105,7 @@ const MediapipeCameraXTimerAI = () => {
       console.log("[capturePhoto] Already captured -> skip");
       return;
     }
-    setHasCaptured(true); // 이제부터는 중복 촬영 방지
+    setHasCaptured(true);
 
     console.log("[capturePhoto] Capturing now...");
     setIsFlashing(true);
@@ -116,10 +125,8 @@ const MediapipeCameraXTimerAI = () => {
         context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
         context.restore();
 
-        // 전체 캡처한 이미지
         const imageData = canvas.toDataURL("image/png");
         console.log("Captured Image (base64):", imageData);
-
         setCapturedImage(imageData);
         setCountdown(null);
 
@@ -129,22 +136,18 @@ const MediapipeCameraXTimerAI = () => {
 
         // Base64 → Blob 변환
         const blob = base64ToBlob(faceImage, "image/png");
+        // faceBlob 상태 업데이트 (두 API에서 사용)
+        setFaceBlob(blob);
 
-        // 🟢 상태 업데이트: 유저 이미지 파일 저장
-        // setUserImageFile(blob); // ✅ Zustand 상태 업데이트
-        // const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
-        // console.log("웃어봐요 활짝", imageUrl);
-
-        // FormData 객체 생성
+        // FormData 객체 생성하여 Zustand에 저장 (원래 사용하던 방식)
         const formData = new FormData();
-        formData.append("image", blob, "captured_face.png"); // 파일명 지정
-        setUserImageFile(formData); // ✅ Zustand 상태 업데이트
+        formData.append("image", blob, "captured_face.png");
+        setUserImageFile(formData);
+
         console.log("AI 진단 - 얼굴 이미지 form-data로 저장 완료!!!!");
         formData.forEach((value, key) => {
           console.log(`Key: ${key}, Value:`, value);
         });
-
-        // sendImagesToServer(faceImage); //여기서 실행하면 안된다
       }
     }, 300);
   };
@@ -162,7 +165,17 @@ const MediapipeCameraXTimerAI = () => {
     faceCanvas.width = faceWidth;
     faceCanvas.height = faceHeight;
 
-    context.drawImage(canvas, faceX, faceY, faceWidth, faceHeight, 0, 0, faceWidth, faceHeight);
+    context.drawImage(
+      canvas,
+      faceX,
+      faceY,
+      faceWidth,
+      faceHeight,
+      0,
+      0,
+      faceWidth,
+      faceHeight
+    );
     return faceCanvas.toDataURL("image/png");
   };
 
@@ -177,40 +190,56 @@ const MediapipeCameraXTimerAI = () => {
     return new Blob([byteArray], { type: mimeType });
   };
 
-  const sendImagesToServer = (formData) => {
-    console.log("[sendImagesToServer] Sending to server...");
-    console.log("10. AI 모델 사용 API");
+  const sendImagesToServer = async (formData) => {
+    try {
+      // 10. AI 진단 API 호출
+      const aiResponse = await axios.post(
+        `${apiBaseUrl}/api/consult/ai`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Server Response (AI 진단 결과):", aiResponse.data);
 
-    // // Base64 → Blob 변환
-    // const blob = base64ToBlob(faceImageBase64, "image/png");
+      // 상태 업데이트
+      setUserPersonalId(aiResponse.data.results[0].personal_id);
+      setResults(aiResponse.data.results);
+      setGptSummary(aiResponse.data.gpt_summary);
 
-    // // 🟢 상태 업데이트: 유저 이미지 파일 저장
-    // setUserImageFile(blob); // ✅ Zustand 상태 업데이트
-    // const imageUrl = URL.createObjectURL(blob); // 🔹 blob을 바로 URL로 변환
-    // console.log("웃어봐요 활짝", imageUrl);
+      // 2. QR 생성 API 호출을 위한 formData 구성
+      const qrFormData = new FormData();
+      // 촬영 시 저장한 faceBlob을 사용 (이미 저장해두어야 합니다)
+      qrFormData.append("imageUrl", faceBlob, "captured_face.png");
 
-    // // FormData 객체 생성
-    // const formData = new FormData();
-    // formData.append("image", faceImageBase64, "captured_face.png"); // 파일명 지정
+      // AI 결과에서 필요한 컬러 정보가 있다면 이를 사용하고, 없으면 기본값 지정
+      const result = aiResponse.data.results[0];
+      qrFormData.append("bestColor", result.bestColor || "여름 뮤트");
+      qrFormData.append("subColor1", result.subColor1 || "겨울 비비드");
+      qrFormData.append("subColor2", result.subColor2 || "겨울 다크");
+      qrFormData.append("message", "결과입니다.");
 
-    axios
-      .post(`${apiBaseUrl}/api/consult/ai`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더 설정
-        },
-      })
-      .then((response) => {
-        console.log("Server Response(AI 진단 결과):", response.data);
-        console.log("너의 색깔은?? : ", response.data.results[0].personal_id);
-        setUserPersonalId(response.data.results[0].personal_id);
-        setResults(response.data.results); // ✅ Zustand 상태 업데이트 - AI 분석 결과 저장
-        setGptSummary(response.data.gpt_summary); // ✅ Zustand 상태 업데이트 - GPT 요약 저장
-      })
-      .catch((error) => {
-        console.error("Error sending images to server:", error);
-        alert("퍼스널컬러 진단에 실패했습니다. 화면에 맞춰서 다시 시도해주세요.");
-        navigate(-1); // 🔴 이전 페이지로 이동
-      });
+      // 3. QR API 호출
+      const qrResponse = await axios.post(
+        `${apiBaseUrl}/api/result/qr`,
+        qrFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("QR Response:", qrResponse.data);
+
+      // QR 이미지를 Zustand에 저장
+      setQrImage(qrResponse.data.qr_url);
+    } catch (error) {
+      console.error("Error sending images to server:", error);
+      openModal("퍼스널컬러 진단에 실패했습니다. 다시 시도해주세요.");
+      navigate(-1);
+    }
   };
 
   const handleRetake = () => {
@@ -226,6 +255,7 @@ const MediapipeCameraXTimerAI = () => {
         overflow: "hidden",
       }}
     >
+      <DiagFailModalComponent /> {/* 진단실패 모달 추가 */}
       {/* 촬영 시 화면 깜빡임 */}
       {isFlashing && (
         <div
@@ -242,7 +272,6 @@ const MediapipeCameraXTimerAI = () => {
           }}
         />
       )}
-
       {/* 5초 카운트다운 */}
       {countdown !== null && (
         <div
@@ -263,10 +292,13 @@ const MediapipeCameraXTimerAI = () => {
           {countdown}
         </div>
       )}
-
       {capturedImage ? (
         <div style={{ width: "100%", height: "100%", position: "relative" }}>
-          <img src={capturedImage} alt="Captured" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img
+            src={capturedImage}
+            alt="Captured"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
           <div
             style={{
               position: "absolute",
@@ -296,12 +328,13 @@ const MediapipeCameraXTimerAI = () => {
             </button>
             <button
               onClick={() => {
-                if (userImageFile) {
-                  setResults([]); // ✅ Zustand 상태 업데이트
-                  setGptSummary(""); // ✅ Zustand 상태 업데이트
-                  sendImagesToServer(userImageFile); // 서버로 이미지 전송
-                  // navigate("/LoadingPage"); // 전송 후 페이지 이동
-                  navigate("/LoadingPage", { state: { from: "MediapipeCameraXTimerAI" } }); //진단 실패시 되돌아가기 위해 주소 저장
+                if (userImageFile && faceBlob) {
+                  setResults([]); // 기존 AI 결과 초기화
+                  setGptSummary("");
+                  sendImagesToServer(userImageFile); // 두 API를 순차적으로 호출
+                  navigate("/LoadingPage", {
+                    state: { from: "MediapipeCameraXTimerAI" },
+                  });
                 }
               }}
               style={{
@@ -336,7 +369,13 @@ const MediapipeCameraXTimerAI = () => {
               transform: "scaleX(-1)",
             }}
           />
-          <canvas ref={canvasRef} style={{ display: "none" }} willreadfrequently="true" />
+
+          <canvas
+            ref={canvasRef}
+            style={{ display: "none" }}
+            willreadfrequently="true"
+          />
+
           {/* 얼굴 인식 가이드 영역 */}
           <div
             style={{

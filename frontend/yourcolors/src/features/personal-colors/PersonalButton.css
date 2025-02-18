@@ -4,71 +4,95 @@
   padding: 15px 20px;
   text-align: center;
   border-radius: 10px;
-  font-size: 25px;
+  font-size: 29px;
   font-weight: bold;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   transition: background-color 0.3s;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-  width: 170px;
-  height: 65px;
+  width: 180px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  /* ✅ 두 줄 방지 및 넘치는 글자 처리 */
-  white-space: nowrap;  /* 줄 바꿈 방지 */
-  overflow: hidden;     /* 넘치는 글자 숨김 */
+  white-space: nowrap; /* 줄 바꿈 방지 */
+  overflow: hidden; /* 넘치는 글자 숨김 */
   text-overflow: ellipsis; /* 넘치는 글자 "..." 처리 */
 }
 
-  
-  /* 🔹 퍼스널컬러별 버튼 색상 */
-  .spring-light { background-color: #FFD1DC; }  /* 봄 라이트 */
-  .spring-bright { background-color: #FFA07A; }  /* 봄 브라이트 */
-  .spring-vivid { background-color: #FFD700; } /* 봄 비비드 */
-  
-  .summer-light { background-color: #AEE8E6; }  /* 여름 라이트 */
-  .summer-bright { background-color: #87CEEB; }  /* 여름 브라이트 */
-  .summer-mute { background-color: #D6CADD; }  /* 여름 뮤트 */
-  
-  .autumn-mute { background-color: #FFCBA4; }  /* 가을 뮤트 */
-  .autumn-strong { background-color: #E07A5F; }  /* 가을 스트롱 */
-  .autumn-dark { background-color: #D9A067; }  /* 가을 다크 */
-  
-  .winter-vivid { background-color: #A093FF; }  /* 겨울 비비드 */
-  .winter-strong { background-color: #785EF0; } /* 겨울 스트롱 */
-  .winter-dark { background-color: #4682B4; }  /* 겨울 다크 */
+/* 🔹 퍼스널컬러별 버튼 색상 */
+.spring-light {
+  background-color: #ffd1dc;
+} /* 봄 라이트 */
+.spring-bright {
+  background-color: #ffa07a;
+} /* 봄 브라이트 */
+.spring-vivid {
+  background-color: #ffd700;
+} /* 봄 비비드 */
 
-  
-  .personal-color-container {
-    display: flex;
-    flex-direction: row; /* ✅ 가로 방향 정렬 */
-    justify-content: center; /* ✅ 중앙 정렬 */
-    flex-wrap: wrap; /* ✅ 줄 바꿈 허용 */
-    gap: 40px; /* ✅ 그룹 간 간격 */
-    margin-top: 10px; /* ✅ LargeMain과의 간격 */
-    margin-bottom: 30px; /* ✅ 하단 여백 */
-    top: 0;
-    width: 100%;
-    height: 100%;
+.summer-light {
+  background-color: #aee8e6;
+} /* 여름 라이트 */
+.summer-bright {
+  background-color: #87ceeb;
+} /* 여름 브라이트 */
+.summer-mute {
+  background-color: #d6cadd;
+} /* 여름 뮤트 */
 
-  }
-  
-  .personal-color-group {
-    display: flex;
-    flex-direction: column; /* ✅ 그룹 내 세로 정렬 */
-    align-items: center; /* ✅ 그룹 내 중앙 정렬 */
-    gap: 20px; /* ✅ 버튼 간 간격 */
+.autumn-mute {
+  background-color: #ffcba4;
+} /* 가을 뮤트 */
+.autumn-strong {
+  background-color: #e07a5f;
+} /* 가을 스트롱 */
+.autumn-dark {
+  background-color: #d9a067;
+} /* 가을 다크 */
 
-  }
-  
-  .color-group-title {
-    
-    font-size: 1.5rem;
-    font-weight: bold;
-    font-family: 'Noto Sans KR', sans-serif;
-    margin-bottom: 10px;
-    font-size: 50px;
- 
-  }
-  
+.winter-vivid {
+  background-color: #a093ff;
+} /* 겨울 비비드 */
+.winter-strong {
+  background-color: #785ef0;
+} /* 겨울 스트롱 */
+.winter-dark {
+  background-color: #4682b4;
+} /* 겨울 다크 */
+
+.personal-color-container {
+  display: flex;
+  flex-direction: row; /* ✅ 가로 방향 정렬 */
+  justify-content: center; /* ✅ 중앙 정렬 */
+  flex-wrap: wrap; /* ✅ 줄 바꿈 허용 */
+  align-items: stretch; /* 높이를 부모 높이에 맞춤 */
+  gap: 10px; /* ✅ 그룹 간 간격 */
+  margin-top: 10px; /* ✅ LargeMain과의 간격 */
+  margin-bottom: 30px; /* ✅ 하단 여백 */
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.personal-color-group {
+  display: flex;
+  flex-direction: column; /* ✅ 그룹 내 세로 정렬 */
+  align-items: center; /* ✅ 그룹 내 중앙 정렬 */
+  gap: 20px; /* 버튼 간 간격 */
+  flex-grow: 1; /* 그룹이 container의 남은 공간을 차지하도록 설정 */
+  justify-content: space-around; /* 버튼 간 간격을 일정하게 */
+}
+
+.color-group-title {
+  margin-top: 10px;
+  font-weight: bold;
+  font-family: "Noto Sans KR", sans-serif;
+  margin-bottom: 10px;
+  font-size: 50px;
+}
+
+.personal-button:hover {
+  background-color: white; /* 마우스를 올리면 배경색이 흰색으로 변경 */
+  color: black; /* 글자색 유지 */
+  transition: background-color 0.3s ease-in-out;
+}

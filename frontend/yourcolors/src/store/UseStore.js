@@ -19,6 +19,10 @@ const useStore = create((set) => {
     setResults: (data) => set({ Results: data }), // AI 진단 결과 저장
     setGptSummary: (summary) => set({ gptSummary: summary }), // GPT 요약 저장
 
+    // QR 이미지 상태 추가
+    qrImage: null,
+    setQrImage: (qrImage) => set({ qrImage }),
+
     // 3. 퍼스널 컬러 상세 정보 조회
     personalColorDetails: {}, // 퍼스널 컬러 상세 정보를 저장할 객체
     setPersonalColorDetails: (data) => set({ personalColorDetails: data }), // 퍼스널 컬러 상세 정보 상태 업데이트
@@ -84,13 +88,14 @@ const useStore = create((set) => {
     },
   };
 
-  // ✅ Zustand 상태를 window.store에 등록
-  if (typeof window !== "undefined") {
-    window.store = store;
-    console.log("✅ Zustand 상태가 window.store에 저장되었습니다.");
-  }
 
   return store;
 });
+
+// 🔹 상태를 window 객체에 등록 (개발용)
+if (typeof window !== "undefined") {
+  window.store = useStore;
+  console.log("✅ Zustand 상태가 window.store에 저장되었습니다.");
+}
 
 export default useStore;

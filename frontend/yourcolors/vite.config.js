@@ -7,6 +7,9 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: "dist",  // 🔥 명시적으로 빌드 출력 폴더 설정
     },
+    define: {
+      'import.meta.env': process.env,
+    },
     server: mode === "development" ? {
       proxy: {
         "/api": {

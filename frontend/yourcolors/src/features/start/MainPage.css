@@ -1,3 +1,4 @@
+/* 메인 버튼 컨테이너 */
 .main-button-container {
   display: flex;
   flex-direction: column;
@@ -6,4 +7,71 @@
   width: 100%;
   height: 100%;
   gap: 15px; /* 버튼 사이 간격 */
+}
+
+/* 모달 오버레이 (배경) */
+.mp-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* 모달 컨텐츠 박스 */
+.mp-modal-content {
+  background: #f1ffe2; /* 배경색 변경 */
+  padding: 30px; /* 여백 증가 */
+  border-radius: 15px; /* 모서리 둥글게 */
+  text-align: center;
+  width: 500px; /* 가로 크기 증가 */
+  max-width: 500px; /* 너무 커지지 않도록 최대값 설정 */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 모달 내부 버튼 컨테이너 */
+.mp-modal-buttons {
+  display: flex;
+  justify-content: center; /* 버튼을 중앙 정렬 */
+  gap: 50px; /* 버튼 사이 간격 조정 (기존보다 줄임) */
+  margin-top: 20px;
+}
+
+/* 예, 아니오 버튼 */
+.mp-modal-yes, .mp-modal-no {
+  padding: 12px 25px;
+  font-size: 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  color: white; /* 글자 색상 흰색 */
+}
+
+.mp-modal-yes {
+  background-color: #82dc28;
+}
+
+.mp-modal-yes:hover {
+  background-color: #5ca81f;
+}
+
+.mp-modal-no {
+  background-color: #82dc28;
+}
+
+.mp-modal-no:hover {
+  background-color: #5ca81f;
+}
+mpstrong{
+  font-size: 28px;
+  font-weight: bold;
 }

@@ -28,6 +28,7 @@ const Camera = () => {
         startPreview();
       }
     });
+    
 
     let countdownTimer = setInterval(() => {
       setCountdown((prev) => {
@@ -40,7 +41,13 @@ const Camera = () => {
       });
     }, 1000);
 
-    return () => clearInterval(countdownTimer);
+    return () => {
+      clearInterval(countdownTimer);
+      if (videoRef.current && videoRef.current.srcObject) {
+        let tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach((track) => track.stop()); // 카메라 스트림 정리
+      }
+    }
   }, []);
 
  // ✅ 미리보기 영상 캡처 (좌우 반전 적용)

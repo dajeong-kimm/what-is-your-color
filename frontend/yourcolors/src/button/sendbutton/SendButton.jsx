@@ -37,18 +37,13 @@ const SendButton = () => {
   // 키보드 모달 외부 클릭 시 닫힘 처리
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        isKeyboardOpen &&
-        keyboardRef.current &&
-        !keyboardRef.current.contains(event.target)
-      ) {
+      if (isKeyboardOpen && keyboardRef.current && !keyboardRef.current.contains(event.target)) {
         setIsKeyboardOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isKeyboardOpen]);
 
   // 모달 열기
@@ -110,7 +105,7 @@ const SendButton = () => {
     formData.append("bestColor", bestColor.personal_color);
     formData.append("subColor1", subColor1.personal_color);
     formData.append("subColor2", subColor2.personal_color);
-    
+
     const htmlMessage = marked(gptSummary || "");
     formData.append("message", htmlMessage);
 
@@ -158,7 +153,7 @@ const SendButton = () => {
   };
 
   // 커스텀 키보드에 사용할 키 배열
-  const row1 = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+  const row1 = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ".com"];
   const row2 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "⌫"];
   const row3 = ["a", "s", "d", "f", "g", "h", "j", "k", "l", "@"];
   const row4 = ["z", "x", "c", "v", "b", "n", "m", ".", "_"];
@@ -166,7 +161,7 @@ const SendButton = () => {
   return (
     <div className="send-button-container">
       <button className="send-button" onClick={handleOpenModal}>
-        이메일로 결과표 받기
+        이메일 전송 📨
       </button>
 
       {isModalOpen && (
@@ -176,18 +171,21 @@ const SendButton = () => {
               ✖
             </button>
             <h2>이메일을 입력하세요</h2>
-            <div
-              className="email-input-wrapper"
+            <div className="email-input-wrapper" onClick={() => setIsKeyboardOpen(true)}>
+            <input
+              type="text"
+              className="email-input"
+              value={email}
+              placeholder="이메일 입력"
+              onChange={(e) => setEmail(e.target.value)}  // 키보드 입력 허용
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSubmitWrapper(); // Enter 키로 제출
+                }
+              }}
               onClick={() => setIsKeyboardOpen(true)}
-            >
-              <input
-                type="text"
-                className="email-input"
-                value={email}
-                readOnly
-                placeholder="이메일 입력"
-                onClick={() => setIsKeyboardOpen(true)}
-              />
+            />
+
             </div>
             <div className="send-modal-buttons">
               {isLoading ? (
@@ -201,7 +199,7 @@ const SendButton = () => {
                     alignItems: "center",
                   }}
                 >
-                  전송중 {" "}
+                  전송중{" "}
                   <span style={{ display: "inline-block", marginLeft: "5px" }}>
                     <LoadingSpinner loading={true} size={20} />
                   </span>
@@ -220,10 +218,7 @@ const SendButton = () => {
                   {sendStatus}
                 </span>
               ) : (
-                <button
-                  className="send-modal-yes"
-                  onClick={handleSubmitWrapper}
-                >
+                <button className="send-modal-yes" onClick={handleSubmitWrapper}>
                   제출하기
                 </button>
               )}
@@ -234,18 +229,10 @@ const SendButton = () => {
 
       {isKeyboardOpen && (
         <div className="keyboard-modal-overlay">
-          <div
-            className="keyboard-modal-content"
-            ref={keyboardRef}
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="keyboard-modal-content" ref={keyboardRef} onClick={(e) => e.stopPropagation()}>
             <div className="keyboard-row">
               {row1.map((key) => (
-                <button
-                  key={key}
-                  className="keyboard-key"
-                  onClick={() => handleKeyClick(key)}
-                >
+                <button key={key} className="keyboard-key" onClick={() => handleKeyClick(key)}>
                   {key}
                 </button>
               ))}
@@ -282,9 +269,7 @@ const SendButton = () => {
               {row4.map((key) => (
                 <button
                   key={key}
-                  className={`keyboard-key ${
-                    key === "." || key === "_" ? "special-key" : ""
-                  }`}
+                  className={`keyboard-key ${key === "." || key === "_" ? "special-key" : ""}`}
                   onClick={() => handleKeyClick(key)}
                 >
                   {key}

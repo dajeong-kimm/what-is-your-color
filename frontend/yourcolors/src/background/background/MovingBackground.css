@@ -1,0 +1,35 @@
+/* 전체 화면을 채우는 배경 컨테이너 */
+.background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+  }
+  
+  /* 배경 이미지 패턴 */
+  .moving-background {
+    width: 300%;
+    height: 300%;
+    background-image: url("../../assets/image.png"); /* 올리브영 로고 */
+    background-size: 250px 120px; /* 로고 크기 (너비를 더 넓게) */
+    background-repeat: repeat;
+    transform: rotate(-30deg); /* 45도 회전 */
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    animation: moveBackground 5s linear infinite;
+  }
+  
+  /* 부드럽게 대각선으로 무한 스크롤 */
+  @keyframes moveBackground {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: -100px 150px; /* 대각선 방향으로 이동 */
+    }
+  }
+  
