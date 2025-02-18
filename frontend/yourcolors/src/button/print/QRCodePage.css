@@ -1,4 +1,4 @@
-/* 모달 오버레이 */
+모달 오버레이
 .send-modal-overlay {
   position: fixed;
   top: 0;
@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 5000;
 }
 
 /* 이메일 입력 모달 콘텐츠 */
@@ -22,7 +22,7 @@
   width: 80%;
   position: relative;
   transition: transform 0.3s;
-  z-index: 99999;
+  z-index: 5001;
 }
 button.modal-x-button {
   position: absolute;
@@ -93,7 +93,7 @@ button.close-button {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10000;
+  z-index: 5001;
   height: 38%;
   display: flex;
   align-items: flex-end;
