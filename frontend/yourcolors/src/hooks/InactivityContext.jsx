@@ -22,7 +22,7 @@ import React, {
       // 3초 뒤에 비활동 상태로 전환
       timerRef.current = setTimeout(() => {
         setIsInactive(true);
-      }, 3000);
+      }, 60000);
     }, []);
   
     useEffect(() => {
