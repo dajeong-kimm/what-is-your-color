@@ -1,12 +1,20 @@
 import React from "react";
-import CloseButton from "../closebutton/CloseButton";
+import { useNavigate } from "react-router-dom";
 import "./BottomBarPersonal.css"; // 새 CSS 파일 사용
 
 const BottomBarPersonal = () => {
+  
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate("/personalcolors");
+  };
+
   return (
     <div className="bottom-bar-personal">
       <div className="bottom-bar-inner">
-        <CloseButton />
+        <button onClick={handleGoBack} className="back-button">
+        <i class="fa-solid fa-arrow-left fa-beat-fade fa-lg"></i>        </button>
       </div>
     </div>
   );

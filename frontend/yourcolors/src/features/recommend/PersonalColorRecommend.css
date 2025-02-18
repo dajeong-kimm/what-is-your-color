@@ -37,7 +37,7 @@
   margin-bottom: 10px;
   scrollbar-width: none; 
   -ms-overflow-style: none; 
-  scrollbar-width: thin;
+  scrollbar-width: inherit;
   scrollbar-color: #d7f4ca #ffffff;
 }
 
