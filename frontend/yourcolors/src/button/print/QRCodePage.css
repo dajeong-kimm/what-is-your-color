@@ -34,6 +34,11 @@ button.modal-x-button {
   cursor: pointer;
 }
 
+button.close-button {
+  right: 5px;
+  bottom: 53px;
+}
+
 /* 이메일 입력 영역 컨테이너 (전체 클릭 가능) */
 .email-input-wrapper {
   width: 100%;
