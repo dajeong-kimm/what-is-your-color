@@ -264,6 +264,10 @@ def predict_color_distribution():
                 ]
             }
 
+        # 콘솔에 원본 이미지 상위 3 순위 출력
+        print("Original image top 3 ranking:")
+        for rank, (p_id, score) in enumerate(ranking_orig[:3], start=1):
+            print(f"Rank {rank}: {personal_color_names[p_id]} - Total DeltaE: {score:.2f}")
         return jsonify(response), 200
 
     except Exception as e:

@@ -268,7 +268,13 @@ def find_personal_color_using_skin_avg(skin_avg, skin_bright, eye_color, hair_co
 
         # 웜톤 후보(p가 1, 2, 3, 7, 8, 9인 경우)에 5점을 추가로 부여
         if p in [1, 2, 3, 7, 8, 9]:
-            total_diff += 15
+            total_diff += 20
+
+        if p in [7,8,9]:
+            total_diff += 5
+
+        if p in [9, 12]:
+            total_diff += 10
 
         scores.append((p, total_diff))
     return sorted(scores, key=lambda x: x[1])
