@@ -1,5 +1,5 @@
 :root {
-  font-family: 'Noto Sans KR', sans-serif; /* 여기에 Noto Sans KR 추가 */
+  font-family: 'netmarbleB'; /* 여기에 Noto Sans KR 추가 */
   line-height: 1.5;
   font-weight: 400;
 
@@ -28,7 +28,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'netmarbleB';
+
 }
 
 h1 {

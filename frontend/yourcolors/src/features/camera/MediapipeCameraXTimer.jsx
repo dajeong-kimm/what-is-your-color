@@ -256,7 +256,11 @@ const MediapipeCameraXTimer = () => {
         overflow: "hidden",
       }}
     >
-      <DiagFailModalComponent /> {/* 진단실패 모달 추가 */}
+      <DiagFailModalComponent 
+      style = {{
+        fontFamily : "netmarbleB",
+      }}
+      /> {/* 진단실패 모달 추가 */}
       {/* 촬영 시 화면 깜빡임 */}
       {isFlashing && (
         <div
@@ -269,6 +273,7 @@ const MediapipeCameraXTimer = () => {
             backgroundColor: "white",
             opacity: 0.8,
             transition: "opacity 0.3s",
+            
             zIndex: 20,
           }}
         />
@@ -288,6 +293,7 @@ const MediapipeCameraXTimer = () => {
             padding: "1.5rem 3rem",
             borderRadius: "15px",
             zIndex: 10,
+            fontFamily: 'netmarbleB',
           }}
         >
           {countdown}
@@ -327,6 +333,7 @@ const MediapipeCameraXTimer = () => {
                 borderRadius: "10px",
                 cursor: "pointer",
                 transform: "translateX(-65%)",
+                fontFamily: 'netmarbleB',
               }}
             >
               다시 촬영하기
@@ -352,6 +359,7 @@ const MediapipeCameraXTimer = () => {
                 borderRadius: "10px",
                 cursor: "pointer",
                 transform: "translateX(-15%)",
+                fontFamily: 'netmarbleB',
               }}
             >
               진단하기
@@ -403,6 +411,8 @@ const MediapipeCameraXTimer = () => {
               fontSize: "24px",
               textAlign: "center",
               pointerEvents: "none",
+              fontFamily: 'netmarbleB',
+
             }}
           >
             얼굴을 가이드라인에 맞게 위치시켜 주세요.
@@ -428,6 +438,7 @@ const MediapipeCameraXTimer = () => {
                   border: "none",
                   borderRadius: "12px",
                   cursor: "pointer",
+                  fontFamily: 'netmarbleB',
                 }}
               >
                 촬영하기

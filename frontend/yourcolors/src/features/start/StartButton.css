@@ -9,7 +9,7 @@
     transition: background-color 0.3s;
     letter-spacing: 8px; /* 🔹 자간 추가 */
     font-weight: bolder;
-
+    font-family: 'netmarbleB';
     box-shadow: 0px 2.221px 2.221px 0px rgba(0, 0, 0, 0.25);
 }
 
