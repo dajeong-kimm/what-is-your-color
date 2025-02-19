@@ -31,44 +31,55 @@ import QrCodePage from "./button/print/QRCodePage.jsx";
 import QrCodePageTwo from "./button/print/QRCodePageTwo.jsx";
 import Qna from "./features/qna/Qna.jsx";
 import PhotoQrChoicePage from "./features/season-photo/PhotoQrChoicePage.jsx";
+
+// 추가: 비활동 상태 관리 Provider, 화면보호기
+import { InactivityProvider } from "./hooks/InactivityContext.jsx";
+import Screensaver from "./features/screensaver/Screensaver.jsx";
+
 const App = () => {
   return (
     <RecoilRoot>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/endpage" element={<EndPage />} />
-          <Route path="/paperyesnopage" element={<PaperYesNoPage />} />
-          <Route path="/checkpage" element={<CheckPage />} />
-          <Route path="/mainpage" element={<MainPage />} />
-          <Route path="/mainpage2" element={<Mainpage2 />} />
-          <Route path="/diagcapture" element={<DiagCapture />} />
-          <Route path="/diagcapturex" element={<DiagCaptureX />} />
-          <Route path="/diagcapturexai" element={<DiagCaptureXAI />} />
-          <Route path="/diagimage" element={<DiagImage />} />
-          <Route path="/mediapipecamera" element={<MediapipeCamera />} />
-          <Route path="/loadingpage" element={<LoadingPage />} />
-          <Route path="/diagresult" element={<DiagResult />} />
-          <Route path="/bestworst" element={<BestWorst />} />
-          <Route path="/test" element={<TestPage />} />
-          <Route path="/personalcolors" element={<PersonalColorMain />} />
-          <Route path="/makeup" element={<Makeup />} />
-          <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
-          <Route path="/makeupbycolor" element={<MakeupByColor />} />
-          <Route path="/choice" element={<ChoicePage />} />
-          <Route path="/qrtestbutton" element={<QRTestButton />} />
-          <Route path="/qrtest" element={<QRTest />} />
-          <Route path="/season-photo" element={<PhotoCapturePage />} />
-          <Route path="/season-phototwo" element={<PhotoCapturePageTwo />} />
-          <Route path="/select" element={<PhotoSelectionPage />} />
-          <Route path="/selecttwo" element={<PhotoSelectionPageTwo />} />
-          <Route path="/qr-code" element={<QrCodePage />} />
-          <Route path="/qr-codetwo" element={<QrCodePageTwo />} />
-          <Route path="/personaldefine" element={<PersonalDefine />} />
-          <Route path="/photoqrchoice" element={<PhotoQrChoicePage />} />
-          <Route path="/qna" element={<Qna />} />
-        </Routes>
-      </Router>
+      {/* 비활동 상태 전역 관리 */}
+      <InactivityProvider>
+        {/* 비활동 시 Screensaver 표시 */}
+        <Screensaver>
+          <Router>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/endpage" element={<EndPage />} />
+              <Route path="/paperyesnopage" element={<PaperYesNoPage />} />
+              <Route path="/checkpage" element={<CheckPage />} />
+              <Route path="/mainpage" element={<MainPage />} />
+              <Route path="/mainpage2" element={<Mainpage2 />} />
+              <Route path="/diagcapture" element={<DiagCapture />} />
+              <Route path="/diagcapturex" element={<DiagCaptureX />} />
+              <Route path="/diagcapturexai" element={<DiagCaptureXAI />} />
+              <Route path="/diagimage" element={<DiagImage />} />
+              <Route path="/mediapipecamera" element={<MediapipeCamera />} />
+              <Route path="/loadingpage" element={<LoadingPage />} />
+              <Route path="/diagresult" element={<DiagResult />} />
+              <Route path="/bestworst" element={<BestWorst />} />
+              <Route path="/test" element={<TestPage />} />
+              <Route path="/personalcolors" element={<PersonalColorMain />} />
+              <Route path="/makeup" element={<Makeup />} />
+              <Route path="/personalcolors/:id" element={<PersonalColorDetail />} />
+              <Route path="/makeupbycolor" element={<MakeupByColor />} />
+              <Route path="/choice" element={<ChoicePage />} />
+              <Route path="/qrtestbutton" element={<QRTestButton />} />
+              <Route path="/qrtest" element={<QRTest />} />
+              <Route path="/season-photo" element={<PhotoCapturePage />} />
+              <Route path="/season-phototwo" element={<PhotoCapturePageTwo />} />
+              <Route path="/select" element={<PhotoSelectionPage />} />
+              <Route path="/selecttwo" element={<PhotoSelectionPageTwo />} />
+              <Route path="/qr-code" element={<QrCodePage />} />
+              <Route path="/qr-codetwo" element={<QrCodePageTwo />} />
+              <Route path="/personaldefine" element={<PersonalDefine />} />
+              <Route path="/photoqrchoice" element={<PhotoQrChoicePage />} />
+              <Route path="/qna" element={<Qna />} />
+            </Routes>
+          </Router>
+        </Screensaver>
+      </InactivityProvider>
     </RecoilRoot>
   );
 };
