@@ -26,6 +26,7 @@
   font-weight: bold;
   color: #eba471;
   text-align: center; /* 제목을 가운데 정렬 */
+  font-family: 'netmarbleB';
 }
 
 .bottom-container {
@@ -48,6 +49,7 @@
   background-color: transparent !important; /* 🔹 배경 완전 제거 */
   box-shadow: none; /* 🔹 그림자 제거 */
   border: none; /* 🔹 테두리 제거 */
+  font-family: 'netmarbleB';
 }
 
 /* 나머지 CSS는 기존 내용을 유지 */

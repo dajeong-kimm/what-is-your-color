@@ -18,6 +18,9 @@
     transition: transform 0.3s ease-in-out;
     position: relative;
     box-sizing: border-box; /* 패딩 포함 크기 조정 */
+    font-family: 'netmarbleB';
+    
+
   }
   .frame-image{
     margin-top : 20px;
@@ -107,6 +110,7 @@
   qrstrong{
     font-size :20px;
     font-weight: bold;
+    
   }
 
   .qrchoice-description{
