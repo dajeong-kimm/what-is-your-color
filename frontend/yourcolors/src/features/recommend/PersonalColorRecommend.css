@@ -35,6 +35,10 @@
   overflow-y: auto;
   flex: 1; /* 남은 영역 채우기 */
   margin-bottom: 10px;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  scrollbar-width: inherit;
+  scrollbar-color: #d7f4ca #ffffff;
 }
 
 .recommend-product-grid {

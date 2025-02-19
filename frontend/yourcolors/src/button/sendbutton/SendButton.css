@@ -35,11 +35,8 @@ button.modal-x-button{
   cursor: pointer;
 }
 .close-button {
-  background: none;
   border: none;
-  font-size: 0.7rem;  /* 기존보다 더 작게 조정 */
   position: absolute;
-  cursor: pointer;
 }
 button.close-button{
   right : 5px;

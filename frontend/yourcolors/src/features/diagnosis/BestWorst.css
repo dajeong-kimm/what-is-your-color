@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;  /* 내부 영역들이 중앙에 오도록 */
-  gap: 40px;               /* 영역 사이에 40px 간격 */
+  gap: 20px;               /* 영역 사이에 40px 간격 */
   width: 100%;
   height: 100%;
   padding: 0 20px;         /* 좌우 여백 */
@@ -13,7 +13,7 @@
 /* Best와 Worst 영역 각각의 너비를 45%로 지정 */
 .container-best,
 .container-worst {
-  width: 40%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,14 +23,13 @@
 
 /* Best 영역: 오른쪽 패딩과 구분선 추가 */
 .container-best {
-  
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   position: relative; /* 추가 */
-
+  gap: 30px;
 }
 /* Worst 영역: 왼쪽 패딩 추가 */
 .container-worst {
@@ -40,6 +39,7 @@
   align-items: center;
   text-align: center;
   position: relative; /* 추가 */
+  gap: 30px;
 }
 
 .divider {
@@ -62,11 +62,9 @@
 }
 
 
-
 /* 제목의 글자 크기를 2.5rem으로, 중앙 정렬 */
 .title {
-
-  font-size: 2.5rem; 
+  font-size: 2.8rem; 
   font-weight: bold;
   margin-bottom: 1rem;
   margin-top: 1rem;
