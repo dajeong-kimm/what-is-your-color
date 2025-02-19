@@ -14,7 +14,8 @@ const BottomBarPersonal = () => {
     <div className="bottom-bar-personal">
       <div className="bottom-bar-inner">
         <button onClick={handleGoBack} className="back-button">
-        <i class="fa-solid fa-arrow-left fa-beat-fade fa-lg"></i>        </button>
+        <i class="fa-solid fa-arrow-left fa-besat-fade fa-lg"></i>        
+        </button>
       </div>
     </div>
   );
