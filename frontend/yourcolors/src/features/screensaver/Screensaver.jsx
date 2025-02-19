@@ -1,7 +1,7 @@
-import React from 'react';
-import { useInactivity } from '../../hooks/InactivityContext';
-import screensaverVideo from '../../images/screensaver.mp4'
-import screensaverGif from '../../images/taeyeon_ad.gif'
+import React from "react";
+import { useInactivity } from "../../hooks/InactivityContext";
+import screensaverVideo from "../../images/screensaver.mp4";
+import screensaverGif from "../../images/taeyeon_ad.gif";
 
 function Screensaver({ children }) {
   const { isInactive } = useInactivity();
@@ -10,43 +10,43 @@ function Screensaver({ children }) {
     return (
       <div
         style={{
-          position: 'fixed',
+          position: "fixed",
           top: 0,
           left: 0,
-          width: '100vw',
-          height: '100vh',
-          backgroundColor: 'black',
-          color: 'white',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          width: "100vw",
+          height: "100vh",
+          backgroundColor: "black",
+          color: "white",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           zIndex: 9999, // 가장 위에 오도록
         }}
       >
         {/* 여기 원하는 디자인/애니메이션을 넣어도 됨 */}
         {/* <h1>화면보호기 동작 중...</h1> */}
-        {/* <video
+        <video
           autoPlay
           loop
           muted
           style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
           }}
         >
           <source src={screensaverVideo} type="video/mp4" />
           Your browser does not support the video tag.
-        </video> */}
-        <img
+        </video>
+        {/* <img
           src={screensaverGif}
           alt="Screensaver"
           style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
           }}
-        />
+        /> */}
       </div>
     );
   }
