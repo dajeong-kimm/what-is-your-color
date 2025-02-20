@@ -106,7 +106,7 @@ const PhotoSelectionPageTwo = () => {
         // 이동 후 모달 닫기
         setIsPrinting(false);
         setCaptureMode(false);
-      }, 40000);
+      }, 10000);
     } catch (error) {
       console.error(error);
       alert("인쇄 처리 중 오류가 발생했습니다.");
