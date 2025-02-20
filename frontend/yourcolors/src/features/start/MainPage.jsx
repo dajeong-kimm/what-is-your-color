@@ -31,7 +31,7 @@ const MainPage = () => {
 
   // "아니오" 버튼 클릭 시 모달 닫기
   const handleNo = () => {
-    setIsModalOpen(false);
+    navigate("/photoqrchoice");
   };
 
   return (

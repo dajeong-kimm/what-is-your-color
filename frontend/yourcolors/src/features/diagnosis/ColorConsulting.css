@@ -33,6 +33,10 @@
   flex-grow: 1;  /* 남은 공간을 차지하도록 설정 */
   overflow-y: auto;  
   margin-bottom: 10px;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  /* scrollbar-width:inherit; */
+  scrollbar-color: #d7f4ca #ffffff;
 }
 
 .GPT-consulting {
