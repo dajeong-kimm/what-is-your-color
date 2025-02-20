@@ -29,7 +29,7 @@
 }
 /* 아이콘 크기 조정 */
 .button-icon {
-  font-size: 140px; /* 아이콘 크기 키우기 */
+  font-size: 170px; /* 아이콘 크기 키우기 */
   display: block;
   margin-bottom: 10px; /* 아이콘과 텍스트 간격 조정 */
 }

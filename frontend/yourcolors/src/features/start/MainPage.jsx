@@ -35,9 +35,9 @@ const MainPage = () => {
       <Topbar />
       <Largemain>
         <div className="main-button-container">
-          <MainButton text="퍼스널컬러<br />진단" icon="🔍" onClick={() => navigate("/choice")} />
-          <MainButton text="AI 메이크업<br />" icon="🎨" onClick={() => navigate("/makeup")} />
-          <MainButton text="계절네컷<br />촬영" icon="📸" onClick={handleOpenModal} />
+          <MainButton text="<br />퍼스널컬러<br />진단" icon="🔍" onClick={() => navigate("/choice")} />
+          <MainButton text="<br />AI 메이크업<br />" icon="🎨" onClick={() => navigate("/makeup")} />
+          <MainButton text="<br />계절네컷<br />촬영" icon="📸" onClick={handleOpenModal} />
         </div>
       </Largemain>
 
