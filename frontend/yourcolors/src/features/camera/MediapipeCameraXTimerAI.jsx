@@ -194,7 +194,6 @@ const MediapipeCameraXTimerAI = () => {
   };
 
   const sendImagesToServer = async (formData) => {
-    console.log("왜 안되니", formData)
     try {
       // 10. AI 진단 API 호출
       const aiResponse = await axios.post(
@@ -228,11 +227,10 @@ const MediapipeCameraXTimerAI = () => {
       qrFormData.append("subColor2", aiResponse.data.results[2].personal_color);
       qrFormData.append("message", gptSummary);
       
-      console.log("준수의 qr폼 테스트", aiResponse.data.results[0].personal_color);
-      console.log("준수의 qr폼 테스트", aiResponse.data.results[1].personal_color);
-      console.log("준수의 qr폼 테스트", aiResponse.data.results[2].personal_color);
-      console.log("준수의 qr폼 테스트", aiResponse.data.results);
-      console.log("준수의 qr폼 테스트", qrFormData);
+      // console.log("준수의 qr폼 테스트", aiResponse.data.results[0].personal_color);
+      // console.log("준수의 qr폼 테스트", aiResponse.data.results[1].personal_color);
+      // console.log("준수의 qr폼 테스트", aiResponse.data.results[2].personal_color);
+
 
       // 3. QR API 호출
       const qrResponse = await axios.post(
