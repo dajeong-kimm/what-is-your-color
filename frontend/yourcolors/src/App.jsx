@@ -30,6 +30,7 @@ import PhotoSelectionPageTwo from "./features/season-photo/PhotoSelectionPageTwo
 import QrCodePage from "./button/print/QRCodePage.jsx";
 import Qna from "./features/qna/Qna.jsx"
 import PhotoQrChoicePage from "./features/season-photo/PhotoQrChoicePage.jsx";
+import FaceLandmarkDemo from "./features/demo/FaceLandmarkDemo.jsx";
 const App = () => {
   return (
     <RecoilRoot>
@@ -68,6 +69,7 @@ const App = () => {
         <Route path="/personaldefine" element={<PersonalDefine />} />
         <Route path="/photoqrchoice" element={<PhotoQrChoicePage />} />
         <Route path="qna" element={<Qna />} />
+        <Route path="/demo" element={<FaceLandmarkDemo/>} />
       </Routes>
     </Router>
 

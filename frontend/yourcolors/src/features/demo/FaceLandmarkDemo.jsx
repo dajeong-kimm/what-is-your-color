@@ -28,19 +28,24 @@ const FaceLandmarkDemo = () => {
     faceLandmarkerRef.current = faceLandmarker;
   };
 
-  // 🟡 2. 카메라 시작
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" },
-      });
-      videoRef.current.srcObject = stream;
+  // 🟡 2. 카메라 시작 (수정된 코드)
+const startCamera = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "user" },
+    });
+    videoRef.current.srcObject = stream;
+
+    // 비디오 메타데이터 로드 후 실행
+    videoRef.current.onloadedmetadata = () => {
       videoRef.current.play();
       detectFaces();
-    } catch (error) {
-      console.error("카메라 접근 실패:", error);
-    }
-  };
+    };
+  } catch (error) {
+    console.error("카메라 접근 실패:", error);
+  }
+};
+
 
   // 🟡 3. 얼굴 인식 및 시각화
   const detectFaces = async () => {
