@@ -88,7 +88,7 @@ const MediapipeCameraXTimer = () => {
     console.log("[handleCapture] Start 5s countdown");
     setCapturedImage(null);
     setHasCaptured(false);
-    setCountdown(5);
+    setCountdown(1);
 
     const timer = setInterval(() => {
       setCountdown((prev) => {
