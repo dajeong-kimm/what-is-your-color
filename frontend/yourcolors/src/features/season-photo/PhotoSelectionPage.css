@@ -113,6 +113,7 @@
   color: #ffffff;
   border-radius: 4px;
   transition: background-color 0.2s;
+  font-family: 'netmarbleB';
 }
 .print-button:hover {
   background-color: #006f98;

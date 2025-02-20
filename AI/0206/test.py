@@ -72,7 +72,7 @@ def load_data(dataset_path, categories):
     return np.array(data) / 255.0, to_categorical(np.array(labels), num_classes=len(categories))
 
 # ✅ 테스트 데이터 로드
-test_path = "/home/j-i12d106/dataset/dataset_split/test"
+test_path = "C:\\Users\\SSAFY\\Desktop\\dataset_split\\test2"
 
 categories = [
     "autumn_dark", "autumn_muted", "autumn_strong",
@@ -84,7 +84,7 @@ categories = [
 X_test, y_test = load_data(test_path, categories)
 
 # ✅ 저장된 모델 불러오기 (경로 수정)
-model_path = "/home/j-i12d106/saved_models/personal_color_classifier.h5"  # 올바른 경로로 변경
+model_path = "new_model.h5"  # 올바른 경로로 변경
 if not os.path.exists(model_path):
     print(f"❌ 모델 파일이 존재하지 않습니다: {model_path}")
     exit()

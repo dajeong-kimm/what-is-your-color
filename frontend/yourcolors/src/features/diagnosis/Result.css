@@ -9,6 +9,7 @@
   gap: 30px;
   position: relative;
   justify-content: center;
+  font-family: 'netmarbleB';
 }
 
 .container-up,
@@ -18,6 +19,7 @@
   gap: 10px;
   text-align: center;
   margin-bottom: 10px;
+  
 }
 
 .container-down{

@@ -317,7 +317,7 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
           className="controls"
           style={{
             position: 'absolute',
-            bottom: '5px',
+            bottom: '60%',
             left: '50%',
             transform: 'translateX(-50%)',
             zIndex: 1000,

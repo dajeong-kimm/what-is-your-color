@@ -55,7 +55,9 @@ const LoadingPage = () => {
       <Background />
       <div className="loading-container">
         <LoadingSpinner />
-        <p className="loading-text">분석 준비 중입니다. 잠시만 기다려주세요{dots}</p>
+        <p className="loading-text" style={{ fontFamily: "netmarbleB" }}>
+  분석 준비 중입니다. 잠시만 기다려주세요{dots}
+</p>
       </div>
     </div>
   );

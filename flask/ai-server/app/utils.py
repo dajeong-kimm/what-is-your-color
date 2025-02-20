@@ -244,21 +244,38 @@ def extract_face_colors(image):
 # ─────────────────────────────────────────────
 # 12. 퍼스널 컬러 진단
 # ─────────────────────────────────────────────
-def find_personal_color_using_skin_avg(skin_avg, eye_color, hair_color, lip_colors_db, cheek_colors_db, eye_palette_db):
+def find_personal_color_using_skin_avg(skin_avg, skin_bright, eye_color, hair_color, 
+                                       lip_colors_db, cheek_colors_db, eye_palette_db):
     """
-    Diagnose personal color using skin, eye, and hair colors.
+    피부 평균색(skin_avg), 피부 하이라이트(skin_bright), 눈 색상, 머리카락 색상과
+    팔레트 간의 평균 차이를 기반으로 퍼스널 컬러를 진단합니다.
     """
     scores = []
     for p in range(1, 13):
         lip_lab_list = [rgb_to_lab(c) for c in lip_colors_db[p]]
         cheek_lab_list = [rgb_to_lab(c) for c in cheek_colors_db[p]]
         eye_lab_list = [rgb_to_lab(c) for c in eye_palette_db[p]]
+        
         def comp_diff(x_color):
             x_lab = rgb_to_lab(to_hex(x_color))
-            diff_lip = min(delta_e(x_lab, lab) for lab in lip_lab_list)
-            diff_cheek = min(delta_e(x_lab, lab) for lab in cheek_lab_list)
-            diff_eye = min(delta_e(x_lab, lab) for lab in eye_lab_list)
+            diff_lip = np.mean([delta_e(x_lab, lab) for lab in lip_lab_list])
+            diff_cheek = np.mean([delta_e(x_lab, lab) for lab in cheek_lab_list])
+            diff_eye = np.mean([delta_e(x_lab, lab) for lab in eye_lab_list])
             return (diff_lip + diff_cheek + diff_eye) / 3.0
-        total_diff = comp_diff(skin_avg) + comp_diff(eye_color) + comp_diff(hair_color)
+        
+        # 네 가지 요소(피부 평균, 피부 하이라이트, 눈, 머리카락)를 모두 반영
+        total_diff = comp_diff(skin_avg) + comp_diff(skin_bright) + comp_diff(eye_color) + comp_diff(hair_color)
+
+        # 웜톤 후보(p가 1, 2, 3, 7, 8, 9인 경우)에 5점을 추가로 부여
+        if p in [1, 2, 3, 7, 8, 9]:
+            total_diff += 20
+
+        if p in [7,8,9]:
+            total_diff += 5
+
+        if p in [9, 12]:
+            total_diff += 10
+
         scores.append((p, total_diff))
     return sorted(scores, key=lambda x: x[1])
+
