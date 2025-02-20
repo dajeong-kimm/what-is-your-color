@@ -234,7 +234,7 @@ const PhotoCapturePage = () => {
 
   // 5초 카운트다운 후 사진 캡처를 반복 (총 8회)
   const startCaptureCycle = () => {
-    let count = 5;
+    let count = 3;
     setCountdown(count);
     const intervalId = setInterval(() => {
       count--;
@@ -271,7 +271,7 @@ const PhotoCapturePage = () => {
       <Topbar />
       <Largemain>
         <div className="photo-header-bar">
-          <span className="photo-title">인생네컷 사진관</span>
+          <span className="photo-title">계절네컷 사진관</span>
           <span className="photo-countdown">{countdown !== null ? countdown : ""}</span>
           <span className="photo-count">{photos.length}/8</span>
         </div>

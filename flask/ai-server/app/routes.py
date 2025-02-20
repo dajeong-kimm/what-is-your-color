@@ -219,10 +219,10 @@ def predict_color_distribution():
             if extracted_corr is None:
                 return jsonify({"error": "Failed to extract landmarks from corrected image"}), 400
 
-            skin_avg_corr, _, eye_color_corr, hair_color_corr = extracted_corr
+            skin_avg_corr, skin_bright_corr , eye_color_corr, hair_color_corr = extracted_corr
 
             ranking_corr = find_personal_color_using_skin_avg(
-                skin_avg_corr, eye_color_corr, hair_color_corr,
+                skin_avg_corr, skin_bright_corr, eye_color_corr, hair_color_corr,
                 lip_colors_db, cheek_colors_db, eye_palette_db
             )
         else:
@@ -234,10 +234,10 @@ def predict_color_distribution():
         if extracted_orig is None:
             return jsonify({"error": "Failed to extract landmarks from original image"}), 400
 
-        skin_avg_orig, _, eye_color_orig, hair_color_orig = extracted_orig
+        skin_avg_orig, skin_bright_orig, eye_color_orig, hair_color_orig = extracted_orig
 
         ranking_orig = find_personal_color_using_skin_avg(
-            skin_avg_orig, eye_color_orig, hair_color_orig,
+            skin_avg_orig, skin_avg_orig, eye_color_orig, hair_color_orig,
             lip_colors_db, cheek_colors_db, eye_palette_db
         )
 
@@ -264,6 +264,10 @@ def predict_color_distribution():
                 ]
             }
 
+        # 콘솔에 원본 이미지 상위 3 순위 출력
+        print("Original image top 3 ranking:")
+        for rank, (p_id, score) in enumerate(ranking_orig[:3], start=1):
+            print(f"Rank {rank}: {personal_color_names[p_id]} - Total DeltaE: {score:.2f}")
         return jsonify(response), 200
 
     except Exception as e:
