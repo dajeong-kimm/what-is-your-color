@@ -46,7 +46,7 @@ OPENAI_API_KEY=${your_key}
 
 ---
 
-## 3. DB 덤프 파일 최
+## 3. DB 덤프 파일 최종
 
 - 테이블 목록: `personal_color`, `products`, `product_color`, `product_personal`, `personal_color_hashtags`, `best_color`, `worst_color` 등
 - /document 폴더 내에 init.sql과 init_data.sql을 순차적으로 실행
