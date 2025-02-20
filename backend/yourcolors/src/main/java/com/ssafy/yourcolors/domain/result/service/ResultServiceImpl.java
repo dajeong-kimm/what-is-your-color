@@ -32,7 +32,8 @@ public class ResultServiceImpl implements ResultService {
 
     private final MailManager mailManager;
 
-    private final Map<String, Map<String, String>> qrStorage = new HashMap<>();
+//    private final Map<String, Map<String, String>> qrStorage = new HashMap<>();
+    private final QrStorage qrStorage;
 
     @Override
     public String sendEmail(String email, MultipartFile image, String bestColor, String subColor1, String subColor2, String message) throws IOException {
@@ -77,21 +78,28 @@ public class ResultServiceImpl implements ResultService {
         resultData.put("subColor2", subColor2);
         resultData.put("message", message);
         resultData.put("imageBase64", Base64.getEncoder().encodeToString(image.getBytes())); // Base64 인코딩된 이미지 저장
-        qrStorage.put(qrId, resultData);
+//        qrStorage.put(qrId, resultData);
+        qrStorage.save(qrId, resultData);
+
+        System.out.println("Generated qrId: " + qrId);
 
         // QR 코드 생성
         String qrBase64 = generateQrCodeBase64(resultUrl);
+
+        System.out.println("Generated QR URL: " + resultUrl);
+        getResultView(qrId);
 
         return new QrResponseDto(qrBase64);
     }
 
     @Override
     public String getResultView(String qrId) {
-        if (!qrStorage.containsKey(qrId)) {
+        System.out.println("Requested qrId: " + qrId);
+        if (!qrStorage.contains(qrId)) {
             return "<h1>존재하지 않는 QR 코드입니다.</h1>";
         }
 
-        Map<String, String> resultData = qrStorage.get(qrId);
+        Map<String, String> resultData = qrStorage.findById(qrId);
         return String.format("""
         <html>
             <head>
