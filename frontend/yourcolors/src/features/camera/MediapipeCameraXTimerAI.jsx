@@ -25,10 +25,13 @@ const MediapipeCameraXTimerAI = () => {
 
   const navigate = useNavigate();
   const {
+    userPersonalId,
     setUserPersonalId,
+    fetchPersonalColorDetails,
     userImageFile,
     setUserImageFile,
     setResults,
+    gptSummary,
     setGptSummary,
     setQrImage,
   } = useStore(); //Zustand 상태관리 데이터
@@ -191,6 +194,7 @@ const MediapipeCameraXTimerAI = () => {
   };
 
   const sendImagesToServer = async (formData) => {
+    console.log("왜 안되니", formData)
     try {
       // 10. AI 진단 API 호출
       const aiResponse = await axios.post(
@@ -205,9 +209,12 @@ const MediapipeCameraXTimerAI = () => {
       console.log("Server Response (AI 진단 결과):", aiResponse.data);
 
       // 상태 업데이트
-      setUserPersonalId(aiResponse.data.results[0].personal_id);
+      setUserPersonalId(aiResponse.data.results[0].personal_id); //여기에 User의 퍼스널컬러 ID 저장, userPersonalId가져다 써야함
       setResults(aiResponse.data.results);
-      setGptSummary(aiResponse.data.gpt_summary);
+      setGptSummary(aiResponse.data.gpt_summary); // GPT 진단 결과 저장, getSummary 꺼 써야함함
+
+      fetchPersonalColorDetails(userPersonalId); //퍼스널 id에 맞는 퍼스널컬러 상세정보 최신화
+
 
       // 2. QR 생성 API 호출을 위한 formData 구성
       const qrFormData = new FormData();
@@ -215,11 +222,17 @@ const MediapipeCameraXTimerAI = () => {
       qrFormData.append("imageUrl", faceBlob, "captured_face.png");
 
       // AI 결과에서 필요한 컬러 정보가 있다면 이를 사용하고, 없으면 기본값 지정
-      const result = aiResponse.data.results[0];
-      qrFormData.append("bestColor", result.bestColor || "여름 뮤트");
-      qrFormData.append("subColor1", result.subColor1 || "겨울 비비드");
-      qrFormData.append("subColor2", result.subColor2 || "겨울 다크");
-      qrFormData.append("message", "결과입니다.");
+      // const result = aiResponse.data.results[0];
+      qrFormData.append("bestColor", aiResponse.data.results[0].personal_color);
+      qrFormData.append("subColor1", aiResponse.data.results[1].personal_color);
+      qrFormData.append("subColor2", aiResponse.data.results[2].personal_color);
+      qrFormData.append("message", gptSummary);
+      
+      console.log("준수의 qr폼 테스트", aiResponse.data.results[0].personal_color);
+      console.log("준수의 qr폼 테스트", aiResponse.data.results[1].personal_color);
+      console.log("준수의 qr폼 테스트", aiResponse.data.results[2].personal_color);
+      console.log("준수의 qr폼 테스트", aiResponse.data.results);
+      console.log("준수의 qr폼 테스트", qrFormData);
 
       // 3. QR API 호출
       const qrResponse = await axios.post(
