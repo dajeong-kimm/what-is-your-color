@@ -249,6 +249,7 @@ const MediapipeCameraXTimerAI = () => {
     } catch (error) {
       console.error("Error sending images to server:", error);
       openModal("퍼스널컬러 진단에 실패했습니다. 다시 시도해주세요.");
+      
       navigate(-1);
     }
   };
@@ -266,7 +267,12 @@ const MediapipeCameraXTimerAI = () => {
         overflow: "hidden",
       }}
     >
-      <DiagFailModalComponent /> {/* 진단실패 모달 추가 */}
+      <DiagFailModalComponent 
+      style = {{
+        fontFamily : "netmarbleB",
+      }}
+      />
+       {/* 진단실패 모달 추가 */}
       {/* 촬영 시 화면 깜빡임 */}
       {isFlashing && (
         <div
@@ -293,6 +299,7 @@ const MediapipeCameraXTimerAI = () => {
             transform: "translate(-50%, -50%)",
             fontSize: "4rem",
             fontWeight: "bold",
+            fontFamily: 'netmarbleB',
             color: "white",
             backgroundColor: "rgba(0, 0, 0, 0.7)",
             padding: "1.5rem 3rem",
@@ -329,6 +336,7 @@ const MediapipeCameraXTimerAI = () => {
                 fontWeight: "bold",
                 backgroundColor: "#82DC28",
                 color: "white",
+                fontFamily: 'netmarbleB',
                 border: "none",
                 borderRadius: "10px",
                 cursor: "pointer",
@@ -358,6 +366,8 @@ const MediapipeCameraXTimerAI = () => {
                 borderRadius: "10px",
                 cursor: "pointer",
                 transform: "translateX(-15%)",
+                fontFamily: 'netmarbleB'
+
               }}
             >
               진단하기
@@ -411,6 +421,8 @@ const MediapipeCameraXTimerAI = () => {
               fontSize: "24px",
               textAlign: "center",
               pointerEvents: "none",
+              fontFamily: 'netmarbleB'
+
             }}
           >
             얼굴을 가이드라인에 맞게 위치시켜 주세요.
@@ -436,6 +448,8 @@ const MediapipeCameraXTimerAI = () => {
                   border: "none",
                   borderRadius: "12px",
                   cursor: "pointer",
+                  fontFamily: 'netmarbleB'
+
                 }}
               >
                 촬영하기

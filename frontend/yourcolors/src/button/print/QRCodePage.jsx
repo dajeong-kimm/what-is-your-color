@@ -199,7 +199,8 @@ const QrCodePage = () => {
             {qrCodeUrl ? (
               <>
                 <h3 style={{ marginBottom: "10px", fontWeight: "bold",
-                    fontSize: "2rem"  }}>QR 코드</h3>
+                    fontSize: "2rem" ,fontFamily: 'netmarbleB'
+                  }}>QR 코드</h3>
                 <img
                   src={qrCodeUrl}
                   alt="QR Code"
@@ -221,6 +222,7 @@ const QrCodePage = () => {
                     cursor: "pointer",
                     width: "300px",
                     margin: "0 auto", // 혹은 alignSelf: "center"
+                    fontFamily: 'netmarbleB'
                   }}
                   onClick={handleOpenModal}
                 >
@@ -238,8 +240,8 @@ const QrCodePage = () => {
               fontSize : "1.2rem",
 
             }} >
-                <p style={{ margin: "0.3rem 0" }}>사진은 24시간 동안만 저장됩니다.</p>
-                <p style={{ margin: "0.3rem 0" }}>24시간 안에 다운 받아주세요.</p>
+                <p style={{ margin: "0.3rem 0" ,fontFamily: 'netmarbleB'}}>사진은 24시간 동안만 저장됩니다.</p>
+                <p style={{ margin: "0.3rem 0",fontFamily: 'netmarbleB' }}>24시간 안에 다운 받아주세요.</p>
             </div>
           </div>
         </div>

@@ -33,13 +33,15 @@
   align-items: center;
   z-index: 20;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  top: 5px
+  top: 5px;
+  font-family : "netmarbleB",
+
 }
 
 .photo-title {
   flex: 1;
   text-align: left;
-  font-family: 'Pretendard', sans-serif;
+  font-family : "netmarbleB";
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -49,14 +51,14 @@
   text-align: center;
   font-size: 32px;
   color: #fff;
-  font-family: 'Pretendard', sans-serif;
+  font-family : "netmarbleB";
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .photo-count {
   flex: 1;
   text-align: right;
-  font-family: 'Pretendard', sans-serif;
+  font-family : "netmarbleB";
   letter-spacing: 1px;
 }
 
@@ -66,6 +68,7 @@
   height: 100%;
   object-fit: cover;
   transform: scaleX(-1);
+  
 }
 
 .camera-overlay {
@@ -117,6 +120,7 @@
   border: 2px solid white;
   border-radius: 3px;
   z-index: 15;
+  
 }
 
 .battery-icon::after {
@@ -151,6 +155,7 @@
   padding: 16px 32px;
   font-size: 20px;
   font-weight: bold;
+  font-family : "netmarbleB";
   color: #fff;
   background: linear-gradient(45deg, #FF5F6D, #FFC371);
   border: none;
@@ -186,6 +191,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  font-family: 'netmarbleB';
 }
 
 .makeup-color-circle {
@@ -204,7 +210,7 @@
   font-size: 14px;
   font-weight: 600;
   color: #fff;
-  font-family: 'Pretendard', sans-serif;
+  font-family: 'netmarbleB';
   letter-spacing: 1px;
 }
 

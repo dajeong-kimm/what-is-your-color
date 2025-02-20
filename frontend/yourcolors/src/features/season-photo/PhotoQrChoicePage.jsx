@@ -38,11 +38,12 @@ const PhotoQrChoicePage = () => {
                 <img src={FourFrame} alt="실물 사진" className="frame-image" />
               </div>
               <div className="qrchoice-text" style={{ flex: '2' }}>
-                <p className="qrchoice-description">
+              <p className="qrchoice-description">
                   <br />
-                  <strong>4칸 프레임</strong>으로 계절네컷 촬영 후 <br /><br />
-                  <strong>QR 코드</strong>로 받아보세요! <br />
-                </p>
+                  <span className="highlight-text">4칸 프레임</span>으로 계절네컷 촬영 후 <br /><br />
+                  <span className="highlight-text">QR 코드</span>로 받아보세요! <br />
+              </p>
+
               </div>
             </div>
             <div className="qrchoice-footer blue-footer">QR 코드로 받기</div>
@@ -60,8 +61,8 @@ const PhotoQrChoicePage = () => {
               <div className="qrchoice-text" style={{ flex: '2' }}>
                 <p className="qrchoice-description2">
                   <br />
-                  <strong>2칸 프레임</strong>으로 계절네컷 촬영 후 <br /><br />
-                  <strong>포토 카드</strong>로 받아보세요!
+                  <span className="highlight-text">2칸 프레임</span>으로 계절네컷 촬영 후 <br /><br />
+                  <span className="highlight-text">포토 카드</span>로 받아보세요!
                 </p>
               </div>
             </div>
