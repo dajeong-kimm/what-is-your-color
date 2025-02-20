@@ -25,10 +25,13 @@ const MediapipeCameraXTimer = () => {
 
   const navigate = useNavigate();
   const {
+    userPersonalId,
     setUserPersonalId,
+    fetchPersonalColorDetails,
     userImageFile,
     setUserImageFile,
     setResults,
+    gptSummary,
     setGptSummary,
     setQrImage,
   } = useStore();
@@ -205,19 +208,27 @@ const MediapipeCameraXTimer = () => {
       .then((response) => {
         console.log("Server Response(색상거리 종이없음):", response.data);
         console.log("너의 색깔은?? : ", response.data.results[0].personal_id);
+        console.log(response.data.gpt_summary)
         setUserPersonalId(response.data.results[0].personal_id);
         setResults(response.data.results);
         setGptSummary(response.data.gpt_summary);
 
         // QR 생성 API 호출 추가
         if (faceBlob) {
-          const result = response.data.results[0];
+          // const result = response.data.results[0];
           const qrFormData = new FormData();
           qrFormData.append("imageUrl", faceBlob, "captured_face.png");
-          qrFormData.append("bestColor", result.bestColor || "여름 뮤트");
-          qrFormData.append("subColor1", result.subColor1 || "겨울 비비드");
-          qrFormData.append("subColor2", result.subColor2 || "겨울 다크");
-          qrFormData.append("message", "결과입니다.");
+          qrFormData.append("bestColor", response.data.results[0].personal_color);
+          qrFormData.append("subColor1", response.data.results[1].personal_color);
+          qrFormData.append("subColor2", response.data.results[2].personal_color);
+          qrFormData.append("message", gptSummary);
+
+          console.log("준수의 qr폼 테스트", response.data.results[0].personal_color);
+          console.log("준수의 qr폼 테스트", response.data.results[1].personal_color);
+          console.log("준수의 qr폼 테스트", response.data.results[2].personal_color);
+          console.log("준수의 qr폼 테스트", gptSummary);
+
+
           axios
             .post(`${apiBaseUrl}/api/result/qr`, qrFormData, {
               headers: {
