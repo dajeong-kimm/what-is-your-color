@@ -210,6 +210,8 @@ const PhotoSelectionPageTwo = () => {
           alignItems: "center",
           justifyContent: "center",
           zIndex: 9999,
+          fontFamily: 'netmarbleB',
+
         }}
       >
         <div

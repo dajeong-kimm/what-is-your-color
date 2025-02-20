@@ -1,12 +1,13 @@
 import React from "react";
 import "./MainButton.css";
 
-function MainButton({ text, onClick }) {
+const MainButton = ({ text, icon, onClick }) => {
   return (
     <button className="main-button" onClick={onClick}>
-      {text}
+      <span className="button-icon">{icon}</span>
+      <span className="button-text" dangerouslySetInnerHTML={{ __html: text }} />
     </button>
   );
-}
+};
 
 export default MainButton;

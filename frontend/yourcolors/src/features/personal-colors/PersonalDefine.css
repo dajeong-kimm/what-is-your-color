@@ -19,7 +19,7 @@
   text-align: left;
   width: 100%;
   margin: 0 0 20px 0;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'netmarbleB', sans-serif;
   font-size: 2rem;
   color: #fff;
   background-color: #78ae53; /* 초록색 배경 */
@@ -34,9 +34,14 @@
   line-height: 2;
   margin-bottom: 20px;
   text-align: left;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'netmarbleM', sans-serif;
   animation: fadeIn 0.8s ease-out forwards;
+
 }
+.netmarbleB {
+  font-family: 'NetmarbleB', sans-serif;
+}
+
 
 /* 이미지 컨테이너 - 이미지도 fadeIn 애니메이션 적용 */
 .image-container {

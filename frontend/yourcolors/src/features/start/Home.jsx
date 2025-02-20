@@ -23,7 +23,7 @@ const Home = () => {
         
         {/* 시작하기 버튼 (이미지 아래 배치) */}
         <div className="home-button">
-          <StartButton to="/Mainpage" label="시작하기" />
+          <StartButton to="/Mainpage" label="START" />
         </div>
       </div>
     </Background>

@@ -13,6 +13,7 @@
 /* 헤더 바 (인생네컷 사진관 느낌) */
 .photo-header-bar {
   position: absolute;
+  font-family : "netmarbleB";
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
@@ -33,7 +34,8 @@
 .photo-title {
   flex: 1;
   text-align: left;
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family : "netmarbleB";
+  ;
 }
 
 .photo-countdown {
@@ -41,13 +43,15 @@
   text-align: center;
   font-size: 24px;
   color: #ffeb3b;
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family : "netmarbleB";
+  
 }
 
 .photo-count {
   flex: 1;
   text-align: right;
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family : "netmarbleB";
+
 }
 
 /* 카메라 및 캔버스 (MakeupCamera와 동일) */
@@ -76,6 +80,7 @@
   padding: 14px 28px;
   font-size: 20px;
   font-weight: bold;
+  font-family : "netmarbleB";
   color: #fff;
   background-color: #1c92d2;
   border: none;
