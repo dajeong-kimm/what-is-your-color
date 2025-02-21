@@ -43,13 +43,12 @@
 ## 🚀 기술 스택  
 
 ### **Backend**
-- **Spring Boot** (REST API, JPA, MyBatis)
+- **Spring Boot** (REST API, JPA)
 - **MySQL** (데이터베이스)
-- **JWT** (사용자 인증 및 보안)
 - **OpenAI API** (맞춤형 추천 시스템)
 
 ### **Frontend**
-- **Vue.js** (Composition API 기반 개발)
+- **React.js** 
 - **WebGL** (GPU 가속을 활용한 메이크업 렌더링)
 - **Mediapipe** (얼굴 인식 및 좌표 추출)
 
@@ -102,7 +101,7 @@ cd backend/yourcolors
 ```
 - http://localhost:9000 에서 API 실행 확인
 
-### 2️⃣ 프론트엔드 실행 (Vue.js)
+### 2️⃣ 프론트엔드 실행 (React.js)
 ```
 cd frontend/yourcolors
 npm install
