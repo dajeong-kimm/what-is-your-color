@@ -86,7 +86,7 @@
 ## 📂 프로젝트 폴더 구조  
 ```bash
 .
-├── frontend/      # Frontend (Vue.js)
+├── frontend/      # Frontend (React.js)
 ├── backend/       # Backend (Spring Boot, MySQL)
 ├── AI/            # AI-related models and services
 ├── document/      # Documentation and design files
