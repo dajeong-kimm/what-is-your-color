@@ -273,3 +273,99 @@ def predict_color_distribution():
     except Exception as e:
         logging.error(f"Unexpected error: {traceback.format_exc()}")
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+
+def extract_lip_color(image):
+    """
+    GrabCut을 이용해 이미지에서 중앙 영역(가정: 립스틱 영역)이 포함된 부분을 분리한 후,
+    해당 영역의 평균 색상을 계산하여 RGB 순서의 numpy array로 반환합니다.
+    image: OpenCV BGR 이미지
+    """
+    h, w = image.shape[:2]
+    # 중앙 영역을 대략 포함하는 사각형 (튜닝 가능)
+    rect = (w // 4, h // 4, w // 2, h // 2)
+    mask = np.zeros(image.shape[:2], np.uint8)
+    bgdModel = np.zeros((1, 65), np.float64)
+    fgdModel = np.zeros((1, 65), np.float64)
+
+    # GrabCut 알고리즘 실행 (반복 횟수 5)
+    cv2.grabCut(image, mask, rect, bgdModel, fgdModel, 5, cv2.GC_INIT_WITH_RECT)
+    # mask 값 0,2는 배경, 1,3은 전경으로 간주
+    mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
+
+    if np.count_nonzero(mask2) > 0:
+        # 전경 영역(립스틱 영역)만 대상으로 평균 색상 계산 (BGR 순서)
+        avg_color_bgr = cv2.mean(image, mask=mask2)[0:3]
+        # BGR -> RGB 변환
+        avg_color_rgb = (avg_color_bgr[2], avg_color_bgr[1], avg_color_bgr[0])
+        return np.array(avg_color_rgb, dtype=np.int32)
+    else:
+        # 만약 분리 실패 시 전체 이미지 평균 색상 사용 (BGR -> RGB)
+        avg_color_bgr = np.mean(image, axis=(0, 1))
+        avg_color_rgb = (avg_color_bgr[2], avg_color_bgr[1], avg_color_bgr[0])
+        return np.array(avg_color_rgb, dtype=np.int32)
+
+
+@api.route('/predict/lip', methods=['POST'])
+def predict_lip():
+    # 립스틱 이미지 검증
+    if 'lip_image' not in request.files:
+        return jsonify({"error": "No lip_image file provided"}), 400
+
+    lip_file = request.files['lip_image']
+    if lip_file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if not allowed_file(lip_file.filename):
+        return jsonify({"error": "File type not allowed. Only PNG, JPG, JPEG are allowed."}), 400
+
+    try:
+        # 파일 디코딩 및 이미지 읽기 (cv2는 기본 BGR)
+        file_bytes = np.frombuffer(lip_file.read(), np.uint8)
+        lip_image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+        if lip_image is None:
+            return jsonify({"error": "Invalid lip_image file"}), 400
+
+        # GrabCut을 이용해 배경 제외 후 립스틱 영역의 평균 색상 추출 (RGB 순서)
+        lip_avg = extract_lip_color(lip_image)
+
+        # 평균 색상을 hex 문자열로 변환
+        lip_hex = to_hex(lip_avg)
+        # hex 색상을 LAB 색상으로 변환 (비교를 위해)
+        lip_lab = rgb_to_lab(lip_hex)
+
+        # 각 퍼스널 컬러 후보(p=1~12)에 대해 lip_colors_db의 색상들과의 평균 Delta E 계산
+        scores = []
+        for p in lip_colors_db:
+            candidate_hexes = lip_colors_db[p]
+            candidate_labs = [rgb_to_lab(hex_code) for hex_code in candidate_hexes]
+            avg_delta = np.mean([delta_e(lip_lab, candidate_lab) for candidate_lab in candidate_labs])
+            scores.append((p, avg_delta))
+
+        # temperature scaling 적용: temperature 값을 높이면 후보 간 확률 분포가 부드러워집니다.
+        import math
+        temperature = 10.0  # 값이 클수록 후보들 간의 확률 차이가 덜 극명해집니다.
+        similarities = [(p, math.exp(-score / temperature)) for p, score in scores]
+        total_similarity = sum(sim for _, sim in similarities)
+        probabilities = [(p, sim / total_similarity * 100) for p, sim in similarities]
+
+        # 0%가 아닌 후보들만 필터링 후, 확률이 높은 순서대로 정렬하여 상위 3개 선택
+        nonzero_probabilities = [(p, prob) for p, prob in probabilities if prob > 0.0]
+        probabilities_sorted = sorted(nonzero_probabilities, key=lambda x: x[1], reverse=True)
+        top_3 = probabilities_sorted[:3]
+
+        response = {
+            "lip_color": lip_hex,
+            "diagnosis": [
+                {
+                    "rank": idx + 1,
+                    "personal_color": personal_color_names.get(p, str(p)),
+                    "probability": f"{prob:.2f}%"
+                }
+                for idx, (p, prob) in enumerate(top_3)
+            ]
+        }
+        return jsonify(response), 200
+
+    except Exception as e:
+        logging.error(f"Lip prediction error: {traceback.format_exc()}")
+        return jsonify({"error": "An error occurred during lip prediction"}), 500
