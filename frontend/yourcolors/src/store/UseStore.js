@@ -79,17 +79,26 @@ const useStore = create((set) => {
 
     // 6. 화장품 컬러 상세 조회 API
     productDetails: {}, // 화장품 상세 정보 상태
-    fetchProductDetails: async (productID) => {
+    fetchProductDetails: async (productID, category) => {
       try {
-        const response = await axios.get(`${apiBaseUrl}/api/info/cosmetic/product/${productID}`);
+        let url = "";
+        if (category === "mans") {
+          // mans 카테고리일 때
+          url = `${apiBaseUrl}/api/info/mans/product/${productID}`;
+        } else {
+          // lip, eye, cheek일 때
+          url = `${apiBaseUrl}/api/info/cosmetic/product/${productID}`;
+        }
+        const response = await axios.get(url);
         console.log("6. 화장품 컬러 상세 조회 API", response.data);
+
+        // 데이터 저장
         set({ productDetails: response.data });
       } catch (error) {
         console.error("6. 화장품 컬러 상세 조회 API 오류 발생", error);
       }
     },
   };
-
 
   return store;
 });
