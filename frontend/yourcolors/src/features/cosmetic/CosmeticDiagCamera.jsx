@@ -147,6 +147,58 @@ const CosmeticDiagCamera = () => {
                 );
               })}
             </div>
+            {/* 모달 하단에 두 버튼 추가 */}
+            <div
+              style={{
+                marginTop: "40px",
+                display: "flex",
+                justifyContent: "center",
+                gap: "40px",
+              }}
+            >
+              <button
+                onClick={() => {
+                  // 모달 닫고 초기 상태로 리셋 (즉, 캡처 이미지 삭제 및 버튼 상태 초기화)
+                  setModalContent(null);
+                  setUserImageFile(null);
+                  setShowDiagnoseButton(false);
+                  setShowCaptureButton(true);
+                  setShowRetakeButton(false);
+                  setCountdown(null);
+                }}
+                style={{
+                  padding: "1rem 2rem",
+                  fontSize: "1rem",
+                  fontWeight: "bold",
+                  backgroundColor: "#82DC28",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                  fontFamily: "netmarbleB",
+                  padding : "15px"
+                }}
+              >
+                다시 진단하기
+              </button>
+              <button
+                onClick={() => navigate("/mainpage")}
+                style={{
+                  padding: "1rem 2rem",
+                  fontSize: "1rem",
+                  fontWeight: "bold",
+                  backgroundColor: "#82DC28",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                  fontFamily: "netmarbleB",
+                  padding : "15px"
+                }}
+              >
+                메인 페이지로
+              </button>
+            </div>
           </div>
         );
       })
@@ -181,7 +233,7 @@ const CosmeticDiagCamera = () => {
     setShowCaptureButton(true);
     setShowRetakeButton(false);
     setCountdown(null);
-    // video 요소에 stream을 재할당하고 재생합니다.
+    // video 요소에 stream을 재할당하고, 재생합니다.
     if (videoRef.current && stream) {
       videoRef.current.srcObject = stream;
       videoRef.current.play().catch((err) =>
@@ -234,21 +286,23 @@ const CosmeticDiagCamera = () => {
       ></div>
 
       {/* Alignment guidance text */}
-      <div
-        style={{
-          position: "absolute",
-          top: "10%",
-          left: "39%",
-          color: "white",
-          fontSize: "18px",
-          fontWeight: "bold",
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          padding: "8px 12px",
-          borderRadius: "8px",
-        }}
-      >
-        화장품을 가이드라인에 맞춰주세요
-      </div>
+      {!userImageFile && (
+        <div
+          style={{
+            position: "absolute",
+            top: "10%",
+            left: "39%",
+            color: "white",
+            fontSize: "18px",
+            fontWeight: "bold",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            padding: "8px 12px",
+            borderRadius: "8px",
+          }}
+        >
+          화장품을 가이드라인에 맞춰주세요
+        </div>
+      )}
 
       {/* Countdown display */}
       {countdown !== null && (

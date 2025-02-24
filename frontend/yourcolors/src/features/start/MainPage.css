@@ -61,6 +61,7 @@
   border: none;
   transition: background-color 0.3s ease;
   color: white; /* 글자 색상 흰색 */
+  font-family: "netmarbleB";
 }
 
 .mp-modal-yes {
