@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useStore from "../../store/UseStore";
-// useModalStore 대신 로컬 modalContent state를 사용합니다.
 import useWebcamStore from "../../store/useWebcamStore";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -10,43 +9,48 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const CosmeticDiagCamera = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [capturedImage, setCapturedImage] = useState(null);
+  // capturedImage는 useStore에서 관리합니다.
+  const { userImageFile, setUserImageFile, setResults } = useStore();
   const [countdown, setCountdown] = useState(null);
   const [showCaptureButton, setShowCaptureButton] = useState(true);
   const [showDiagnoseButton, setShowDiagnoseButton] = useState(false);
   const [showRetakeButton, setShowRetakeButton] = useState(false);
-  // 모달 내용 state를 추가합니다.
+  // 모달 내용 state
   const [modalContent, setModalContent] = useState(null);
 
   const navigate = useNavigate();
-  const { setResults } = useStore();
   const { stream, startCamera, stopCamera } = useWebcamStore();
 
-  // 컴포넌트 마운트 시 localStorage에서 캡처한 이미지 복원
+  // 컴포넌트 마운트 시 상태 초기화 (리셋)
   useEffect(() => {
-    const storedImage = localStorage.getItem("capturedImage");
-    if (storedImage) {
-      setCapturedImage(storedImage);
-      // 만약 videoRef가 존재하면, 영상은 정지상태로 둡니다.
-      if (videoRef.current) {
-        videoRef.current.pause();
-      }
-      setShowDiagnoseButton(true);
-      setShowRetakeButton(true);
-      setShowCaptureButton(false);
-    }
-  }, []);
+    setUserImageFile(null);
+    setShowCaptureButton(true);
+    setShowDiagnoseButton(false);
+    setShowRetakeButton(false);
+  }, [setUserImageFile]);
 
+  // 컴포넌트 마운트 시 카메라 시작
   useEffect(() => {
     startCamera();
     return () => stopCamera();
   }, [startCamera, stopCamera]);
 
+  // stream이 바뀔 때마다 video 요소에 재할당합니다.
   useEffect(() => {
     if (stream && videoRef.current) {
       videoRef.current.srcObject = stream;
     }
   }, [stream]);
+
+  // userImageFile이 없으면 video를 렌더링하고, 있으면 <img>로 대체합니다.
+  useEffect(() => {
+    if (!userImageFile && videoRef.current && stream) {
+      videoRef.current.srcObject = stream;
+      videoRef.current.play().catch((err) =>
+        console.error("video play error:", err)
+      );
+    }
+  }, [userImageFile, stream]);
 
   const handleCapture = () => {
     console.log("촬영 버튼 클릭됨, 3초 카운트다운 시작");
@@ -80,9 +84,8 @@ const CosmeticDiagCamera = () => {
       const ctx = fullCanvas.getContext("2d");
       ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
       const fullImageData = fullCanvas.toDataURL("image/png");
-      setCapturedImage(fullImageData);
-      // 저장: localStorage에 캡처한 이미지를 저장합니다.
-      localStorage.setItem("capturedImage", fullImageData);
+      // 전역 상태에 캡처 이미지를 저장합니다.
+      setUserImageFile(fullImageData);
       // video를 정지하여 마지막 프레임을 그대로 보여줍니다.
       video.pause();
       setShowDiagnoseButton(true);
@@ -106,13 +109,13 @@ const CosmeticDiagCamera = () => {
 
   // 캡처한 이미지를 서버에 전송하고, 응답 데이터를 모달로 차트 형태로 표시하는 함수
   const sendImageToServer = () => {
-    if (!capturedImage) {
+    if (!userImageFile) {
       setModalContent("이미지가 캡쳐되지 않았습니다. 다시 촬영해주세요.");
       return;
     }
     console.log("진단하기 버튼 클릭됨. 서버에 이미지 전송 시작");
     const formData = new FormData();
-    const imageBlob = dataURLtoBlob(capturedImage);
+    const imageBlob = dataURLtoBlob(userImageFile);
     formData.append("lip_image", imageBlob, "image.png");
 
     axios
@@ -122,15 +125,12 @@ const CosmeticDiagCamera = () => {
       .then((response) => {
         console.log("서버 응답:", response.data);
         const diagnosis = response.data.diagnosis;
-        // rank 오름차순 정렬
         const sortedDiagnosis = diagnosis.sort((a, b) => a.rank - b.rank);
-        // 진단 항목들만 모달에 출력합니다.
         setModalContent(
           <div style={{ padding: "20px" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {sortedDiagnosis.map((item, index) => {
                 const probabilityNum = parseFloat(item.probability);
-                // rank가 1인 항목은 색상을 #0d662e로, 그 외에는 #82DC28 사용
                 const barColor = parseInt(item.rank, 10) === 1 ? "#0d662e" : "#82DC28";
                 return (
                   <div key={index} style={{ display: "flex", alignItems: "center" }}>
@@ -146,6 +146,58 @@ const CosmeticDiagCamera = () => {
                   </div>
                 );
               })}
+            </div>
+            {/* 모달 하단에 두 버튼 추가 */}
+            <div
+              style={{
+                marginTop: "40px",
+                display: "flex",
+                justifyContent: "center",
+                gap: "40px",
+              }}
+            >
+              <button
+                onClick={() => {
+                  // 모달 닫고 초기 상태로 리셋 (즉, 캡처 이미지 삭제 및 버튼 상태 초기화)
+                  setModalContent(null);
+                  setUserImageFile(null);
+                  setShowDiagnoseButton(false);
+                  setShowCaptureButton(true);
+                  setShowRetakeButton(false);
+                  setCountdown(null);
+                }}
+                style={{
+                  padding: "1rem 2rem",
+                  fontSize: "1rem",
+                  fontWeight: "bold",
+                  backgroundColor: "#82DC28",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                  fontFamily: "netmarbleB",
+                  padding : "15px"
+                }}
+              >
+                다시 진단하기
+              </button>
+              <button
+                onClick={() => navigate("/mainpage")}
+                style={{
+                  padding: "1rem 2rem",
+                  fontSize: "1rem",
+                  fontWeight: "bold",
+                  backgroundColor: "#82DC28",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                  fontFamily: "netmarbleB",
+                  padding : "15px"
+                }}
+              >
+                메인 페이지로
+              </button>
             </div>
           </div>
         );
@@ -166,7 +218,7 @@ const CosmeticDiagCamera = () => {
 
   const handleDiagnose = () => {
     console.log("진단하기 버튼 클릭됨");
-    if (capturedImage) {
+    if (userImageFile) {
       sendImageToServer();
     } else {
       setModalContent("이미지가 캡쳐되지 않았습니다. 다시 촬영해주세요.");
@@ -175,23 +227,27 @@ const CosmeticDiagCamera = () => {
 
   const handleRetake = () => {
     console.log("다시 촬영하기 버튼 클릭됨");
-    if (videoRef.current) {
-      videoRef.current.play();
-    }
-    setCapturedImage(null);
-    localStorage.removeItem("capturedImage");
+    // 전역 상태에서 캡처 이미지를 삭제하고 UI 상태 리셋
+    setUserImageFile(null);
     setShowDiagnoseButton(false);
     setShowCaptureButton(true);
     setShowRetakeButton(false);
     setCountdown(null);
+    // video 요소에 stream을 재할당하고, 재생합니다.
+    if (videoRef.current && stream) {
+      videoRef.current.srcObject = stream;
+      videoRef.current.play().catch((err) =>
+        console.error("video play error:", err)
+      );
+    }
   };
 
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
-      {/* 조건부 렌더링: 캡처한 이미지가 있으면 <img>로, 없으면 video로 전체 화면 표시 */}
-      {capturedImage ? (
+      {/* 조건부 렌더링: userImageFile이 있으면 <img>로, 없으면 video로 전체 화면 표시 */}
+      {userImageFile ? (
         <img
-          src={capturedImage}
+          src={userImageFile}
           alt="Captured"
           style={{
             width: "100%",
@@ -230,21 +286,23 @@ const CosmeticDiagCamera = () => {
       ></div>
 
       {/* Alignment guidance text */}
-      <div
-        style={{
-          position: "absolute",
-          top: "10%",
-          left: "39%",
-          color: "white",
-          fontSize: "18px",
-          fontWeight: "bold",
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          padding: "8px 12px",
-          borderRadius: "8px",
-        }}
-      >
-        화장품을 가이드라인에 맞춰주세요
-      </div>
+      {!userImageFile && (
+        <div
+          style={{
+            position: "absolute",
+            top: "10%",
+            left: "39%",
+            color: "white",
+            fontSize: "18px",
+            fontWeight: "bold",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            padding: "8px 12px",
+            borderRadius: "8px",
+          }}
+        >
+          화장품을 가이드라인에 맞춰주세요
+        </div>
+      )}
 
       {/* Countdown display */}
       {countdown !== null && (
@@ -322,7 +380,7 @@ const CosmeticDiagCamera = () => {
             bottom: "11%",
             left: "59%",
             transform: "translateX(-50%)",
-            backgroundColor: "#0d662e",
+            backgroundColor: "#82DC28",
             color: "white",
             border: "none",
             padding: "12px 24px",
@@ -366,7 +424,6 @@ const CosmeticDiagCamera = () => {
               position: "relative",
             }}
           >
-            {/* 닫기 (X) 버튼 */}
             <button
               onClick={() => setModalContent(null)}
               style={{
@@ -382,7 +439,6 @@ const CosmeticDiagCamera = () => {
             >
               ✖
             </button>
-            {/* 모달 내용 - 진단 결과와 립 컬러 항목은 제외 */}
             <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
               진단 결과
             </h2>
