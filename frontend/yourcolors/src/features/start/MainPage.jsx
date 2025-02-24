@@ -1,11 +1,18 @@
+// src/pages/main/MainPage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
-import MainButton from "../../button/main-button/MainButton";
+import CardButton from "../../button/main-button/CardButton";
 import "./MainPage.css";
-import useStore from '../../store/UseStore'; // Zustand 상태관리 데이터
+import useStore from '../../store/UseStore'; // Zustand 상태관리
+
+// 이미지 예시 import (원하는 경로/이미지로 교체)
+import img1 from "../../images/personal_colors.jpg";
+import img2 from "../../images/ai_makeup.png";
+import img3 from "../../images/seasons_photo.jpg";
+import img4 from "../../images/color_find.jpg"
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -35,18 +42,34 @@ const MainPage = () => {
       <Topbar />
       <Largemain>
         <div className="main-button-container">
-<<<<<<< HEAD
-          {/* <MainButton text="퍼스널컬러 진단 🔍 " onClick={() => navigate("/choice")} /> */}
-          <MainButton text="퍼스널컬러 진단 🔍 " onClick={() => navigate("/choice")}>
-
-          </MainButton>
-          <MainButton text="AI 메이크업 🎨" onClick={() => navigate("/makeup")} />
-          <MainButton text="계절네컷 촬영 📸" onClick={handleOpenModal} />
-=======
-          <MainButton text="<br />퍼스널컬러<br />진단" icon="🔍" onClick={() => navigate("/choice")} />
-          <MainButton text="<br />AI 메이크업<br />" icon="🎨" onClick={() => navigate("/makeup")} />
-          <MainButton text="<br />계절네컷<br />촬영" icon="📸" onClick={handleOpenModal} />
->>>>>>> origin
+          <CardButton
+            title="퍼스널컬러 진단"
+            icon="🔍"
+            description="당신의 퍼스널컬러를 찾아보세요!"
+            onClick={() => navigate("/choice")}
+            bgImage={img1}
+          />
+            <CardButton
+              title="화장품컬러 찾기"
+              icon="📸"
+              description="계절프레임을 선택해 사진을 찍어보세요!"
+              onClick={handleOpenModal}
+              bgImage={img4}
+            />
+          <CardButton
+            title="AI 메이크업"
+            icon="🎨"
+            description="AI가 제안하는 메이크업을 체험해보세요!"
+            onClick={() => navigate("/makeup")}
+            bgImage={img2}
+          />
+          <CardButton
+            title="계절네컷 촬영"
+            icon="📸"
+            description="계절프레임을 선택해 사진을 찍어보세요!"
+            onClick={handleOpenModal}
+            bgImage={img3}
+          />
         </div>
       </Largemain>
 

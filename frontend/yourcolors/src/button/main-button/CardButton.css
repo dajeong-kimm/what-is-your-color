@@ -1,0 +1,80 @@
+/* src/button/card-button/CardButton.css */
+
+/* 카드 전체 래퍼 */
+.card-button {
+    width: 300px;                /* 카드 가로 크기 */
+    height: 500px;
+    border-radius: 15px;         /* 모서리 둥글게 */
+    background-color: #fff;      /* 배경색 흰색 */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    overflow: hidden;            /* 라운딩 영역 밖 잘라내기 */
+    transition: transform 0.3s;
+  }
+  
+  .card-button:hover {
+    transform: translateY(-5px); /* 호버 시 살짝 떠오르는 효과 */
+  }
+  
+  /* 상단 영역 (배경이미지) */
+  .card-button__header {
+    height: 320px;                  /* 상단 영역 높이 */
+    background-size: cover;         /* 이미지 꽉 채우기 */
+    background-position: center;    /* 중앙 정렬 */
+    display: flex;
+    align-items: flex-end;          /* 내부 요소 하단 정렬 */
+    justify-content: flex-start;    /* 내부 요소 좌측 정렬 */
+    padding: 10px;
+  }
+  
+  .card-button__header h3 {
+    color: #fff;
+    margin: 0;
+    font-size: 1.7rem;
+    background-color: rgba(0, 0, 0, 0.7); /* 반투명 배경 */
+    padding: 5px 10px;
+    border-radius: 8px;
+  }
+  
+  /* 카드 본문 (아이콘, 설명) */
+  .card-button__body {
+    padding: 20px;
+    padding-bottom: 0px;
+    padding-top: 10px;
+    text-align: center;
+  }
+  
+  .card-button__icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .card-button__description {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  /* 하단 버튼 영역 */
+  .card-button__footer {
+    border-top: 1px solid #eee;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .card-button__footer-btn {
+    background-color: #82dc28;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .card-button__footer-btn:hover {
+    background-color: #5ca81f;
+  }
+  
