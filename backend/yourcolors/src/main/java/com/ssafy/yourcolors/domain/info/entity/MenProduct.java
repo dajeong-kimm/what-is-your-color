@@ -6,8 +6,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
-import javax.persistence.*;
-
 @Entity
 @Table(name = "men_products")
 @Getter
@@ -24,19 +22,18 @@ public class MenProduct {
     @Column(name = "product_name", nullable = false)
     private String productName;
 
-    @Column(nullable = false, length = 50)
+    @Column(name = "category", nullable = false)
     private String category;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "brand", nullable = false)
     private String brand;
 
-    // product_detail_name를 color_name으로 사용
     @Column(name = "product_detail_name", nullable = false)
     private String productDetailName;
 
-    @Column(nullable = false)
+    @Column(name = "price", nullable = false)
     private int price;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(name = "image")
     private String image;
 }
