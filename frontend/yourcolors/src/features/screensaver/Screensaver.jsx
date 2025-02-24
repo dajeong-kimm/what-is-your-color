@@ -38,6 +38,23 @@ function Screensaver({ children }) {
           <source src={screensaverVideo} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+        <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              color: "white",
+              fontSize: "1.5rem",
+              textAlign: "center",
+              padding: "1rem",
+              // backgroundColor: "rgba(0, 0, 0, 0.5)", // 반투명 배경
+              backgroundColor: "rgba(0, 0, 0, 0.7)",
+              borderRadius: "8px",
+            }}
+          >
+            체험을 하시려면 화면을 터치해주세요
+          </div>
         {/* <img
           src={screensaverGif}
           alt="Screensaver"
