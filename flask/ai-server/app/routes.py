@@ -392,7 +392,7 @@ english_to_candidate = {
 }
 
 # 영어 -> 한국어 라벨 매핑 (수정됨: "autumn_dark"는 "가을 웜 다크"로)
-english_to_korean = {
+english_to_korean2 = {
     "autumn_dark": "가을 웜 다크",
     "autumn_muted": "가을 웜 뮤트",
     "autumn_strong": "가을 웜 스트롱",
@@ -429,7 +429,7 @@ def predict_combined():
         face_ranking = [
             {
                 "rank": idx + 1,
-                "personal_color": english_to_korean.get(class_name, class_name),
+                "personal_color": english_to_korean2.get(class_name, class_name),
                 "probability": f"{prob:.2%}"
             }
             for idx, (class_name, prob) in enumerate(top_3_face_results)
