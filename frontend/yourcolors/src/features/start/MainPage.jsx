@@ -51,14 +51,14 @@ const MainPage = () => {
           />
             <CardButton
               title="화장품컬러 찾기"
-              icon="📸"
-              description="계절프레임을 선택해 사진을 찍어보세요!"
-              onClick={handleOpenModal}
+              icon="🎨"
+              description="화장품의 퍼스널컬러를 찾아보세요! "
+              onClick={() => navigate("/cosmeticdiag")}
               bgImage={img4}
             />
           <CardButton
             title="AI 메이크업"
-            icon="🎨"
+            icon="🪞"
             description="AI가 제안하는 메이크업을 체험해보세요!"
             onClick={() => navigate("/makeup")}
             bgImage={img2}
@@ -70,6 +70,12 @@ const MainPage = () => {
             onClick={handleOpenModal}
             bgImage={img3}
           />
+
+          {/* <MainButton text="<br />퍼스널컬러<br />진단" icon="🔍" onClick={() => navigate("/choice")} />
+          <MainButton text="<br />화장품컬러<br />진단" icon="🪞" onClick={() => navigate("/cosmeticdiag")} />
+          <MainButton text="<br />AI 메이크업<br />" icon="🎨" onClick={() => navigate("/makeup")} />
+          <MainButton text="<br />계절네컷<br />촬영" icon="📸" onClick={handleOpenModal} /> */}
+
         </div>
       </Largemain>
 
