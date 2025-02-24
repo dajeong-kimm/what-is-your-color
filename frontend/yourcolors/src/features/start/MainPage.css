@@ -16,6 +16,7 @@
   font-family: 'netmarbleB';
 }
 
+
 /* 모달 오버레이 (배경) */
 .mp-modal-overlay {
   position: fixed;
@@ -78,6 +79,7 @@
 .mp-modal-no:hover {
   background-color: #5ca81f;
 }
+
 mpstrong{
   font-size: 28px;
   font-weight: bold;
