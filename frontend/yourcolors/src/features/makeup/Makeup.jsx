@@ -168,6 +168,7 @@ const Makeup = () => {
                 lipColor={selectedColors.lip?.hex}
                 eyeShadowColor={selectedColors.eye?.hex}
                 blushColor={selectedColors.cheek?.hex}
+                mansColor={selectedColors.mans?.hex}
               />
               <div className="selected-colors-container">
                 <h3>💄 현재 색상 🖌️</h3>
