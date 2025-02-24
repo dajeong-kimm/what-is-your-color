@@ -380,7 +380,7 @@ const CosmeticDiagCamera = () => {
             bottom: "11%",
             left: "59%",
             transform: "translateX(-50%)",
-            backgroundColor: "#0d662e",
+            backgroundColor: "#82DC28",
             color: "white",
             border: "none",
             padding: "12px 24px",

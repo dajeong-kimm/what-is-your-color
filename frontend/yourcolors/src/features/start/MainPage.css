@@ -10,9 +10,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 70%;
-  height: 70%;
-  gap: 40px; /* 버튼 사이 간격 */
+  width: 92%;
+  height: 82%;
+  gap: 52px; /* 버튼 사이 간격 */
   font-family: 'netmarbleB';
 }
 
