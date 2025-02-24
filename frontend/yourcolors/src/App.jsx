@@ -31,12 +31,11 @@ import QrCodePage from "./button/print/QRCodePage.jsx";
 import QrCodePageTwo from "./button/print/QRCodePageTwo.jsx";
 import Qna from "./features/qna/Qna.jsx";
 import PhotoQrChoicePage from "./features/season-photo/PhotoQrChoicePage.jsx";
-import CosemeticDiagnosis from "./features/cosmetic/CosmeticDiagnosis.jsx";
+import CosmeticDiagnosis from "./features/cosmetic/CosmeticDiagnosis.jsx";
 
 // 추가: 비활동 상태 관리 Provider, 화면보호기
 import { InactivityProvider } from "./hooks/InactivityContext.jsx";
 import Screensaver from "./features/screensaver/Screensaver.jsx";
-import CosmeticDiagnosis from "./features/cosmetic/CosmeticDiagnosis.jsx";
 
 const App = () => {
   return (

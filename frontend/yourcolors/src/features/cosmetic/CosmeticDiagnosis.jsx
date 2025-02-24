@@ -1,5 +1,5 @@
 import React from 'react';
-import CosmeticDiagCamera from '../cosmetic/CosemeticDiagCamera';  // 변경된 카메라 컴포넌트 import
+import CosmeticDiagCamera from '../cosmetic/CosmeticDiagCamera';  // 변경된 카메라 컴포넌트 import
 import Background from "../../background/background/Background";
 import Smallmain from "../../background/background/SmallMain";
 import Largemain from "../../background/background/LargeMain";
