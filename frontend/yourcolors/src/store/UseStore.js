@@ -60,12 +60,14 @@ const useStore = create((set) => {
       set({ loading: true });
       try {
         const response = await axios.get(`${apiBaseUrl}/api/info/cosmetic/${personalId}`);
+        const responsemans = await axios.get(`${apiBaseUrl}/api/info/mans/${personalId}`);
         console.log("5. 특정 퍼스널컬러의 화장품 목록 조회 API", response.data);
         set({
           cosmetics: {
             lip: response.data.lip_products || [],
             eye: response.data.eye_products || [],
             cheek: response.data.cheek_products || [],
+            mans: responsemans.data.mans_products || [],
           },
           loading: false,
         });
