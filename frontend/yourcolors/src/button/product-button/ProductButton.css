@@ -4,13 +4,14 @@
   border-radius: 30px;
   cursor: pointer;
   background-color: #82dc28; /* 기본 초록색 */
-  color: white;
+  color: rgb(255, 255, 255);
   border: none;
   transition: background-color 0.2s ease-in-out;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  font-family: 'netmarbleB';
+  font-family: "netmarbleB";
+  /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); 텍스트 그림자 효과 추가 */
 }
 
-.product-button.active {
-  background-color: #5ca81f; /* 활성화된 버튼은 진한 초록색 */
-}
+/* .product-button.active {
+  background-color: #5ca81f; 활성화된 버튼은 진한 초록색
+} */
