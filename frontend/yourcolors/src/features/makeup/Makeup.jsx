@@ -49,14 +49,7 @@ const Makeup = () => {
   };
 
   // fetchMansCosmetics 추가!
-  const {
-    cosmetics,
-    loading,
-    fetchCosmetics,
-    fetchMansCosmetics,
-    fetchProductDetails,
-    productDetails,
-  } = useStore();
+  const { cosmetics, loading, fetchCosmetics, fetchMenCosmetics, fetchProductDetails, productDetails } = useStore();
   const [selectedPersonalColor, setSelectedPersonalColor] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("lip");
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -67,7 +60,7 @@ const Makeup = () => {
     lip: { hex: "transparent" },
     eye: { hex: "transparent" },
     cheek: { hex: "transparent" },
-    mans: { hex: "transparent" },
+    men: { hex: "transparent" },
   });
 
   // 선택한 카테고리의 화장품 리스트 가져오기
@@ -75,26 +68,21 @@ const Makeup = () => {
     lip: cosmetics.lip || [],
     eye: cosmetics.eye || [],
     cheek: cosmetics.cheek || [],
-    mans: cosmetics.mans || [],
+    men: cosmetics.men || [],
   };
 
   const products = categoryMap[selectedCategory];
 
-  // 상단 퍼스널컬러별로 화장품 불러오기 (mans 카테고리 분기 처리)
+  // 상단 퍼스널컬러별로 화장품 불러오기 (men 카테고리 분기 처리)
   useEffect(() => {
     if (selectedPersonalColor) {
-      if (selectedCategory === "mans") {
-        fetchMansCosmetics(selectedPersonalColor);
+      if (selectedCategory === "men") {
+        fetchMenCosmetics(selectedPersonalColor);
       } else {
         fetchCosmetics(selectedPersonalColor);
       }
     }
-  }, [
-    selectedPersonalColor,
-    selectedCategory,
-    fetchCosmetics,
-    fetchMansCosmetics,
-  ]);
+  }, [selectedPersonalColor, selectedCategory, fetchCosmetics, fetchMenCosmetics]);
 
   // 제품의 세부 정보 (색상)
   useEffect(() => {
@@ -110,8 +98,7 @@ const Makeup = () => {
     } else if (productDetails?.colors?.length === 1) {
       setSelectedColors((prev) => ({
         ...prev,
-        [selectedCategory === "mans" ? "lip" : selectedCategory]:
-          productDetails.colors[0],
+        [selectedCategory === "men" ? "lip" : selectedCategory]: productDetails.colors[0],
       }));
     }
   }, [productDetails]);
@@ -140,9 +127,7 @@ const Makeup = () => {
             {personalColors.map((color) => (
               <button
                 key={color.id}
-                className={`personal-color-button ${
-                  selectedPersonalColor === color.id ? "selected" : ""
-                }`}
+                className={`personal-color-button ${selectedPersonalColor === color.id ? "selected" : ""}`}
                 onClick={() => setSelectedPersonalColor(color.id)}
                 style={{
                   backgroundColor: personalColorInfo[color.id].background_color, // 퍼스널컬러별로 배경색 설정
@@ -157,13 +142,23 @@ const Makeup = () => {
           <div className="bottom-panel">
             <div className="left-panel">
               <div className="button-container">
-                {["lip", "eye", "cheek", "mans"].map((category) => (
-                  <ProductButton
-                    key={category}
-                    text={category}
-                    onClick={() => setSelectedCategory(category)}
-                  />
-                ))}
+                {["lip", "eye", "cheek", "men"].map((category) => {
+                  const isActive = selectedCategory === category;
+                  const defaultColor = category === "men" ? "#9fd3fe" : "#feb7ae";
+                  const activeColor = category === "men" ? "#57b3fe" : "#fe7575";
+
+                  return (
+                    <ProductButton
+                      key={category}
+                      text={category}
+                      onClick={() => setSelectedCategory(category)}
+                      active={isActive}
+                      style={{
+                        backgroundColor: isActive ? activeColor : defaultColor,
+                      }}
+                    />
+                  );
+                })}
               </div>
 
               {/* 선택한 카테고리의 제품 리스트 */}
@@ -174,11 +169,7 @@ const Makeup = () => {
                   products.map((product) => (
                     <div
                       key={product.product_id}
-                      className={`product-card ${
-                        selectedProduct?.product_id === product.product_id
-                          ? "selected"
-                          : ""
-                      }`}
+                      className={`product-card ${selectedProduct?.product_id === product.product_id ? "selected" : ""}`}
                       onClick={() => handleProductClick(product)}
                     >
                       <img src={product.image} alt={product.product_name} />
@@ -196,52 +187,28 @@ const Makeup = () => {
             <div className="right-panel">
               <MakeupCamera
                 lipColor={selectedColors.lip?.hex}
-                eyeShadowColor={
-                  selectedCategory === "mans"
-                    ? "transparent"
-                    : selectedColors.eye?.hex
-                }
-                blushColor={
-                  selectedCategory === "mans"
-                    ? "transparent"
-                    : selectedColors.cheek?.hex
-                }
-                mansColor={selectedColors.mans?.hex}
+                eyeShadowColor={selectedCategory === "men" ? "transparent" : selectedColors.eye?.hex}
+                blushColor={selectedCategory === "men" ? "transparent" : selectedColors.cheek?.hex}
+                menColor={selectedColors.men?.hex}
               />
               <div className="selected-colors-container">
                 <h3>💄 현재 색상 🖌️</h3>
                 <div className="selected-colors">
-                  {(selectedCategory === "mans"
-                    ? ["lip"]
-                    : ["lip", "eye", "cheek"]
-                  ).map((category) => (
+                  {(selectedCategory === "men" ? ["lip"] : ["lip", "eye", "cheek"]).map((category) => (
                     <div key={category} className="color-item">
-                      <span className="color-label">
-                        {category.toUpperCase()}
-                      </span>
+                      <span className="color-label">{category.toUpperCase()}</span>
                       <div
                         className="color-preview"
                         style={{
                           backgroundColor:
-                            selectedColors[category]?.hex !== "transparent"
-                              ? selectedColors[category]?.hex
-                              : "#f0f0f0",
+                            selectedColors[category]?.hex !== "transparent" ? selectedColors[category]?.hex : "#f0f0f0",
                           border:
-                            selectedColors[category]?.hex === "transparent"
-                              ? "2px dashed #aaa"
-                              : "2px solid #ccc",
+                            selectedColors[category]?.hex === "transparent" ? "2px dashed #aaa" : "2px solid #ccc",
                         }}
                       >
-                        {selectedColors[category]?.hex === "transparent" ? (
-                          <i class="fa-solid fa-x"></i>
-                        ) : (
-                          ""
-                        )}
+                        {selectedColors[category]?.hex === "transparent" ? <i class="fa-solid fa-x"></i> : ""}
                       </div>
-                      <button
-                        className="reset-btn"
-                        onClick={() => resetColor(category)}
-                      >
+                      <button className="reset-btn" onClick={() => resetColor(category)}>
                         초기화
                       </button>
                     </div>
@@ -261,13 +228,8 @@ const Makeup = () => {
                     fontSize: "1rem",
                     transition: "background-color 0.3s ease",
                   }}
-                  onMouseOver={(e) =>
-                    (e.currentTarget.style.backgroundColor = "#82DC28")
-                  }
-                  onMouseOut={(e) =>
-                    (e.currentTarget.style.backgroundColor =
-                      "rgba(130, 220, 40, 0.40)")
-                  }
+                  onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#82DC28")}
+                  onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "rgba(130, 220, 40, 0.40)")}
                 >
                   계절네컷 🡺
                 </button>
@@ -288,8 +250,7 @@ const Makeup = () => {
                   onClick={() => {
                     setSelectedColors((prev) => ({
                       ...prev,
-                      [selectedCategory === "mans" ? "lip" : selectedCategory]:
-                        color,
+                      [selectedCategory === "men" ? "lip" : selectedCategory]: color,
                     }));
                     setIsModalOpen(false);
                   }}
