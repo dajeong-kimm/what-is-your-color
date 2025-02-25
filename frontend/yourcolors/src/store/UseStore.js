@@ -84,7 +84,9 @@ const useStore = create((set) => {
         let url = "";
         if (category === "mans") {
           // mans 카테고리일 때
-          url = `${apiBaseUrl}/api/info/mans/product/${productID}`;
+          // url = `${apiBaseUrl}/api/info/mans/product/${productID}`;
+          url = "http://localhost:9000/api/info/mans/product/"+productID;
+          console.log(url);
         } else {
           // lip, eye, cheek일 때
           url = `${apiBaseUrl}/api/info/cosmetic/product/${productID}`;

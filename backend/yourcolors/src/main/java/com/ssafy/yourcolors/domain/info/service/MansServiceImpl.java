@@ -2,8 +2,12 @@ package com.ssafy.yourcolors.domain.info.service;
 
 import com.ssafy.yourcolors.domain.info.dto.MansProductDto;
 import com.ssafy.yourcolors.domain.info.dto.MansResponseDto;
+import com.ssafy.yourcolors.domain.info.dto.MenColorDto;
+import com.ssafy.yourcolors.domain.info.dto.MenColorResponseDto;
 import com.ssafy.yourcolors.domain.info.entity.MenProduct;
+import com.ssafy.yourcolors.domain.info.entity.MenProductColor;
 import com.ssafy.yourcolors.domain.info.entity.MenProductPersonal;
+import com.ssafy.yourcolors.domain.info.repository.MenProductColorRepository;
 import com.ssafy.yourcolors.domain.info.repository.MenProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MansServiceImpl implements MansService{
     private final MenProductRepository menProductRepository;
+    private final MenProductColorRepository menProductColorRepository;
 
     @Override
     public MansResponseDto getMansProducts(int personalId) {
@@ -43,6 +48,32 @@ public class MansServiceImpl implements MansService{
                 .build();
 
         return response;
+    }
+
+    @Override
+    public MenColorResponseDto getProductColorByProductId(int productId) {
+        // men_product_color 테이블에서 productId에 해당하는 색상 정보 조회 (여러 색상이 있을 수 있으므로 첫번째 값 사용)
+        List<MenProductColor> colors = menProductColorRepository.findByProductId(productId);
+        if (colors.isEmpty()) {
+            throw new RuntimeException("해당 productID의 색상 정보가 없습니다.");
+        }
+        String hex = colors.get(0).getColor();
+
+        // hex 형식 (#b47b74) 문자열을 r, g, b 값으로 파싱
+        int r = Integer.parseInt(hex.substring(1, 3), 16);
+        int g = Integer.parseInt(hex.substring(3, 5), 16);
+        int b = Integer.parseInt(hex.substring(5, 7), 16);
+
+        MenColorDto colorDto = MenColorDto.builder()
+                .hex(hex)
+                .r(r)
+                .g(g)
+                .b(b)
+                .build();
+
+        return MenColorResponseDto.builder()
+                .colors(colorDto)
+                .build();
     }
 
 }

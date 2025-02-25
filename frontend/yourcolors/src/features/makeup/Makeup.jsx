@@ -80,9 +80,9 @@ const Makeup = () => {
   // 제품의 세부 정보 (색상)
   useEffect(() => {
     if (selectedProduct) {
-      fetchProductDetails(selectedProduct.product_id);
+      fetchProductDetails(selectedProduct.product_id, selectedCategory);
     }
-  }, [selectedProduct, fetchProductDetails]);
+  }, [selectedProduct, selectedCategory, fetchProductDetails]);
 
   // 색상이 2개 이상이면 모달띄움
   useEffect(() => {
@@ -91,10 +91,11 @@ const Makeup = () => {
     } else if (productDetails?.colors?.length === 1) {
       setSelectedColors((prev) => ({
         ...prev,
-        [selectedCategory]: productDetails.colors[0],
+        [selectedCategory === "mans" ? "lip" : selectedCategory]: productDetails.colors[0],
       }));
     }
-  }, [productDetails]); // selectedCategory 제거
+  }, [productDetails, selectedCategory]);
+  
 
   const handleProductClick = (product) => {
     if (selectedProduct?.product_id !== product.product_id) {
