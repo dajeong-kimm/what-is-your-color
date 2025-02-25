@@ -103,7 +103,7 @@ const Makeup = () => {
     }
   }, [selectedProduct, fetchProductDetails]);
 
-  // 색상이 2개 이상이면 모달띄움
+  // 색상이 2개 이상이면 모달띄움, 1개면 바로 선택
   useEffect(() => {
     if (productDetails?.colors?.length > 1) {
       setIsModalOpen(true);
@@ -196,14 +196,25 @@ const Makeup = () => {
             <div className="right-panel">
               <MakeupCamera
                 lipColor={selectedColors.lip?.hex}
-                eyeShadowColor={selectedColors.eye?.hex}
-                blushColor={selectedColors.cheek?.hex}
+                eyeShadowColor={
+                  selectedCategory === "mans"
+                    ? "transparent"
+                    : selectedColors.eye?.hex
+                }
+                blushColor={
+                  selectedCategory === "mans"
+                    ? "transparent"
+                    : selectedColors.cheek?.hex
+                }
                 mansColor={selectedColors.mans?.hex}
               />
               <div className="selected-colors-container">
                 <h3>💄 현재 색상 🖌️</h3>
                 <div className="selected-colors">
-                  {["lip", "eye", "cheek", "mans"].map((category) => (
+                  {(selectedCategory === "mans"
+                    ? ["lip"]
+                    : ["lip", "eye", "cheek"]
+                  ).map((category) => (
                     <div key={category} className="color-item">
                       <span className="color-label">
                         {category.toUpperCase()}
