@@ -46,9 +46,7 @@ const CosmeticDiagCamera = () => {
   useEffect(() => {
     if (!userImageFile && videoRef.current && stream) {
       videoRef.current.srcObject = stream;
-      videoRef.current.play().catch((err) =>
-        console.error("video play error:", err)
-      );
+      videoRef.current.play().catch((err) => console.error("video play error:", err));
     }
   }, [userImageFile, stream]);
 
@@ -176,7 +174,7 @@ const CosmeticDiagCamera = () => {
                   borderRadius: "10px",
                   cursor: "pointer",
                   fontFamily: "netmarbleB",
-                  padding : "15px"
+                  // padding: "15px",
                 }}
               >
                 다시 진단하기
@@ -193,7 +191,7 @@ const CosmeticDiagCamera = () => {
                   borderRadius: "10px",
                   cursor: "pointer",
                   fontFamily: "netmarbleB",
-                  padding : "15px"
+                  // padding: "15px",
                 }}
               >
                 메인 페이지로
@@ -236,9 +234,7 @@ const CosmeticDiagCamera = () => {
     // video 요소에 stream을 재할당하고, 재생합니다.
     if (videoRef.current && stream) {
       videoRef.current.srcObject = stream;
-      videoRef.current.play().catch((err) =>
-        console.error("video play error:", err)
-      );
+      videoRef.current.play().catch((err) => console.error("video play error:", err));
     }
   };
 
@@ -439,9 +435,7 @@ const CosmeticDiagCamera = () => {
             >
               ✖
             </button>
-            <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-              진단 결과
-            </h2>
+            <h2 style={{ textAlign: "center", marginBottom: "20px" }}>진단 결과</h2>
             {modalContent}
           </div>
         </div>

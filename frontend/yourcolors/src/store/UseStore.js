@@ -53,7 +53,7 @@ const useStore = create((set, get) => {
     },
 
     // 5. 특정 퍼스널컬러의 화장품 목록 조회 API
-    cosmetics: { lip: [], eye: [], cheek: [], mans: [] }, // 초기값에 mans 추가
+    cosmetics: { lip: [], eye: [], cheek: [], men: [] }, // 초기값에 mans 추가
 
     loading: false,
 
@@ -67,7 +67,7 @@ const useStore = create((set, get) => {
             lip: response.data.lip_products || [],
             eye: response.data.eye_products || [],
             cheek: response.data.cheek_products || [],
-            mans: [], // mans는 별도 호출
+            men: [], // men 별도 호출
           },
           loading: false,
         });
@@ -77,36 +77,36 @@ const useStore = create((set, get) => {
       }
     },
 
-    // mans 카테고리 전용 API 호출 함수 추가
-    fetchMansCosmetics: async (personalId) => {
+    // men 카테고리 전용 API 호출 함수 추가
+    fetchMenCosmetics: async (personalId) => {
       set({ loading: true });
       try {
         const response = await axios.get(`${apiBaseUrl}/api/info/mans/${personalId}`);
-        console.log("mans 카테고리의 화장품 목록 조회 API", response.data);
+        console.log("men 카테고리의 화장품 목록 조회 API", response.data);
         set((state) => ({
           cosmetics: {
             ...state.cosmetics,
-            mans: response.data.mans_products || [],
+            men: response.data.mans_products || [],
           },
           loading: false,
         }));
       } catch (error) {
-        console.error("mans 카테고리의 화장품 목록 조회 API 오류 발생:", error);
+        console.error("men 카테고리의 화장품 목록 조회 API 오류 발생:", error);
         set({ loading: false });
       }
     },
 
-    // 6. 화장품 컬러 상세 조회 API (mans일 경우 다른 엔드포인트 사용)
+    // 6. 화장품 컬러 상세 조회 API (men 경우 다른 엔드포인트 사용)
     fetchProductDetails: async (productID) => {
       try {
-        // 현재 저장된 화장품 목록에서 mans 카테고리에 해당 productID가 존재하는지 확인
+        // 현재 저장된 화장품 목록에서 men 카테고리에 해당 productID가 존재하는지 확인
         const { cosmetics } = get();
-        const isMans = cosmetics.mans.some((product) => product.product_id === productID);
-        const endpoint = isMans
+        const isMen = cosmetics.men.some((product) => product.product_id === productID);
+        const endpoint = isMen
           ? `${apiBaseUrl}/api/info/mans/product/${productID}`
           : `${apiBaseUrl}/api/info/cosmetic/product/${productID}`;
         const response = await axios.get(endpoint);
-        console.log(isMans ? "mans 화장품 컬러 상세 조회 API" : "화장품 컬러 상세 조회 API", response.data);
+        console.log(isMen ? "men 화장품 컬러 상세 조회 API" : "화장품 컬러 상세 조회 API", response.data);
         set({ productDetails: response.data });
       } catch (error) {
         console.error("화장품 컬러 상세 조회 API 오류 발생", error);
