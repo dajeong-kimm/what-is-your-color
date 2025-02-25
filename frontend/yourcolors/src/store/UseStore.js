@@ -53,7 +53,7 @@ const useStore = create((set) => {
     },
 
     // 5. 특정 퍼스널컬러의 화장품 목록 조회 API
-    cosmetics: { lip: [], eye: [], cheek: [] }, // 초기값
+    cosmetics: { lip: [], eye: [], cheek: [], mans: [] }, // 초기값
     loading: false,
 
     fetchCosmetics: async (personalId) => {

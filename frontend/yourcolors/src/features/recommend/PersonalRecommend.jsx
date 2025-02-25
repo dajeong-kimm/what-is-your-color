@@ -43,6 +43,7 @@ const PersonalRecommend = () => {
     lip: cosmetics.lip,
     eye: cosmetics.eye,
     cheek: cosmetics.cheek,
+    mans: cosmetics.mans,
   };
   const products = categoryMap[selectedCategory] || [];
 
@@ -55,7 +56,7 @@ const PersonalRecommend = () => {
             {/* 퍼스널컬러 이름 + "Pick!" 형태로 출력 */}
             <div className="recommend-color-pick">{personalColorDetails.name} Pick!</div>
             <div className="recommend-button-container">
-             {["lip", "eye", "cheek"].map((category) => (
+             {["lip", "eye", "cheek", "mans"].map((category) => (
                 <ProductButton
                   key={category}
                   text={category}
