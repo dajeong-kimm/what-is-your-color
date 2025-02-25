@@ -48,7 +48,15 @@ const Makeup = () => {
     });
   };
 
-  const { cosmetics, loading, fetchCosmetics, fetchProductDetails, productDetails } = useStore();
+  // fetchMansCosmetics 추가!
+  const {
+    cosmetics,
+    loading,
+    fetchCosmetics,
+    fetchMansCosmetics,
+    fetchProductDetails,
+    productDetails,
+  } = useStore();
   const [selectedPersonalColor, setSelectedPersonalColor] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("lip");
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -72,17 +80,28 @@ const Makeup = () => {
 
   const products = categoryMap[selectedCategory];
 
-  // 상단 퍼스널컬러별로 화장품 불러오기
+  // 상단 퍼스널컬러별로 화장품 불러오기 (mans 카테고리 분기 처리)
   useEffect(() => {
-    if (selectedPersonalColor) fetchCosmetics(selectedPersonalColor);
-  }, [selectedPersonalColor, fetchCosmetics]);
+    if (selectedPersonalColor) {
+      if (selectedCategory === "mans") {
+        fetchMansCosmetics(selectedPersonalColor);
+      } else {
+        fetchCosmetics(selectedPersonalColor);
+      }
+    }
+  }, [
+    selectedPersonalColor,
+    selectedCategory,
+    fetchCosmetics,
+    fetchMansCosmetics,
+  ]);
 
   // 제품의 세부 정보 (색상)
   useEffect(() => {
     if (selectedProduct) {
-      fetchProductDetails(selectedProduct.product_id, selectedCategory);
+      fetchProductDetails(selectedProduct.product_id);
     }
-  }, [selectedProduct, selectedCategory, fetchProductDetails]);
+  }, [selectedProduct, fetchProductDetails]);
 
   // 색상이 2개 이상이면 모달띄움
   useEffect(() => {
@@ -91,17 +110,17 @@ const Makeup = () => {
     } else if (productDetails?.colors?.length === 1) {
       setSelectedColors((prev) => ({
         ...prev,
-        [selectedCategory === "mans" ? "lip" : selectedCategory]: productDetails.colors[0],
+        [selectedCategory === "mans" ? "lip" : selectedCategory]:
+          productDetails.colors[0],
       }));
     }
-  }, [productDetails, selectedCategory]);
-  
+  }, [productDetails]);
 
   const handleProductClick = (product) => {
     if (selectedProduct?.product_id !== product.product_id) {
       setSelectedProduct(product);
     }
-    setIsModalOpen(true);
+    // 모달 열기 상태는 productDetails의 useEffect에서 처리하므로 여기서는 setIsModalOpen 호출 제거
   };
 
   // 선택한 카테고리의 색상을 초기화하는 함수
@@ -121,7 +140,9 @@ const Makeup = () => {
             {personalColors.map((color) => (
               <button
                 key={color.id}
-                className={`personal-color-button ${selectedPersonalColor === color.id ? "selected" : ""}`}
+                className={`personal-color-button ${
+                  selectedPersonalColor === color.id ? "selected" : ""
+                }`}
                 onClick={() => setSelectedPersonalColor(color.id)}
                 style={{
                   backgroundColor: personalColorInfo[color.id].background_color, // 퍼스널컬러별로 배경색 설정
@@ -137,7 +158,11 @@ const Makeup = () => {
             <div className="left-panel">
               <div className="button-container">
                 {["lip", "eye", "cheek", "mans"].map((category) => (
-                  <ProductButton key={category} text={category} onClick={() => setSelectedCategory(category)} />
+                  <ProductButton
+                    key={category}
+                    text={category}
+                    onClick={() => setSelectedCategory(category)}
+                  />
                 ))}
               </div>
 
@@ -149,7 +174,11 @@ const Makeup = () => {
                   products.map((product) => (
                     <div
                       key={product.product_id}
-                      className={`product-card ${selectedProduct?.product_id === product.product_id ? "selected" : ""}`}
+                      className={`product-card ${
+                        selectedProduct?.product_id === product.product_id
+                          ? "selected"
+                          : ""
+                      }`}
                       onClick={() => handleProductClick(product)}
                     >
                       <img src={product.image} alt={product.product_name} />
@@ -176,19 +205,32 @@ const Makeup = () => {
                 <div className="selected-colors">
                   {["lip", "eye", "cheek", "mans"].map((category) => (
                     <div key={category} className="color-item">
-                      <span className="color-label">{category.toUpperCase()}</span>
+                      <span className="color-label">
+                        {category.toUpperCase()}
+                      </span>
                       <div
                         className="color-preview"
                         style={{
                           backgroundColor:
-                            selectedColors[category]?.hex !== "transparent" ? selectedColors[category]?.hex : "#f0f0f0",
+                            selectedColors[category]?.hex !== "transparent"
+                              ? selectedColors[category]?.hex
+                              : "#f0f0f0",
                           border:
-                            selectedColors[category]?.hex === "transparent" ? "2px dashed #aaa" : "2px solid #ccc",
+                            selectedColors[category]?.hex === "transparent"
+                              ? "2px dashed #aaa"
+                              : "2px solid #ccc",
                         }}
                       >
-                        {selectedColors[category]?.hex === "transparent" ? <i class="fa-solid fa-x"></i> : ""}
+                        {selectedColors[category]?.hex === "transparent" ? (
+                          <i class="fa-solid fa-x"></i>
+                        ) : (
+                          ""
+                        )}
                       </div>
-                      <button className="reset-btn" onClick={() => resetColor(category)}>
+                      <button
+                        className="reset-btn"
+                        onClick={() => resetColor(category)}
+                      >
                         초기화
                       </button>
                     </div>
@@ -208,8 +250,13 @@ const Makeup = () => {
                     fontSize: "1rem",
                     transition: "background-color 0.3s ease",
                   }}
-                  onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#82DC28")}
-                  onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "rgba(130, 220, 40, 0.40)")}
+                  onMouseOver={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#82DC28")
+                  }
+                  onMouseOut={(e) =>
+                    (e.currentTarget.style.backgroundColor =
+                      "rgba(130, 220, 40, 0.40)")
+                  }
                 >
                   계절네컷 🡺
                 </button>
@@ -230,7 +277,8 @@ const Makeup = () => {
                   onClick={() => {
                     setSelectedColors((prev) => ({
                       ...prev,
-                      [selectedCategory]: color,
+                      [selectedCategory === "mans" ? "lip" : selectedCategory]:
+                        color,
                     }));
                     setIsModalOpen(false);
                   }}

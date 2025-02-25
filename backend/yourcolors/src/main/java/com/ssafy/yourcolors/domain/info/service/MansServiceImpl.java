@@ -52,27 +52,29 @@ public class MansServiceImpl implements MansService{
 
     @Override
     public MenColorResponseDto getProductColorByProductId(int productId) {
-        // men_product_color 테이블에서 productId에 해당하는 색상 정보 조회 (여러 색상이 있을 수 있으므로 첫번째 값 사용)
-        List<MenProductColor> colors = menProductColorRepository.findByProductId(productId);
-        if (colors.isEmpty()) {
+        // productId에 해당하는 모든 색상 정보 조회
+        List<MenProductColor> colorEntities = menProductColorRepository.findByProductId(productId);
+        if (colorEntities.isEmpty()) {
             throw new RuntimeException("해당 productID의 색상 정보가 없습니다.");
         }
-        String hex = colors.get(0).getColor();
 
-        // hex 형식 (#b47b74) 문자열을 r, g, b 값으로 파싱
-        int r = Integer.parseInt(hex.substring(1, 3), 16);
-        int g = Integer.parseInt(hex.substring(3, 5), 16);
-        int b = Integer.parseInt(hex.substring(5, 7), 16);
-
-        MenColorDto colorDto = MenColorDto.builder()
-                .hex(hex)
-                .r(r)
-                .g(g)
-                .b(b)
-                .build();
+        // 각 색상에 대해 hex 문자열을 파싱하여 r, g, b 값을 계산
+        List<MenColorDto> colorDtoList = colorEntities.stream().map(entity -> {
+            String hex = entity.getColor();
+            int r = Integer.parseInt(hex.substring(1, 3), 16);
+            int g = Integer.parseInt(hex.substring(3, 5), 16);
+            int b = Integer.parseInt(hex.substring(5, 7), 16);
+            return MenColorDto.builder()
+                    .hex(hex)
+                    .r(r)
+                    .g(g)
+                    .b(b)
+                    .build();
+        }).collect(Collectors.toList());
 
         return MenColorResponseDto.builder()
-                .colors(colorDto)
+                .size(colorDtoList.size())
+                .colors(colorDtoList)
                 .build();
     }
 
