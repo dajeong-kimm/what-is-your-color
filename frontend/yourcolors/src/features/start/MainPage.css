@@ -10,11 +10,12 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 70%;
-  height: 70%;
-  gap: 40px; /* 버튼 사이 간격 */
+  width: 92%;
+  height: 82%;
+  gap: 52px; /* 버튼 사이 간격 */
   font-family: 'netmarbleB';
 }
+
 
 /* 모달 오버레이 (배경) */
 .mp-modal-overlay {
@@ -61,6 +62,7 @@
   border: none;
   transition: background-color 0.3s ease;
   color: white; /* 글자 색상 흰색 */
+  font-family: "netmarbleB";
 }
 
 .mp-modal-yes {
@@ -78,6 +80,7 @@
 .mp-modal-no:hover {
   background-color: #5ca81f;
 }
+
 mpstrong{
   font-size: 28px;
   font-weight: bold;
