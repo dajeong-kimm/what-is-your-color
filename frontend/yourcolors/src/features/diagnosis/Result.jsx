@@ -29,7 +29,7 @@ const Result = () => {
 
   // mainColor에 해당하는 이미지 URL 가져오기
   const imageUrl = personalColorInfo[userPersonalId].characterUrl;
-
+  console.log(personalColorInfo)
   console.log(personalColorDetails.hashtag);
   console.log(Results[1]);
   return (
