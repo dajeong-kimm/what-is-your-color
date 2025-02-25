@@ -13,7 +13,7 @@
   width: 30%;  /* 각 버튼이 Largemain의 30% 너비를 차지 */
   height: 100%; /* 부모 컨테이너(main-button-container)의 높이 100% 차지 */
   background-color: #b7e765;
-  color: white;
+  color: black;
   font-size: 35px;
   font-weight: bold;
   border: none;
