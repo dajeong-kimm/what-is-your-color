@@ -221,12 +221,12 @@ const MediapipeCameraXTimer = () => {
           qrFormData.append("bestColor", response.data.results[0].personal_color);
           qrFormData.append("subColor1", response.data.results[1].personal_color);
           qrFormData.append("subColor2", response.data.results[2].personal_color);
-          qrFormData.append("message", gptSummary);
+          qrFormData.append("message", response.data.gpt_summary);
 
           console.log("준수의 qr폼 테스트", response.data.results[0].personal_color);
           console.log("준수의 qr폼 테스트", response.data.results[1].personal_color);
           console.log("준수의 qr폼 테스트", response.data.results[2].personal_color);
-          console.log("준수의 qr폼 테스트", gptSummary);
+          console.log("준수의 qr폼 테스트", response.data.gpt_summary);
 
 
           axios

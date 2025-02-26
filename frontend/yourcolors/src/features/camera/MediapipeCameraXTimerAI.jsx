@@ -225,7 +225,8 @@ const MediapipeCameraXTimerAI = () => {
       qrFormData.append("bestColor", aiResponse.data.results[0].personal_color);
       qrFormData.append("subColor1", aiResponse.data.results[1].personal_color);
       qrFormData.append("subColor2", aiResponse.data.results[2].personal_color);
-      qrFormData.append("message", gptSummary);
+      qrFormData.append("message", aiResponse.data.gpt_summary);
+      // qrFormData.append("message", gptSummary);
       
       // console.log("준수의 qr폼 테스트", aiResponse.data.results[0].personal_color);
       // console.log("준수의 qr폼 테스트", aiResponse.data.results[1].personal_color);
