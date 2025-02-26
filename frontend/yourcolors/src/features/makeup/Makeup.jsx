@@ -48,7 +48,8 @@ const Makeup = () => {
     });
   };
 
-  const { cosmetics, loading, fetchCosmetics, fetchProductDetails, productDetails } = useStore();
+  // fetchMansCosmetics 추가!
+  const { cosmetics, loading, fetchCosmetics, fetchMenCosmetics, fetchProductDetails, productDetails } = useStore();
   const [selectedPersonalColor, setSelectedPersonalColor] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("lip");
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -59,7 +60,7 @@ const Makeup = () => {
     lip: { hex: "transparent" },
     eye: { hex: "transparent" },
     cheek: { hex: "transparent" },
-    mans: { hex: "transparent" },
+    men: { hex: "transparent" },
   });
 
   // 선택한 카테고리의 화장품 리스트 가져오기
@@ -67,15 +68,21 @@ const Makeup = () => {
     lip: cosmetics.lip || [],
     eye: cosmetics.eye || [],
     cheek: cosmetics.cheek || [],
-    mans: cosmetics.mans || [],
+    men: cosmetics.men || [],
   };
 
   const products = categoryMap[selectedCategory];
 
-  // 상단 퍼스널컬러별로 화장품 불러오기
+  // 상단 퍼스널컬러별로 화장품 불러오기 (men 카테고리 분기 처리)
   useEffect(() => {
-    if (selectedPersonalColor) fetchCosmetics(selectedPersonalColor);
-  }, [selectedPersonalColor, fetchCosmetics]);
+    if (selectedPersonalColor) {
+      if (selectedCategory === "men") {
+        fetchMenCosmetics(selectedPersonalColor);
+      } else {
+        fetchCosmetics(selectedPersonalColor);
+      }
+    }
+  }, [selectedPersonalColor, selectedCategory, fetchCosmetics, fetchMenCosmetics]);
 
   // 제품의 세부 정보 (색상)
   useEffect(() => {
@@ -84,23 +91,23 @@ const Makeup = () => {
     }
   }, [selectedProduct, fetchProductDetails]);
 
-  // 색상이 2개 이상이면 모달띄움
+  // 색상이 2개 이상이면 모달띄움, 1개면 바로 선택
   useEffect(() => {
     if (productDetails?.colors?.length > 1) {
       setIsModalOpen(true);
     } else if (productDetails?.colors?.length === 1) {
       setSelectedColors((prev) => ({
         ...prev,
-        [selectedCategory]: productDetails.colors[0],
+        [selectedCategory === "men" ? "lip" : selectedCategory]: productDetails.colors[0],
       }));
     }
-  }, [productDetails]); // selectedCategory 제거
+  }, [productDetails]);
 
   const handleProductClick = (product) => {
     if (selectedProduct?.product_id !== product.product_id) {
       setSelectedProduct(product);
     }
-    setIsModalOpen(true);
+    // 모달 열기 상태는 productDetails의 useEffect에서 처리하므로 여기서는 setIsModalOpen 호출 제거
   };
 
   // 선택한 카테고리의 색상을 초기화하는 함수
@@ -135,9 +142,23 @@ const Makeup = () => {
           <div className="bottom-panel">
             <div className="left-panel">
               <div className="button-container">
-                {["lip", "eye", "cheek", "mans"].map((category) => (
-                  <ProductButton key={category} text={category} onClick={() => setSelectedCategory(category)} />
-                ))}
+                {["lip", "eye", "cheek", "men"].map((category) => {
+                  const isActive = selectedCategory === category;
+                  const defaultColor = category === "men" ? "#9fd3fe" : "#feb7ae";
+                  const activeColor = category === "men" ? "#57b3fe" : "#fe7575";
+
+                  return (
+                    <ProductButton
+                      key={category}
+                      text={category}
+                      onClick={() => setSelectedCategory(category)}
+                      active={isActive}
+                      style={{
+                        backgroundColor: isActive ? activeColor : defaultColor,
+                      }}
+                    />
+                  );
+                })}
               </div>
 
               {/* 선택한 카테고리의 제품 리스트 */}
@@ -166,14 +187,14 @@ const Makeup = () => {
             <div className="right-panel">
               <MakeupCamera
                 lipColor={selectedColors.lip?.hex}
-                eyeShadowColor={selectedColors.eye?.hex}
-                blushColor={selectedColors.cheek?.hex}
-                mansColor={selectedColors.mans?.hex}
+                eyeShadowColor={selectedCategory === "men" ? "transparent" : selectedColors.eye?.hex}
+                blushColor={selectedCategory === "men" ? "transparent" : selectedColors.cheek?.hex}
+                menColor={selectedColors.men?.hex}
               />
               <div className="selected-colors-container">
                 <h3>💄 현재 색상 🖌️</h3>
                 <div className="selected-colors">
-                  {["lip", "eye", "cheek", "mans"].map((category) => (
+                  {(selectedCategory === "men" ? ["lip"] : ["lip", "eye", "cheek"]).map((category) => (
                     <div key={category} className="color-item">
                       <span className="color-label">{category.toUpperCase()}</span>
                       <div
@@ -229,7 +250,7 @@ const Makeup = () => {
                   onClick={() => {
                     setSelectedColors((prev) => ({
                       ...prev,
-                      [selectedCategory]: color,
+                      [selectedCategory === "men" ? "lip" : selectedCategory]: color,
                     }));
                     setIsModalOpen(false);
                   }}
