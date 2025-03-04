@@ -33,17 +33,31 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
   const blushIntensityRef = useRef(blushIntensity);
   const [showControls, setShowControls] = useState(false);
 
-  useEffect(() => { lipBlurRef.current = lipBlur; }, [lipBlur]);
-  useEffect(() => { lipIntensityRef.current = lipIntensity; }, [lipIntensity]);
-  useEffect(() => { eyeBlurRef.current = eyeBlur; }, [eyeBlur]);
-  useEffect(() => { eyeIntensityRef.current = eyeIntensity; }, [eyeIntensity]);
-  useEffect(() => { blushBlurRef.current = blushBlur; }, [blushBlur]);
-  useEffect(() => { blushIntensityRef.current = blushIntensity; }, [blushIntensity]);
+  useEffect(() => {
+    lipBlurRef.current = lipBlur;
+  }, [lipBlur]);
+  useEffect(() => {
+    lipIntensityRef.current = lipIntensity;
+  }, [lipIntensity]);
+  useEffect(() => {
+    eyeBlurRef.current = eyeBlur;
+  }, [eyeBlur]);
+  useEffect(() => {
+    eyeIntensityRef.current = eyeIntensity;
+  }, [eyeIntensity]);
+  useEffect(() => {
+    blushBlurRef.current = blushBlur;
+  }, [blushBlur]);
+  useEffect(() => {
+    blushIntensityRef.current = blushIntensity;
+  }, [blushIntensity]);
 
   // "원본" 버튼 상태: true이면 메이크업 효과를 숨김 (원본 영상 표시)
   const [isOriginal, setIsOriginal] = useState(false);
   const isOriginalRef = useRef(isOriginal);
-  useEffect(() => { isOriginalRef.current = isOriginal; }, [isOriginal]);
+  useEffect(() => {
+    isOriginalRef.current = isOriginal;
+  }, [isOriginal]);
 
   // 디버그용 콘솔 출력
   console.log("eyeShadowColor:", eyeShadowColor);
@@ -62,18 +76,14 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
     }
   }, [stream]);
 
-
   // 얼굴 랜드마크 세팅
   useEffect(() => {
     const setupFaceLandmarker = async () => {
-      const vision = await FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/wasm"
-      );
+      const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/wasm");
 
       const faceLandmarker = await FaceLandmarker.createFromOptions(vision, {
         baseOptions: {
-          modelAssetPath:
-            "https://storage.googleapis.com/mediapipe-assets/face_landmarker.task",
+          modelAssetPath: "https://storage.googleapis.com/mediapipe-assets/face_landmarker.task",
           delegate: "GPU",
         },
         runningMode: "VIDEO",
@@ -130,14 +140,12 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
     // 외곽 입술 영역을 하나의 경로로 생성
     // UPPER_LIP와 LOWER_LIP 배열을 결합하여 클로즈드 폴리곤 생성
     const UPPER_LIP = [
-      61, 185, 40, 39, 37, 0, 267, 269, 270, 409,
-      291, 306, 292, 308, 415, 310, 311, 312, 13,
-      82, 81, 80, 191, 78, 62, 76
+      61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 291, 306, 292, 308, 415, 310, 311, 312, 13, 82, 81, 80, 191, 78, 62,
+      76,
     ];
     const LOWER_LIP = [
-      61, 146, 91, 181, 84, 17, 314, 405, 321, 375,
-      291, 306, 292, 308, 324, 318, 402, 317, 14,
-      87, 178, 88, 95, 78, 62, 76, 61
+      61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291, 306, 292, 308, 324, 318, 402, 317, 14, 87, 178, 88, 95, 78, 62,
+      76, 61,
     ];
 
     ctx.save();
@@ -227,60 +235,78 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
       drawLipRegion(ctx, landmarks, lipColor || "rgba(0,0,0,0)", lipBlurRef.current, lipIntensityRef.current);
 
       // 눈섀도우 및 블러시 영역 처리
-      const LEFT_EYE_SHADOW = [
-        33, 130, 226, 247, 30, 29, 27, 28, 56,
-        190, 243, 133, 173, 157, 158, 159, 160, 161, 246
-      ];
+      const LEFT_EYE_SHADOW = [33, 130, 226, 247, 30, 29, 27, 28, 56, 190, 243, 133, 173, 157, 158, 159, 160, 161, 246];
       const RIGHT_EYE_SHADOW = [
-        263, 359, 446, 467, 260, 259, 257, 258, 286,
-        414, 463, 353, 383, 362, 398, 384, 385, 386, 466
+        263, 359, 446, 467, 260, 259, 257, 258, 286, 414, 463, 353, 383, 362, 398, 384, 385, 386, 466,
       ];
       const LEFT_BLUSH = [117, 101, 205, 187, 123, 116, 117];
       const RIGHT_BLUSH = [411, 352, 346, 347, 330, 425, 411];
 
-      drawSmoothRegion(ctx, landmarks, LEFT_EYE_SHADOW, eyeShadowColor || "rgba(0,0,0,0)", eyeBlurRef.current, eyeIntensityRef.current);
-      drawSmoothRegion(ctx, landmarks, RIGHT_EYE_SHADOW, eyeShadowColor || "rgba(0,0,0,0)", eyeBlurRef.current, eyeIntensityRef.current);
-      drawSmoothRegion(ctx, landmarks, LEFT_BLUSH, blushColor || "rgba(0,0,0,0)", blushBlurRef.current, blushIntensityRef.current);
-      drawSmoothRegion(ctx, landmarks, RIGHT_BLUSH, blushColor || "rgba(0,0,0,0)", blushBlurRef.current, blushIntensityRef.current);
+      drawSmoothRegion(
+        ctx,
+        landmarks,
+        LEFT_EYE_SHADOW,
+        eyeShadowColor || "rgba(0,0,0,0)",
+        eyeBlurRef.current,
+        eyeIntensityRef.current
+      );
+      drawSmoothRegion(
+        ctx,
+        landmarks,
+        RIGHT_EYE_SHADOW,
+        eyeShadowColor || "rgba(0,0,0,0)",
+        eyeBlurRef.current,
+        eyeIntensityRef.current
+      );
+      drawSmoothRegion(
+        ctx,
+        landmarks,
+        LEFT_BLUSH,
+        blushColor || "rgba(0,0,0,0)",
+        blushBlurRef.current,
+        blushIntensityRef.current
+      );
+      drawSmoothRegion(
+        ctx,
+        landmarks,
+        RIGHT_BLUSH,
+        blushColor || "rgba(0,0,0,0)",
+        blushBlurRef.current,
+        blushIntensityRef.current
+      );
     }
 
     animationFrameRef.current = requestAnimationFrame(detectFaces);
   };
 
   return (
-    <div className={`camera ${cam}`} style={{ position: 'relative', height: '100%' }}>
-      <video
-        ref={videoRef}
-        autoPlay
-        playsInline
-        className="camera-video"
-        style={{ display: 'none' }}
-      />
+    <div className={`camera ${cam}`} style={{ position: "relative", height: "100%" }}>
+      <video ref={videoRef} autoPlay playsInline className="camera-video" style={{ display: "none" }} />
       <canvas ref={canvasRef} className="camera-overlay"></canvas>
 
       {/* 컨트롤러 토글 버튼 */}
       <button
         onClick={() => setShowControls(!showControls)}
         style={{
-          position: 'absolute',
-          top: '20px',
-          left: '50%',
-          transform: 'translateX(-50%)',
+          position: "absolute",
+          top: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
           zIndex: 500,
-          padding: '10px 16px',
-          background: 'rgba(130, 220, 40, 0.40)',
-          color: '#fff',
-          border: 'none',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          fontSize: '1rem',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
-          transition: 'background-color 0.3s ease'
+          padding: "10px 16px",
+          background: "rgba(130, 220, 40, 0.40)",
+          color: "#fff",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer",
+          fontSize: "1rem",
+          boxShadow: "0 4px 6px rgba(0,0,0,0.3)",
+          transition: "background-color 0.3s ease",
         }}
-        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#82DC28'}
-        onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(130, 220, 40, 0.40)'}
+        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#82DC28")}
+        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "rgba(130, 220, 40, 0.40)")}
       >
-        {showControls ? '숨기기' : '색상미세조정'}
+        {showControls ? "숨기기" : "색상미세조정"}
       </button>
 
       {/* 원본 버튼: 누르고 있는 동안 메이크업 효과 제거 (스타일을 색상미세조정 버튼과 동일하게, 카메라 하단 오른쪽 배치) */}
@@ -291,22 +317,22 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
         onTouchStart={() => setIsOriginal(true)}
         onTouchEnd={() => setIsOriginal(false)}
         style={{
-          position: 'absolute',
-          bottom: '20px',
-          right: '20px',
+          position: "absolute",
+          bottom: "20px",
+          right: "20px",
           zIndex: 1001,
-          padding: '10px 16px',
-          background: 'rgba(130, 220, 40, 0.40)',
-          color: '#fff',
-          border: 'none',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          fontSize: '1rem',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
-          transition: 'background-color 0.3s ease'
+          padding: "10px 16px",
+          background: "rgba(130, 220, 40, 0.40)",
+          color: "#fff",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer",
+          fontSize: "1rem",
+          boxShadow: "0 4px 6px rgba(0,0,0,0.3)",
+          transition: "background-color 0.3s ease",
         }}
-        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#82DC28'}
-        onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(130, 220, 40, 0.40)'}
+        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#82DC28")}
+        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "rgba(130, 220, 40, 0.40)")}
       >
         원본
       </button>
@@ -316,24 +342,24 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
         <div
           className="controls"
           style={{
-            position: 'absolute',
-            bottom: '5px',
-            left: '50%',
-            transform: 'translateX(-50%)',
+            position: "absolute",
+            bottom: "60%",
+            left: "50%",
+            transform: "translateX(-50%)",
             zIndex: 1000,
-            display: 'flex',
-            gap: '10px',
-            alignItems: 'center',
-            background: 'rgba(0, 0, 0, 0.6)',
-            padding: '8px 24px',
-            borderRadius: '16px',
-            boxShadow: '0 6px 12px rgba(0,0,0,0.4)',
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+            background: "rgba(0, 0, 0, 0.6)",
+            padding: "8px 24px",
+            borderRadius: "16px",
+            boxShadow: "0 6px 12px rgba(0,0,0,0.4)",
           }}
         >
           {/* 립 컨트롤 */}
-          <div style={{ color: '#fff', textAlign: 'center', minWidth: '100px' }}>
-            <div style={{ fontWeight: 'bold', marginBottom: '6px', fontSize: '1.1rem' }}>💄 LIP</div>
-            <label style={{ display: 'block', margin: '6px 0' }}>
+          <div style={{ color: "#fff", textAlign: "center", minWidth: "100px" }}>
+            <div style={{ fontWeight: "bold", marginBottom: "6px", fontSize: "1.1rem" }}>💄 LIP</div>
+            <label style={{ display: "block", margin: "6px 0" }}>
               블러
               <input
                 type="range"
@@ -342,10 +368,10 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
                 step="1"
                 value={lipBlur}
                 onChange={(e) => setLipBlur(Number(e.target.value))}
-                style={{ width: '100%', accentColor: 'green' }}
+                style={{ width: "100%", accentColor: "green" }}
               />
             </label>
-            <label style={{ display: 'block', margin: '6px 0' }}>
+            <label style={{ display: "block", margin: "6px 0" }}>
               채도
               <input
                 type="range"
@@ -354,15 +380,15 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
                 step="0.1"
                 value={lipIntensity}
                 onChange={(e) => setLipIntensity(Number(e.target.value))}
-                style={{ width: '100%', accentColor: 'green' }}
+                style={{ width: "100%", accentColor: "green" }}
               />
             </label>
           </div>
 
           {/* 아이섀도우 컨트롤 */}
-          <div style={{ color: '#fff', textAlign: 'center', minWidth: '100px' }}>
-            <div style={{ fontWeight: 'bold', marginBottom: '6px', fontSize: '1.1rem' }}>👁️ EYE</div>
-            <label style={{ display: 'block', margin: '6px 0' }}>
+          <div style={{ color: "#fff", textAlign: "center", minWidth: "100px" }}>
+            <div style={{ fontWeight: "bold", marginBottom: "6px", fontSize: "1.1rem" }}>👁️ EYE</div>
+            <label style={{ display: "block", margin: "6px 0" }}>
               블러
               <input
                 type="range"
@@ -371,10 +397,10 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
                 step="1"
                 value={eyeBlur}
                 onChange={(e) => setEyeBlur(Number(e.target.value))}
-                style={{ width: '100%', accentColor: 'green' }}
+                style={{ width: "100%", accentColor: "green" }}
               />
             </label>
-            <label style={{ display: 'block', margin: '6px 0' }}>
+            <label style={{ display: "block", margin: "6px 0" }}>
               채도
               <input
                 type="range"
@@ -383,15 +409,15 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
                 step="0.1"
                 value={eyeIntensity}
                 onChange={(e) => setEyeIntensity(Number(e.target.value))}
-                style={{ width: '100%', accentColor: 'green' }}
+                style={{ width: "100%", accentColor: "green" }}
               />
             </label>
           </div>
 
           {/* 블러시 컨트롤 */}
-          <div style={{ color: '#fff', textAlign: 'center', minWidth: '100px' }}>
-            <div style={{ fontWeight: 'bold', marginBottom: '6px', fontSize: '1.1rem' }}>🌸 CHEEK</div>
-            <label style={{ display: 'block', margin: '6px 0' }}>
+          <div style={{ color: "#fff", textAlign: "center", minWidth: "100px" }}>
+            <div style={{ fontWeight: "bold", marginBottom: "6px", fontSize: "1.1rem" }}>🌸 CHEEK</div>
+            <label style={{ display: "block", margin: "6px 0" }}>
               블러
               <input
                 type="range"
@@ -400,10 +426,10 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
                 step="1"
                 value={blushBlur}
                 onChange={(e) => setBlushBlur(Number(e.target.value))}
-                style={{ width: '100%', accentColor: 'green' }}
+                style={{ width: "100%", accentColor: "green" }}
               />
             </label>
-            <label style={{ display: 'block', margin: '6px 0' }}>
+            <label style={{ display: "block", margin: "6px 0" }}>
               채도
               <input
                 type="range"
@@ -412,7 +438,7 @@ const MakeupCamera = ({ cam, eyeShadowColor, blushColor, lipColor, category }) =
                 step="0.1"
                 value={blushIntensity}
                 onChange={(e) => setBlushIntensity(Number(e.target.value))}
-                style={{ width: '100%', accentColor: 'green' }}
+                style={{ width: "100%", accentColor: "green" }}
               />
             </label>
           </div>

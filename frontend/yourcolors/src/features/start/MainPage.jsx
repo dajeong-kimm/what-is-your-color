@@ -1,35 +1,38 @@
+// src/pages/main/MainPage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Background from "../../background/background/Background";
 import Largemain from "../../background/background/LargeMain";
 import Topbar from "../../button/top/TopBar";
-import MainButton from "../../button/main-button/MainButton";
+import CardButton from "../../button/main-button/CardButton";
 import "./MainPage.css";
-import useStore from '../../store/UseStore'; // Zustand 상태관리 데이터
+import useStore from '../../store/UseStore'; // Zustand 상태관리
+
+// 이미지 예시 import (원하는 경로/이미지로 교체)
+import img1 from "../../images/personal_colors.jpg";
+import img2 from "../../images/ai_makeup.png";
+import img3 from "../../images/seasons_photo.jpg";
+import img4 from "../../images/color_find.jpg"
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const { fetchPersonalColors, fetchCosmetics } = useStore(); // Zustand 상태관리
+  const { fetchPersonalColors, fetchCosmetics } = useStore();
 
   useEffect(() => {
-    fetchPersonalColors(); // 컴포넌트가 렌더링될 때 데이터 fetch
-    fetchCosmetics(1); // 임시로 봄(1번) 넣어둠
+    fetchPersonalColors();
+    fetchCosmetics(1);
   }, [fetchPersonalColors, fetchCosmetics]);
 
-  // 모달 상태 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // "계절네컷 촬영 📸" 버튼 클릭 시 모달 열기
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
 
-  // "예" 버튼 클릭 시 /makeup 페이지로 이동
   const handleYes = () => {
     navigate("/makeup");
   };
 
-  // "아니오" 버튼 클릭 시 모달 닫기
   const handleNo = () => {
     navigate("/photoqrchoice");
   };
@@ -39,13 +42,43 @@ const MainPage = () => {
       <Topbar />
       <Largemain>
         <div className="main-button-container">
-          <MainButton text="퍼스널컬러 진단 🔍 " onClick={() => navigate("/choice")} />
-          <MainButton text="AI 메이크업 🎨" onClick={() => navigate("/makeup")} />
-          <MainButton text="계절네컷 촬영 📸" onClick={handleOpenModal} />
+          <CardButton
+            title="퍼스널컬러 진단"
+            icon="🔍"
+            description="당신의 퍼스널컬러를 찾아보세요!"
+            onClick={() => navigate("/choice")}
+            bgImage={img1}
+          />
+            <CardButton
+              title="화장품컬러 찾기"
+              icon="🎨"
+              description="화장품의 퍼스널컬러를 찾아보세요! "
+              onClick={() => navigate("/cosmeticdiag")}
+              bgImage={img4}
+            />
+          <CardButton
+            title="AI 메이크업"
+            icon="🪞"
+            description="AI가 제안하는 메이크업을 체험해보세요!"
+            onClick={() => navigate("/makeup")}
+            bgImage={img2}
+          />
+          <CardButton
+            title="계절네컷 촬영"
+            icon="📸"
+            description="계절프레임을 선택해 사진을 찍어보세요!"
+            onClick={handleOpenModal}
+            bgImage={img3}
+          />
+
+          {/* <MainButton text="<br />퍼스널컬러<br />진단" icon="🔍" onClick={() => navigate("/choice")} />
+          <MainButton text="<br />화장품컬러<br />진단" icon="🪞" onClick={() => navigate("/cosmeticdiag")} />
+          <MainButton text="<br />AI 메이크업<br />" icon="🎨" onClick={() => navigate("/makeup")} />
+          <MainButton text="<br />계절네컷<br />촬영" icon="📸" onClick={handleOpenModal} /> */}
+
         </div>
       </Largemain>
 
-      {/* 모달 - isModalOpen이 true일 때만 렌더링 */}
       {isModalOpen && (
         <div className="mp-modal-overlay">
           <div className="mp-modal-content">
@@ -53,7 +86,7 @@ const MainPage = () => {
               AI 메이크업을 먼저 진행하시면 <br />
               더 다양한 체험이 가능합니다. <br />
             </h2>
-              <mpstrong>AI 메이크업 화면으로 이동하시겠습니까?</mpstrong>
+            <mpstrong>AI 메이크업 화면으로 이동하시겠습니까?</mpstrong>
             <br />
             <div className="mp-modal-buttons">
               <button className="mp-modal-yes" onClick={handleYes}>

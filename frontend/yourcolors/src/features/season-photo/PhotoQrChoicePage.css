@@ -5,7 +5,27 @@
     padding: 30px;
   }
   
- 
+  @font-face {
+    font-family: 'netmarbleB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.1/netmarbleB.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'netmarbleM';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.1/netmarbleM.woff') format('woff');
+    font-weight: medium;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'netmarbleL';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.1/netmarbleL.woff') format('woff');
+    font-weight: lighter;
+    font-style: normal;
+}
+
   .choice-card {
     width: 450px; /* ✅ 기존 400px → 450px로 확장 */
     height: 520px; /* ✅ 기존 480px → 520px로 확장 */
@@ -18,7 +38,18 @@
     transition: transform 0.3s ease-in-out;
     position: relative;
     box-sizing: border-box; /* 패딩 포함 크기 조정 */
+    font-family: 'netmarbleM';
   }
+  .highlight-text {
+    font-weight: bold;
+    font-family: 'netmarbleB';
+    /* color: #ff5733;  */
+    font-size: 1.1em;
+    /* text-decoration: underline; */
+  }
+  
+
+  
   .frame-image{
     margin-top : 20px;
     margin-right : -20px;
@@ -59,6 +90,7 @@
   .choice-content {
     background-color: white;
     padding: 20px;
+
   }
   
   /* 하단 영역 스타일 */
@@ -72,6 +104,8 @@
     bottom: 0;
     left: 0; /* 좌측 정렬 */
     box-sizing: border-box; /* 크기 조정 */
+    font-family: 'netmarbleB';
+
   }
   
   .blue-footer {
@@ -104,10 +138,12 @@
       height: auto;
     }
   }
-  qrstrong{
+  /* qrstrong{
     font-size :20px;
     font-weight: bold;
-  }
+    
+    
+  } */
 
   .qrchoice-description{
     margin-left:-30px;

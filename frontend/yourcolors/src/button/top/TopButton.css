@@ -9,7 +9,8 @@
     font-family: 'Noto Sans KR', sans-serif;
     transition: background-color 0.3s;
     box-shadow: 0px 2.221px 2.221px 0px rgba(0, 0, 0, 0.25);
-    
+    font-family: 'netmarbleB';
+
   }
   
   .top-button:hover {

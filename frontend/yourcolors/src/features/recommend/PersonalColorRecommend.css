@@ -8,6 +8,7 @@
   width: 100%;     /* 모달 컨테이너 너비에 맞춤 */
   height: 100%;    /* 모달 컨테이너 높이에 맞춤 */
   box-sizing: border-box;
+  font-family: 'netmarbleB';
 }
 
 .recommend-top {
